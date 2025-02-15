@@ -1,0 +1,6 @@
+variables:
+  GitHubSC: 'github.com_marcusjacobson' # Reference the GitHub service connection within Azure DevOps
+  gitHubRepo: 'marcusjacobson/AzDO-MarcusJ-Dev.Cloud-Tenant' # The GitHub repository to sync to
+  gitHubBranch: 'main' # The branch within the GitHub repository to sync to
+  gitUserName: 'Marcus Jacobson' # The name of the user to attribute the commits to
+  gitUserEmail: 'marcus@marcusj-dev.cloud' # The email of the user to attribute the commits to

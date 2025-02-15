@@ -1,0 +1,50 @@
+# This pipeline runs the sync-to-github.sh script, which performs a one-way sync from Azure DevOps to GitHub. It will only write new files and changes to existing files.
+# Files that have been moved or deleted will not sync. Reconciliation of deleted files will need to occur manually within the GitHub repository.
+# - Files that have been moved will be duplicated in the GitHub repository, the new location will synchronize, but it will not be removed from the original location.
+# - Since this pipeline uses a Azure DevOps service connection linked to a GitHub Fine-grained PAT, it will not be able to delete files in the GitHub repository.
+# 
+# Additionally, this pipeline ignores any files in the 'WIP' folder within Azure DevOps. This is intentional since this folder is treated as a staging area for files that are not ready to be synced to GitHub.
+# 
+# Author: Marcus Jacobson
+# Version: 1.0.0
+# Last Updated: February 15, 2025
+# References:
+# - pipeline-variables.yml: Contains the variables used in this pipeline.
+# - sync-to-github.sh: Script to perform the actual sync operation from Azure DevOps to GitHub.
+
+# Trigger the pipeline on changes to the main branch
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - template: pipeline-variables.yml
+
+jobs:
+- job: SyncToGitHub
+  displayName: 'One-way Sync to GitHub' 
+  steps:
+  - checkout: self
+    persistCredentials: true
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      version: '5.x'
+      installationPath: $(Agent.ToolsDirectory)/dotnet
+  - task: GitHubRelease@0
+    inputs:
+      gitHubConnection: '$(gitHubSC)' # Reference the GitHub service connection
+      repositoryName: '$(gitHubRepo)' # The GitHub repository to sync to
+      target: '$(gitHubBranch)' # The branch within the GitHub repository to sync to
+      tagSource: 'manual'
+      tag: 'v$(Build.BuildId)' # The tag to create for the release
+      title: 'Release $(Build.BuildId)' # The title of the release
+      assets: '**/*.zip' 
+      isDraft: false
+      isPreRelease: false
+  - script: |
+      chmod +x $(Build.SourcesDirectory)/Github-Sync/Scripts/sync-to-github.sh
+      $(Build.SourcesDirectory)/Github-Sync/Scripts/sync-to-github.sh "$(gitUserEmail)" "$(gitUserName)" "$(github_token)" "$(gitHubRepo)" "$(gitHubBranch)" "$(Build.SourceBranchName)"
+    displayName: 'Run sync-to-github.sh'

@@ -1,6 +1,6 @@
 variables:
-  GitHubSC: 'github.com_marcusjacobson' # Reference the GitHub service connection within Azure DevOps
-  gitHubRepo: 'marcusjacobson/AzDO-MarcusJ-Dev.Cloud-Tenant' # The GitHub repository to sync to
-  gitHubBranch: 'main' # The branch within the GitHub repository to sync to
-  gitUserName: 'Marcus Jacobson' # The name of the user to attribute the commits to
-  gitUserEmail: 'marcus@marcusj-dev.cloud' # The email of the user to attribute the commits to
+  GitHubSC: 'github.com_GITHUBACCOUNT' # Change GITHUBACCOUNT to your GitHub account name
+  gitHubRepo: 'GITHUBACCOUNT/GITHUBREPO' # Change GITHUBACCOUNT to your GitHub account name and GITHUBREPO to the name of the repository
+  gitHubBranch: 'main' # The branch within the GitHub repository to sync to, change from main if desired
+  gitUserName: 'YOUR NAME' # Change YOUR NAME to the name of the user to attribute the commits to
+  gitUserEmail: 'YOUR EMAIL ADDRESS' # Change YOUR EMAIL ADDRESS to the email address of the user to attribute the commits to (this must be a verified email address on your GitHub account)

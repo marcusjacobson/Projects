@@ -26,9 +26,9 @@ This folder contains the foundational setup for the AI Skilling Roadmap project.
 
 - [x] Azure DevOps project board created and sprints defined  
 - [x] GitHub repository initialized  
-- [ ] Hugo site structure scaffolded  
-- [ ] Prompt folder structure created  
-- [ ] Prompt tagging convention and markdown template defined
+- [x] Hugo site structure scaffolded  
+- [x] Prompt folder structure created  
+- [x] Prompt tagging convention and markdown template defined
 - [ ] Prompt library organized in Microsoft 365 Copilot Prompt Gallery  
 - [ ] PowerShell backup script created and tested  
 

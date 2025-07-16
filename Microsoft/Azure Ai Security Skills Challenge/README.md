@@ -25,7 +25,7 @@ As project weeks are completed, the links will be made available for the specifi
 
 | Week | Focus Area | Completed |
 |------|------------|--------|
-| 0 | Project Setup & Admin | [ ] |
+| 0 | [Project Setup & Admin](./0%20-%20Project%20Setup%20&%20Admin/README.md) | [ ] |
 | 1 | AI-Infused Security Foundations | [ ] |
 | 2 | Defender XDR + Copilot Integration | [ ] |
 | 3 | Microsoft Purview for Data Governance | [ ] |

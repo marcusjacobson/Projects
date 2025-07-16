@@ -25,21 +25,19 @@ As project weeks are completed the **Completed** box will be checked.
 
 | Week | Focus Area | Completed |
 |------|------------|--------|
-| 0 | [Project Setup & Admin](./0%20-%20Project%20Setup%20&%20Admin/README.md) | [ ] |
-| 1 | AI-Infused Security Foundations | [ ] |
-| 2 | Defender XDR + Copilot Integration | [ ] |
-| 3 | Microsoft Purview for Data Governance | [ ] |
-| 4 | Microsoft Priva and Responsible AI | [ ] |
-| 5 | Microsoft Fabric for Secure Analytics | [ ] |
-| 6 | Copilot Studio for Security Agents | [ ] |
-| 7 | Azure AI Foundry & Secure AI Workloads | [ ] |
-| 8 | Customer-Facing AI Solutioning | [ ] |
-| 9 | AI-First Delivery Practices | [ ] |
-| 10 | Secure Copilot Deployment Project | [ ] |
-| 11 | AI Agent Toolkit Project | [ ] |
-| 12 | Review, Reflect, and Refresh | [ ] |
-
-> Tip: You can check off tasks by replacing `[ ]` with `[x]` as you complete each week.
+| 0 | [Project Setup & Admin](./00%20-%20Project%20Setup%20&%20Admin/README.md) | [ ] |
+| 1 | [AI-Infused Security Foundations](./01%20-%20AI-Infused%20Security%20Foundations/README.md) | [ ] |
+| 2 | [Defender XDR + Copilot Integration](./02%20-%20Defender%20XDR%20+%20Copilot%20Integration/README.md) | [ ] |
+| 3 | [Microsoft Purview for Data Governance](./03%20-%20Microsoft%20Purview%20for%20Data%20Governance/README.md) | [ ] |
+| 4 | [Microsoft Priva and Responsible AI](./04%20-%20Microsoft%20Priva%20and%20Responsible%20AI/) | [ ] |
+| 5 | [Microsoft Fabric for Secure Analytics](./05%20-%20Microsoft%20Fabric%20for%20Secure%20Analytics/README.md) | [ ] |
+| 6 | [Copilot Studio for Security Agents](./06%20-%20Copilot%20Studio%20for%20Security%20Agents/) | [ ] |
+| 7 | [Azure AI Foundry & Secure AI Workloads](./07%20-%20Azure%20AI%20Foundry%20&%20Secure%20AI%20Workloads/README.md) | [ ] |
+| 8 | [Customer-Facing AI Solutioning](./08%20-%20Customer-Facing%20AI%20Solutioning/README.md) | [ ] |
+| 9 | [AI-First Delivery Practices](./09%20-%20AI-First%20Delivery%20Practices/README.md) | [ ] |
+| 10 | [Secure Copilot Deployment Project](./10%20-%20Secure%20Copilot%20Deployment%20Project/README.md) | [ ] |
+| 11 | [AI Agent Toolkit Project](./11%20-%20AI%20Agent%20Toolkit%20Project/README.md) | [ ] |
+| 12 | [Review, Reflect, and Refresh](./12%20-%20Review,%20Reflect,%20and%20Refresh/README.md) | [ ] |
 
 ## 📬 Contributions & Feedback
 

@@ -1,31 +1,31 @@
-# Week 4 – Microsoft Priva and Responsible AI
+# Week 5 – Microsoft Fabric for Secure Analytics
 
-This folder focuses on deploying Microsoft Priva and exploring its capabilities for privacy risk management and responsible AI governance. The goal is to understand how to automate data subject rights (DSR) workflows and build prompts that support privacy-aware AI operations.
+This folder focuses on deploying Microsoft Fabric and exploring its capabilities for secure data analytics, governance, and lineage. The goal is to understand how Fabric supports secure data pipelines and to build prompt examples that reinforce governance and compliance.
 
 ## 🎯 Objectives
 
-- Deploy Microsoft Priva and configure DSR and subject rights workflows.
-- Explore privacy risk management and AI data handling policies.
+- Deploy a Microsoft Fabric workspace and configure OneLake.
+- Explore data lineage, governance, and security features.
 - Add prompt entries for:
-  - DSR automation
-  - Privacy summaries
-  - Risk insights
-- Publish a privacy and responsible AI governance guide.
+  - Secure data pipeline summaries
+  - Governance checks
+  - Data access insights
+- Publish a Fabric security and governance reference architecture.
 
 ## 📁 Deliverables
 
-- Microsoft Priva deployed and configured for DSR workflows.
-- Privacy risk management features explored and documented.
-- Prompt entries created for privacy and responsible AI scenarios.
-- Governance guide published to GitHub Pages.
+- Microsoft Fabric workspace deployed and OneLake configured.
+- Data lineage and governance features explored and documented.
+- Prompt entries created for secure analytics scenarios.
+- Reference architecture published to GitHub Pages.
 
 ## ✅ Checklist
 
-- [ ] Microsoft Priva deployed  
-- [ ] DSR and subject rights workflows configured  
-- [ ] Privacy risk management features explored  
-- [ ] Prompt entries created for DSR, summaries, and risk insights  
-- [ ] Responsible AI governance guide published  
+- [ ] Microsoft Fabric workspace deployed  
+- [ ] OneLake configured  
+- [ ] Data lineage and governance features explored  
+- [ ] Prompt entries created for secure analytics and governance  
+- [ ] Reference architecture published  
 
 ## 🔗 Related Resources
 

@@ -1,33 +1,32 @@
-# Week 2 – Defender XDR + Copilot Integration
+# Week 3 – Microsoft Purview for Data Governance
 
-This folder focuses on integrating Microsoft Defender XDR with Microsoft Sentinel and exploring how Copilot for Security enhances incident response workflows. The goal is to simulate real-world triage scenarios and build a prompt library that supports AI-assisted security operations.
+This folder focuses on deploying Microsoft Purview and exploring its capabilities for data governance, classification, and compliance. The goal is to understand how AI can enhance data visibility and control, and to build prompt examples that support governance workflows.
 
 ## 🎯 Objectives
 
-- Deploy Microsoft Defender XDR and integrate it with Microsoft Sentinel.
-- Explore Copilot for Security integration with Defender XDR.
-- Simulate incident triage and summarization using Copilot.
+- Deploy Microsoft Purview and configure the data map and scan rules.
+- Explore AI-driven data classification and sensitivity labeling.
 - Add prompt entries for:
-  - Incident response
-  - Alert summarization
-  - Guided remediation
-- Publish a walkthrough of the Defender XDR + Copilot integration.
+  - Data discovery
+  - Classification
+  - Compliance reporting
+- Document deployment steps and governance use cases.
 
 ## 📁 Deliverables
 
-- Defender XDR deployed and connected to Sentinel.
-- Copilot for Security tested in triage and remediation scenarios.
-- Prompt entries created and categorized for security operations.
-- Walkthrough documentation published to GitHub Pages.
+- Microsoft Purview deployed and connected to relevant data sources.
+- Data map and scan rules configured.
+- AI-driven classification and labeling tested.
+- Prompt entries created for governance scenarios.
+- Governance use cases documented and published to GitHub Pages.
 
 ## ✅ Checklist
 
-- [ ] Defender XDR deployed  
-- [ ] Sentinel integration configured  
-- [ ] Copilot for Security integration explored  
-- [ ] Incident triage scenario simulated  
-- [ ] Prompt entries created for incident response and remediation  
-- [ ] Walkthrough published to GitHub Pages  
+- [ ] Microsoft Purview deployed  
+- [ ] Data map and scan rules configured  
+- [ ] AI-driven classification and labeling explored  
+- [ ] Prompt entries created for data governance scenarios  
+- [ ] Governance use cases documented and published  
 
 ## 🔗 Related Resources
 

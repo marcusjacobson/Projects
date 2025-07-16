@@ -37,5 +37,8 @@ This folder contains the foundational setup for the AI Skilling Roadmap project.
 ## 🔗 Related Resources
 
 - [Project Root](/Microsoft/Azure%20Ai%20Security%20Skills%20Challenge/README.md)
+- [Portfolio - Project page](https://marcusjacobson.github.io/techblog/projects/ai-security-skilling-challenge/)
+- [Portfolio - Week 0 blog article]()
+
 ---
 

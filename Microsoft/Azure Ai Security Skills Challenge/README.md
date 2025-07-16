@@ -21,7 +21,7 @@ Each week is organized as a separate folder to support modular development and p
 
 ## ✅ Project Status
 
-As project weeks are completed, the links will be made available for the specific folders and the completed box will be checked.
+As project weeks are completed the **Completed** box will be checked.
 
 | Week | Focus Area | Completed |
 |------|------------|--------|

@@ -25,7 +25,7 @@ As project weeks are completed the **Completed** box will be checked.
 
 | Week | Focus Area | Completed |
 |------|------------|--------|
-| 0 | [Project Setup & Admin](./00%20-%20Project%20Setup%20&%20Admin/README.md) | [ ] |
+| 0 | [Project Setup & Admin](./00%20-%20Project%20Setup%20&%20Admin/README.md) | [x] |
 | 1 | [AI-Infused Security Foundations](./01%20-%20AI-Infused%20Security%20Foundations/README.md) | [ ] |
 | 2 | [Defender XDR + Copilot Integration](./02%20-%20Defender%20XDR%20+%20Copilot%20Integration/README.md) | [ ] |
 | 3 | [Microsoft Purview for Data Governance](./03%20-%20Microsoft%20Purview%20for%20Data%20Governance/README.md) | [ ] |

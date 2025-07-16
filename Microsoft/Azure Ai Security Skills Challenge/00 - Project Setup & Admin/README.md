@@ -29,8 +29,10 @@ This folder contains the foundational setup for the AI Skilling Roadmap project.
 - [x] Hugo site structure scaffolded  
 - [x] Prompt folder structure created  
 - [x] Prompt tagging convention and markdown template defined
-- [ ] Prompt library organized in Microsoft 365 Copilot Prompt Gallery  
-- [ ] PowerShell backup script created and tested  
+- [ ] ~~Prompt library organized in Microsoft 365 Copilot Prompt Gallery~~  
+- [ ] ~~PowerShell backup script created and tested~~  
+
+- After research and testing, I was looking to create a project specific prompt library in M365 teams, however the functionality only allows me to save it to my personal library at this time. Therefore the two related tasks are being omitted from the project.
 
 ## 🔗 Related Resources
 

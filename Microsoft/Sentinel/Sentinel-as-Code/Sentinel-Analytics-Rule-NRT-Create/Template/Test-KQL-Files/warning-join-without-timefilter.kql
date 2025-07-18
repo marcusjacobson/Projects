@@ -1,0 +1,11 @@
+// Query with potential join performance issue for NRT rules
+SecurityEvent 
+| where TimeGenerated >= ago(5m)  // NRT typically uses shorter time windows
+| where EventID == 4625  // Failed logon attempts
+| join (
+    SigninLogs 
+    | where ResultType != 0
+    | extend Location = strcat(LocationDetails.city, ", ", LocationDetails.countryOrRegion)
+) on $left.Account == $right.UserPrincipalName
+| project TimeGenerated, Account, Computer, IPAddress, Location, UserPrincipalName
+| sort by TimeGenerated desc

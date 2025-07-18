@@ -1,0 +1,5 @@
+// Syntax error: unmatched quotes
+SigninLogs 
+| where TimeGenerated >= ago(1h)
+| where UserPrincipalName == "test@example.com
+| project UserPrincipalName, IPAddress

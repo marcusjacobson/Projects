@@ -1,0 +1,4 @@
+UserPrincipalName,Department,IsActive,Website,IPAddress,UserID,Score,GUID,LastLogin
+john.doe@company.com,IT,true,https://www.company.com,192.168.1.10,12345,85.5,550e8400-e29b-41d4-a716-446655440000,2024-01-15T10:30:00Z
+jane.smith@company.com,HR,false,https://hr.company.com,10.0.0.1,67890,92.3,6ba7b810-9dad-11d1-80b4-00c04fd430c8,2024-02-20T14:45:30Z
+bob.wilson@company.com,Security,true,https://security.company.com,172.16.0.5,11111,88.7,6ba7b811-9dad-11d1-80b4-00c04fd430c8,2024-03-01T09:15:45Z

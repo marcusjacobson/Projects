@@ -1,0 +1,5 @@
+UserPrincipalName,Department,IsActive,EmployeeID
+john.doe@company.com,IT,true,12345
+jane.smith@company.com,HR,false,abc123
+bob.wilson@company.com,Security,1,67890
+alice.brown@company.com,Finance,maybe,22222

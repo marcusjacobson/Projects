@@ -1,0 +1,6 @@
+// Syntax error: unmatched parentheses
+SigninLogs 
+| where TimeGenerated >= ago(1h
+| where ResultType == 0
+| where IPAddress == "203.0.113.42"
+| project UserPrincipalName, IPAddress

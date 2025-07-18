@@ -1,0 +1,64 @@
+{
+  "$schema": null,
+  "__comment": "This is a direct API payload for Microsoft.SecurityInsights/alertRules, not an ARM template. Schema warnings can be ignored.",
+  "__docs": "https://learn.microsoft.com/en-us/rest/api/securityinsights/alert-rules/create-or-update",
+  "__separator1": "=============== Do not edit fields above this line ===============",
+  "__separator2": "==== Edit fields below this line as needed for rule deployment ====",
+  
+  "kind": "NRT",
+  "properties": {
+    "alertDetailsOverride": {
+      "alertDescriptionFormat": "Suspicious sign-in detected from IP: {IPAddress} by user {UserPrincipalName}",
+      "alertDisplayNameFormat": "Suspicious Sign-in - {UserPrincipalName}"
+    },
+    "customDetails": {
+      "SourceIP": "IPAddress",
+      "Username": "UserPrincipalName",
+      "Location": "Location"
+    },
+    "description": "Detects sign-ins from a known suspicious IP address.",
+    "displayName": "Suspicious Sign-in from IP NRT",
+    "enabled": true,
+    "entityMappings": [
+      {
+        "entityType": "Account",
+        "fieldMappings": [
+          {
+            "identifier": "FullName",
+            "columnName": "UserPrincipalName"
+          }
+        ]
+      },
+      {
+        "entityType": "IP",
+        "fieldMappings": [
+          {
+            "identifier": "Address",
+            "columnName": "IPAddress"
+          }
+        ]
+      }
+    ],
+    "eventGroupingSettings": {
+      "aggregationKind": "SingleAlert"
+    },
+    "incidentConfiguration": {
+      "createIncident": true,
+      "groupingConfiguration": {
+        "enabled": true,
+        "groupByAlertDetails": ["Severity"],
+        "groupByCustomDetails": ["SourceIP"],
+        "groupByEntities": ["Account"],
+        "lookbackDuration": "PT1H",
+        "matchingMethod": "Selected",
+        "reopenClosedIncident": false
+      }
+    },
+    "__query_comment": "Query is loaded from nrt-analytics-rule-query.kql file by the deployment script",
+    "query": "@nrt-analytics-rule-query.kql",
+    "severity": "Medium",
+    "suppressionDuration": "PT2H",
+    "suppressionEnabled": true,
+    "tactics": ["InitialAccess", "Persistence"]
+  }
+}

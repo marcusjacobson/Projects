@@ -1,0 +1,10 @@
+// Query with potential join performance issue
+SecurityEvent 
+| where EventID == 4625  // Failed logon attempts
+| join (
+    SigninLogs 
+    | where ResultType != 0
+    | extend Location = strcat(LocationDetails.city, ", ", LocationDetails.countryOrRegion)
+) on $left.Account == $right.UserPrincipalName
+| project TimeGenerated, Account, Computer, IPAddress, Location, UserPrincipalName
+| sort by TimeGenerated desc

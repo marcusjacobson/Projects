@@ -1,0 +1,5 @@
+UserPrincipalName,Department,IsActive,Formula
+john.doe@company.com,IT,true,=SUM(A1:A10)
+jane.smith@company.com,HR,false,+1+1
+bob.wilson@company.com,Security,true,-5*2
+alice.brown@company.com,Finance,false,@command

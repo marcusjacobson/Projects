@@ -1,0 +1,18 @@
+SigninLogs 
+| where TimeGenerated >= ago(1h)              // Look back 1 hour for recent activity
+| where IPAddress == "203.0.113.42"          // Known suspicious IP address
+    or ipv4_is_in_range(IPAddress, "203.0.113.0/24")  // Suspicious IP range
+| where ResultType == 0                       // Only successful sign-ins
+| extend Location = strcat(LocationDetails.city, ", ", LocationDetails.countryOrRegion)
+| project 
+    TimeGenerated,
+    UserPrincipalName,
+    IPAddress,
+    Location,
+    AppDisplayName,
+    ClientAppUsed,
+    ConditionalAccessStatus,
+    DeviceDetail.displayName,
+    RiskDetail
+| where isnotempty(UserPrincipalName)         // Filter out empty usernames
+| sort by TimeGenerated desc                  // Most recent first

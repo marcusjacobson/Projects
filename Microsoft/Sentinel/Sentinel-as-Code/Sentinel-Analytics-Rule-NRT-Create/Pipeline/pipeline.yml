@@ -1,0 +1,31 @@
+trigger:
+- none
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+- template: pipeline-variables.yml
+
+stages:
+- stage: DeployAnalyticsRule
+  displayName: 'Analytics Rule Stage'
+  jobs:
+  - job: DeployAnalyticsRule
+    displayName: 'Deploy Analytics Rule'
+    steps:
+    - checkout: self
+      persistCredentials: true
+    - task: AzureCLI@2
+      displayName: 'Deploy or Update Analytics Rule'
+      inputs:
+        azureSubscription: $(serviceConnection)
+        scriptType: pscore
+        scriptPath: $(analyticsRuleScriptPath)
+        scriptLocation: scriptPath
+        scriptArguments:
+          -TemplateFilePath $(armAnalyticsRuleTemplatePath)
+          -SubscriptionID $(subscriptionID)
+          -ResourceGroupName $(resourceGroupName)
+          -LogAnalyticsWorkspaceName $(logAnalyticsWorkspaceName)
+          -KQLFilePath $(kqlFilePath)

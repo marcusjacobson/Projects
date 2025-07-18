@@ -1,0 +1,4 @@
+UserPrincipalName;Department;IsActive
+john.doe@company.com;IT;true
+jane.smith@company.com;HR;false
+bob.wilson@company.com;Security;true

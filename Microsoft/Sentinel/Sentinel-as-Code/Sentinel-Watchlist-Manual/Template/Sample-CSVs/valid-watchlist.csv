@@ -1,0 +1,6 @@
+UserPrincipalName,Department,IsActive,EmployeeID,LastLogin,Email,IPAddress
+john.doe@company.com,IT,true,12345,2024-01-15,john.doe@company.com,192.168.1.10
+jane.smith@company.com,HR,false,67890,2024-02-20,jane.smith@company.com,192.168.1.20
+bob.wilson@company.com,Security,true,11111,2024-03-01,bob.wilson@company.com,192.168.1.30
+alice.brown@company.com,Finance,false,22222,2024-04-10,alice.brown@company.com,192.168.1.40
+mike.johnson@company.com,Marketing,true,33333,2024-05-01,mike.johnson@company.com,192.168.1.50

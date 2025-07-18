@@ -1,0 +1,33 @@
+trigger:
+- none
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+- template: pipeline-variables.yml
+
+stages:
+- stage: DeployWatchlist
+  displayName: 'Sentinel Watchlist Deployment Stage'
+  jobs:
+  - job: DeployWatchlist
+    displayName: 'Deploy Sentinel Watchlist'
+    steps:
+    - checkout: self
+      persistCredentials: true
+    - task: AzureCLI@2
+      displayName: 'Deploy or Update Sentinel Watchlist'
+      inputs:
+        azureSubscription: $(serviceConnection)
+        scriptType: pscore
+        scriptLocation: scriptPath
+        scriptPath: $(watchlistScriptPath)
+        arguments: >
+          -SubscriptionID "$(subscriptionID)"
+          -ResourceGroupName "$(resourceGroupName)"
+          -LogAnalyticsWorkspaceName "$(logAnalyticsWorkspaceName)"
+          -WatchlistFilePath "$(watchlistFilePath)"
+          -WatchlistAlias "$(watchlistAlias)"
+          -WatchlistDescription "$(watchlistDescription)"
+          -SearchKey "$(searchKey)"

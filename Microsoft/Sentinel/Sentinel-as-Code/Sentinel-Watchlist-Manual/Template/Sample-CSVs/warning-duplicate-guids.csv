@@ -1,0 +1,5 @@
+UserID,UserPrincipalName,Department,IsActive,CreatedDate,GUID
+12345,john.doe@company.com,IT,true,2024-01-15,550e8400-e29b-41d4-a716-446655440000
+67890,jane.smith@company.com,HR,false,2024-02-20,6ba7b810-9dad-11d1-80b4-00c04fd430c8
+11111,bob.wilson@company.com,Security,true,2024-03-01,6ba7b811-9dad-11d1-80b4-00c04fd430c8
+22222,alice.brown@company.com,Finance,false,2024-04-10,550e8401-e29b-41d4-a716-446655440000

@@ -1,0 +1,83 @@
+variables:
+
+########################################################################################################
+  # Environment - general. 
+  # This section configures the foundational elements needed to connect to Azure and execute
+  # deployment scripts from the repository structure.
+  #
+  # Required Azure Roles for Service Principal (Least Privilege):
+  # - Resource Group: Contributor (to create/manage resource groups)
+  # - Subscription: Log Analytics Contributor (to create/manage Log Analytics workspaces)
+  # - Subscription: Microsoft Sentinel Contributor (to enable and configure Sentinel)
+  # - Subscription: Reader (to validate subscription existence and properties)
+  #
+  # Required Entra Roles for Service Principal:
+  # - None required for basic deployment (Azure RBAC roles sufficient)
+########################################################################################################
+  serviceConnection: 'SC-AzDO-YourOrg-ServiceConnection' 
+  rgScriptPath: "$(Build.SourcesDirectory)/Sentinel/Sentinel-Create/Scripts/rg-deploy.ps1"
+  lawScriptPath: "$(Build.SourcesDirectory)/Sentinel/Sentinel-Create/Scripts/deploy-log-analytics-sentinel.ps1"
+  sentinelScriptPath: "$(Build.SourcesDirectory)/Sentinel/Sentinel-Create/Scripts/deploy-sentinel.ps1"
+  lawTemplatePath: "$(Build.SourcesDirectory)/Sentinel/Sentinel-Create/Template/log-analytics-workspace.bicep"
+
+########################################################################################################
+  # Subscription Properties. 
+  # This subscription must have sufficient permissions and quota for creating Sentinel resources.
+  #
+  # Security Best Practices for Subscription ID:
+  # - Store subscription ID in Azure DevOps Variable Groups with appropriate access controls
+  # - Use Azure Key Vault integration for sensitive pipeline variables when possible
+  # - Avoid hardcoding subscription IDs in repository files that may be public
+  # - Consider using separate subscriptions for dev/test/prod environments
+  # - Regularly audit who has access to modify pipeline variables and service connections
+########################################################################################################
+  subscriptionID: 'YOUR-SUBSCRIPTION-ID-HERE'
+
+########################################################################################################
+  # Resource Group Properties. 
+  # Goal: Define the Azure Resource Group that will contain all Sentinel-related resources.
+  # The resource group serves as a logical container and provides a scope for resource management,
+  # access control, and billing organization.
+  #
+  # Security Best Practices for Resource Group:
+  # - Use descriptive naming conventions that don't expose sensitive environment details
+  # - Choose Azure regions that comply with your organization's data residency requirements
+  # - Consider resource group-level RBAC assignments for granular access control
+  # - Use consistent tagging strategy for resource governance and cost management
+########################################################################################################
+  resourceGroupName: 'rg-sentinel-deployment'
+  location: 'eastus'
+
+########################################################################################################
+  # Log Analytics Workspace Properties. 
+  # Goal: Configure the Log Analytics Workspace that serves as the foundation for Microsoft Sentinel.
+  # This workspace will store all security logs, events, and analytics data. The configuration
+  # includes retention policies, pricing tier, and deployment naming conventions.
+  #
+  # Security Best Practices for Log Analytics Workspace:
+  # - Set appropriate retention periods to balance security needs and cost considerations
+  # - Choose pricing tiers (PerGB2018 vs CapacityReservation) based on expected data volume
+  # - Use workspace names that don't expose sensitive organizational information
+  # - Plan for workspace access controls and data export permissions
+  # - Consider compliance requirements when setting retention policies
+########################################################################################################
+  
+  deploymentName: 'log-analytics-workspace-deployment'
+  logAnalyticsWorkspaceName: 'law-sentinel-workspace'
+  retentionInDays: 30 # Retention period for logs in days
+  sku: 'PerGB2018' # Pricing tier: Free, PerGB2018, or CapacityReservation
+
+########################################################################################################
+  # Sentinel Properties. 
+  # Goal: Configure Microsoft Sentinel-specific settings and security features.
+  # This section defines encryption preferences and other Sentinel-specific configurations
+  # that control how the security platform operates within your environment.
+  #
+  # Security Best Practices for Sentinel Configuration:
+  # - Consider additional Sentinel features like UEBA, threat intelligence, and automation rules
+  # - Implement proper incident response workflows and playbook configurations
+  # - Regular review of Sentinel data connectors and analytics rules for security coverage
+########################################################################################################
+  
+  customerManagedKey: false # Set to true (not currently supported in this pipeline) if using customer-managed keys for encryption (CMK must already be onboarded to the log analytics workspace)
+

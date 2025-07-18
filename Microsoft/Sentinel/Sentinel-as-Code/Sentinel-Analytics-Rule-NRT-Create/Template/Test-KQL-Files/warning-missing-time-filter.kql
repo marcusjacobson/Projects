@@ -1,0 +1,7 @@
+// Performance warning: no time filter
+SigninLogs 
+| where ResultType == 0
+| where IPAddress == "203.0.113.42"
+| extend Location = strcat(LocationDetails.city, ", ", LocationDetails.countryOrRegion)
+| project UserPrincipalName, IPAddress, Location
+| take 100

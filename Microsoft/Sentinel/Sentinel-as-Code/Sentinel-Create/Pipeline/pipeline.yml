@@ -1,0 +1,78 @@
+trigger:
+- none
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+- template: pipeline-variables.yml
+
+stages:
+- stage: CheckRGStage
+  displayName: 'Resource Group Stage'
+  jobs:
+    - job: CheckRG
+      displayName: 'Check Resource Group status'
+      steps:
+      - checkout: self
+        persistCredentials: true
+      - task: AzureCLI@2
+        displayName: 'Deploy Resource Group if not exists'
+        inputs:
+          azureSubscription: $(serviceConnection)
+          scriptType: pscore
+          scriptPath: $(rgScriptPath)
+          scriptLocation: scriptPath
+          scriptArguments:
+            -SubscriptionID $(subscriptionID)
+            -ResourceGroupName $(resourceGroupName)
+            -Location $(location)
+
+- stage: DeployLogAnalyticsWorkspace
+  displayName: 'Log Analytics Workspace Stage'
+  dependsOn: CheckRGStage
+  jobs:
+  - job: Deploy
+    displayName: 'Check Log Analytics Workspace status'
+    steps:
+    - checkout: self
+      persistCredentials: true
+    - task: AzureCLI@2
+      displayName: 'Deploy Log Analytics Workspace if not exists'
+      inputs:
+        azureSubscription: $(serviceConnection)
+        scriptType: pscore
+        scriptPath: $(lawScriptPath)
+        scriptLocation: scriptPath
+        scriptArguments:
+          -DeploymentName $(deploymentName)
+          -LawBicepTemplatePath $(lawTemplatePath)
+          -SubscriptionID $(subscriptionID)
+          -ResourceGroupName $(resourceGroupName)
+          -Location $(location)
+          -WorkspaceName $(logAnalyticsWorkspaceName)
+          -RetentionInDays $(retentionInDays)
+          -Sku $(sku)
+  
+- stage: DeploySentinel
+  displayName: 'Sentinel Stage'
+  dependsOn: DeployLogAnalyticsWorkspace
+  jobs:
+  - job: DeploySentinel
+    displayName: 'Deploy Sentinel'
+    steps:
+    - checkout: self
+      persistCredentials: true
+    - task: AzureCLI@2
+      displayName: 'Deploy Sentinel if not exists'
+      inputs:
+        azureSubscription: $(serviceConnection)
+        scriptType: pscore
+        scriptPath: $(sentinelScriptPath)
+        scriptLocation: scriptPath
+        scriptArguments:
+          -SubscriptionID $(subscriptionID)
+          -ResourceGroupName $(resourceGroupName)
+          -Location $(location)
+          -LogAnalyticsWorkspaceName $(logAnalyticsWorkspaceName)
+          -CustomerManagedKey $(customerManagedKey)

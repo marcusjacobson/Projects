@@ -1,0 +1,3 @@
+UserPrincipalName,Department,IsActive
+john.doe@company.com,IT,true,
+jane.smith@company.com,HR,false

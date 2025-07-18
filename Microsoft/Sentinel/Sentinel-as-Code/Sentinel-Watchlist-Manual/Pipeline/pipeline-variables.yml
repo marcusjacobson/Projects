@@ -1,0 +1,78 @@
+variables:
+
+########################################################################################################
+  # Environment - general. 
+  # Goal: Define the Azure DevOps service connection and script paths required for deployment.
+  # This section configures the foundational elements needed to connect to Azure and execute
+  # deployment scripts from the repository structure.
+  #
+  # Required Azure Roles for Service Principal (Least Privilege):
+  # - Subscription: Microsoft Sentinel Contributor (to create/manage watchlists)
+  # - Log Analytics Workspace: Contributor (to access workspace configuration)
+  # - Subscription: Reader (to validate subscription existence and properties)
+  #
+  # Required Entra Roles for Service Principal:
+  # - None required for basic deployment (Azure RBAC roles sufficient)
+########################################################################################################
+  serviceConnection: 'SC-AzDO-YourOrg-ServiceConnection' 
+  watchlistScriptPath: "$(Build.SourcesDirectory)/Sentinel/Sentinel-Watchlist-Manual/Scripts/watchlist-deploy.ps1"
+  watchlistFilePath: "$(Build.SourcesDirectory)/Sentinel/Sentinel-Watchlist-Manual/Template/watchlist.csv"
+
+########################################################################################################
+  # Subscription Properties. 
+  # Goal: Specify the target Azure subscription where all resources will be deployed.
+  # This subscription must have sufficient permissions and quota for creating Sentinel resources.
+  #
+  # Security Best Practices for Subscription ID:
+  # - Store subscription ID in Azure DevOps Variable Groups with appropriate access controls
+  # - Use Azure Key Vault integration for sensitive pipeline variables when possible
+  # - Avoid hardcoding subscription IDs in repository files that may be public
+  # - Consider using separate subscriptions for dev/test/prod environments
+  # - Regularly audit who has access to modify pipeline variables and service connections
+########################################################################################################
+  subscriptionID: 'YOUR-SUBSCRIPTION-ID-HERE'
+
+########################################################################################################
+  # Resource Group Properties. 
+  # Goal: Define the Azure Resource Group that contains the Sentinel workspace and watchlists.
+  # The resource group serves as a logical container and provides a scope for resource management,
+  # access control, and billing organization.
+  #
+  # Security Best Practices for Resource Group:
+  # - Use descriptive naming conventions that don't expose sensitive environment details
+  # - Choose Azure regions that comply with your organization's data residency requirements
+  # - Consider resource group-level RBAC assignments for granular access control
+  # - Use consistent tagging strategy for resource governance and cost management
+########################################################################################################
+  resourceGroupName: 'rg-sentinel-deployment'
+  location: 'eastus'
+
+########################################################################################################
+  # Log Analytics Workspace Properties. 
+  # Goal: Specify the existing Log Analytics Workspace where Sentinel watchlists will be deployed.
+  # This workspace must have Microsoft Sentinel enabled and be accessible to the service principal.
+  #
+  # Security Best Practices for Log Analytics Workspace:
+  # - Ensure workspace has appropriate access controls and data export permissions
+  # - Verify Microsoft Sentinel is enabled and properly configured
+  # - Use workspace names that don't expose sensitive organizational information
+  # - Plan for workspace access controls and watchlist management permissions
+########################################################################################################
+  logAnalyticsWorkspaceName: 'law-sentinel-workspace'
+
+########################################################################################################
+  # Watchlist Properties
+  # Goal: Configure Microsoft Sentinel watchlist deployment settings and data parameters.
+  # This section defines watchlist-specific configurations including data structure and search capabilities.
+  #
+  # Security Best Practices for Watchlists:
+  # - Review CSV data for sensitive information before deployment
+  # - Implement proper data validation and sanitization processes
+  # - Use descriptive aliases and maintain documentation for watchlist purpose
+  # - Regular review and validation of watchlist data accuracy and relevance
+  # - Consider data retention and update frequency requirements
+  # - Ensure CSV data complies with organizational data governance policies
+########################################################################################################
+  watchlistAlias: 'generic-watchlist' 
+  watchlistDescription: 'Generic watchlist for Sentinel deployment - update description for your use case.'
+  searchKey: 'id'  # Optional: Specify a search key column name. If empty (''), defaults to first column

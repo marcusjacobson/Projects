@@ -1,0 +1,3 @@
+User@Principal#Name,Department$Info,1stColumn,ThisIsAnExtremelyLongColumnHeaderNameThatExceedsOneHundredCharactersAndWillTriggerAValidationWarning
+john.doe@company.com,IT,true,value1
+jane.smith@company.com,HR,false,value2

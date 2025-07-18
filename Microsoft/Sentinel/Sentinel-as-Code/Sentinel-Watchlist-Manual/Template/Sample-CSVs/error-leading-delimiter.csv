@@ -1,0 +1,3 @@
+UserPrincipalName,Department,IsActive
+,Security,true
+john.doe@company.com,IT,false

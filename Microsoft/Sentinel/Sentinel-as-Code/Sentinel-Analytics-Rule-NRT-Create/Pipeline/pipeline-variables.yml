@@ -1,0 +1,77 @@
+variables:
+
+########################################################################################################
+  # Environment - general. 
+  # Goal: Define the Azure DevOps service connection and script paths required for deployment.
+  # This section configures the foundational elements needed to connect to Azure and execute
+  # deployment scripts from the repository structure.
+  #
+  # Required Azure Roles for Service Principal (Least Privilege):
+  # - Subscription: Microsoft Sentinel Contributor (to create/manage analytics rules)
+  # - Log Analytics Workspace: Contributor (to access workspace configuration)
+  # - Subscription: Reader (to validate subscription existence and properties)
+  #
+  # Required Entra Roles for Service Principal:
+  # - None required for basic deployment (Azure RBAC roles sufficient)
+########################################################################################################
+  serviceConnection: 'SC-AzDO-YourOrg-ServiceConnection'
+  analyticsRuleScriptPath: "$(Build.SourcesDirectory)/Sentinel/Sentinel-Analytics-Rule-NRT-Create/Scripts/analytics-rule-deploy.ps1"
+  armAnalyticsRuleTemplatePath: "$(Build.SourcesDirectory)/Sentinel/Sentinel-Analytics-Rule-NRT-Create/Template/nrt-analytics-rule-payload.json"
+  kqlFilePath: "$(Build.SourcesDirectory)/Sentinel/Sentinel-Analytics-Rule-NRT-Create/Template/nrt-analytics-rule-query.kql"
+
+########################################################################################################
+  # Subscription Properties. 
+  # Goal: Specify the target Azure subscription where all resources will be deployed.
+  # This subscription must have sufficient permissions and quota for creating Sentinel resources.
+  #
+  # Security Best Practices for Subscription ID:
+  # - Store subscription ID in Azure DevOps Variable Groups with appropriate access controls
+  # - Use Azure Key Vault integration for sensitive pipeline variables when possible
+  # - Avoid hardcoding subscription IDs in repository files that may be public
+  # - Consider using separate subscriptions for dev/test/prod environments
+  # - Regularly audit who has access to modify pipeline variables and service connections
+########################################################################################################
+  subscriptionID: 'YOUR-SUBSCRIPTION-ID-HERE'
+
+########################################################################################################
+  # Resource Group Properties. 
+  # Goal: Define the Azure Resource Group that contains the Sentinel workspace and analytics rules.
+  # The resource group serves as a logical container and provides a scope for resource management,
+  # access control, and billing organization.
+  #
+  # Security Best Practices for Resource Group:
+  # - Use descriptive naming conventions that don't expose sensitive environment details
+  # - Choose Azure regions that comply with your organization's data residency requirements
+  # - Consider resource group-level RBAC assignments for granular access control
+  # - Use consistent tagging strategy for resource governance and cost management
+########################################################################################################
+  resourceGroupName: 'rg-sentinel-deployment'
+  location: 'eastus'
+
+########################################################################################################
+  # Log Analytics Workspace Properties. 
+  # Goal: Specify the existing Log Analytics Workspace where Sentinel analytics rules will be deployed.
+  # This workspace must have Microsoft Sentinel enabled and be accessible to the service principal.
+  #
+  # Security Best Practices for Log Analytics Workspace:
+  # - Ensure workspace has appropriate access controls and data export permissions
+  # - Verify Microsoft Sentinel is enabled and properly configured
+  # - Use workspace names that don't expose sensitive organizational information
+  # - Plan for workspace access controls and analytics rule management permissions
+########################################################################################################
+  logAnalyticsWorkspaceName: 'law-sentinel-workspace'
+
+########################################################################################################
+  # Analytics Rules Properties
+  # Goal: Configure Microsoft Sentinel NRT (Near Real-Time) analytics rule deployment settings.
+  # This section defines rule-specific configurations and deployment parameters.
+  #
+  # Security Best Practices for Analytics Rules:
+  # - Review KQL queries for performance and security implications
+  # - Implement proper incident response workflows and alert tuning
+  # - Use descriptive rule names and maintain documentation for rule logic
+  # - Regular review and validation of rule effectiveness and false positive rates
+  # - Consider data sensitivity and compliance requirements in rule design
+########################################################################################################
+  # All rule properties are defined in the nrt-analytics-rule-payload.json file
+  # Rule ID is generated automatically from the rule's display name format

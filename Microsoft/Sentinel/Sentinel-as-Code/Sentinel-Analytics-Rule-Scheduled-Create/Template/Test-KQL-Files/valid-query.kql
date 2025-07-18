@@ -1,0 +1,15 @@
+// Valid KQL query with proper time filter and entity fields
+SigninLogs 
+| where TimeGenerated >= ago(1h)
+| where ResultType == 0
+| where IPAddress in ("203.0.113.42", "198.51.100.0")
+| extend Location = strcat(LocationDetails.city, ", ", LocationDetails.countryOrRegion)
+| project 
+    TimeGenerated,
+    UserPrincipalName,
+    IPAddress,
+    Location,
+    AppDisplayName,
+    RiskDetail
+| where isnotempty(UserPrincipalName)
+| sort by TimeGenerated desc

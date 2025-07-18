@@ -1,0 +1,5 @@
+UserPrincipalName,Department,IsActive,Email
+john.doe@company.com,IT,true,john.doe@company.com
+jane.smith@company.com,HR,false,jane.smith@company.com
+bob.wilson@company.com,Security,true,john.doe@company.com
+alice.brown@company.com,Finance,false,jane.smith@company.com

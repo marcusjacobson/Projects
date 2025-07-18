@@ -111,18 +111,6 @@ Week 1 focuses on establishing a secure foundation for AI-infused workloads usin
 - [Azure Resource Manager Templates](https://learn.microsoft.com/azure/azure-resource-manager/templates/)
 - [Terraform Azure Provider Documentation](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs)
 
-### Week 2 Preparation
-
-1. **Advanced Security Features**
-   - Custom analytics rules
-   - Advanced threat protection
-   - Integration with other security tools
-
-2. **Automation Development**
-   - Logic Apps for automated responses
-   - PowerShell scripts for routine tasks
-   - API integrations for workflow automation
-
 ### Additional Resources (Optional)
 
 - [Azure Security Best Practices](https://learn.microsoft.com/azure/security/fundamentals/best-practices-and-patterns)

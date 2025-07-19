@@ -33,7 +33,7 @@ Microsoft Defender for Cloud provides unified security management and advanced t
    - Click on "Microsoft Defender for Cloud" from the search results
    - Alternatively, you can find it under "Security" in the Azure services menu
 
-![Azure Portal Search](https://docs.microsoft.com/en-us/azure/defender-for-cloud/media/defender-for-cloud-introduction/azure-portal-search.png)
+📸 **[View Screenshot: Azure Portal Search](https://learn.microsoft.com/en-us/azure/defender-for-cloud/media/get-started/defender-for-cloud-search.png)**
 
 ---
 
@@ -49,7 +49,7 @@ Microsoft Defender for Cloud provides unified security management and advanced t
    - For enhanced protection, you can enable Defender plans for specific resource types
    - For this guide, we'll start with the free tier and then upgrade specific plans
 
-![Defender Plans](https://docs.microsoft.com/en-us/azure/defender-for-cloud/media/defender-for-cloud-introduction/defender-plans.png)
+📸 **[View Screenshot: Defender Overview](https://learn.microsoft.com/en-us/azure/reusable-content/ce-skilling/azure/media/defender-for-cloud/overview.png)**
 
 ---
 
@@ -65,7 +65,7 @@ Microsoft Defender for Cloud provides unified security management and advanced t
    - Note which plans are enabled (typically CSPM is enabled by default)
    - Review the estimated monthly cost for enhanced plans
 
-![Environment Settings](https://docs.microsoft.com/en-us/azure/defender-for-cloud/media/defender-for-cloud-introduction/environment-settings.png)
+📸 **[View Screenshot: Environment Settings](https://learn.microsoft.com/en-us/azure/defender-for-cloud/media/get-started/environmental-settings.png)**
 
 ---
 
@@ -88,7 +88,7 @@ Microsoft Defender for Cloud provides unified security management and advanced t
    - Enable "Dependency agent for Azure VMs" (for service mapping)
    - Enable "Vulnerability assessment for machines"
 
-![Auto Provisioning](https://docs.microsoft.com/en-us/azure/defender-for-cloud/media/defender-for-cloud-introduction/auto-provisioning.png)
+📸 **[View Screenshot: Enable All Plans](https://learn.microsoft.com/en-us/azure/defender-for-cloud/media/get-started/enable-all-plans.png)**
 
 ---
 
@@ -139,7 +139,7 @@ If you don't have existing VMs, create 2-3 virtual machines for testing:
    - **Image**: "Windows 11 Pro"
    - **Inbound ports**: RDP (3389)
 
-![VM Creation](https://docs.microsoft.com/en-us/azure/virtual-machines/media/quick-create-portal/virtual-machine-basics.png)
+📸 **[View Azure VM Creation Guide](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/quick-create-portal)**
 
 ---
 
@@ -157,7 +157,7 @@ If you don't have existing VMs, create 2-3 virtual machines for testing:
    - Extensions may take 5-15 minutes to install automatically
    - If not installed automatically, you can install them manually from the Extensions blade
 
-![VM Extensions](https://docs.microsoft.com/en-us/azure/defender-for-cloud/media/defender-for-cloud-introduction/vm-extensions.png)
+📸 **[View Data Collection Guide](https://learn.microsoft.com/en-us/azure/defender-for-cloud/enable-data-collection)**
 
 ---
 
@@ -179,7 +179,7 @@ If you don't have existing VMs, create 2-3 virtual machines for testing:
    - Browse available policy definitions
    - Create custom policy sets based on your compliance requirements
 
-![Security Policy](https://docs.microsoft.com/en-us/azure/defender-for-cloud/media/defender-for-cloud-introduction/security-policy.png)
+📸 **[View Security Policy Guide](https://learn.microsoft.com/en-us/azure/defender-for-cloud/security-policy-concept)**
 
 ---
 
@@ -202,7 +202,7 @@ If you don't have existing VMs, create 2-3 virtual machines for testing:
    - Follow the remediation steps provided
    - Use "Quick fix" options where available
 
-![Recommendations](https://docs.microsoft.com/en-us/azure/defender-for-cloud/media/defender-for-cloud-introduction/recommendations.png)
+📸 **[View Recommendations Guide](https://learn.microsoft.com/en-us/azure/defender-for-cloud/review-security-recommendations)**
 
 ---
 
@@ -221,7 +221,7 @@ If you don't have existing VMs, create 2-3 virtual machines for testing:
    - Create logic apps for automated responses
    - Set up integrations with SIEM tools or ticketing systems
 
-![Email Notifications](https://docs.microsoft.com/en-us/azure/defender-for-cloud/media/defender-for-cloud-introduction/email-notifications.png)
+📸 **[View Email Notifications Guide](https://learn.microsoft.com/en-us/azure/defender-for-cloud/configure-email-notifications)**
 
 ---
 
@@ -243,7 +243,7 @@ If you don't have existing VMs, create 2-3 virtual machines for testing:
    - Enable FIM on your VMs
    - Configure file and registry monitoring rules
 
-![JIT Access](https://docs.microsoft.com/en-us/azure/defender-for-cloud/media/defender-for-cloud-introduction/jit-access.png)
+📸 **[View Just-in-Time Access Guide](https://learn.microsoft.com/en-us/azure/defender-for-cloud/just-in-time-access-usage)**
 
 ---
 
@@ -282,7 +282,7 @@ If you don't have existing VMs, create 2-3 virtual machines for testing:
    - Pin important metrics and alerts
    - Share dashboard with your security team
 
-![Workbooks](https://docs.microsoft.com/en-us/azure/defender-for-cloud/media/defender-for-cloud-introduction/workbooks.png)
+📸 **[View Workbooks and Dashboards Guide](https://learn.microsoft.com/en-us/azure/defender-for-cloud/custom-dashboards-azure-workbooks)**
 
 ---
 
@@ -442,6 +442,14 @@ After successful deployment:
 - [Azure Security Center Pricing](https://azure.microsoft.com/en-us/pricing/details/defender-for-cloud/)
 - [Security Best Practices for Azure](https://docs.microsoft.com/en-us/azure/security/fundamentals/best-practices-and-patterns)
 - [Microsoft Security Blog](https://www.microsoft.com/security/blog/)
+
+---
+
+## 🤖 AI-Assisted Content Generation
+
+This comprehensive deployment guide was created with the assistance of **GitHub Copilot** powered by advanced AI language models. The content was generated, structured, and refined through iterative collaboration between human expertise and AI assistance within **Visual Studio Code**, leveraging GitHub Copilot's capabilities to ensure accuracy, completeness, and adherence to Microsoft Azure best practices.
+
+*AI tools were used to enhance productivity and ensure comprehensive coverage of Microsoft Defender for Cloud deployment procedures while maintaining technical accuracy and practical applicability.*
 
 ---
 

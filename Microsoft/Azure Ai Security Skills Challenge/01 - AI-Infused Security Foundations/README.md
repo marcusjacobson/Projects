@@ -24,7 +24,7 @@ This folder focuses on establishing a foundational understanding of Microsoft Se
 
 ## ✅ Checklist
 
-- [ ] Reviewed Microsoft Security Copilot documentation  
+- [x] Reviewed Microsoft Security Copilot documentation  
 - [ ] Defender for Cloud deployed via Azure Portal  
 - [ ] Defender for Cloud deployed via Bicep or Terraform  
 - [ ] AI-driven recommendations and alerts enabled  

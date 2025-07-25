@@ -1,6 +1,6 @@
-# Deploy Microsoft Defender for Cloud via Azure Portal
+# Deploy Microsoft Defender for Cloud via Azure Portal (2025 Edition)
 
-This guide provides a comprehensive walkthrough for deploying Microsoft Defender for Cloud in a fresh Azure environment using the Azure Portal, including configuration for monitoring virtual machines.
+This guide provides a comprehensive walkthrough for deploying Microsoft Defender for Cloud in a fresh Azure environment using the Azure Portal, reflecting the latest architecture and features as of 2025.
 
 ## 📋 Prerequisites
 
@@ -13,12 +13,21 @@ Before starting, ensure you have:
 
 ## 🎯 Overview
 
-Microsoft Defender for Cloud provides unified security management and advanced threat protection across hybrid cloud workloads. This deployment will:
+Microsoft Defender for Cloud provides unified security management and advanced threat protection across hybrid cloud workloads. This deployment leverages the modern agentless architecture and native integrations available in 2025:
 
 1. Enable Defender for Cloud on your subscription
-2. Configure security policies and recommendations
-3. Set up monitoring for virtual machines
+2. Configure modern agent architecture (agentless + Defender for Endpoint)
+3. Set up monitoring for virtual machines using current methods
 4. Enable advanced threat protection features
+5. Configure Azure Monitor Agent (AMA) only where specifically required
+
+## ⚠️ Important Architecture Changes (2025)
+
+**Key Updates from Previous Versions:**
+- **Log Analytics Agent (MMA) Deprecated**: MMA was retired in August 2024 and is no longer supported
+- **Agentless Scanning**: Primary data collection method for most security assessments
+- **Defender for Endpoint Integration**: Single agent approach for endpoint protection
+- **Azure Monitor Agent (AMA)**: Only required for specific scenarios (Defender for SQL on machines and data ingestion benefits)
 
 ---
 
@@ -69,24 +78,40 @@ Microsoft Defender for Cloud provides unified security management and advanced t
 
 ---
 
-## Step 4: Enable Defender for Servers (For VM Monitoring)
+## Step 4: Enable Modern Defender for Servers Architecture
 
 1. **Enable Server Protection**
    - In Environment Settings, find "Defender for Servers"
    - Toggle the status to "On" for Plan 2 (recommended for full features)
-   - This enables advanced threat protection for your virtual machines
+   - This automatically enables:
+     - **Agentless scanning** for vulnerability assessment and security posture
+     - **Defender for Endpoint integration** for endpoint protection
+     - **Malware scanning** without performance impact
 
-2. **Configure Data Collection**
-   - Click on "Data collection" in the environment settings
-   - Select "All Events" for comprehensive monitoring
-   - Choose "Common" if you want to reduce data volume and costs
-   - Configure the Log Analytics workspace (create a new one if needed)
+2. **Configure Agentless Scanning (Enabled by Default)**
+   - Agentless scanning is automatically enabled with Defender for Servers Plan 2
+   - This provides:
+     - Vulnerability assessment without agents
+     - Configuration assessment
+     - Malware scanning
+     - Software inventory
+   - No additional configuration required - works out-of-the-box
 
-3. **Auto-provisioning Settings**
-   - Navigate to "Auto provisioning" in the settings
-   - Enable "Log Analytics agent for Azure VMs"
-   - Enable "Dependency agent for Azure VMs" (for service mapping)
-   - Enable "Vulnerability assessment for machines"
+3. **Enable Defender for Endpoint Integration**
+   - Navigate to "Integrations" in Environment Settings
+   - Ensure "Microsoft Defender for Endpoint" is enabled
+   - This provides:
+     - Real-time threat protection
+     - Behavioral analysis
+     - Advanced hunting capabilities
+     - Single agent solution for endpoint protection
+
+4. **Azure Monitor Agent (AMA) - Only When Required**
+   - AMA is only needed for:
+     - Defender for SQL servers on machines
+     - Free 500MB data ingestion benefit (Defender for Servers Plan 2)
+   - If you need AMA, it will be automatically configured when enabling relevant features
+   - **Do NOT manually configure MMA** - it has been deprecated since August 2024
 
 📸 **[View Screenshot: Enable All Plans](https://learn.microsoft.com/en-us/azure/defender-for-cloud/media/get-started/enable-all-plans.png)**
 
@@ -143,19 +168,32 @@ If you don't have existing VMs, create 2-3 virtual machines for testing:
 
 ---
 
-## Step 6: Verify Agent Installation
+## Step 6: Verify Modern Agent Architecture
 
-1. **Check VM Extensions**
-   - Navigate to your created VMs
-   - Click on each VM → "Extensions + applications"
-   - Verify the following extensions are installed or installing:
-     - Microsoft Monitoring Agent (MMA) or Azure Monitor Agent (AMA)
-     - Dependency Agent
-     - Vulnerability Assessment extension
+1. **Check Agentless Scanning Status**
+   - Navigate to "Environment settings" → Your subscription
+   - Under "Monitoring coverage", verify agentless scanning is enabled
+   - Check the "Agentless scanning for machines" status
 
-2. **Monitor Installation Progress**
-   - Extensions may take 5-15 minutes to install automatically
-   - If not installed automatically, you can install them manually from the Extensions blade
+2. **Verify Defender for Endpoint Integration**
+   - Go to "Workload protections"
+   - Check "Microsoft Defender for Endpoint" status
+   - Verify that VMs show as "Protected" in the endpoints view
+
+3. **Monitor VM Protection Status**
+   - Navigate to "Inventory" in Defender for Cloud
+   - Select your VMs to view protection status
+   - You should see:
+     - Agentless scanning: Enabled
+     - Defender for Endpoint: Connected (if applicable)
+     - Azure Monitor Agent: Only if specifically required for SQL or data benefits
+
+4. **Verify Scanning Results**
+   - Agentless scanning runs automatically and findings appear in:
+     - Recommendations (security posture findings)
+     - Security alerts (threat detections)
+     - Vulnerability assessment results
+   - Initial scans may take 15-30 minutes to complete
 
 📸 **[View Data Collection Guide](https://learn.microsoft.com/en-us/azure/defender-for-cloud/enable-data-collection)**
 
@@ -183,24 +221,26 @@ If you don't have existing VMs, create 2-3 virtual machines for testing:
 
 ---
 
-## Step 8: Review Security Recommendations
+## Step 8: Review Modern Security Recommendations
 
 1. **Access Recommendations**
    - Navigate to "Recommendations" in the Defender for Cloud menu
-   - Wait 15-30 minutes after VM creation for initial assessment
-   - Review the list of security recommendations
+   - Wait 15-30 minutes after VM creation for initial agentless assessment
+   - Review the list of security recommendations powered by agentless scanning
 
-2. **Common Initial Recommendations**
+2. **Common Modern Recommendations (2025)**
    - Enable disk encryption on virtual machines
-   - Apply system updates on machines
-   - Install endpoint protection solution on machines
+   - Install endpoint protection solution on machines (via Defender for Endpoint)
+   - Apply system updates (now powered by Azure Update Manager integration)
    - Enable Network Security Groups on subnets
    - Enable backup on virtual machines
+   - Resolve endpoint detection and response (EDR) solution recommendations
+   - Remediate vulnerabilities found in container images (agentless)
 
 3. **Implement High-Priority Recommendations**
    - Click on recommendations marked as "High" severity
-   - Follow the remediation steps provided
-   - Use "Quick fix" options where available
+   - Use "Quick fix" options where available (expanded automation in 2025)
+   - Follow the modernized remediation steps that leverage agentless capabilities
 
 📸 **[View Recommendations Guide](https://learn.microsoft.com/en-us/azure/defender-for-cloud/review-security-recommendations)**
 
@@ -225,7 +265,7 @@ If you don't have existing VMs, create 2-3 virtual machines for testing:
 
 ---
 
-## Step 10: Enable Advanced Threat Protection Features
+## Step 10: Configure Modern Advanced Threat Protection Features
 
 1. **Just-in-Time VM Access**
    - Navigate to "Workload protections" → "Just-in-time VM access"
@@ -233,15 +273,23 @@ If you don't have existing VMs, create 2-3 virtual machines for testing:
    - Configure allowed ports and time windows
    - This reduces attack surface by limiting VM access
 
-2. **Adaptive Application Controls**
-   - Go to "Adaptive application controls"
-   - Review machine groups and recommendations
-   - Enable application allowlisting for critical VMs
+2. **Agentless Malware Scanning**
+   - Automatically enabled with Defender for Servers Plan 2
+   - Provides comprehensive malware detection without performance impact
+   - Integrates with Defender for Endpoint for enhanced protection
+   - View results in Security Alerts and Defender XDR
 
-3. **File Integrity Monitoring**
-   - Navigate to "File integrity monitoring"
-   - Enable FIM on your VMs
-   - Configure file and registry monitoring rules
+3. **Modern File Integrity Monitoring**
+   - **Note**: Legacy FIM based on Log Analytics Agent was deprecated November 2024
+   - New FIM capabilities are delivered through Defender for Endpoint integration
+   - Enable in "Workload protections" → "File integrity monitoring"
+   - Configure monitoring rules through the modern interface
+
+4. **Endpoint Detection and Response (EDR)**
+   - Automatically available through Defender for Endpoint integration
+   - Provides behavioral analysis and advanced threat hunting
+   - No additional configuration required
+   - Access advanced features through Microsoft Defender XDR portal
 
 📸 **[View Just-in-Time Access Guide](https://learn.microsoft.com/en-us/azure/defender-for-cloud/just-in-time-access-usage)**
 
@@ -304,77 +352,109 @@ If you don't have existing VMs, create 2-3 virtual machines for testing:
 
 ---
 
-## Step 14: Integration with Microsoft Sentinel (Optional)
+## Step 14: Modern Integration with Microsoft Sentinel and XDR
 
-1. **Connect to Sentinel**
+1. **Connect to Microsoft Sentinel**
    - If you have Microsoft Sentinel deployed
    - Navigate to "Security solutions" in Defender for Cloud
-   - Configure data connectors to send Defender alerts to Sentinel
+   - Configure improved data connectors that work with agentless architecture
+   - Enable automatic incident creation from Defender for Cloud alerts
 
-2. **Configure Analytics Rules**
-   - Create correlation rules between Defender and Sentinel
+2. **Microsoft Defender XDR Integration**
+   - Defender for Cloud now integrates natively with Defender XDR
+   - Endpoint alerts from Defender for Endpoint appear in both portals
+   - Cross-platform correlation for enhanced threat detection
+   - Unified incident management across cloud and endpoint security
+
+3. **Configure Analytics Rules**
+   - Create correlation rules leveraging agentless data collection
    - Set up automated incident creation
-   - Configure playbooks for automated response
+   - Configure playbooks for automated response using modern APIs
 
 ---
 
-## 🔍 Verification Steps
+## 🔍 Verification Steps (2025 Architecture)
 
-After completing the deployment, verify everything is working:
+After completing the deployment, verify everything is working with the modern architecture:
 
-### Check Data Collection
+### Check Agentless Data Collection
 
-1. **Log Analytics Workspace**
-   - Navigate to your Log Analytics workspace
-   - Run KQL queries to verify data ingestion:
+1. **Verify Agentless Scanning**
+   - Navigate to Environment Settings → Monitoring Coverage
+   - Confirm agentless scanning is enabled and operational
+   - Check that VMs appear in inventory with agentless data
+
+2. **Review Agentless Findings**
+   - Use KQL queries to verify data collection (if using Log Analytics for other purposes):
 
    ```kql
-   SecurityEvent
+   // Check for agentless vulnerability assessments
+   SecurityRecommendation
    | where TimeGenerated > ago(1h)
+   | where RecommendationName contains "vulnerabilities"
    | take 10
    ```
 
-2. **VM Insights**
-   - Check VM performance metrics
-   - Verify dependency mapping is working
-   - Confirm vulnerability assessment scans
+3. **Defender for Endpoint Integration**
+   - Verify endpoint status in Microsoft Defender XDR portal
+   - Check device health and protection status
+   - Confirm alert correlation between Defender for Cloud and Defender XDR
 
-### Test Security Features
+### Test Modern Security Features
 
 1. **Generate Test Alert**
-   - Create a test security event
-   - Verify alert appears in Defender for Cloud
-   - Test notification delivery
+   - Create a test security event using Defender for Endpoint's test scenarios
+   - Verify alert appears in both Defender for Cloud and Defender XDR
+   - Test notification delivery through updated channels
 
-2. **JIT Access Test**
+2. **Agentless Scanning Validation**
+   - Verify vulnerability scanning results appear without agents
+   - Check malware scanning capabilities
+   - Confirm configuration assessment data is populated
+
+3. **JIT Access Test**
    - Request JIT access to a VM
-   - Verify approval workflow
+   - Verify approval workflow functions correctly
    - Test automatic access revocation
 
 ---
 
-## 💡 Best Practices and Tips
+## 💡 Best Practices and Tips (2025 Edition)
+
+### Modern Architecture Benefits
+
+- **Agentless scanning**: Eliminates agent sprawl and performance impact
+- **Unified agent approach**: Single Defender for Endpoint agent for comprehensive protection
+- **Enhanced coverage**: Multi-cloud and hybrid protection without complex agent management
+- **Improved performance**: No impact on VM performance from security scanning
 
 ### Cost Optimization
 
-- Start with free tier and gradually enable paid plans
-- Monitor monthly costs in Environment settings
-- Use Log Analytics data retention policies
-- Consider regional data residency requirements
+- **Agentless benefits**: Reduced operational overhead and management costs
+- **Selective AMA deployment**: Only deploy AMA where specifically required (SQL servers, data benefits)
+- **Monitor scanning costs**: Use agentless scanning efficiently with built-in cost controls
+- **Regional considerations**: Agentless scanning respects data residency requirements
 
 ### Security Hardening
 
-- Regularly review and implement security recommendations
-- Enable advanced features like adaptive application controls
-- Use Azure Policy for consistent security configurations
-- Implement network segmentation with NSGs
+- **Leverage agentless recommendations**: Act on comprehensive security findings without agent dependencies
+- **Enable Defender for Endpoint integration**: Utilize single-agent approach for endpoint protection
+- **Modern network security**: Implement micro-segmentation with NSGs and Azure Firewall
+- **Azure Policy integration**: Use guest configuration for compliance without legacy agents
 
 ### Monitoring and Maintenance
 
-- Set up regular compliance assessments
-- Schedule weekly security reviews
-- Configure automated remediation where possible
-- Maintain up-to-date contact information for alerts
+- **Continuous agentless assessment**: Security posture evaluation without maintenance overhead
+- **Integrated threat hunting**: Use Defender XDR for advanced hunting across cloud and endpoints
+- **Automated remediation**: Leverage enhanced automation capabilities in 2025 features
+- **Modern compliance reporting**: Use updated compliance frameworks and automated reporting
+
+### Migration from Legacy Architecture
+
+- **Disable MMA auto-provisioning**: Ensure deprecated Log Analytics Agent auto-provisioning is disabled
+- **Remove legacy agents**: Use Microsoft's MMA removal utility for cleanup
+- **Validate agentless coverage**: Confirm all security capabilities are covered by agentless scanning
+- **Update monitoring queries**: Transition from MMA-based queries to agentless data sources
 
 ### Integration Considerations
 
@@ -385,72 +465,95 @@ After completing the deployment, verify everything is working:
 
 ---
 
-## 🚨 Troubleshooting Common Issues
+## 🚨 Troubleshooting Common Issues (2025)
 
-### Agent Installation Failures
+### Agentless Scanning Issues
 
-- **Issue**: MMA or dependency agent not installing
-- **Solution**: Check VM connectivity, ensure proper permissions, restart VM
+- **Issue**: Agentless scanning not collecting data
+- **Solution**: Check subscription permissions, verify Defender for Servers Plan 2 is enabled, ensure VMs are in supported regions
 
 ### Missing Security Recommendations
 
 - **Issue**: No recommendations appearing after 30+ minutes
-- **Solution**: Verify subscription permissions, check policy assignments
+- **Solution**: Verify agentless scanning is enabled, check that VMs are properly registered in Azure, confirm subscription has appropriate permissions
 
-### Alert Notification Issues
+### Defender for Endpoint Integration Problems
 
-- **Issue**: Not receiving email alerts
-- **Solution**: Check email configuration, verify contact settings, check spam folders
+- **Issue**: Endpoint protection not showing as enabled
+- **Solution**: Verify Defender for Endpoint integration is enabled in Environment Settings, check VM compliance with Defender for Endpoint requirements
 
-### High Data Ingestion Costs
+### Legacy Agent Conflicts
 
-- **Issue**: Unexpected charges for Log Analytics
-- **Solution**: Review data collection settings, optimize retention policies, filter unnecessary events
+- **Issue**: Old MMA agents still installed causing conflicts
+- **Solution**: Use Microsoft's MMA removal utility, disable legacy auto-provisioning, ensure clean migration to agentless architecture
+
+### High Scanning Costs
+
+- **Issue**: Unexpected charges for agentless scanning
+- **Solution**: Review scanning frequency settings, optimize regional scanning policies, monitor usage through Azure Cost Management
+
+### Azure Monitor Agent (AMA) Issues
+
+- **Issue**: AMA not collecting data for SQL servers
+- **Solution**: Verify AMA auto-provisioning is enabled for Defender for SQL, check SQL server registration with Azure Arc if on-premises
 
 ---
 
-## 📚 Next Steps
+## 📚 Next Steps (2025 Roadmap)
 
 After successful deployment:
 
-1. **Create Security Runbooks**
-   - Document incident response procedures
-   - Create playbooks for common scenarios
-   - Train security team on Defender for Cloud features
+1. **Optimize Agentless Coverage**
+   - Expand agentless scanning to multi-cloud environments
+   - Configure advanced agentless malware scanning
+   - Enable agentless code scanning for DevOps repositories
+   - Implement agentless container image scanning
 
-2. **Expand Coverage**
-   - Enable Defender for other Azure services (Storage, Key Vault, etc.)
-   - Protect on-premises and multi-cloud resources
-   - Integrate with Microsoft 365 Defender
+2. **Enhance Integration**
+   - Connect to Microsoft Defender XDR for unified security operations
+   - Integrate with Microsoft Purview for data governance
+   - Configure Microsoft Copilot for Security for AI-powered threat analysis
+   - Set up cross-platform security correlation
 
 3. **Advanced Configuration**
-   - Set up custom queries and analytics
-   - Configure advanced hunting capabilities
-   - Implement threat intelligence feeds
+   - Implement custom security policies using Azure Policy guest configuration
+   - Configure advanced hunting queries in Defender XDR
+   - Set up automated response playbooks using modern APIs
+   - Implement threat intelligence feeds integration
 
-4. **Continuous Improvement**
-   - Regular security posture reviews
-   - Update security policies based on new threats
-   - Monitor and optimize costs
-   - Stay updated with new Defender for Cloud features
+4. **AI-Powered Security (2025 Features)**
+   - Enable Microsoft Copilot for Security integration
+   - Configure AI-powered threat analysis and response
+   - Implement predictive security analytics
+   - Use AI-assisted incident investigation workflows
+
+5. **Continuous Improvement**
+   - Regular security posture reviews using agentless insights
+   - Update security policies based on AI-powered threat intelligence
+   - Monitor and optimize costs using modern cost management tools
+   - Stay updated with Microsoft's quarterly security feature releases
 
 ---
 
-## 🔗 Additional Resources
+## 🔗 Additional Resources (Updated 2025)
 
 - [Microsoft Defender for Cloud Documentation](https://docs.microsoft.com/en-us/azure/defender-for-cloud/)
-- [Azure Security Center Pricing](https://azure.microsoft.com/en-us/pricing/details/defender-for-cloud/)
-- [Security Best Practices for Azure](https://docs.microsoft.com/en-us/azure/security/fundamentals/best-practices-and-patterns)
+- [Agentless Scanning Architecture](https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-agentless-data-collection)
+- [Defender for Endpoint Integration Guide](https://learn.microsoft.com/en-us/azure/defender-for-cloud/integration-defender-for-endpoint)
+- [Azure Monitor Agent (AMA) Migration Guide](https://learn.microsoft.com/en-us/azure/defender-for-cloud/prepare-deprecation-log-analytics-mma-agent)
+- [Microsoft Defender XDR Integration](https://learn.microsoft.com/en-us/defender-xdr/microsoft-365-defender)
+- [Azure Security Best Practices 2025](https://docs.microsoft.com/en-us/azure/security/fundamentals/best-practices-and-patterns)
 - [Microsoft Security Blog](https://www.microsoft.com/security/blog/)
+- [MMA Deprecation Blog Post](https://techcommunity.microsoft.com/blog/microsoftdefendercloudblog/microsoft-defender-for-cloud---strategy-and-plan-towards-log-analytics-agent-mma/3883341)
 
 ---
 
 ## 🤖 AI-Assisted Content Generation
 
-This comprehensive deployment guide was created with the assistance of **GitHub Copilot** powered by advanced AI language models. The content was generated, structured, and refined through iterative collaboration between human expertise and AI assistance within **Visual Studio Code**, leveraging GitHub Copilot's capabilities to ensure accuracy, completeness, and adherence to Microsoft Azure best practices.
+This comprehensive deployment guide was updated for 2025 with the assistance of **GitHub Copilot** powered by advanced AI language models. The content was generated, structured, and refined through iterative collaboration between human expertise and AI assistance within **Visual Studio Code**, incorporating the latest Microsoft Defender for Cloud architecture changes, MMA deprecation, and modern agentless capabilities.
 
-*AI tools were used to enhance productivity and ensure comprehensive coverage of Microsoft Defender for Cloud deployment procedures while maintaining technical accuracy and practical applicability.*
+*AI tools were used to enhance productivity and ensure comprehensive coverage of current Microsoft Defender for Cloud deployment procedures while maintaining technical accuracy and reflecting the latest Microsoft security architecture.*
 
 ---
 
-**Note**: This guide provides a comprehensive foundation for deploying Microsoft Defender for Cloud. Actual screenshots and specific UI elements may vary as Microsoft updates the Azure Portal interface. Always refer to the latest Microsoft documentation for the most current procedures.
+**Note**: This guide reflects the modern Microsoft Defender for Cloud architecture as of 2025, including the deprecation of Log Analytics Agent (MMA) and transition to agentless scanning with Defender for Endpoint integration. Always refer to the latest Microsoft documentation for the most current procedures as Microsoft continues to evolve their security platform.

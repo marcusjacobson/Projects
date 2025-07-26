@@ -1,46 +1,55 @@
 # Deploy Microsoft Defender for Cloud via Azure Portal (2025 Edition)
 
-This guide provides a comprehensive walkthrough for deploying Microsoft Defender for Cloud in a fresh Azure environment using the Azure Portal, reflecting the latest architecture and features as of 2025.
+This guide provides a comprehensive walkthrough for deploying and configuring Microsoft Defender for Cloud in a fresh Azure environment using the Azure Portal, reflecting the latest architecture and features as of 2025.
 
 ## 📋 Prerequisites
 
 Before starting, ensure you have:
 
-- An active Azure subscription with Owner or Contributor permissions
-- Access to the Azure Portal
-- Basic understanding of Azure resources and security concepts
-- 2-3 virtual machines ready for monitoring (or we'll create them as part of this guide)
+- An active Azure subscription with Owner or Contributor permissions.
+- Access to the Azure Portal.
+- Basic understanding of Azure resources and security concepts.
+- 2-3 virtual machines ready for monitoring (or create them as part of this guide).
 
 ## 🎯 Overview
 
 Microsoft Defender for Cloud provides unified security management and advanced threat protection across hybrid cloud workloads. This deployment leverages the modern agentless architecture and native integrations available in 2025:
 
-1. Enable Defender for Cloud on your subscription
-2. Configure modern agent architecture (agentless + Defender for Endpoint)
-3. Set up monitoring for virtual machines using current methods
-4. Enable advanced threat protection features
-5. Configure Azure Monitor Agent (AMA) only where specifically required
+### Core Deployment Steps
 
-## ⚠️ Important Architecture Changes (2025)
+1. **Access and Enable Defender for Cloud** - Initial setup and environment configuration.
+2. **Enable Modern Server Protection** - Agentless scanning and Defender for Endpoint integration.
+3. **Create and Configure Resources** - Set up virtual machines for monitoring.
+4. **Verify Protection Architecture** - Confirm agentless scanning and endpoint protection status.
+5. **Configure Security Policies** - Set up compliance standards (MCSB, NIST CSF).
+6. **Review Security Recommendations** - Analyze findings from agentless scanning.
+7. **Set Up Alerts and Notifications** - Configure email notifications and monitoring.
+8. **Enable Advanced Threat Protection** - Just-in-Time access, malware scanning, EDR.
+9. **Generate and Monitor Security Alerts** - Test alert generation and investigation.
+10. **Create Workbooks and Dashboards** - Set up security visualization and reporting.
 
-**Key Updates from Previous Versions:**
-- **Log Analytics Agent (MMA) Deprecated**: MMA was retired in August 2024 and is no longer supported
-- **Agentless Scanning**: Primary data collection method for most security assessments
-- **Defender for Endpoint Integration**: Single agent approach for endpoint protection
-- **Azure Monitor Agent (AMA)**: Only required for specific scenarios (Defender for SQL on machines and data ingestion benefits)
+### Advanced Configuration (Optional)
+
+- **Microsoft Sentinel Integration** - Unified SIEM experience with native connectors.
+- **File Integrity Monitoring** - Modern approach using Defender for Endpoint agent.
+- **Analytics and KQL Queries** - Advanced threat hunting and security data analysis.
+- **Cross-Subscription Management** - Azure Resource Graph Explorer for enterprise environments.
+- **Cost Optimization** - Best practices for modern agentless architecture.
 
 ---
 
 ## Step 1: Access Microsoft Defender for Cloud
 
-1. **Sign in to Azure Portal**
-   - Navigate to [https://portal.azure.com](https://portal.azure.com)
-   - Sign in with your Azure account credentials
+### Sign in to Azure Portal
 
-2. **Navigate to Defender for Cloud**
-   - In the Azure Portal search bar, type "Microsoft Defender for Cloud"
-   - Click on "Microsoft Defender for Cloud" from the search results
-   - Alternatively, you can find it under "Security" in the Azure services menu
+- Navigate to [https://portal.azure.com](https://portal.azure.com).
+- Sign in with your Azure account credentials.
+
+### Navigate to Defender for Cloud
+
+- In the Azure Portal search bar, type **Microsoft Defender for Cloud**.
+- Click **Microsoft Defender for Cloud** from the search results.
+- Alternatively, find it under **Security** in the Azure services menu.
 
 📸 **[View Screenshot: Azure Portal Search](https://learn.microsoft.com/en-us/azure/defender-for-cloud/media/get-started/defender-for-cloud-search.png)**
 
@@ -48,15 +57,17 @@ Microsoft Defender for Cloud provides unified security management and advanced t
 
 ## Step 2: Enable Defender for Cloud
 
-1. **Getting Started Page**
-   - Upon first access, you'll see the Defender for Cloud Getting Started page
-   - Review the overview of capabilities and benefits
-   - Click on "Enable Defender for Cloud" if not already enabled
+### Getting Started Page
 
-2. **Choose Your Plan**
-   - You'll see the foundational CSPM (Cloud Security Posture Management) capabilities are free
-   - For enhanced protection, you can enable Defender plans for specific resource types
-   - For this guide, we'll start with the free tier and then upgrade specific plans
+- Upon first access, the Defender for Cloud Getting Started page appears.
+- Review the overview of capabilities and benefits.
+- Click **Enable Defender for Cloud** if not already enabled.
+
+### Choose Your Plan
+
+- The foundational CSPM (Cloud Security Posture Management) capabilities are free.
+- For enhanced protection, enable Defender plans for specific resource types.
+- For this guide, start with the free tier and then upgrade specific plans.
 
 📸 **[View Screenshot: Defender Overview](https://learn.microsoft.com/en-us/azure/reusable-content/ce-skilling/azure/media/defender-for-cloud/overview.png)**
 
@@ -64,15 +75,17 @@ Microsoft Defender for Cloud provides unified security management and advanced t
 
 ## Step 3: Configure Environment Settings
 
-1. **Access Environment Settings**
-   - In the Defender for Cloud left navigation pane, click on "Environment settings"
-   - Select your subscription from the list
-   - You'll see the current status of Defender plans
+### Access Environment Settings
 
-2. **Review Default Settings**
-   - Examine the current configuration
-   - Note which plans are enabled (typically CSPM is enabled by default)
-   - Review the estimated monthly cost for enhanced plans
+- In the Defender for Cloud left navigation pane, click **Environment settings**.
+- Select your subscription from the list.
+- Review the current status of Defender plans.
+
+### Review Default Settings
+
+- Examine the current configuration.
+- Note which plans are enabled (typically CSPM is enabled by default).
+- Review the estimated monthly cost for enhanced plans.
 
 📸 **[View Screenshot: Environment Settings](https://learn.microsoft.com/en-us/azure/defender-for-cloud/media/get-started/environmental-settings.png)**
 
@@ -80,38 +93,37 @@ Microsoft Defender for Cloud provides unified security management and advanced t
 
 ## Step 4: Enable Modern Defender for Servers Architecture
 
-1. **Enable Server Protection**
-   - In Environment Settings, find "Defender for Servers"
-   - Toggle the status to "On" for Plan 2 (recommended for full features)
-   - This automatically enables:
-     - **Agentless scanning** for vulnerability assessment and security posture
-     - **Defender for Endpoint integration** for endpoint protection
-     - **Malware scanning** without performance impact
+### Enable Server Protection
 
-2. **Configure Agentless Scanning (Enabled by Default)**
-   - Agentless scanning is automatically enabled with Defender for Servers Plan 2
-   - This provides:
-     - Vulnerability assessment without agents
-     - Configuration assessment
-     - Malware scanning
-     - Software inventory
-   - No additional configuration required - works out-of-the-box
+- In Environment Settings, find **Defender for Servers**.
+- Toggle the status to **On** for Plan 2 (recommended for full features).
+- This automatically enables:
+  - **Agentless scanning** for vulnerability assessment and security posture.
+  - **Defender for Endpoint integration** for endpoint protection.
+  - **Malware scanning** without performance impact.
 
-3. **Enable Defender for Endpoint Integration**
-   - Navigate to "Integrations" in Environment Settings
-   - Ensure "Microsoft Defender for Endpoint" is enabled
-   - This provides:
-     - Real-time threat protection
-     - Behavioral analysis
-     - Advanced hunting capabilities
-     - Single agent solution for endpoint protection
+### Configure Agentless Scanning (Enabled by Default)
 
-4. **Azure Monitor Agent (AMA) - Only When Required**
-   - AMA is only needed for:
-     - Defender for SQL servers on machines
-     - Free 500MB data ingestion benefit (Defender for Servers Plan 2)
-   - If you need AMA, it will be automatically configured when enabling relevant features
-   - **Do NOT manually configure MMA** - it has been deprecated since August 2024
+- Agentless scanning is automatically enabled with Defender for Servers Plan 2.
+- This provides:
+  - Vulnerability assessment without agents.
+  - Configuration assessment.
+  - Malware scanning.
+  - Software inventory.
+- No additional configuration required - works out-of-the-box.
+
+### Enable Defender for Endpoint Integration
+
+- In Environment Settings, under the **Defender for Servers** plan, click **Settings**.
+- In the **Settings and monitoring** section, locate **Endpoint protection**.
+- Toggle the **Status** to **On** (this is usually enabled by default with Plan 2).
+- Click **Continue** and **Save** to apply changes.
+- This provides:
+  - Real-time threat protection.
+  - Behavioral analysis.
+  - Advanced hunting capabilities.
+  - Single agent solution for endpoint protection.
+- **Note**: For new subscriptions, this integration is automatically enabled.
 
 📸 **[View Screenshot: Enable All Plans](https://learn.microsoft.com/en-us/azure/defender-for-cloud/media/get-started/enable-all-plans.png)**
 
@@ -119,50 +131,99 @@ Microsoft Defender for Cloud provides unified security management and advanced t
 
 ## Step 5: Create Virtual Machines for Monitoring
 
-If you don't have existing VMs, create 2-3 virtual machines for testing:
+To test Defender for Cloud without existing VMs, create a resource group first, then create 2-3 virtual machines for testing:
+
+### Create Resource Group
+
+#### Navigate to Resource Groups
+
+- In Azure Portal, search for **Resource groups**.
+- Click **Create** or **+ Create**.
+
+#### Basic Information
+
+- **Subscription**: Select your subscription.
+- **Resource group**: Enter a name such as **rg-Project-AiSecuritySkillsChallenge**.
+- **Region**: Choose your preferred region (e.g., East US, West Europe).
+
+#### Review and Create
+
+- Click **Review + create**.
+- After validation passes, click **Create**.
+- Wait for the resource group to be created.
 
 ### Create VM 1 - Windows Server
 
-1. **Navigate to Virtual Machines**
-   - In Azure Portal, search for "Virtual machines"
-   - Click "Create" → "Azure virtual machine"
+#### Navigate to Virtual Machines
 
-2. **Basic Configuration**
-   - **Subscription**: Select your subscription
-   - **Resource Group**: Create new "rg-defender-demo"
-   - **Virtual machine name**: "vm-windows-web"
-   - **Region**: Choose your preferred region
-   - **Image**: "Windows Server 2022 Datacenter"
-   - **Size**: "Standard_B2s" (cost-effective for testing)
+- In Azure Portal, search for **Virtual machines**.
+- Click **Create** → **Virtual machine**.
 
-3. **Administrator Account**
-   - **Username**: "azureuser"
-   - **Password**: Create a strong password
-   - **Confirm password**: Re-enter password
+#### Basic Configuration
 
-4. **Inbound Port Rules**
-   - Allow selected ports: RDP (3389), HTTP (80), HTTPS (443)
-   - **Note**: This is for demo purposes; restrict access in production
+- **Subscription**: Select your subscription.
+- **Resource Group**: Select the resource group we just created.
+- **Virtual machine name**: **vm-windows-server**.
+- **Region**: Choose the same region as your resource group.
+- **Image**: **Windows Server 2022 Datacenter: Azure Edition - x64 Gen2**.
+- **Size**: **Standard_B2s** (cost-effective for testing) - you may need to select **See all sizes** to find this VM size.
+- **Security type**: Select "**Trusted launch virtual machines**" (recommended for enhanced security).
+  - This enables Secure Boot, vTPM, and integrity monitoring for protection against boot kits and rootkits.
+  - Trusted Launch is the default for Gen2 VMs and provides verified boot loaders and OS kernels.
 
-5. **Review and Create**
-   - Review settings and click "Create"
-   - Wait for deployment to complete
+#### Administrator Account
+
+- **Username**: **azureuser**.
+- **Password**: Create a strong password.
+- **Confirm password**: Re-enter password.
+
+#### Inbound Port Rules
+
+- Allow selected ports: RDP (3389), HTTP (80), HTTPS (443).
+- **Note**: This is for demo purposes only; restrict access in production environments.
+
+#### Review and Create VM
+
+- Review settings and click **Create**.
+- Wait for deployment to complete.
 
 ### Create VM 2 - Ubuntu Linux
 
-1. **Create Second VM**
-   - Follow similar steps as above
-   - **Virtual machine name**: "vm-linux-db"
-   - **Image**: "Ubuntu Server 20.04 LTS"
-   - **Authentication type**: SSH public key or Password
-   - **Inbound ports**: SSH (22), HTTP (80)
+- Follow similar steps as above for creating a new VM.
+- **Virtual machine name**: **vm-linux-db**
+- **Resource Group**: Select the resource group we created.
+- **Region**: Choose the same region as your resource group.
+- **Image**: **Ubuntu Server 24.04 LTS - x64 Gen2**.
+- **Size**: "**Standard_B1ms**" (1 vCPU, 2 GB RAM - cost-effective for small database testing).
+  - Alternative: "Standard_B2ms" (2 vCPU, 8 GB RAM) if planning heavier database workloads.
+  - B-series VMs are ideal for small databases and development environments with burstable performance.
+- **Security type**: Select **Trusted launch virtual machines** (recommended for enhanced security).
+  - Provides secure boot and vTPM for Linux environments.
+  - Note: You may disable Secure Boot if using custom unsigned kernel drivers.
+- **Authentication type**: SSH public key or Password.
+  - **Recommended**: Select **SSH public key** for enhanced security.
+  - **SSH key type**: Use **ED25519** (modern, secure, and efficient).
+    - Alternative: RSA with minimum 2048 bits (legacy compatibility).
+    - ED25519 provides better security and performance than RSA.
+  - **Key pair name**: Enter a Key pair name such as **vm-linux-db-key** (descriptive naming convention).
+    - Use consistent naming that identifies the VM and purpose.
+- **Inbound ports**: SSH (22), HTTP (80).
 
 ### Create VM 3 - Windows Client (Optional)
 
-1. **Create Third VM**
-   - **Virtual machine name**: "vm-windows-client"
-   - **Image**: "Windows 11 Pro"
-   - **Inbound ports**: RDP (3389)
+- Follow similar steps as above for creating a new VM.
+- **Virtual machine name**: **vm-windows-client**
+- **Resource Group**: Select the resource group we created.
+- **Region**: Choose the same region as your resource group.
+- **Image**: **Windows 10 Pro, version 22H2 - x64 Gen2**.
+- **Size**: **Standard_B2ms** (2 vCPU, 8 GB RAM - meets Windows 10 requirements).
+  - Alternative: **Standard_B4ms** (4 vCPU, 16 GB RAM) for better performance with applications.
+  - B-series provides cost-effective burstable performance for client workloads.
+- **Administrator account**: Use the same administrator account as VM1 for simplicity, or create a new one if you prefer.
+- **Security type**: Select **Trusted launch virtual machines** (recommended for enhanced security).
+  - Provides TPM 2.0 and secure boot capabilities for Windows 10.
+  - Trusted Launch enhances security with verified boot loaders and OS kernels.
+- **Inbound ports**: RDP (3389).
 
 📸 **[View Azure VM Creation Guide](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/quick-create-portal)**
 
@@ -170,30 +231,70 @@ If you don't have existing VMs, create 2-3 virtual machines for testing:
 
 ## Step 6: Verify Modern Agent Architecture
 
-1. **Check Agentless Scanning Status**
-   - Navigate to "Environment settings" → Your subscription
-   - Under "Monitoring coverage", verify agentless scanning is enabled
-   - Check the "Agentless scanning for machines" status
+**Navigate back to Defender for Cloud**: Once all virtual machines are created, use the Azure Portal search bar to search for **Microsoft Defender for Cloud** and select it to return to the main Defender for Cloud interface.
 
-2. **Verify Defender for Endpoint Integration**
-   - Go to "Workload protections"
-   - Check "Microsoft Defender for Endpoint" status
-   - Verify that VMs show as "Protected" in the endpoints view
+### Check Defender for Servers Settings and Status
 
-3. **Monitor VM Protection Status**
-   - Navigate to "Inventory" in Defender for Cloud
-   - Select your VMs to view protection status
-   - You should see:
-     - Agentless scanning: Enabled
-     - Defender for Endpoint: Connected (if applicable)
-     - Azure Monitor Agent: Only if specifically required for SQL or data benefits
+- Navigate to **Environment settings** → Your subscription.
+- Under **Cloud Workload Protection** → **Servers**, click **Settings**.
+- Verify the following settings are enabled and operational:
+  - **Agentless scanning for machines**: Check that this shows as **On**.
+  - **Endpoint protection**: Verify the status shows as **On**.
+  - **Vulnerability assessment for machines**: Confirm this is enabled (part of agentless scanning).
+- Click **Save** if any changes were made.
 
-4. **Verify Scanning Results**
-   - Agentless scanning runs automatically and findings appear in:
-     - Recommendations (security posture findings)
-     - Security alerts (threat detections)
-     - Vulnerability assessment results
-   - Initial scans may take 15-30 minutes to complete
+### Navigate to Workload Protections
+
+- From the main Defender for Cloud interface, click **Workload protections** in the left navigation menu.
+- This displays the interactive Workload protections dashboard with four main sections.
+- **What to look for in a new deployment:**
+  - **Defender for Cloud coverage section**: Shows resource types eligible for protection and coverage status.
+    - Look for your VMs under the resources listed.
+    - You may see an **Upgrade all** option if some resources aren't fully protected.
+  - **Security alerts section**: Shows current security alerts (likely empty in a new deployment).
+    - This area will populate as threats are detected over time.
+  - **Advanced protection section**: Shows status of protection capabilities.
+    - Check for Virtual machines, SQL databases, Containers, Web applications, Network protections.
+    - Each protection type shows coverage status for your selected subscriptions.
+    - Click any protection type to go directly to its configuration area.
+  - **Insights section**: Provides customized items for your environment.
+    - Actionable items to enhance security.
+    - Tips for handling alerts and recommendations.
+    - Upgrade recommendations for enhanced protections.
+- **Expected timeline**: Protection status may take 15-30 minutes to fully populate after VM creation.
+- **Note**: If sections appear empty initially, this is normal for new deployments - refresh after a few minutes.
+
+### Monitor VM Protection Status
+
+- Navigate to **Inventory** in Defender for Cloud.
+- Review your VMs in the asset inventory page.
+- **What you'll see in a new deployment:**
+  - **Total resources**: Count of resources connected to Defender for Cloud.
+  - **Unhealthy resources**: VMs with active security recommendations (normal for new deployments).
+  - **Resource count by environment**: Breakdown of Azure, AWS, and GCP resources.
+  - **VM resource details**: Select individual VMs to view their security posture.
+- **When selecting a VM, the following information is available:**
+  - **Resource information**: General resource details and properties.
+  - **Recommendations tab**: Active security recommendations for that VM.
+  - **Alerts tab**: Any security alerts (likely empty in new deployments).
+  - **Installed applications tab**: If Defender for Servers is enabled, shows software installed on the VM.
+  - **Secrets tab**: Shows any secrets discovered on the VM (if applicable).
+- **Note**: The inventory focuses on security posture and recommendations rather than agent-specific status details.
+
+### Verify Scanning Results
+
+- Agentless scanning runs automatically and findings appear in multiple locations within Defender for Cloud.
+- **Where to find scanning results:**
+  - **Recommendations**: Navigate to **Recommendations** in the left menu.
+    - Look for vulnerability-related recommendations like **Vulnerabilities in your virtual machines should be remediated**.
+    - Filter by **Resource type** → **Virtual machines** to see VM-specific findings.
+  - **Security alerts**: Navigate to **Security alerts** in the left menu.
+    - Any threat detections will appear here (likely empty in new deployments).
+  - **Inventory**: Navigate to **Inventory** and select individual VMs.
+    - Check the **Recommendations** tab for each VM to see specific vulnerability assessments.
+    - Review the **Installed applications** tab to verify software inventory data.
+- **Initial scans may take 15-30 minutes to complete** after VM creation.
+- **Note**: If no recommendations appear immediately, this is normal - refresh the pages periodically and allow time for the agentless scanning to complete its initial assessment.
 
 📸 **[View Data Collection Guide](https://learn.microsoft.com/en-us/azure/defender-for-cloud/enable-data-collection)**
 
@@ -201,21 +302,106 @@ If you don't have existing VMs, create 2-3 virtual machines for testing:
 
 ## Step 7: Configure Security Policies
 
-1. **Access Security Policy**
-   - In Defender for Cloud, navigate to "Security policy"
-   - Select your subscription
-   - Review the default Azure Security Benchmark policy
+### Access Security Policies
 
-2. **Customize Policies (Optional)**
-   - Click on "Azure Security Benchmark"
-   - Review individual policy definitions
-   - You can disable specific policies if not relevant to your environment
-   - Click "Save" after making changes
+- In Defender for Cloud, navigate to **Environment settings**.
+- Select your subscription from the list.
+- Select **Security policies**.
+- You'll see the **Microsoft Cloud Security Benchmark (MCSB)** policy automatically assigned to your subscription.
 
-3. **Add Custom Policies (Optional)**
-   - Click "Add a custom initiative"
-   - Browse available policy definitions
-   - Create custom policy sets based on your compliance requirements
+### Review MCSB Compliance
+
+- The Microsoft Cloud Security Benchmark is enabled by default and provides comprehensive security recommendations.
+- This standard includes controls for identity management, network security, data protection, and more.
+- **To access and review the compliance dashboard:**
+  - From the main Defender for Cloud menu, navigate to **Regulatory compliance** in the left navigation pane
+  - **What you'll see in the current Regulatory Compliance dashboard:**
+    - **Applied standards**: Shows which compliance standards are currently assigned to your subscription (Microsoft Cloud Security Benchmark is enabled by default).
+    - **Overall compliance percentage** for each standard with visual progress bars.
+    - **Controls summary**: Each standard shows passed/failed controls with specific counts.
+    - **Resource assessment status**: Breakdown of compliant vs. non-compliant resources.
+  - **How to review compliance details:**
+    - **Select a compliance standard** (e.g., Microsoft Cloud Security Benchmark) to drill down into specific controls.
+    - **Click individual controls** to see associated security assessments and affected resources.
+    - **View control details** including Overview, Your Actions (automated/manual assessments), and Microsoft Actions tabs.
+    - **Access remediation guidance** by clicking on failed assessments to see specific steps to fix issues.
+  - **Additional dashboard capabilities:**
+    - **Download compliance reports** using the download button at the top of the dashboard.
+    - **Track compliance over time** with trend indicators.
+    - **Filter by subscription** for environments with multiple subscriptions.
+
+### Add Additional Compliance Standards (Optional)
+
+**Prerequisites**: Ensure you have `Owner` or `Policy Contributor` permissions on the subscription.
+
+### Steps to Add More Standards
+
+- In the left navigation, select **Environment settings**.
+- Locate your subscription in the list (you may need to expand management groups by selecting **Expand all**).
+- In the left navigation bar, select **Security policy**.
+- Browse the available standards under **Standards**.
+- Enable desired standards by selecting **Enable** on each standard's row.
+
+### Available Standards
+
+- PCI DSS.
+- ISO 27001.
+- SOC 2.
+- NIST Cybersecurity Framework.
+- HIPAA (if applicable).
+- Microsoft cloud security benchmark (enabled by default).
+- Azure Security Benchmark (legacy).
+
+### Recommended Standards for New Deployments
+
+#### For Most Organizations Starting with Defender for Cloud
+
+- **Microsoft Cloud Security Benchmark (MCSB)**: Already enabled by default - provides comprehensive baseline security controls.
+- **NIST Cybersecurity Framework**: Excellent starting point for organizations new to compliance frameworks.
+  - Currently based on **NIST CSF v2.0** (newer versions may be available after the time of this writing).
+  - Well-documented and widely adopted.
+  - Good balance of security controls without excessive complexity.
+  - Helpful for establishing foundational security practices.
+
+##### NIST CSF v2.0 Configuration for Demo Environments
+
+When enabling NIST CSF v2.0, a **Set parameters** page appears. Here are the recommended settings for new demo configurations:
+
+- **Members to exclude**: Leave empty.
+- **Operation name (Field 1)**: Select **Microsoft.Authorization/policyAssignments/write** (recommended for demo environments).
+  - Available options: Microsoft.Authorization/policyAssignments/write, Microsoft.Authorization/policyAssignments/delete.
+  - Choose **write** to enable policy assignment capabilities for compliance assessment.
+- **Operation name (Field 2)**: Select **Microsoft.Network/NetworkSecurityGroups/write** (recommended for comprehensive network security coverage).
+  - Available options: Microsoft.Sql, Microsoft.Network, Microsoft.ClassicNetwork.
+  - Microsoft.Network provides modern networking security assessments.
+- **Members to include**: Enter **"*"** (asterisk) to include all available controls (required field for comprehensive demo coverage).
+
+##### Recommended Settings Explanation
+
+- **Members to include with asterisk**: The asterisk (*) includes all NIST CSF v2.0 controls across all six functions (Identify, Protect, Detect, Respond, Recover, Govern) - this field is required and cannot be left empty.
+- **Empty exclusion list**: No controls are excluded, ensuring full framework coverage for learning purposes.
+- **Write operation selection**: Enables policy assignment functionality needed for compliance assessments.
+- **Modern network provider**: Microsoft.Network covers current Azure networking security rather than legacy Classic networking.
+- **Full coverage approach**: Provides comprehensive learning experience with all NIST CSF controls active.
+
+   **Note**: These settings enable complete NIST CSF v2.0 assessment with modern Azure services while remaining easy to configure for demonstration and learning purposes.
+
+#### For Specific Industry Requirements
+
+- **SOC 2 Type II**: Recommended for service organizations handling customer data (SaaS companies, service providers).
+- **PCI DSS**: Essential if handling credit card data (retail and payment processing organizations).
+- **HIPAA**: Required for healthcare entities handling PHI (Protected Health Information).
+
+#### Standards to Avoid for Beginners
+
+- **ISO 27001**: While excellent, it's quite comprehensive and may be overwhelming for new deployments.
+- **Azure Security Benchmark (legacy)**: Being phased out in favor of MCSB.
+
+   **Best practice recommendation**: Start with **MCSB + NIST Cybersecurity Framework** for most new deployments, then add industry-specific standards as needed.
+
+   **Note**: For organizations requiring advanced policy customization beyond the standard compliance frameworks, Azure Policy provides powerful capabilities for creating custom governance rules. This includes creating custom policy definitions, organizing policies into initiatives, and assigning them across management groups for organization-wide governance. Most users will find the default MCSB sufficient for comprehensive security coverage, but Azure Policy offers extensive customization options for specific organizational requirements.
+
+   📸 **[Azure Policy Overview and Management Guide](https://learn.microsoft.com/en-us/azure/governance/policy/tutorials/create-and-manage)**
 
 📸 **[View Security Policy Guide](https://learn.microsoft.com/en-us/azure/defender-for-cloud/security-policy-concept)**
 
@@ -223,24 +409,51 @@ If you don't have existing VMs, create 2-3 virtual machines for testing:
 
 ## Step 8: Review Modern Security Recommendations
 
-1. **Access Recommendations**
-   - Navigate to "Recommendations" in the Defender for Cloud menu
-   - Wait 15-30 minutes after VM creation for initial agentless assessment
-   - Review the list of security recommendations powered by agentless scanning
+### Access Recommendations
 
-2. **Common Modern Recommendations (2025)**
-   - Enable disk encryption on virtual machines
-   - Install endpoint protection solution on machines (via Defender for Endpoint)
-   - Apply system updates (now powered by Azure Update Manager integration)
-   - Enable Network Security Groups on subnets
-   - Enable backup on virtual machines
-   - Resolve endpoint detection and response (EDR) solution recommendations
-   - Remediate vulnerabilities found in container images (agentless)
+- Navigate to **Recommendations** in the Defender for Cloud menu.
+- Wait 15-30 minutes after VM creation for initial agentless assessment.
+- Review the list of security recommendations powered by agentless scanning.
 
-3. **Implement High-Priority Recommendations**
-   - Click on recommendations marked as "High" severity
-   - Use "Quick fix" options where available (expanded automation in 2025)
-   - Follow the modernized remediation steps that leverage agentless capabilities
+### Understanding Blurred Out Columns (Expected Behavior)
+
+- **Risk factors**, **Attack paths**, and **Owner** columns will appear **blurred out** in new deployments.
+- **This is normal behavior** when using the free Foundational CSPM plan.
+- These advanced risk prioritization features require the **Defender CSPM plan** (paid upgrade, $5/billable resource/month).
+- **What you'll see with Foundational CSPM:**
+  - Recommendation title and description.
+  - Affected resources.
+  - Basic severity levels.
+  - Remediation steps.
+- **What requires Defender CSPM upgrade:**
+  - Risk factors (internet exposure, sensitive data, lateral movement potential).
+  - Attack paths analysis and visualization.
+  - Recommendation ownership and governance features.
+  - Advanced risk prioritization based on environmental context.
+- **To enable these features**: Navigate to Environment Settings → Your subscription → Enable **Defender CSPM** plan.
+
+### Common Modern Recommendations (2025)
+
+- Enable disk encryption on virtual machines.
+- Install endpoint protection solution on machines (via Defender for Endpoint).
+- Apply system updates (now powered by Azure Update Manager integration).
+- Enable Network Security Groups on subnets.
+- Enable backup on virtual machines.
+- Resolve endpoint detection and response (EDR) solution recommendations.
+- Remediate vulnerabilities found in container images (agentless).
+
+### Implement Available Recommendations
+
+- **Initial state**: Most recommendations will show as **Not Evaluated** in new deployments.
+- **Wait for assessment**: Allow 15-30 minutes for initial agentless scanning to complete.
+- **Start with available recommendations**: Focus on recommendations that show actual severity levels (not **Not Evaluated**).
+- **Common first recommendations to address:**
+  - Basic security configurations that can be immediately assessed.
+  - VM-level settings that don't require extended scanning time.
+  - Network security group configurations.
+- **Use Quick fix options**: When available, these provide automated remediation (expanded automation in 2025).
+- **Manual remediation**: Follow the detailed remediation steps for recommendations without quick fix options.
+- **Note**: Risk-based prioritization and severity levels become more accurate as the agentless scanning completes its initial assessment cycle.
 
 📸 **[View Recommendations Guide](https://learn.microsoft.com/en-us/azure/defender-for-cloud/review-security-recommendations)**
 
@@ -248,18 +461,19 @@ If you don't have existing VMs, create 2-3 virtual machines for testing:
 
 ## Step 9: Configure Alerts and Notifications
 
-1. **Set up Email Notifications**
-   - Navigate to "Email notifications" in Environment settings
-   - Add email addresses for security contact
-   - Configure notification preferences:
-     - High severity alerts
-     - Alerts to subscription admins
-     - Weekly digest emails
+### Set up Email Notifications
 
-2. **Configure Workflow Automation**
-   - Go to "Workflow automation"
-   - Create logic apps for automated responses
-   - Set up integrations with SIEM tools or ticketing systems
+- Navigate to **Microsoft Defender for Cloud** → **Environment settings**.
+- Select your subscription from the list.
+- Select **Email notifications** from the left navigation.
+- **Define notification recipients** using one or both options:
+  - **By Azure role**: Select from dropdown (Owner, Contributor, Security Admin, etc.).
+  - **By email address**: Enter specific email addresses separated by commas.
+- **Configure notification types**:
+  - **Notify about alerts with the following severity (or higher)**: Select severity level (High, Medium, Low).
+  - **Notify about attack paths with the following risk level (or higher)**: Select risk level (Critical, High, Medium, Low).
+- Click **Save** to apply the email notification settings.
+- **Note**: By default, subscription owners receive notifications for high-severity alerts and attack paths.
 
 📸 **[View Email Notifications Guide](https://learn.microsoft.com/en-us/azure/defender-for-cloud/configure-email-notifications)**
 
@@ -267,29 +481,57 @@ If you don't have existing VMs, create 2-3 virtual machines for testing:
 
 ## Step 10: Configure Modern Advanced Threat Protection Features
 
-1. **Just-in-Time VM Access**
-   - Navigate to "Workload protections" → "Just-in-time VM access"
-   - Select your VMs and click "Enable JIT on X VMs"
-   - Configure allowed ports and time windows
-   - This reduces attack surface by limiting VM access
+### Just-in-Time VM Access
 
-2. **Agentless Malware Scanning**
-   - Automatically enabled with Defender for Servers Plan 2
-   - Provides comprehensive malware detection without performance impact
-   - Integrates with Defender for Endpoint for enhanced protection
-   - View results in Security Alerts and Defender XDR
+#### Just-in-Time VM Access Benefits
 
-3. **Modern File Integrity Monitoring**
-   - **Note**: Legacy FIM based on Log Analytics Agent was deprecated November 2024
-   - New FIM capabilities are delivered through Defender for Endpoint integration
-   - Enable in "Workload protections" → "File integrity monitoring"
-   - Configure monitoring rules through the modern interface
+- **Reduces attack surface** by closing management ports when not needed.
+- **Prevents brute force attacks** against RDP/SSH ports.
+- **Provides controlled access** with time-limited, audited connections.
+- **Maintains operational efficiency** while enhancing security posture.
+- **Integrates with Azure RBAC** for role-based access control.
 
-4. **Endpoint Detection and Response (EDR)**
-   - Automatically available through Defender for Endpoint integration
-   - Provides behavioral analysis and advanced threat hunting
-   - No additional configuration required
-   - Access advanced features through Microsoft Defender XDR portal
+#### Just-in-Time VM Access Configuration
+
+- Navigate to **Workload protections** → **Just-in-time VM access**.
+- Select the **Not Configured** tab.
+- Select your VMs and click **Enable JIT on X VMs**.
+- Configure allowed ports and time windows.
+- This reduces attack surface by limiting VM access.
+
+### Agentless Malware Scanning
+
+#### Agentless Malware Scanning Benefits
+
+- **Zero performance impact** on virtual machines during scanning.
+- **Comprehensive malware detection** without agent installation overhead.
+- **Continuous monitoring** for threats across all VM files and processes.
+- **Cost-effective** solution with no additional licensing per VM.
+- **Cloud-native approach** leveraging Azure's scanning infrastructure.
+
+#### Agentless Malware Scanning Configuration
+
+- Automatically enabled with Defender for Servers Plan 2.
+- Provides comprehensive malware detection without performance impact.
+- Integrates with Defender for Endpoint for enhanced protection.
+- View results in Security Alerts and Defender XDR.
+
+### Endpoint Detection and Response (EDR)
+
+#### EDR Benefits
+
+- **Advanced threat hunting** capabilities across all endpoints.
+- **Behavioral analysis** to detect sophisticated attacks and living-off-the-land techniques.
+- **Automated investigation** and response to reduce security team workload.
+- **Historical forensics** for post-incident analysis and threat intelligence.
+- **Integration with Microsoft Defender XDR** for unified security operations.
+
+#### EDR Configuration
+
+- Automatically available through Defender for Endpoint integration.
+- Provides behavioral analysis and advanced threat hunting.
+- No additional configuration required.
+- Access advanced features through Microsoft Defender XDR portal.
 
 📸 **[View Just-in-Time Access Guide](https://learn.microsoft.com/en-us/azure/defender-for-cloud/just-in-time-access-usage)**
 
@@ -297,254 +539,1055 @@ If you don't have existing VMs, create 2-3 virtual machines for testing:
 
 ## Step 11: Monitor Security Alerts
 
-1. **Access Security Alerts**
-   - Navigate to "Security alerts" in Defender for Cloud
-   - Initially, you may not see alerts (they appear as threats are detected)
+### Access Security Alerts
 
-2. **Generate Test Alerts (Optional)**
-   - For testing purposes, you can trigger test alerts:
-   - Run suspicious PowerShell commands on Windows VMs
-   - Attempt unauthorized access patterns
-   - Download known test malware (use test files, not real malware)
+- Navigate to **Security alerts** in Defender for Cloud.
+- Initially, you may not see alerts (they appear as threats are detected).
 
-3. **Alert Investigation**
-   - Click on any alert to view details
-   - Review the attack timeline
-   - Follow investigation steps
-   - Mark alerts as resolved when appropriate
+### Generate Sample Alerts (Recommended Method)
+
+Microsoft Defender for Cloud provides a built-in sample alert generation feature that's the easiest and safest way to test your alert configuration:
+
+#### Steps to Generate Sample Alerts
+
+- Navigate to **Security alerts** in Defender for Cloud.
+- Click **Sample alerts** in the toolbar.
+- Select your subscription from the dropdown.
+- Select the relevant Microsoft Defender plan(s) you want to test:
+  - **Defender for Servers**: Tests VM-related threat detection.
+  - **Defender for Storage**: Tests storage account threat detection.
+  - **Defender for Containers**: Tests container security alerts.
+  - **Defender for App Service**: Tests web application security alerts.
+- Click **Create sample alerts**.
+- **Requirements**:
+  - **Subscription Contributor** role or higher.
+  - Relevant Defender plans must be enabled on your subscription.
+- **Results**:
+  - Sample alerts appear within 2-5 minutes.
+  - Alerts are clearly marked as simulated/test resources.
+  - Triggers all configured notifications (email, SIEM, workflow automation).
+  - Safe to run multiple times without impacting production systems.
+
+##### Alternative Alert Generation Methods (for advanced testing)
+
+- **Agentless Malware Testing**: Run PowerShell test scripts on VMs to test malware detection (results in 24 hours).
+  📸 **[Learn More: Test Agentless Malware Scanning](https://learn.microsoft.com/en-us/azure/defender-for-cloud/test-agentless-malware-scanning)**
+- **Defender for Endpoint Simulation**: Execute specific commands to simulate endpoint attacks (results in 10 minutes, requires admin access).
+  📸 **[Learn More: Validate Alerts in Defender for Cloud](https://learn.microsoft.com/en-us/azure/defender-for-cloud/alert-validation)**
+- **EICAR Test File**: Create harmless test files to trigger antimalware alerts (immediate detection, safe for all environments).
+  📸 **[Learn More: EICAR Test File Standard](https://learn.microsoft.com/en-us/defender-endpoint/configure-extension-file-exclusions-microsoft-defender-antivirus#validate-exclusions-lists-with-the-eicar-test-file)**
+
+### Alert Investigation
+
+When you click any alert in Defender for Cloud, the detailed investigation interface appears:
+
+#### Initial Alert View (Side Pane)
+
+- **Alert overview**: Description of the detected activity and precise explanation.
+- **Alert severity**: High, Medium, or Low priority classification.
+- **Status**: New, Active, Dismissed, or Resolved.
+- **Activity time**: When the threat was first detected and last activity.
+- **Affected resources**: List of VMs, storage accounts, or other resources involved.
+- **MITRE ATT&CK mapping**: Shows the attack technique classification (if applicable).
+
+#### Full Details View
+
+Click **View full details** to access comprehensive information across two main tabs:
+
+#### Alert Details Tab
+
+- **Technical details**: IP addresses, file hashes, processes, network connections.
+- **Evidence**: Specific indicators of compromise (IoCs) detected.
+- **Entities involved**: Users, devices, files, and other components affected.
+- **Attack timeline**: Chronological sequence of malicious activities.
+- **Raw data**: Log entries and telemetry supporting the alert.
+
+#### Take Action Tab
+
+- **Inspect resource context**: Direct link to resource activity logs and monitoring data.
+- **Mitigate the threat**: Step-by-step manual remediation instructions specific to the alert.
+- **Prevent future attacks**: Security recommendations to reduce attack surface.
+- **Trigger automated response**: Option to launch Logic Apps or automated workflows.
+- **Suppress similar alerts**: Configuration to prevent false positives for similar activities.
+
+#### Investigation Best Practices
+
+- Review the **MITRE ATT&CK technique** to understand the attack methodology.
+- Check **affected resources** to determine the scope of potential compromise.
+- Use **Inspect resource context** to validate the alert against normal activity patterns.
+- Follow **mitigation steps** in priority order based on alert severity.
+- Implement **prevention recommendations** to strengthen security posture.
+- **Mark alerts as resolved** only after confirming remediation is complete.
 
 ---
 
 ## Step 12: Set Up Workbooks and Dashboards
 
-1. **Access Workbooks**
-   - Navigate to "Workbooks" in Defender for Cloud
-   - Explore pre-built workbooks:
-     - Coverage workbook
-     - Security alerts dashboard
-     - Compliance dashboard
+### Access Workbooks
 
-2. **Create Custom Dashboard**
-   - Go to Azure Portal dashboard
-   - Add Defender for Cloud tiles
-   - Pin important metrics and alerts
-   - Share dashboard with your security team
+- Navigate to **Workbooks** in Defender for Cloud.
+- The **Defender for Cloud gallery** displays 9 pre-built workbooks ready for customization:
+
+#### Recommended Starting Workbook: Coverage Workbook
+
+##### Purpose
+
+Track which Defender for Cloud plans are active across your subscriptions and environments.
+
+##### What You'll See Based on Your Deployment
+
+- **Environment Selection**: Choose Azure (since you've deployed Azure VMs).
+- **Subscription Overview**: Your subscription with enabled/disabled plan status.
+- **Four Main Tabs**:
+  - **Additional information**: Release notes and feature explanations.
+  - **Relative coverage**: Percentage showing 100% coverage for enabled plans (Defender for Servers Plan 2).
+  - **Absolute coverage**: Plan status per subscription - you'll see:
+    - ✅ **Foundational CSPM**: Enabled (free tier).
+    - ✅ **Defender for Servers**: Enabled (Plan 2).
+    - ❌ **Other plans**: Disabled (Storage, Containers, App Service, etc.).
+  - **Detailed coverage**: Additional settings status including:
+    - ✅ **Agentless scanning**: Enabled.
+    - ✅ **Endpoint protection**: Enabled via Defender for Endpoint.
+    - ❌ **Vulnerability assessment settings**: May show as partially configured initially.
+
+##### Expected Results for New Deployment
+
+- **Green indicators** for Foundational CSPM and Defender for Servers.
+- **Coverage percentage**: ~22% (2 out of 9 main plans enabled).
+- **Resource count**: Your 2-3 VMs showing as protected resources.
+- **Environment status**: Azure environment fully onboarded.
+
+##### Other Available Workbooks
+
+Explore after initial setup:
+
+- **Secure Score Over Time**: Tracks security posture improvements (requires continuous export setup).
+- **Active Alerts**: Displays current security alerts by severity and type.
+- **Compliance Over Time**: Shows regulatory compliance trends for enabled standards (MCSB, NIST CSF if added).
+- **System Updates**: Missing updates across your VMs (populated after agentless scanning completes).
+- **Vulnerability Assessment Findings**: Vulnerability scan results from agentless scanning.
+- **Price Estimation**: Monthly cost estimates for enabled Defender plans.
+
+### Review Key Workbooks
+
+#### Coverage Workbook
+
+Start here to understand your current protection status:
+
+- Shows which Defender plans are enabled across your subscription.
+- Displays coverage percentage (~22% for your basic deployment with CSPM + Servers).
+- Confirms your 2-3 VMs are being protected.
+- Use the default view - no customization needed for initial assessment.
+
+#### Active Alerts
+
+Monitor security events as they occur:
+
+- Initially empty in new deployments.
+- Will populate with real or sample alerts.
+- Provides severity-based filtering and investigation links.
+
+### Create Custom Dashboard
+
+- Go to Azure Portal dashboard (portal.azure.com main page).
+- Click **+ Create** → **Custom dashboard**.
+- **Add Defender for Cloud tiles**:
+  - **Security alerts tile**: Shows current alert count and severity distribution.
+  - **Secure score tile**: Displays current security posture percentage.
+  - **Compliance tile**: Shows MCSB compliance percentage.
+  - **Recommendations tile**: Active security recommendations count.
+- **Pin workbook**: Pin your customized Coverage workbook for quick access.
+- **Share dashboard**: Click **Share** to make it available to your security team.
+
+### Validation Steps
+
+- **Coverage Workbook**: Verify it shows your 2-3 VMs as protected resources.
+- **Secure Score**: Should start appearing within 24 hours showing initial baseline score.
+- **Compliance Dashboard**: Should show MCSB standard with initial assessment results.
+- **Alerts Section**: Will be empty initially but ready to display future threats.
 
 📸 **[View Workbooks and Dashboards Guide](https://learn.microsoft.com/en-us/azure/defender-for-cloud/custom-dashboards-azure-workbooks)**
 
 ---
 
-## Step 13: Compliance and Regulatory Standards
+## 🔧 Advanced Configuration: Modern Data Export and SIEM Integration
 
-1. **Access Regulatory Compliance**
-   - Navigate to "Regulatory compliance"
-   - Review current compliance score
-   - Add additional compliance standards if required:
-     - PCI DSS
-     - ISO 27001
-     - SOC 2
-     - HIPAA (if applicable)
+**2025 Modern Approach**: Instead of requiring Log Analytics workspaces for basic data collection, Defender for Cloud now uses **Continuous Export** and **native connectors** for integration with SIEM solutions like Microsoft Sentinel, providing a cleaner, more efficient approach.
 
-2. **Download Compliance Reports**
-   - Generate compliance reports
-   - Schedule regular compliance assessments
-   - Share reports with auditors and stakeholders
+### When Advanced Data Export is Required
+
+Modern data export and integration is essential for:
+
+- **Microsoft Sentinel Integration** - Centralized SIEM with native Defender for Cloud connector.
+- **Third-Party SIEM Integration** - Stream to Splunk, QRadar, ServiceNow, etc.
+- **Advanced Analytics** - Custom KQL queries and correlation rules.
+- **Compliance Reporting** - Long-term data retention for audit requirements.
+- **Cross-Platform Correlation** - Integration with Microsoft Defender XDR.
+- **Custom Automation** - Logic Apps and automated response workflows.
+
+### Modern Data Collection Architecture (2025)
+
+#### Primary Methods
+
+- **Agentless Data Collection** - Built-in, no additional configuration required.
+- **Continuous Export** - Stream alerts and recommendations to external systems.
+- **Native SIEM Connectors** - Direct integration without Log Analytics dependency.
+- **File Integrity Monitoring** - Uses Defender for Endpoint agent (modern approach).
+
+#### Legacy Methods (Deprecated)
+
+- ❌ Log Analytics agent (MMA) - Being phased out.
+- ❌ Manual Log Analytics workspace integration - Replaced by Continuous Export.
+
+### Step 1: Configure Modern Microsoft Sentinel Integration
+
+#### Method 1: Native Sentinel Connector (Recommended)
+
+This is the preferred 2025 approach - the Log Analytics workspace is created for Sentinel, then the native connector handles all Defender for Cloud integration automatically.
+
+#### Step 1a: Create Log Analytics Workspace for Sentinel
+
+##### Navigate to Log Analytics Workspaces
+
+- In Azure Portal, search for **Log Analytics workspaces**.
+- Click **+ Create** to create a new workspace.
+
+##### Configure Workspace Settings
+
+- **Subscription**: Select your subscription.
+- **Resource group**: Use your existing resource group (e.g., **rg-Project-AiSecuritySkillsChallenge**).
+- **Name**: Enter a descriptive name (e.g., **law-sentinel-security-operations**).
+- **Region**: Choose the same region as your VMs for optimal performance and compliance.
+- **Pricing tier**:
+  - **Pay-as-you-go (Per GB)**: Recommended for most scenarios.
+  - **Commitment Tiers**: Available for predictable, high-volume data ingestion (100GB+/day).
+
+##### Review and Create
+
+- Click **Review + create**.
+- After validation passes, click **Create**.
+- Wait for deployment to complete (typically 2-3 minutes).
+
+#### Step 1b: Enable Microsoft Sentinel
+
+##### Navigate to Microsoft Sentinel
+
+- In Azure Portal, search for **Microsoft Sentinel**.
+- Click **+ Create** or **+ Add**.
+
+##### Onboard Sentinel to Workspace
+
+- **Select workspace**: Choose the Log Analytics workspace you just created.
+- **Add Microsoft Sentinel to workspace**: Click **Add**
+- **Pricing tier confirmation**: Sentinel pricing is based on data ingestion volume
+- Wait for Sentinel onboarding to complete (typically 3-5 minutes)
+
+##### Verify Sentinel Setup
+
+- The Microsoft Sentinel overview dashboard will now appear.
+- Initial setup is complete and ready for data connector configuration.
+
+#### Step 1c: Install and Configure Defender for Cloud Connector in Sentinel
+
+##### Install Connector from Content Hub
+
+- In Microsoft Sentinel, navigate to **Content management** → **Content hub** in the left menu
+- In the Content Hub, search for **Microsoft Defender for Cloud**
+- Find the **Microsoft Defender for Cloud** solution (by Microsoft)
+- Click the solution tile to view details.
+- Click **Install** to install the Defender for Cloud solution
+- Wait for installation to complete (typically 2-3 minutes)
+- **Note**: This installs the data connector, workbooks, analytics rules, and other related content
+
+##### Access Data Connectors
+
+- After installation, navigate to **Configuration** → **Data connectors** in the left menu.
+- **Two Microsoft Defender for Cloud connector options** will appear in the available connectors list:
+  - **Subscription-based Microsoft Defender for Cloud (Legacy)** - older connector model.
+  - **Tenant-based Microsoft Defender for Cloud** - modern connector (recommended for 2025).
+
+##### Select the Modern Tenant-Based Connector
+
+- Click the **Tenant-based Microsoft Defender for Cloud** connector tile.
+- Click **Open connector page** to access configuration.
+- **Why choose Tenant-based over Subscription-based:**
+  - **Multi-subscription support**: Automatically collects data from all subscriptions in your tenant.
+  - **Simplified management**: Single connector configuration instead of per-subscription setup.
+  - **Better scalability**: Designed for enterprise environments with multiple subscriptions.
+  - **Future-proof**: Microsoft's recommended approach for new deployments in 2025.
+  - **Unified view**: Centralized security posture across all tenant subscriptions.
+
+##### Configure Tenant-Based Connector (When Connected via Defender XDR)
+
+##### Current Interface Layout
+
+- **Left Panel**: Shows connection status, description, and additional solution components.
+  - **Connection Status**: **Connected** (via Microsoft Defender XDR integration).
+  - **Description**: Overview of the tenant-based connector capabilities.
+  - **Additional Components**: Workbooks, Queries, and Analytics Rules templates available.
+- **Middle Panel**: Prerequisites verification and configuration options.
+  - **Prerequisites**: All items should show as checked/completed.
+  - **Configuration Panel**: Limited options since Defender XDR handles the connection.
+
+##### What This Means
+
+- **Automatic Integration**: Microsoft Defender XDR is already connected and handling Defender for Cloud data ingestion.
+- **No Manual Configuration Needed**: The tenant-wide connection is managed through Defender XDR.
+- **Modern Architecture**: This represents the latest 2025 approach where XDR serves as the central integration hub.
+
+##### Recommended Verification Steps
+
+###### Confirm Prerequisites (Should All Be Checked)
+
+- ✅ **Workspace**: Read and write permissions confirmed.
+- ✅ **Connector Access Control**: User is member of the Microsoft Entra ID associated with the tenant that the workspace belongs to.
+- ✅ **Tenant Permissions**: **Security Administrator** or **Global Administrator** on the workspace's tenant.
+
+###### Explore Available Components
+
+- **Workbooks**: Click to view pre-built Defender for Cloud workbooks.
+- **Queries**: Access sample KQL queries for threat hunting.
+- **Analytics Rules Templates**: Pre-configured detection rules for Defender for Cloud alerts.
+
+###### Verify Data Flow Through XDR
+
+- **Microsoft Defender XDR Portal**: Navigate to [security.microsoft.com](https://security.microsoft.com).
+- **Incidents Section**: Should show Defender for Cloud alerts as incidents.
+- **Advanced Hunting**: Use KQL to query Defender for Cloud data across the tenant.
+
+##### Configuration Notes
+
+- **No Disconnect Option**: This is expected when XDR integration is active.
+- **Tenant-Wide Coverage**: Automatically includes all subscriptions where Defender for Cloud is enabled.
+- **Incident Creation**: Defender for Cloud alerts automatically become XDR incidents.
+- **Bi-directional Sync**: Managed automatically through XDR integration.
+
+##### Benefits of XDR Integration
+
+- ✅ **Unified Security Operations**: All security tools managed from single portal.
+- ✅ **Cross-Platform Correlation**: Alerts correlated with endpoint, identity, and email threats.
+- ✅ **Simplified Management**: No manual connector configuration required.
+- ✅ **Enhanced Investigation**: Full attack timeline across all Microsoft security products.
+- ✅ **Automatic Updates**: Integration maintained by Microsoft without manual intervention.
+
+#### Verify XDR Integration is Working (Recommended Primary Approach)
+
+Microsoft Defender XDR is the preferred 2025 approach for Defender for Cloud integration as it provides:
+
+- **Native integration** with immediate data flow.
+- **Cross-platform correlation** with endpoint, identity, and email threats.
+- **Unified incident management** across all Microsoft security products.
+- **Real-time alert processing** without additional configuration.
+
+##### Primary Data Flow Verification (Defender XDR)
+
+###### Navigate to Defender XDR Portal
+
+Go to [security.microsoft.com](https://security.microsoft.com)
+
+###### Find Incidents
+
+- Click **Incidents & alerts** in the left navigation.
+- Select **Incidents** tab.
+- Look for incidents with **Source: Microsoft Defender for Cloud**.
+- **Sample Alert Identification**: Sample alerts will show:
+  - Resource names containing **Sample** or test identifiers.
+  - Alert descriptions mentioning **This is a sample alert**.
+  - Activity on resources that don't exist in your actual environment.
+
+###### Find Individual Alerts
+
+- In **Incidents & alerts**, select **Alerts** tab.
+- Filter by **Product name: Microsoft Defender for Cloud**.
+- **Sample Alert Identification**: Look for:
+  - Alert titles with **(Sample)** or similar test indicators.
+  - Affected resources with names like **sample-vm** or test resource identifiers.
+  - Alert descriptions explicitly stating this is a test/sample alert.
+
+##### Secondary Data Flow Verification (Microsoft Sentinel - Optional)
+
+**Important Note about Timing**: Sentinel workspaces created **after** generating sample alerts will **not** display those alerts. This occurs because:
+
+- **Defender for Cloud alerts are retained for 90 days** in the Defender for Cloud portal and XDR.
+- **Sentinel only receives alerts generated after the connector is configured**.
+- **Historical alerts are not backfilled** when creating a new workspace or enabling the connector.
+- **Sample alerts generated before workspace creation will only appear in Defender XDR**.
+
+##### To verify Sentinel integration (for workspaces created before alert generation)
+
+###### Navigate to Sentinel
+
+Go to your Microsoft Sentinel workspace in the Azure portal
+
+###### Find Incidents
+
+- Click **Threat management** → **Incidents** in the left menu.
+- Look for incidents with **Product name: Microsoft Defender for Cloud**.
+- **Sample Alert Identification**: Sample incidents will show:
+  - Incident titles referencing sample or test scenarios.
+  - Entity details pointing to non-existent or test resources.
+  - Investigation graphs showing simulated attack patterns.
+
+###### Find Raw Alerts
+
+- Navigate to **Logs** in the left menu.
+- Run this query to see all Defender for Cloud alerts:
+
+```kql
+SecurityAlert
+| where ProductName == "Azure Security Center"
+| where TimeGenerated > ago(2h)
+| project TimeGenerated, AlertName, AlertSeverity, Entities, Description
+| order by TimeGenerated desc
+```
+
+- **Note**: The ProductName field contains **Azure Security Center** for historical compatibility reasons, even though the service is now called Microsoft Defender for Cloud.
+- **Sample Alert Identification in Logs**: Look for:
+  - **AlertName** fields containing **Sample** or test identifiers.
+  - **Description** fields mentioning this is a sample/test alert.
+  - **Entities** pointing to resources with test/sample naming patterns.
+
+##### If Sample Alerts Don't Appear in Sentinel
+
+- **Expected behavior** if workspace was created after sample alert generation.
+- **Solution**: Generate new sample alerts (refer to Step 11) after Sentinel connector is configured.
+- **Alternative**: Focus on Defender XDR portal for immediate verification and use Sentinel for future alerts.
+
+##### Expected Sample Alert Types (from Step 11)
+
+- **VM Alerts**: **Sample alert: suspicious process detected** on sample VMs.
+- **Storage Alerts**: **Sample alert: unusual data access** on test storage accounts.
+- **Container Alerts**: **Sample alert: malicious container activity** on sample container resources.
+- **App Service Alerts**: **Sample alert: web shell detected** on test web applications.
+
+##### Timeline Expectations
+
+- **Sample alerts**: Appear within 2-5 minutes of generation.
+- **Incident creation**: Sample alerts become incidents within 5-10 minutes.
+- **Cross-platform correlation**: XDR correlates sample alerts with simulated activity within 10-15 minutes.
+
+##### Integration Benefits Already Active
+
+- ✅ **Automatic data streaming**: No Continuous Export configuration needed.
+- ✅ **Built-in incident creation**: Defender for Cloud alerts become XDR incidents automatically.
+- ✅ **Cross-platform correlation**: Alerts correlated with endpoint, identity, and email data.
+- ✅ **Optimized data management**: Single pane of glass for all security operations.
+- ✅ **Real-time alert processing**: Immediate alert availability in XDR portal.
+
+#### Benefits of Native Connector
+
+- ✅ **No manual Log Analytics configuration needed in Defender for Cloud**.
+- ✅ **Automatic data streaming without Continuous Export setup**.
+- ✅ **Built-in incident creation and correlation**.
+- ✅ **Optimized data ingestion and cost management**.
+- ✅ **Real-time alert streaming** (within 2-5 minutes).
+- ✅ **Native security recommendations integration**.
+
+#### Step 1d: Verify Integration
+
+##### Check Connector Status
+
+- In the Defender for Cloud connector page, status should show **Connected**.
+- **Data received**: May show **No data** initially - this is normal.
+
+##### Test Integration with Sample Alerts
+
+- Generate sample alerts in Defender for Cloud (refer to Step 11 in main guide).
+- In Microsoft Sentinel, navigate to **Threat management** → **Incidents**.
+- Verify incidents are automatically created within 5-10 minutes.
+- **Expected results**:
+  - New incidents with **Microsoft Defender for Cloud** as the product name.
+  - Incidents inherit alert severity (High, Medium, Low).
+  - Full alert details and investigation timeline preserved.
+
+##### Validate Data Flow in Microsoft Sentinel
+
+**This step tests the SecurityAlert table in Microsoft Sentinel** to confirm that Defender for Cloud alerts are being ingested into your Sentinel workspace through the data connector.
+
+###### Steps
+
+- Navigate to **Logs** in Microsoft Sentinel.
+- Run this KQL query to verify Sentinel data collection:
+
+```kql
+// Query SecurityAlert table in Microsoft Sentinel workspace for Defender for Cloud alerts
+SecurityAlert
+| where TimeGenerated > ago(1h)
+| where ProductName == "Azure Security Center" //Azure Security Center is the legacy name for Microsoft Defender for Cloud
+| summarize count() by AlertName, AlertSeverity
+| order by count_ desc
+```
+
+#### What This Tests
+
+- ✅ **Sentinel data ingestion**: Confirms alerts are flowing into Sentinel SecurityAlert table from Defender for Cloud.
+- ✅ **Connector functionality**: Verifies the tenant-based Defender for Cloud connector is working.
+- ✅ **Data transformation**: Ensures alerts are properly formatted for Sentinel analysis.
+- ✅ **Historical retention**: Shows alerts stored in Sentinel for long-term analysis.
+
+#### Expected Results in Sentinel
+
+- Sample alerts with `ProductName == "Azure Security Center"`.
+- Alert counts grouped by name and severity.
+- TimeGenerated timestamps showing when alerts entered Sentinel.
+
+#### If No Results in Sentinel
+
+- **Common cause**: Sentinel workspace created after sample alert generation.
+- **Solution**: Generate new sample alerts (Step 11) after Sentinel connector configuration.
+- **Alternative verification**: Use Defender XDR verification (next section) as primary method.
+- **Note**: Sentinel data may take 15-30 minutes to appear for initial setup.
+
+##### Verify Data Synchronization in Defender XDR (Recommended)
+
+**Sentinel Integration Validation**: Use Defender XDR's Advanced Hunting to confirm data synchronization with Microsoft Sentinel.
+
+###### Steps to Verify
+
+- Navigate to **Microsoft Defender XDR Portal**: Go to [security.microsoft.com](https://security.microsoft.com).
+- Click **Hunting** → **Advanced hunting** in the left navigation.
+- Run this comprehensive KQL query to verify Defender for Cloud data integration:
+
+```kql
+// Verify the Sentinel alerts are also visible in Defender XDR
+SecurityAlert
+| where TimeGenerated > ago(1h)
+| where ProductName == "Azure Security Center" //Azure Security Center is the legacy name for Microsoft Defender for Cloud
+| summarize count() by AlertName, AlertSeverity
+| order by count_ desc
+```
+
+###### What This Sentinel Integration Test Verifies
+
+- ✅ **Sentinel-XDR synchronization**: Confirms that alerts ingested into Sentinel are also accessible through XDR Advanced Hunting.
+- ✅ **Data consistency**: Verifies the same SecurityAlert table data appears in both Sentinel and XDR interfaces.
+- ✅ **Unified query capability**: Tests that the same KQL queries work across both platforms.
+- ✅ **Cross-platform accessibility**: Validates that Sentinel data is available for XDR-based threat hunting and investigation.
+
+###### Expected Results for Sentinel Integration Test
+
+- Sample alerts with `ProductName == "Azure Security Center"` (legacy naming maintained for compatibility).
+- Alert counts grouped by AlertName and AlertSeverity showing Sentinel data accessibility.
+- TimeGenerated timestamps confirming data synchronization between Sentinel and XDR.
+- Consistent data structure proving unified query capability across platforms.
+
+###### Cross-platform Defender XDR Verification Query
+
+For broader security context:
+
+```kql
+// Query Cross-platform security events including Defender for Cloud within Defender XDR
+AlertInfo
+| where Timestamp > ago(24h)
+| where ServiceSource in ("Microsoft Defender for Cloud", "Microsoft Defender for Endpoint", "Microsoft Defender for Identity")
+| summarize AlertCount = count() by ServiceSource, Severity
+| order by AlertCount desc
+```
+
+###### What This Cross-Platform Test Verifies
+
+- ✅ **XDR data integration**: Confirms alerts are flowing into XDR AlertInfo table from Defender for Cloud.
+- ✅ **Cross-platform correlation**: Verifies alerts appear alongside other Microsoft security products.
+- ✅ **Unified security operations**: Tests the single pane of glass approach.
+- ✅ **Real-time data flow**: Validates immediate alert availability in XDR.
+
+###### Expected Results for Cross-Platform Integration Test
+
+- Sample alerts with `ServiceSource == "Microsoft Defender for Cloud"` in the AlertInfo table.
+- Alert counts grouped by ServiceSource and Severity showing multi-product integration.
+- Timestamp-based data confirming real-time alert flow from Defender for Cloud.
+- Correlation data showing alerts from Defender for Endpoint, Identity, and other integrated products.
+- Cross-platform alert count comparison demonstrating unified security operations.
+
+#### Key Differences Between Query Methods
+
+   | Aspect | Sentinel SecurityAlert Table | Defender XDR AlertInfo Table |
+   |--------|----------------------------|-------------------------------|
+   | **Data Source** | Sentinel workspace (SIEM) | XDR unified platform |
+   | **Query Location** | Sentinel Logs interface | XDR Advanced Hunting |
+   | **Purpose** | SIEM integration testing | Cross-platform correlation |
+   | **Data Retention** | Long-term (workspace config) | XDR retention policy |
+   | **Schema** | SecurityAlert table | AlertInfo table |
+   | **Field Names** | ProductName, TimeGenerated | ServiceSource, Timestamp |
+   | **Integration Testing** | Tests Sentinel connector | Tests XDR integration |
+   | **Correlation Capability** | Limited to Sentinel data | Full Microsoft security stack |
+
+#### Benefits of XDR Verification
+
+- ✅ **Real-time validation**: Immediate confirmation of data flow.
+- ✅ **Cross-platform correlation**: Verify alerts appear across all integrated security tools.
+- ✅ **Unified investigation**: Single pane of glass for all security data.
+- ✅ **Advanced analytics**: More sophisticated hunting capabilities than individual tools.
+- ✅ **Incident correlation**: Confirms automatic incident creation and alert grouping.
+
+#### Troubleshooting XDR Data Sync
+
+- **No results**: Wait 5-10 minutes after sample alert generation - XDR ingestion is typically faster than Sentinel.
+- **Missing correlation**: Ensure all Microsoft Defender products are properly licensed and configured.
+- **Partial data**: Verify Defender for Cloud plans are enabled on all relevant subscriptions.
 
 ---
 
-## Step 14: Modern Integration with Microsoft Sentinel and XDR
+#### Multiple SIEM Integration (Advanced Scenarios)
 
-1. **Connect to Microsoft Sentinel**
-   - If you have Microsoft Sentinel deployed
-   - Navigate to "Security solutions" in Defender for Cloud
-   - Configure improved data connectors that work with agentless architecture
-   - Enable automatic incident creation from Defender for Cloud alerts
+For organizations requiring integration with multiple SIEM platforms or third-party security tools.
 
-2. **Microsoft Defender XDR Integration**
-   - Defender for Cloud now integrates natively with Defender XDR
-   - Endpoint alerts from Defender for Endpoint appear in both portals
-   - Cross-platform correlation for enhanced threat detection
-   - Unified incident management across cloud and endpoint security
+Microsoft Defender for Cloud supports data export to multiple destinations simultaneously through Continuous Export functionality. This advanced capability is designed for enterprise environments that need to:
 
-3. **Configure Analytics Rules**
-   - Create correlation rules leveraging agentless data collection
-   - Set up automated incident creation
-   - Configure playbooks for automated response using modern APIs
+- **Stream data to third-party SIEMs** (Splunk, QRadar, ServiceNow, etc.) via Azure Event Hubs.
+- **Apply custom filtering** to reduce data volume and costs.
+- **Support hybrid security operations** with both Microsoft and non-Microsoft tools.
+- **Maintain compliance** with specific data residency or retention requirements.
+
+##### Key Integration Methods
+
+- **Azure Event Hubs**: High-volume streaming to external SIEM platforms.
+- **Microsoft Graph Security API**: Native connectors for major SIEM vendors.
+- **Custom filtering**: Export only specific alert severities or recommendation types.
+- **Cross-tenant support**: Export data to workspaces in different Azure tenants.
+
+Since this lab focuses on Microsoft-native security operations with Defender XDR and Sentinel, multiple SIEM configuration is beyond our current scope.
+
+📸 **[Learn More: Continuous Export for Multiple SIEMs](https://learn.microsoft.com/en-us/azure/defender-for-cloud/continuous-export)**
+
+### Step 2: Configure File Integrity Monitoring (Modern Approach)
+
+**2025 Update**: FIM now uses the Defender for Endpoint agent and agentless scanning instead of the deprecated Log Analytics agent.
+
+#### Enable Modern FIM
+
+- Navigate to **Microsoft Defender for Cloud** → **Environment settings**.
+- Select your subscription → **Defender for Servers** → **Settings**.
+- Toggle **File Integrity Monitoring** to **On**.
+- **Configuration panel will automatically appear** when you enable FIM.
+
+#### Configure FIM Workspace and Settings
+
+When you toggle FIM to **On**, a configuration panel opens automatically:
+
+##### Workspace Configuration
+
+- **Select workspace**: Choose the Log Analytics workspace you created earlier.
+
+##### Monitoring Recommendations
+
+- **Use default recommendations**: ✅ **Recommended for new lab configurations**.
+- The default settings include monitoring for:
+  - **Windows**: System files, registry keys, and application directories.
+  - **Linux**: System binaries, configuration files, and log directories.
+- **Custom rules**: Not needed for initial lab setup - defaults provide comprehensive coverage.
+
+##### Essential Lab Configuration Rules
+
+**Note**: The following rules are already included in the default configuration:
+
+###### Windows VMs
+
+- `C:\Windows\System32\` (system files).
+- Registry keys for system configuration.
+- `C:\Program Files\` and `C:\Program Files (x86)\` (application changes).
+
+###### Linux VMs
+
+- `/bin/`, `/sbin/`, `/usr/bin/`, `/usr/sbin/` (system binaries).
+- `/etc/` (configuration files).
+- `/var/log/` (log file changes).
+
+#### Save Configuration
+
+- Click **Continue** to save the FIM configuration with your selected workspace and monitoring settings.
+- **Modern Data Collection Benefits**:
+  - Uses Defender for Endpoint agent (real-time monitoring).
+  - Uses agentless scanning (24-hour comprehensive scans).
+  - No Log Analytics agent required.
+  - **Free Data Benefit**: FIM data is included in the 500MB/day benefit for Defender for Servers Plan 2.
+
+#### Verify FIM Data Collection
+
+- Data appears in the designated workspace automatically.
+- Initial data collection begins within 15-30 minutes.
+- Query FIM data using modern tables and schemas in your Log Analytics workspace.
+
+#### Azure Monitor Agent (AMA) - When Needed (Reference Only)
+
+**Important Note**: This lab uses Microsoft Defender for Cloud's modern agentless architecture for all security capabilities. Azure Monitor Agent (AMA) is **not required** for the basic Defender for Cloud deployment covered in this guide.
+
+##### When AMA is Required (Advanced Scenarios)
+
+AMA is only needed for specific use cases that extend beyond this foundational lab:
+
+- **Defender for SQL Servers on Machines** - Required for database security posture assessment and threat detection on SQL Server instances.
+- **500MB Data Ingestion Benefit** - To leverage specific Log Analytics data collection scenarios with Defender for Servers Plan 2.
+
+##### Modern 2025 Architecture Approach
+
+✅ **What this lab uses**: Agentless scanning for comprehensive security coverage
+
+- Vulnerability assessments.
+- Malware detection.
+- Software inventory.
+- File integrity monitoring (via Defender for Endpoint agent).
+- Security recommendations.
+
+❌ **What this lab doesn't need**: Azure Monitor Agent (AMA) deployment
+
+- Not required for basic VM protection.
+- Not needed for modern File Integrity Monitoring.
+- Replaced by agentless scanning for most security scenarios.
+
+##### For Production SQL Server Environments
+
+If you plan to protect SQL Server instances in production environments, you'll need to configure AMA specifically for Defender for SQL Servers on Machines.
+
+📖 **[Complete AMA Configuration Guide for SQL Servers](https://learn.microsoft.com/en-us/azure/defender-for-cloud/auto-deploy-azure-monitoring-agent)**
+
+📖 **[Migrate from Legacy MMA to AMA](https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-sql-autoprovisioning)**
+
+##### Key Benefits of Modern Agentless Approach
+
+- **No agent management overhead**: Eliminates deployment, maintenance, and troubleshooting of agents.
+- **Instant onboarding**: Immediate protection without pipeline changes.
+- **Better performance**: No impact on VM performance or resource consumption.
+- **Comprehensive coverage**: Full security assessment without agent dependencies.
+
+### Step 3: Analytics and KQL Queries for Security Data
+
+#### Introduction to KQL (Kusto Query Language)
+
+KQL is Microsoft's powerful query language used across Defender for Cloud, Microsoft Sentinel, and Azure Monitor. It uses a simple, intuitive syntax that flows data through operators using the pipe (`|`) character, making it easy to filter, analyze, and visualize security data.
+
+#### KQL Basics
+
+- **Tables**: Your data sources (SecurityAlert, ConfigurationChange, etc.).
+- **Operators**: Filter and transform data (`where`, `project`, `summarize`, etc.).
+- **Pipe (`|`)**: Connects operators to build query pipelines.
+- **Case-sensitive**: Table names, column names, and functions are case-sensitive.
+
+📸 **[Learn More: KQL Tutorial - Common Operators](https://learn.microsoft.com/en-us/kusto/query/tutorials/learn-common-operators)**
+
+#### Sample Security Queries with Expected Results
+
+Use these queries in Microsoft Sentinel workspace or Log Analytics workspace depending on your configuration:
+
+> **Note**: For alert verification and data flow testing, see the comprehensive verification queries in Step 4 below.
+
+##### 1. File Integrity Monitoring Analysis
+
+```kql
+// Query: Monitor critical file changes on your VMs
+ConfigurationChange
+| where TimeGenerated > ago(24h)
+| where ConfigChangeType == "Files"
+| where Computer contains "vm-"
+| project TimeGenerated, Computer, ChangeCategory, FileSystemPath, FieldsChanged
+| order by TimeGenerated desc
+```
+
+#### What This Query Provides
+
+- **Real-time file monitoring** - Shows recent file system changes.
+- **Security incident detection** - Identifies unauthorized modifications.
+- **Compliance tracking** - Documents system changes for audit purposes.
+- **Expected results**: Timestamped list of file changes across your VMs with specific paths and change details.
+
+##### 2. Security Recommendations Trend Analysis
+
+```kql
+// Query: Track security recommendation patterns over time
+SecurityRecommendation
+| where TimeGenerated > ago(7d)
+| summarize count() by RecommendationSeverity, RecommendationName
+| order by count_ desc
+```
+
+#### Security Recommendations Query Results
+
+- **Security posture trends** - Shows improvement or degradation over time.
+- **Prioritization insights** - Highlights most frequent recommendations.
+- **Compliance gap analysis** - Identifies recurring security issues.
+- **Expected results**: Recommendation frequencies by severity, helping focus remediation efforts.
+
+##### 3. Secure Score Progress Tracking
+
+```kql
+// Query: Monitor your security posture improvements
+SecureScoreControlDetails
+| where TimeGenerated > ago(30d)
+| summarize arg_max(TimeGenerated, *) by ControlName
+| project ControlName, CurrentScore, MaxScore, ControlType
+| order by CurrentScore asc
+```
+
+#### Secure Score Query Results
+
+- **Security posture measurement** - Quantifies your security improvements.
+- **Control effectiveness** - Shows which security controls need attention.
+- **Progress tracking** - Monitors security score changes over time.
+- **Expected results**: Security controls ranked by current score, identifying areas for improvement.
+
+### Step 4: Azure Resource Graph Explorer for Cross-Subscription Security Analysis
+
+Beyond the Sentinel and Defender XDR verification covered in Step 1, Azure Resource Graph Explorer provides programmatic access for cross-subscription security analysis.
+
+> **Prerequisites**: Complete Step 1d verification first to ensure basic Sentinel and XDR data flow is working correctly.
+
+#### When to Use Resource Graph Explorer
+
+- **Multi-subscription environments**: Query security alerts across multiple Azure subscriptions simultaneously.
+- **Enterprise governance**: Centralized security posture management across complex Azure environments.
+- **Compliance reporting**: Generate cross-subscription security reports for audit purposes.
+- **Custom automation**: Build automated security workflows that span multiple subscriptions.
+
+#### Basic Cross-Subscription Query
+
+##### Access Resource Graph Explorer
+
+- Navigate to [portal.azure.com](https://portal.azure.com).
+- Search for **Resource Graph Explorer**.
+
+##### Query Security Alerts Across Subscriptions
+
+```kql
+// Query all security resources across subscriptions to understand your security posture
+securityresources
+| where type startswith "microsoft.security"
+| summarize count() by type
+| order by count_ desc
+```
+
+#### Security Resources Query Results
+
+This query shows you all security-related resources in your environment, including:
+
+- `microsoft.security/alerts` - Security alerts from Defender for Cloud.
+- `microsoft.security/assessments` - Security recommendations and assessments.
+- `microsoft.security/securitystatuses` - Overall security status of resources.
+- `microsoft.security/complianceresults` - Compliance assessment results.
+- `microsoft.security/locations` - Security center locations and configurations.
+
+#### Drill Down Query Results
+
+Next: Drill down into specific resource types that show results:
+
+```kql
+// Query security assessments (recommendations) across subscriptions
+securityresources
+| where type == "microsoft.security/assessments"
+| project subscriptionId, resourceGroup,
+    assessmentName = tostring(properties.displayName),
+    status = tostring(properties.status.code),
+    severity = tostring(properties.metadata.severity),
+    category = tostring(properties.metadata.categories[0])
+| order by severity desc
+```
+
+#### Expected Results
+
+- **Security resource inventory** showing counts of each resource type in your environment.
+- **Security assessments** (recommendations) with severity levels and current status.
+- **Cross-subscription visibility** of your complete security posture.
+- **Actionable recommendations** prioritized by severity for immediate remediation.
+
+📸 **[Learn More: Azure Resource Graph Explorer Quickstart](https://learn.microsoft.com/en-us/azure/governance/resource-graph/first-query-portal)**
+
+> **Note**: For single-subscription environments, use the Sentinel and XDR verification methods from Step 1 instead, as they provide more detailed analysis capabilities.
+
+### Step 5: Cost Optimization and Best Practices
+
+#### Estimated Solution Cost Summary (July 2025 Pricing)
+
+#### Current Lab Configuration Cost Breakdown
+
+##### Core Microsoft Defender for Cloud Costs
+
+- **Foundational CSPM**: **Free** (included with Azure subscription).
+- **Defender for Servers Plan 2**: **~$15 USD/server/month**.
+  - For 2-3 VMs = **$30-45 USD/month**.
+  - Includes 500MB/day free Log Analytics data ingestion.
+  - Includes agentless scanning, vulnerability assessment, and endpoint protection.
+
+##### Additional Services (Optional)
+
+- **Microsoft Sentinel**: **$2.76 USD/GB ingested** (if configured).
+  - Estimated 1-2GB/month for small lab = **$2.76-5.52 USD/month**.
+  - First 10GB/month often included with certain plans.
+- **Log Analytics Workspace**: **$2.76 USD/GB ingested** beyond free allowances.
+  - File Integrity Monitoring data typically under 100MB/month = **Minimal cost**.
+- **Virtual Machines**: **Standard costs apply** based on your VM size selection.
+  - B2s VMs: ~$30-40 USD/month each (varies by region).
+  - **Cost Optimization Tip**: These estimates assume VMs run continuously 24/7. **Stop VMs when not actively using the lab** to significantly reduce infrastructure costs. Defender for Cloud protection and configuration remain intact when VMs are stopped.
+
+##### Total Estimated Monthly Cost
+
+- **Defender for Cloud only**: **$30-45 USD/month** (core security).
+- **With Sentinel integration**: **$33-51 USD/month** (comprehensive SIEM).
+- **Virtual Machine costs**: **Additional $60-120 USD/month** (if VMs are left running continuously).
+
+> **Important**: These are estimated costs as of July 2025. Actual pricing varies by region, commitment tiers, and usage patterns. For current pricing and regional variations, visit the official pricing calculator.
+
+📸 **[Current Azure Pricing Calculator](https://azure.microsoft.com/en-us/pricing/calculator/)** - Configure your specific requirements for accurate cost estimates
+
+📸 **[Microsoft Defender for Cloud Pricing Details](https://azure.microsoft.com/en-us/pricing/details/defender-for-cloud/)** - Current plan pricing and feature comparisons
+
+#### Modern Cost Benefits
+
+##### Agentless Architecture (2025)
+
+- **Comprehensive coverage without agents**: Agentless scanning for vulnerabilities, malware, secrets, and software inventory.
+- **No performance impact**: Scanning runs independently without affecting machine performance.
+- **Reduced operational overhead**: No agent licensing, deployment, or maintenance costs.
+- **Simplified deployment**: Instant onboarding without pipeline changes or agent installation.
+
+##### Data Ingestion Benefits
+
+- **500MB/day free data ingestion** with Defender for Servers Plan 2 per protected machine.
+- **File Integrity Monitoring data included** in the free allowance.
+- **Optimized data streaming** reduces Log Analytics costs through native connectors.
+- **Eliminated duplicate data ingestion** via direct Microsoft security stack integration.
+
+##### Unified Security Operations Integration (2025)
+
+- **Microsoft Defender XDR native integration**: Automatic cross-platform correlation without additional configuration.
+- **Microsoft Sentinel unified experience**: New customers (July 2025+) automatically redirected to Defender portal for unified operations.
+- **Continuous Export precision**: Custom filtering reduces data volume and third-party SIEM costs.
+- **Event Hubs optimization**: High-volume streaming for enterprise scenarios without data transformation overhead.
+
+##### Modern File Integrity Monitoring
+
+- **Dual approach**: Both agentless scanning (24-hour cadence) and Defender for Endpoint agent (real-time) available.
+- **Custom path monitoring**: Agentless FIM (Preview June 2025) supports custom file and registry monitoring.
+- **Legacy agent elimination**: No more Log Analytics agent (MMA) or Azure Monitor agent (AMA) required.
+
+## 💡 Best Practices for 2025
+
+> **Note**: This is a comprehensive list of best practices for consideration when deploying Microsoft Defender for Cloud in production environments. Not all features and configurations mentioned here are explored within this lab - this guide focuses on foundational deployment while these best practices provide broader strategic guidance for enterprise implementations.
+
+### 1. Embrace Unified Security Operations
+
+- **Prioritize Defender portal experience**: New Sentinel workspaces (July 2025+) automatically onboard to unified Defender portal.
+- **Plan Sentinel migration timeline**: Microsoft Sentinel experience in Azure Portal being transitioned to unified Defender portal by July 2026 - start planning transition now.
+- **Use native XDR integration**: Automatic incident correlation across Defender for Cloud, Endpoint, Identity, and Office 365.
+- **Prefer automated Data Collection Rules**: For Defender for Cloud features, let the service auto-create DCRs rather than manual Log Analytics agent configuration (Note: Sentinel still requires a Log Analytics workspace).
+- **Integrated threat hunting**: Use Defender XDR for advanced hunting across cloud and endpoints.
+- **Plan integration with existing SIEM tools**: Configure API access for programmatic management.
+
+### 2. Optimize Modern Architecture and Data Collection
+
+- **Enable agentless scanning first**: Comprehensive security coverage without agent overhead and eliminates agent sprawl.
+- **Selective AMA deployment**: Only deploy Azure Monitor Agent where specifically required (SQL servers, data benefits).
+- **Use hybrid File Integrity Monitoring**: Combine real-time Defender for Endpoint monitoring with agentless custom path scanning.
+- **Monitor data ingestion**: Track usage against the 500MB/day free allowance per machine.
+- **Regional considerations**: Agentless scanning respects data residency requirements.
+- **Enhanced coverage**: Multi-cloud and hybrid protection without complex agent management.
+
+### 3. Leverage Modern Security Features
+
+- **Deploy Defender for Endpoint integration**: Essential for real-time threat protection and advanced EDR capabilities.
+- **Enable automatic incident creation**: Streamline security operations with native Sentinel integration.
+- **Use Azure Policy for scale**: Deploy compliance configurations across multiple subscriptions automatically.
+- **Implement Logic Apps automation**: Automate common response actions like VM isolation and security team notifications.
+- **Modern network security**: Implement micro-segmentation with NSGs and Azure Firewall.
+- **Leverage agentless recommendations**: Act on comprehensive security findings without agent dependencies.
+
+### 4. Cost Optimization and Performance
+
+- **Agentless benefits**: Reduced operational overhead and management costs with no VM performance impact.
+- **Filter Continuous Export strategically**: Export only high-severity alerts to reduce third-party SIEM costs.
+- **Monitor scanning costs**: Use agentless scanning efficiently with built-in cost controls.
+- **Automated remediation**: Leverage enhanced automation capabilities in 2025 features.
+
+### 5. Migration and Modernization
+
+- **Migrate from legacy agents**: Transition File Integrity Monitoring from Log Analytics agent (MMA) to modern Defender for Endpoint approach.
+- **Disable MMA auto-provisioning**: Ensure deprecated Log Analytics Agent auto-provisioning is disabled.
+- **Remove legacy agents**: Use Microsoft's MMA removal utility for cleanup.
+- **Update minimum versions**: Ensure Defender for Endpoint meets June 2025 requirements (Windows: 10.8760+, Linux: 30.124082+).
+- **Replace manual connectors**: Use tenant-based Defender for Cloud connectors instead of subscription-based legacy connectors.
+- **Validate agentless coverage**: Confirm all security capabilities are covered by agentless scanning.
+- **Update monitoring queries**: Transition from MMA-based queries to agentless data sources.
+
+### 6. Monitoring, Compliance, and Automation
+
+- **Continuous agentless assessment**: Security posture evaluation without maintenance overhead.
+- **Modern compliance reporting**: Use updated compliance frameworks and automated reporting.
+- **Set up automation for common security tasks**: Document incident response procedures.
+- **Configure API access for programmatic management**: Enable scalable security operations.
 
 ---
 
-## 🔍 Verification Steps (2025 Architecture)
+## 📚 Next Steps - Complete Week 1 Objectives
 
-After completing the deployment, verify everything is working with the modern architecture:
+After successful Defender for Cloud deployment via Azure Portal:
 
-### Check Agentless Data Collection
+### Immediate Week 1 Tasks
 
-1. **Verify Agentless Scanning**
-   - Navigate to Environment Settings → Monitoring Coverage
-   - Confirm agentless scanning is enabled and operational
-   - Check that VMs appear in inventory with agentless data
+#### Deploy via Infrastructure-as-Code
 
-2. **Review Agentless Findings**
-   - Use KQL queries to verify data collection (if using Log Analytics for other purposes):
+- Complete Defender for Cloud deployment using Bicep or Terraform.
+- Compare IaC approach with Azure Portal deployment.
+- Document configuration differences and automation benefits.
 
-   ```kql
-   // Check for agentless vulnerability assessments
-   SecurityRecommendation
-   | where TimeGenerated > ago(1h)
-   | where RecommendationName contains "vulnerabilities"
-   | take 10
-   ```
+#### Simulate Benign Threat Scenario
 
-3. **Defender for Endpoint Integration**
-   - Verify endpoint status in Microsoft Defender XDR portal
-   - Check device health and protection status
-   - Confirm alert correlation between Defender for Cloud and Defender XDR
+- Generate sample security alerts (as covered in Step 11).
+- Observe AI-driven insights and recommendations.
+- Document Defender for Cloud's response to simulated threats.
+- Capture screenshots and analysis for documentation.
 
-### Test Modern Security Features
+### Prepare for Week 2 - Defender XDR + Copilot Integration
 
-1. **Generate Test Alert**
-   - Create a test security event using Defender for Endpoint's test scenarios
-   - Verify alert appears in both Defender for Cloud and Defender XDR
-   - Test notification delivery through updated channels
+#### Defender XDR Foundation
 
-2. **Agentless Scanning Validation**
-   - Verify vulnerability scanning results appear without agents
-   - Check malware scanning capabilities
-   - Confirm configuration assessment data is populated
+- Ensure Microsoft Defender XDR integration is working (as configured in Step 1c).
+- Validate cross-platform alert correlation.
+- Test incident creation and management workflows.
 
-3. **JIT Access Test**
-   - Request JIT access to a VM
-   - Verify approval workflow functions correctly
-   - Test automatic access revocation
+#### Microsoft Copilot for Security Prerequisites
 
----
+- Review Copilot for Security licensing requirements.
+- Understand integration touchpoints with current Defender for Cloud setup.
+- Identify prompt engineering opportunities for security automation.
 
-## 💡 Best Practices and Tips (2025 Edition)
+### Resources for Continuation
 
-### Modern Architecture Benefits
-
-- **Agentless scanning**: Eliminates agent sprawl and performance impact
-- **Unified agent approach**: Single Defender for Endpoint agent for comprehensive protection
-- **Enhanced coverage**: Multi-cloud and hybrid protection without complex agent management
-- **Improved performance**: No impact on VM performance from security scanning
-
-### Cost Optimization
-
-- **Agentless benefits**: Reduced operational overhead and management costs
-- **Selective AMA deployment**: Only deploy AMA where specifically required (SQL servers, data benefits)
-- **Monitor scanning costs**: Use agentless scanning efficiently with built-in cost controls
-- **Regional considerations**: Agentless scanning respects data residency requirements
-
-### Security Hardening
-
-- **Leverage agentless recommendations**: Act on comprehensive security findings without agent dependencies
-- **Enable Defender for Endpoint integration**: Utilize single-agent approach for endpoint protection
-- **Modern network security**: Implement micro-segmentation with NSGs and Azure Firewall
-- **Azure Policy integration**: Use guest configuration for compliance without legacy agents
-
-### Monitoring and Maintenance
-
-- **Continuous agentless assessment**: Security posture evaluation without maintenance overhead
-- **Integrated threat hunting**: Use Defender XDR for advanced hunting across cloud and endpoints
-- **Automated remediation**: Leverage enhanced automation capabilities in 2025 features
-- **Modern compliance reporting**: Use updated compliance frameworks and automated reporting
-
-### Migration from Legacy Architecture
-
-- **Disable MMA auto-provisioning**: Ensure deprecated Log Analytics Agent auto-provisioning is disabled
-- **Remove legacy agents**: Use Microsoft's MMA removal utility for cleanup
-- **Validate agentless coverage**: Confirm all security capabilities are covered by agentless scanning
-- **Update monitoring queries**: Transition from MMA-based queries to agentless data sources
-
-### Integration Considerations
-
-- Plan integration with existing SIEM tools
-- Configure API access for programmatic management
-- Set up automation for common security tasks
-- Document incident response procedures
-
----
-
-## 🚨 Troubleshooting Common Issues (2025)
-
-### Agentless Scanning Issues
-
-- **Issue**: Agentless scanning not collecting data
-- **Solution**: Check subscription permissions, verify Defender for Servers Plan 2 is enabled, ensure VMs are in supported regions
-
-### Missing Security Recommendations
-
-- **Issue**: No recommendations appearing after 30+ minutes
-- **Solution**: Verify agentless scanning is enabled, check that VMs are properly registered in Azure, confirm subscription has appropriate permissions
-
-### Defender for Endpoint Integration Problems
-
-- **Issue**: Endpoint protection not showing as enabled
-- **Solution**: Verify Defender for Endpoint integration is enabled in Environment Settings, check VM compliance with Defender for Endpoint requirements
-
-### Legacy Agent Conflicts
-
-- **Issue**: Old MMA agents still installed causing conflicts
-- **Solution**: Use Microsoft's MMA removal utility, disable legacy auto-provisioning, ensure clean migration to agentless architecture
-
-### High Scanning Costs
-
-- **Issue**: Unexpected charges for agentless scanning
-- **Solution**: Review scanning frequency settings, optimize regional scanning policies, monitor usage through Azure Cost Management
-
-### Azure Monitor Agent (AMA) Issues
-
-- **Issue**: AMA not collecting data for SQL servers
-- **Solution**: Verify AMA auto-provisioning is enabled for Defender for SQL, check SQL server registration with Azure Arc if on-premises
-
----
-
-## 📚 Next Steps (2025 Roadmap)
-
-After successful deployment:
-
-1. **Optimize Agentless Coverage**
-   - Expand agentless scanning to multi-cloud environments
-   - Configure advanced agentless malware scanning
-   - Enable agentless code scanning for DevOps repositories
-   - Implement agentless container image scanning
-
-2. **Enhance Integration**
-   - Connect to Microsoft Defender XDR for unified security operations
-   - Integrate with Microsoft Purview for data governance
-   - Configure Microsoft Copilot for Security for AI-powered threat analysis
-   - Set up cross-platform security correlation
-
-3. **Advanced Configuration**
-   - Implement custom security policies using Azure Policy guest configuration
-   - Configure advanced hunting queries in Defender XDR
-   - Set up automated response playbooks using modern APIs
-   - Implement threat intelligence feeds integration
-
-4. **AI-Powered Security (2025 Features)**
-   - Enable Microsoft Copilot for Security integration
-   - Configure AI-powered threat analysis and response
-   - Implement predictive security analytics
-   - Use AI-assisted incident investigation workflows
-
-5. **Continuous Improvement**
-   - Regular security posture reviews using agentless insights
-   - Update security policies based on AI-powered threat intelligence
-   - Monitor and optimize costs using modern cost management tools
-   - Stay updated with Microsoft's quarterly security feature releases
+- [Week 2: Defender XDR + Copilot Integration](../02%20-%20Defender%20XDR%20+%20Copilot%20Integration/README.md)
+- [Main Project Roadmap](../README.md)
+- [Prompt Library Template](../Prompt-Library/README.md)
 
 ---
 
 ## 🔗 Additional Resources (Updated 2025)
 
-- [Microsoft Defender for Cloud Documentation](https://docs.microsoft.com/en-us/azure/defender-for-cloud/)
-- [Agentless Scanning Architecture](https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-agentless-data-collection)
-- [Defender for Endpoint Integration Guide](https://learn.microsoft.com/en-us/azure/defender-for-cloud/integration-defender-for-endpoint)
-- [Azure Monitor Agent (AMA) Migration Guide](https://learn.microsoft.com/en-us/azure/defender-for-cloud/prepare-deprecation-log-analytics-mma-agent)
-- [Microsoft Defender XDR Integration](https://learn.microsoft.com/en-us/defender-xdr/microsoft-365-defender)
-- [Azure Security Best Practices 2025](https://docs.microsoft.com/en-us/azure/security/fundamentals/best-practices-and-patterns)
-- [Microsoft Security Blog](https://www.microsoft.com/security/blog/)
-- [MMA Deprecation Blog Post](https://techcommunity.microsoft.com/blog/microsoftdefendercloudblog/microsoft-defender-for-cloud---strategy-and-plan-towards-log-analytics-agent-mma/3883341)
+### Core Documentation and Modern Deployment
+
+- [Microsoft Defender for Cloud Documentation](https://learn.microsoft.com/en-us/azure/defender-for-cloud/)
+- [Agentless Machine Scanning Concepts](https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-agentless-data-collection)
+- [Enable Agentless Scanning for VMs](https://learn.microsoft.com/en-us/azure/defender-for-cloud/enable-agentless-scanning-vms)
+- [Test Agentless Malware Scanning](https://learn.microsoft.com/en-us/azure/defender-for-cloud/test-agentless-malware-scanning)
+
+### Modern File Integrity Monitoring
+
+- [File Integrity Monitoring Overview (2025)](https://learn.microsoft.com/en-us/azure/defender-for-cloud/file-integrity-monitoring-overview)
+- [Enable File Integrity Monitoring with Defender for Endpoint Agent](https://learn.microsoft.com/en-us/azure/defender-for-cloud/file-integrity-monitoring-enable-defender-endpoint)
+- [Review Changes in File Integrity Monitoring](https://learn.microsoft.com/en-us/azure/defender-for-cloud/file-integrity-monitoring-review-changes)
+
+### Microsoft Sentinel and XDR Unified Experience
+
+- [Microsoft Defender XDR Integration with Microsoft Sentinel](https://learn.microsoft.com/en-us/azure/sentinel/microsoft-365-defender-sentinel-integration)
+- [Connect Microsoft Sentinel to the Microsoft Defender Portal](https://learn.microsoft.com/en-us/unified-secops-platform/microsoft-sentinel-onboard)
+- [Microsoft Sentinel in the Defender Portal (Unified Experience)](https://learn.microsoft.com/en-us/azure/sentinel/microsoft-sentinel-defender-portal)
+
+### Migration from Legacy Agents
+
+- [Migrate File Integrity Monitoring from MMA/AMA to Modern Approach](https://learn.microsoft.com/en-us/azure/defender-for-cloud/migrate-file-integrity-monitoring)
+- [Prepare for Log Analytics Agent (MMA) Retirement](https://learn.microsoft.com/en-us/azure/defender-for-cloud/prepare-deprecation-log-analytics-mma-agent)
+- [Azure Monitor Agent (AMA) for Specific Use Cases](https://learn.microsoft.com/en-us/azure/defender-for-cloud/auto-deploy-azure-monitoring-agent)
+
+### Visualization and Automation
+
+- [Defender for Cloud Workbooks and Interactive Reports](https://learn.microsoft.com/en-us/azure/defender-for-cloud/custom-dashboards-azure-workbooks)
+- [What's New in Defender for Cloud (2025 Features)](https://learn.microsoft.com/en-us/azure/defender-for-cloud/release-notes)
+- [Azure Security Best Practices and Patterns](https://learn.microsoft.com/en-us/azure/security/fundamentals/best-practices-and-patterns)
 
 ---
 

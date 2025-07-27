@@ -17,11 +17,11 @@ All publications and guides will be integrated into the main Hugo site.
 
 ## 🗂️ Repository Structure
 
-Each week is organized as a separate folder to support modular development and publishing:
+Each week is organized as a separate folder to support modular development and publishing.
 
 ## ✅ Project Status
 
-As project weeks are completed the **Completed** box will be checked.
+As project weeks are completed, the **Completed** checkbox will be marked.
 
 | Week | Focus Area | Completed |
 |------|------------|--------|

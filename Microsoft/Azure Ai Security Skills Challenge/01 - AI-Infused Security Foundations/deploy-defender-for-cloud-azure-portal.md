@@ -1515,6 +1515,81 @@ securityresources
 
 ---
 
+## 🧹 Lab Cleanup and Cost Management
+
+### Immediate Cost Reduction
+
+#### Stop Virtual Machines When Not in Use
+
+**Critical for Cost Optimization**: Virtual machines continue to incur compute charges even when idle. Stopping VMs when not actively using the lab significantly reduces infrastructure costs while preserving your Defender for Cloud configuration.
+
+##### How to Stop VMs
+
+- Navigate to **Virtual machines** in the Azure Portal.
+- Select each VM used in this lab.
+- Click **Stop** to deallocate the VM.
+- **Status should show**: **Stopped (deallocated)** to ensure no compute charges.
+
+##### Benefits of Stopping VMs
+
+- ✅ **Eliminated compute costs**: No charges for stopped (deallocated) VMs.
+- ✅ **Defender for Cloud configuration preserved**: All security settings remain intact.
+- ✅ **Agentless scanning continues**: Security assessments work on stopped VMs.
+- ✅ **Quick restart capability**: VMs can be restarted when needed for continued lab work.
+- ✅ **Data persistence**: All VM data and configurations are preserved.
+
+#### Expected Cost Reduction
+
+- **Running VMs**: $60-120 USD/month (continuous operation).
+- **Stopped VMs**: $0 USD/month for compute + minimal storage costs (~$5-10 USD/month).
+- **Defender for Cloud costs continue**: $30-45 USD/month (required for security monitoring).
+
+### Complete Lab Cleanup (Optional)
+
+#### When to Consider Full Cleanup
+
+- **Completed all learning objectives** and no longer need the lab environment.
+- **Want to start fresh** with a clean deployment for practice.
+- **Need to eliminate all costs** associated with the lab.
+- **Organization policy** requires removal of non-production security tools.
+
+#### Full Decommission Process
+
+For complete removal of all Defender for Cloud resources and costs, follow the comprehensive decommission guide:
+
+📖 **[Complete Decommission Guide: Remove Defender for Cloud](./decommission-defender-for-cloud.md)**
+
+##### What Full Decommission Includes
+
+- **Disable all Defender for Cloud plans** across subscriptions.
+- **Remove Log Analytics workspaces** and associated data.
+- **Delete resource groups** and all contained resources.
+- **Clean up Microsoft Sentinel workspaces** if configured.
+- **Remove Azure Policy assignments** for Defender for Cloud.
+- **Verify complete cost elimination** through billing analysis.
+
+##### Decommission Timeline
+
+- **Immediate**: VM deletion and Defender plan disabling.
+- **24-48 hours**: Final billing cycle and cost elimination.
+- **30 days**: Complete data deletion from Microsoft systems.
+
+### Restart Lab Environment
+
+#### When You Want to Continue
+
+- **Restart stopped VMs**: Simply start the VMs from the Azure Portal when ready to continue.
+- **All configurations preserved**: Defender for Cloud, Sentinel, and security settings remain intact.
+- **Resume from any point**: Continue with Week 2 objectives or repeat sections as needed.
+
+#### Fresh Start Option
+
+- **Follow decommission guide**: Complete cleanup of existing environment.
+- **Redeploy using this guide**: Start fresh with updated knowledge and refined configuration.
+- **Compare approaches**: Use both Azure Portal and Infrastructure-as-Code methods for comparison.
+
+---
+
 ## 📚 Next Steps - Complete Week 1 Objectives
 
 After successful Defender for Cloud deployment via Azure Portal:

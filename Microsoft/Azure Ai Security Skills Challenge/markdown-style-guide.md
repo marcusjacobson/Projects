@@ -25,21 +25,39 @@ This style guide defines the formatting, punctuation, and tone standards for all
 
 ### Bullet Points
 
-- **All bullet points must end with periods.**
-- This applies to all list items, regardless of length or complexity.
+- **Standalone bullet points must end with periods.**
+- **Introductory bullet points that lead to sub-lists must end with colons.**
+- This applies to all list items, maintaining logical punctuation based on their function.
 - Use consistent bullet point formatting throughout the document.
 
-#### Correct Examples
+#### Standalone Bullet Points (End with Periods)
+
+Use periods when bullet points are complete, standalone actions or statements:
 
 - Enable disk encryption on virtual machines.
 - Install endpoint protection solution on machines.
 - Apply system updates using Azure Update Manager integration.
 
+#### Introductory Bullet Points (End with Colons)
+
+Use colons when bullet points introduce or lead to sub-lists:
+
+- Review and disable advanced protection for:
+  - **Servers** → Set to **Off**.
+  - **App Service** → Set to **Off**.
+  - **Storage** → Set to **Off**.
+- Configure the following settings:
+  - Enable monitoring.
+  - Set retention period.
+  - Configure alerts.
+
 #### Incorrect Examples
 
 - Enable disk encryption on virtual machines
 - Install endpoint protection solution on machines
-- Apply system updates using Azure Update Manager integration
+- Review and disable advanced protection for.
+  - **Servers** → Set to **Off**.
+  - **App Service** → Set to **Off**.
 
 ### Sentences and Paragraphs
 
@@ -80,10 +98,34 @@ This style guide defines the formatting, punctuation, and tone standards for all
 
 ### Headers and Structure
 
-- Use consistent header hierarchy (H1, H2, H3, etc.).
+- **Use hash-based headers (#, ##, ###) instead of bold text for section titles.**
+- Use consistent header hierarchy (H1, H2, H3, etc.) to create proper document structure.
 - Include appropriate emoji icons for main sections when enhancing readability.
 - Use descriptive headers that clearly indicate section content.
 - Maintain logical content flow from general to specific information.
+- Reserve bold text for interface elements, resource names, and emphasis within content.
+
+#### Correct Header Examples
+
+```markdown
+# Main Document Title
+## Major Section Title
+### Subsection Title
+#### Detailed Topic Title
+```
+
+#### Incorrect Header Examples
+
+```markdown
+**Major Section Title**
+**Subsection Title**
+**Detailed Topic Title**
+```
+
+#### When to Use Bold vs Headers
+
+- **Use Headers For**: Document structure, section titles, step titles, topic organization.
+- **Use Bold For**: Interface elements, button names, field names, resource names, emphasis within content.
 
 ### Links and References
 
@@ -178,7 +220,8 @@ When reviewing any markdown document, verify:
 ### Formatting Review
 
 - [ ] Interface elements use bold formatting instead of quotes
-- [ ] Consistent header hierarchy and structure
+- [ ] Hash-based headers (#, ##, ###) used instead of bold text for section titles
+- [ ] Consistent header hierarchy and proper document structure
 - [ ] Proper code block formatting with language identifiers
 - [ ] Consistent link formatting and descriptions
 
@@ -248,10 +291,11 @@ Please review this markdown document for compliance with the Azure AI Security S
 1. **Systematic Section-by-Section Review**: Go through the document from beginning to end, section by section. Do not skip around or jump between sections.
 
 2. **Style Guide Compliance Areas**: Check for compliance with:
-   - Punctuation rules (all bullet points must end with periods)
+   - Punctuation rules (standalone bullet points end with periods, introductory bullet points end with colons)
    - Bold formatting for interface elements instead of quotes
+   - Hash-based headers (#, ##, ###) instead of bold text for section titles
    - Professional technical documentation tone
-   - Consistent header hierarchy and structure
+   - Consistent header hierarchy and proper document structure
    - Proper code block formatting
    - Azure resource naming conventions
    - Clear, instructional language suitable for technical professionals

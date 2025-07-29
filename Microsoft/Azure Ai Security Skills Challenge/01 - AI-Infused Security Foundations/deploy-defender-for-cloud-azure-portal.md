@@ -246,55 +246,19 @@ To test Defender for Cloud without existing VMs, create a resource group first, 
 ### Navigate to Workload Protections
 
 - From the main Defender for Cloud interface, click **Workload protections** in the left navigation menu.
-- This displays the interactive Workload protections dashboard with four main sections.
-- **What to look for in a new deployment:**
+- This displays the interactive Workload protections dashboard with four main sections:
   - **Defender for Cloud coverage section**: Shows resource types eligible for protection and coverage status.
-    - Look for your VMs under the resources listed.
-    - You may see an **Upgrade all** option if some resources aren't fully protected.
-  - **Security alerts section**: Shows current security alerts (likely empty in a new deployment).
-    - This area will populate as threats are detected over time.
+  - **Security alerts section**: Shows current security alerts (likely empty in new deployments).
   - **Advanced protection section**: Shows status of protection capabilities.
-    - Check for Virtual machines, SQL databases, Containers, Web applications, Network protections.
-    - Each protection type shows coverage status for your selected subscriptions.
-    - Click any protection type to go directly to its configuration area.
   - **Insights section**: Provides customized items for your environment.
-    - Actionable items to enhance security.
-    - Tips for handling alerts and recommendations.
-    - Upgrade recommendations for enhanced protections.
 - **Expected timeline**: Protection status may take 15-30 minutes to fully populate after VM creation.
-- **Note**: If sections appear empty initially, this is normal for new deployments - refresh after a few minutes.
 
 ### Monitor VM Protection Status
 
 - Navigate to **Inventory** in Defender for Cloud.
 - Review your VMs in the asset inventory page.
-- **What you'll see in a new deployment:**
-  - **Total resources**: Count of resources connected to Defender for Cloud.
-  - **Unhealthy resources**: VMs with active security recommendations (normal for new deployments).
-  - **Resource count by environment**: Breakdown of Azure, AWS, and GCP resources.
-  - **VM resource details**: Select individual VMs to view their security posture.
-- **When selecting a VM, the following information is available:**
-  - **Resource information**: General resource details and properties.
-  - **Recommendations tab**: Active security recommendations for that VM.
-  - **Alerts tab**: Any security alerts (likely empty in new deployments).
-  - **Installed applications tab**: If Defender for Servers is enabled, shows software installed on the VM.
-  - **Secrets tab**: Shows any secrets discovered on the VM (if applicable).
-- **Note**: The inventory focuses on security posture and recommendations rather than agent-specific status details.
-
-### Verify Scanning Results
-
-- Agentless scanning runs automatically and findings appear in multiple locations within Defender for Cloud.
-- **Where to find scanning results:**
-  - **Recommendations**: Navigate to **Recommendations** in the left menu.
-    - Look for vulnerability-related recommendations like **Vulnerabilities in your virtual machines should be remediated**.
-    - Filter by **Resource type** → **Virtual machines** to see VM-specific findings.
-  - **Security alerts**: Navigate to **Security alerts** in the left menu.
-    - Any threat detections will appear here (likely empty in new deployments).
-  - **Inventory**: Navigate to **Inventory** and select individual VMs.
-    - Check the **Recommendations** tab for each VM to see specific vulnerability assessments.
-    - Review the **Installed applications** tab to verify software inventory data.
-- **Initial scans may take 15-30 minutes to complete** after VM creation.
-- **Note**: If no recommendations appear immediately, this is normal - refresh the pages periodically and allow time for the agentless scanning to complete its initial assessment.
+- Select individual VMs to view their security posture, recommendations, and alerts.
+- Allow 15-30 minutes for initial agentless scanning to complete.
 
 📸 **[View Data Collection Guide](https://learn.microsoft.com/en-us/azure/defender-for-cloud/enable-data-collection)**
 

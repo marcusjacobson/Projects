@@ -1,0 +1,18 @@
+{
+  "kind": "Basic",
+  "properties": {
+    "virtualMachines": [
+      {
+        "id": "{VM_RESOURCE_ID}",
+        "ports": [
+          {
+            "number": 22,
+            "protocol": "TCP",
+            "allowedSourceAddressPrefix": "*",
+            "maxRequestAccessDuration": "PT3H"
+          }
+        ]
+      }
+    ]
+  }
+}

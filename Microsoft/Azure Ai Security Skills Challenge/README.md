@@ -1,6 +1,6 @@
 # AI Skilling Roadmap – Marcus Jacobson
 
-Welcome to the AI Skilling Roadmap repository! This project outlines a 12-week journey to build deep, hands-on expertise in secure AI deployment, Microsoft Security tools, and Copilot integration. It aligns with Microsoft’s AI Transformation strategy and EAG Security’s FY26 objectives, with a strong emphasis on practical delivery, governance, and reusable prompt engineering.
+Welcome to the AI Skilling Roadmap repository! This project outlines a 12-week journey to build deep, hands-on expertise in secure AI deployment, Microsoft Security tools, and Copilot integration. It aligns with Microsoft's AI Transformation strategy and EAG Security's FY26 objectives, with a strong emphasis on practical delivery, governance, and reusable prompt engineering.
 
 ## 📌 Project Goals
 
@@ -23,10 +23,16 @@ Each week is organized as a separate folder to support modular development and p
 
 As project weeks are completed, the **Completed** checkbox will be marked.
 
+**Status Legend:**
+
+- [x] = Completed
+- [🔄] = In Progress (core deliverables complete, final items pending)
+- [ ] = Not Started
+
 | Week | Focus Area | Completed |
 |------|------------|--------|
 | 0 | [Project Setup & Admin](./00%20-%20Project%20Setup%20&%20Admin/README.md) | [x] |
-| 1 | [AI-Infused Security Foundations](./01%20-%20AI-Infused%20Security%20Foundations/README.md) | [ ] |
+| 1 | [AI-Infused Security Foundations](./01%20-%20AI-Infused%20Security%20Foundations/README.md) | [🔄] |
 | 2 | [Defender XDR + Copilot Integration](./02%20-%20Defender%20XDR%20+%20Copilot%20Integration/README.md) | [ ] |
 | 3 | [Microsoft Purview for Data Governance](./03%20-%20Microsoft%20Purview%20for%20Data%20Governance/README.md) | [ ] |
 | 4 | [Microsoft Priva and Responsible AI](./04%20-%20Microsoft%20Priva%20and%20Responsible%20AI/) | [ ] |
@@ -42,3 +48,4 @@ As project weeks are completed, the **Completed** checkbox will be marked.
 ## 📬 Contributions & Feedback
 
 This is a personal skilling initiative, but collaboration and feedback are welcome! If you’re working on similar goals or want to reuse parts of this roadmap, feel free to fork or adapt.
+

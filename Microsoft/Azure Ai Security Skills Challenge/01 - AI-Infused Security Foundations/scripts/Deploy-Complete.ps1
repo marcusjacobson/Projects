@@ -27,8 +27,8 @@ param(
     [Parameter(Mandatory=$false, HelpMessage="Skip confirmation prompts")]
     [switch]$Force,
     
-    [Parameter(Mandatory=$false, HelpMessage="Deploy only specific phases (1-5)")]
-    [int[]]$Phases = @(1,2,3,4,5)
+    [Parameter(Mandatory=$false, HelpMessage="Deploy only specific phases (1-10)")]
+    [int[]]$Phases = @(1,2,3,4,5,6,7,8,9,10)
 )
 
 # Script Configuration
@@ -105,7 +105,11 @@ $requiredScripts = @(
     "Deploy-VirtualMachines.ps1", 
     "Deploy-DefenderPlans.ps1",
     "Deploy-SecurityFeatures.ps1",
-    "Test-DeploymentValidation.ps1"
+    "Deploy-Sentinel.ps1",
+    "Deploy-ComplianceAnalysis.ps1",
+    "Test-DeploymentValidation.ps1",
+    "Deploy-CostAnalysis.ps1",
+    "Deploy-AutoShutdown.ps1"
 )
 
 Write-Host "🔍 Validating deployment scripts..." -ForegroundColor Cyan
@@ -144,7 +148,12 @@ if (-not $Force -and -not $WhatIf) {
     if (2 -in $Phases) { Write-Host "   🖥️ Phase 2: Virtual Machines (Windows & Linux VMs with extensions)" -ForegroundColor White }
     if (3 -in $Phases) { Write-Host "   🛡️ Phase 3: Defender Plans (Enable plans and security contacts)" -ForegroundColor White }
     if (4 -in $Phases) { Write-Host "   🔐 Phase 4: Security Features (JIT access, security configuration)" -ForegroundColor White }
-    if (5 -in $Phases) { Write-Host "   ✅ Phase 5: Validation (Comprehensive deployment verification)" -ForegroundColor White }
+    if (5 -in $Phases) { Write-Host "   🔍 Phase 5: Microsoft Sentinel Integration (SIEM capabilities)" -ForegroundColor White }
+    if (6 -in $Phases) { Write-Host "   📊 Phase 6: Compliance Analysis (Governance and compliance)" -ForegroundColor White }
+    if (7 -in $Phases) { Write-Host "   ✅ Phase 7: Deployment Validation (Comprehensive verification)" -ForegroundColor White }
+    if (8 -in $Phases) { Write-Host "   💰 Phase 8: Cost Analysis (Cost optimization and monitoring)" -ForegroundColor White }
+    if (9 -in $Phases) { Write-Host "   ⏰ Phase 9: Auto-Shutdown Configuration (Cost optimization)" -ForegroundColor White }
+    if (10 -in $Phases) { Write-Host "   📋 Phase 10: Portal Configuration Guide (Remaining manual tasks)" -ForegroundColor White }
     Write-Host ""
     
     $confirmation = Read-Host "Do you want to proceed with the deployment? (y/N)"
@@ -170,8 +179,8 @@ Write-Host "================================" -ForegroundColor Green
 
 if (1 -in $Phases) {
     Write-Host ""
-    Write-Host "📋 Phase 1: Infrastructure Foundation" -ForegroundColor Green
-    Write-Host "====================================" -ForegroundColor Green
+    Write-Host "📋 Phase 1: Infrastructure Foundation" -ForegroundColor Magenta
+    Write-Host "====================================" -ForegroundColor Magenta
     
     try {
         $scriptPath = Join-Path $scriptsPath "Deploy-InfrastructureFoundation.ps1"
@@ -184,13 +193,15 @@ if (1 -in $Phases) {
         if ($WhatIf) { $params.WhatIf = $true }
         if ($Force) { $params.Force = $true }
         
-        Write-Host "🚀 Executing infrastructure deployment..." -ForegroundColor Cyan
+        Write-Host "🚀 Calling script 'Deploy-InfrastructureFoundation.ps1'..." -ForegroundColor Blue
         & $scriptPath @params
         
         if ($LASTEXITCODE -eq 0 -or $null -eq $LASTEXITCODE) {
+            Write-Host "✅ Script 'Deploy-InfrastructureFoundation.ps1' completed successfully" -ForegroundColor Blue
             Write-Host "✅ Phase 1 completed successfully" -ForegroundColor Green
             $deploymentResults.Phases["Phase1"] = @{ Status = "Success"; Description = "Infrastructure Foundation" }
         } else {
+            Write-Host "❌ Script 'Deploy-InfrastructureFoundation.ps1' failed (exit code: $LASTEXITCODE)" -ForegroundColor Red
             throw "Script exited with code: $LASTEXITCODE"
         }
     } catch {
@@ -211,28 +222,29 @@ if (1 -in $Phases) {
 
 if (2 -in $Phases) {
     Write-Host ""
-    Write-Host "🖥️ Phase 2: Virtual Machines" -ForegroundColor Green
-    Write-Host "============================" -ForegroundColor Green
+    Write-Host "🖥️ Phase 2: Virtual Machines" -ForegroundColor Magenta
+    Write-Host "============================" -ForegroundColor Magenta
     
     try {
         $scriptPath = Join-Path $scriptsPath "Deploy-VirtualMachines.ps1"
         $params = @{
             EnvironmentName = $EnvironmentName
             Location = $Location
-            AdminUsername = $AdminUsername
         }
         
         if ($UseParametersFile) { $params.UseParametersFile = $true }
         if ($WhatIf) { $params.WhatIf = $true }
         if ($Force) { $params.Force = $true }
         
-        Write-Host "🚀 Executing virtual machine deployment..." -ForegroundColor Cyan
+        Write-Host "🚀 Calling script 'Deploy-VirtualMachines.ps1'..." -ForegroundColor Blue
         & $scriptPath @params
         
         if ($LASTEXITCODE -eq 0 -or $null -eq $LASTEXITCODE) {
+            Write-Host "✅ Script 'Deploy-VirtualMachines.ps1' completed successfully" -ForegroundColor Blue
             Write-Host "✅ Phase 2 completed successfully" -ForegroundColor Green
             $deploymentResults.Phases["Phase2"] = @{ Status = "Success"; Description = "Virtual Machines" }
         } else {
+            Write-Host "❌ Script 'Deploy-VirtualMachines.ps1' failed (exit code: $LASTEXITCODE)" -ForegroundColor Red
             throw "Script exited with code: $LASTEXITCODE"
         }
     } catch {
@@ -253,13 +265,12 @@ if (2 -in $Phases) {
 
 if (3 -in $Phases) {
     Write-Host ""
-    Write-Host "🛡️ Phase 3: Defender Plans Configuration" -ForegroundColor Green
-    Write-Host "=======================================" -ForegroundColor Green
+    Write-Host "🛡️ Phase 3: Defender Plans Configuration" -ForegroundColor Magenta
+    Write-Host "=======================================" -ForegroundColor Magenta
     
     try {
         $scriptPath = Join-Path $scriptsPath "Deploy-DefenderPlans.ps1"
         $params = @{
-            EnvironmentName = $EnvironmentName
         }
         
         if ($SecurityContactEmail) { $params.SecurityContactEmail = $SecurityContactEmail }
@@ -267,13 +278,15 @@ if (3 -in $Phases) {
         if ($WhatIf) { $params.WhatIf = $true }
         if ($Force) { $params.Force = $true }
         
-        Write-Host "🚀 Executing Defender plans configuration..." -ForegroundColor Cyan
+        Write-Host "🚀 Calling script 'Deploy-DefenderPlans.ps1'..." -ForegroundColor Blue
         & $scriptPath @params
         
         if ($LASTEXITCODE -eq 0 -or $null -eq $LASTEXITCODE) {
+            Write-Host "✅ Script 'Deploy-DefenderPlans.ps1' completed successfully" -ForegroundColor Blue
             Write-Host "✅ Phase 3 completed successfully" -ForegroundColor Green
             $deploymentResults.Phases["Phase3"] = @{ Status = "Success"; Description = "Defender Plans" }
         } else {
+            Write-Host "❌ Script 'Deploy-DefenderPlans.ps1' failed (exit code: $LASTEXITCODE)" -ForegroundColor Red
             throw "Script exited with code: $LASTEXITCODE"
         }
     } catch {
@@ -294,8 +307,8 @@ if (3 -in $Phases) {
 
 if (4 -in $Phases) {
     Write-Host ""
-    Write-Host "🔐 Phase 4: Security Features" -ForegroundColor Green
-    Write-Host "=============================" -ForegroundColor Green
+    Write-Host "🔐 Phase 4: Security Features" -ForegroundColor Magenta
+    Write-Host "=============================" -ForegroundColor Magenta
     
     try {
         $scriptPath = Join-Path $scriptsPath "Deploy-SecurityFeatures.ps1"
@@ -308,13 +321,15 @@ if (4 -in $Phases) {
         if ($WhatIf) { $params.WhatIf = $true }
         if ($Force) { $params.Force = $true }
         
-        Write-Host "🚀 Executing security features configuration..." -ForegroundColor Cyan
+        Write-Host "🚀 Calling script 'Deploy-SecurityFeatures.ps1'..." -ForegroundColor Blue
         & $scriptPath @params
         
         if ($LASTEXITCODE -eq 0 -or $null -eq $LASTEXITCODE) {
+            Write-Host "✅ Script 'Deploy-SecurityFeatures.ps1' completed successfully" -ForegroundColor Blue
             Write-Host "✅ Phase 4 completed successfully" -ForegroundColor Green
             $deploymentResults.Phases["Phase4"] = @{ Status = "Success"; Description = "Security Features" }
         } else {
+            Write-Host "❌ Script 'Deploy-SecurityFeatures.ps1' failed (exit code: $LASTEXITCODE)" -ForegroundColor Red
             throw "Script exited with code: $LASTEXITCODE"
         }
     } catch {
@@ -330,13 +345,97 @@ if (4 -in $Phases) {
 }
 
 # =============================================================================
-# Phase 5: Deployment Validation
+# Phase 5: Microsoft Sentinel Integration
 # =============================================================================
 
 if (5 -in $Phases) {
     Write-Host ""
-    Write-Host "✅ Phase 5: Deployment Validation" -ForegroundColor Green
-    Write-Host "=================================" -ForegroundColor Green
+    Write-Host "🔍 Phase 5: Microsoft Sentinel Integration" -ForegroundColor Magenta
+    Write-Host "=========================================" -ForegroundColor Magenta
+    
+    try {
+        $scriptPath = Join-Path $scriptsPath "Deploy-Sentinel.ps1"
+        $params = @{
+            EnvironmentName = $EnvironmentName
+        }
+        
+        if ($UseParametersFile) { $params.UseParametersFile = $true }
+        if ($WhatIf) { $params.WhatIf = $true }
+        if ($Force) { $params.Force = $true }
+        
+        Write-Host "🚀 Calling script 'Deploy-Sentinel.ps1'..." -ForegroundColor Blue
+        & $scriptPath @params
+        
+        if ($LASTEXITCODE -eq 0 -or $null -eq $LASTEXITCODE) {
+            Write-Host "✅ Script 'Deploy-Sentinel.ps1' completed successfully" -ForegroundColor Blue
+            Write-Host "✅ Phase 5 completed successfully" -ForegroundColor Green
+            $deploymentResults.Phases["Phase5"] = @{ Status = "Success"; Description = "Microsoft Sentinel Integration" }
+        } else {
+            Write-Host "❌ Script 'Deploy-Sentinel.ps1' failed (exit code: $LASTEXITCODE)" -ForegroundColor Red
+            throw "Script exited with code: $LASTEXITCODE"
+        }
+    } catch {
+        Write-Host "❌ Phase 5 failed: $_" -ForegroundColor Red
+        $deploymentResults.Phases["Phase5"] = @{ Status = "Failed"; Description = "Microsoft Sentinel Integration"; Error = $_ }
+        if (-not $Force) {
+            Write-Host "🛑 Stopping deployment due to Phase 5 failure" -ForegroundColor Red
+            exit 1
+        }
+    }
+} else {
+    Write-Host "⏭️ Skipping Phase 5: Microsoft Sentinel Integration" -ForegroundColor Yellow
+}
+
+# =============================================================================
+# Phase 6: Compliance Analysis
+# =============================================================================
+
+if (6 -in $Phases) {
+    Write-Host ""
+    Write-Host "📊 Phase 6: Compliance Analysis" -ForegroundColor Magenta
+    Write-Host "===============================" -ForegroundColor Magenta
+    
+    try {
+        $scriptPath = Join-Path $scriptsPath "Deploy-ComplianceAnalysis.ps1"
+        $params = @{
+            EnvironmentName = $EnvironmentName
+        }
+        
+        if ($UseParametersFile) { $params.UseParametersFile = $true }
+        if ($WhatIf) { $params.WhatIf = $true }
+        # Note: Deploy-ComplianceAnalysis.ps1 does not support -Force parameter
+        
+        Write-Host "🚀 Calling script 'Deploy-ComplianceAnalysis.ps1'..." -ForegroundColor Blue
+        & $scriptPath @params
+        
+        if ($LASTEXITCODE -eq 0 -or $null -eq $LASTEXITCODE) {
+            Write-Host "✅ Script 'Deploy-ComplianceAnalysis.ps1' completed successfully" -ForegroundColor Blue
+            Write-Host "✅ Phase 6 completed successfully" -ForegroundColor Green
+            $deploymentResults.Phases["Phase6"] = @{ Status = "Success"; Description = "Compliance Analysis" }
+        } else {
+            Write-Host "❌ Script 'Deploy-ComplianceAnalysis.ps1' failed (exit code: $LASTEXITCODE)" -ForegroundColor Red
+            throw "Script exited with code: $LASTEXITCODE"
+        }
+    } catch {
+        Write-Host "❌ Phase 6 failed: $_" -ForegroundColor Red
+        $deploymentResults.Phases["Phase6"] = @{ Status = "Failed"; Description = "Compliance Analysis"; Error = $_ }
+        if (-not $Force) {
+            Write-Host "🛑 Stopping deployment due to Phase 6 failure" -ForegroundColor Red
+            exit 1
+        }
+    }
+} else {
+    Write-Host "⏭️ Skipping Phase 6: Compliance Analysis" -ForegroundColor Yellow
+}
+
+# =============================================================================
+# Phase 7: Deployment Validation
+# =============================================================================
+
+if (7 -in $Phases) {
+    Write-Host ""
+    Write-Host "✅ Phase 7: Deployment Validation" -ForegroundColor Magenta
+    Write-Host "=================================" -ForegroundColor Magenta
     
     try {
         $scriptPath = Join-Path $scriptsPath "Test-DeploymentValidation.ps1"
@@ -344,26 +443,169 @@ if (5 -in $Phases) {
             EnvironmentName = $EnvironmentName
             Location = $Location
             DetailedReport = $true
-            ExportResults = $true
         }
         
         if ($UseParametersFile) { $params.UseParametersFile = $true }
         
-        Write-Host "🚀 Executing deployment validation..." -ForegroundColor Cyan
+        Write-Host "🚀 Calling script 'Test-DeploymentValidation.ps1'..." -ForegroundColor Blue
         & $scriptPath @params
         
         if ($LASTEXITCODE -eq 0 -or $null -eq $LASTEXITCODE) {
-            Write-Host "✅ Phase 5 completed successfully" -ForegroundColor Green
-            $deploymentResults.Phases["Phase5"] = @{ Status = "Success"; Description = "Deployment Validation" }
+            Write-Host "✅ Script 'Test-DeploymentValidation.ps1' completed successfully" -ForegroundColor Blue
+            Write-Host "✅ Phase 7 completed successfully" -ForegroundColor Green
+            $deploymentResults.Phases["Phase7"] = @{ Status = "Success"; Description = "Deployment Validation" }
         } else {
+            Write-Host "❌ Script 'Test-DeploymentValidation.ps1' failed (exit code: $LASTEXITCODE)" -ForegroundColor Blue
             throw "Script exited with code: $LASTEXITCODE"
         }
     } catch {
-        Write-Host "❌ Phase 5 failed: $_" -ForegroundColor Red
-        $deploymentResults.Phases["Phase5"] = @{ Status = "Failed"; Description = "Deployment Validation"; Error = $_ }
+        Write-Host "❌ Phase 7 failed: $_" -ForegroundColor Red
+        $deploymentResults.Phases["Phase7"] = @{ Status = "Failed"; Description = "Deployment Validation"; Error = $_ }
     }
 } else {
-    Write-Host "⏭️ Skipping Phase 5: Deployment Validation" -ForegroundColor Yellow
+    Write-Host "⏭️ Skipping Phase 7: Deployment Validation" -ForegroundColor Yellow
+}
+
+# =============================================================================
+# Phase 8: Cost Analysis
+# =============================================================================
+
+if (8 -in $Phases) {
+    Write-Host ""
+    Write-Host "💰 Phase 8: Cost Analysis" -ForegroundColor Magenta
+    Write-Host "=========================" -ForegroundColor Magenta
+    
+    try {
+        $scriptPath = Join-Path $scriptsPath "Deploy-CostAnalysis.ps1"
+        $params = @{
+            EnvironmentName = $EnvironmentName
+        }
+        
+        if ($UseParametersFile) { $params.UseParametersFile = $true }
+        if ($WhatIf) { $params.WhatIf = $true }
+        # Note: Deploy-CostAnalysis.ps1 does not support -Force parameter
+        
+        Write-Host "🚀 Calling script 'Deploy-CostAnalysis.ps1'..." -ForegroundColor Blue
+        & $scriptPath @params
+        
+        if ($LASTEXITCODE -eq 0 -or $null -eq $LASTEXITCODE) {
+            Write-Host "✅ Script 'Deploy-CostAnalysis.ps1' completed successfully" -ForegroundColor Blue
+            Write-Host "✅ Phase 8 completed successfully" -ForegroundColor Green
+            $deploymentResults.Phases["Phase8"] = @{ Status = "Success"; Description = "Cost Analysis" }
+        } else {
+            Write-Host "❌ Script 'Deploy-CostAnalysis.ps1' failed (exit code: $LASTEXITCODE)" -ForegroundColor Red
+            throw "Script exited with code: $LASTEXITCODE"
+        }
+    } catch {
+        Write-Host "❌ Phase 8 failed: $_" -ForegroundColor Red
+        $deploymentResults.Phases["Phase8"] = @{ Status = "Failed"; Description = "Cost Analysis"; Error = $_ }
+        if (-not $Force) {
+            Write-Host "🛑 Stopping deployment due to Phase 8 failure" -ForegroundColor Red
+            exit 1
+        }
+    }
+} else {
+    Write-Host "⏭️ Skipping Phase 8: Cost Analysis" -ForegroundColor Yellow
+}
+
+# =============================================================================
+# Phase 9: Auto-Shutdown Configuration (Optional)
+# =============================================================================
+
+if (9 -in $Phases) {
+    Write-Host ""
+    Write-Host "⏰ Phase 9: Auto-Shutdown Configuration" -ForegroundColor Magenta
+    Write-Host "=======================================" -ForegroundColor Magenta
+    
+    try {
+        $scriptPath = Join-Path $scriptsPath "Deploy-AutoShutdown.ps1"
+        $params = @{
+            EnvironmentName = $EnvironmentName
+        }
+        
+        if ($UseParametersFile) { $params.UseParametersFile = $true }
+        if ($WhatIf) { $params.WhatIf = $true }
+        if ($Force) { $params.Force = $true }
+        
+        Write-Host "🚀 Calling script 'Deploy-AutoShutdown.ps1'..." -ForegroundColor Blue
+        & $scriptPath @params
+        
+        if ($LASTEXITCODE -eq 0 -or $null -eq $LASTEXITCODE) {
+            Write-Host "✅ Script 'Deploy-AutoShutdown.ps1' completed successfully" -ForegroundColor Blue
+            Write-Host "✅ Phase 9 completed successfully" -ForegroundColor Green
+            $deploymentResults.Phases["Phase9"] = @{ Status = "Success"; Description = "Auto-Shutdown Configuration" }
+        } else {
+            Write-Host "❌ Script 'Deploy-AutoShutdown.ps1' failed (exit code: $LASTEXITCODE)" -ForegroundColor Red
+            throw "Script exited with code: $LASTEXITCODE"
+        }
+    } catch {
+        Write-Host "❌ Phase 9 failed: $_" -ForegroundColor Red
+        $deploymentResults.Phases["Phase9"] = @{ Status = "Failed"; Description = "Auto-Shutdown Configuration"; Error = $_ }
+        # Note: Not stopping deployment for optional auto-shutdown failure
+        Write-Host "ℹ️ Auto-shutdown is optional - continuing with remaining phases" -ForegroundColor Cyan
+    }
+} else {
+    Write-Host "⏭️ Skipping Phase 9: Auto-Shutdown Configuration (Optional)" -ForegroundColor Yellow
+}
+
+# =============================================================================
+# Phase 10: Portal Configuration Guide
+# =============================================================================
+
+if (10 -in $Phases) {
+    Write-Host ""
+    Write-Host "📋 Phase 10: Portal Configuration Guide" -ForegroundColor Magenta
+    Write-Host "=======================================" -ForegroundColor Magenta
+    
+    Write-Host "🌐 The following configurations must be completed manually in Azure Portal:" -ForegroundColor Cyan
+    Write-Host ""
+    
+    Write-Host "📊 Step 1: Configure Defender for Cloud Workbooks (Optional)" -ForegroundColor Yellow
+    Write-Host "   • Navigate to Defender for Cloud → General → Workbooks" -ForegroundColor White
+    Write-Host "   • Configure Security Operations Efficiency workbook" -ForegroundColor White
+    Write-Host "   • Configure Azure Security Benchmark Assessment workbook" -ForegroundColor White
+    Write-Host "   • Configure Threat Protection Status workbook" -ForegroundColor White
+    Write-Host ""
+    
+    Write-Host "🔗 Step 2: Enable Defender for Cloud Connector in Sentinel" -ForegroundColor Yellow
+    Write-Host "   • Navigate to Microsoft Sentinel → Your workspace" -ForegroundColor White
+    Write-Host "   • Go to Content management → Content hub" -ForegroundColor White
+    Write-Host "   • Search and install 'Microsoft Defender for Cloud' solution" -ForegroundColor White
+    Write-Host "   • Go to Data connectors → Microsoft Defender for Cloud → Connect" -ForegroundColor White
+    Write-Host ""
+    
+    Write-Host "📁 Step 3: Enable File Integrity Monitoring" -ForegroundColor Yellow
+    Write-Host "   • Navigate to Defender for Cloud → Environment settings → Your subscription" -ForegroundColor White
+    Write-Host "   • Click Defender plans → Servers → Settings" -ForegroundColor White
+    Write-Host "   • Toggle File Integrity Monitoring to On" -ForegroundColor White
+    Write-Host "   • Select Log Analytics workspace and apply recommended settings" -ForegroundColor White
+    Write-Host ""
+    
+    Write-Host "🚨 Step 4: Generate Sample Alerts" -ForegroundColor Yellow
+    Write-Host "   • Navigate to Defender for Cloud → Security alerts" -ForegroundColor White
+    Write-Host "   • Click Sample alerts in toolbar" -ForegroundColor White
+    Write-Host "   • Select your subscription and relevant Defender plans" -ForegroundColor White
+    Write-Host "   • Click Create sample alerts" -ForegroundColor White
+    Write-Host ""
+    
+    Write-Host "🛡️ Step 5: Confirm Sample Alerts are Synced to Defender XDR" -ForegroundColor Yellow
+    Write-Host "   • Wait 2-5 minutes after generating sample alerts" -ForegroundColor White
+    Write-Host "   • Navigate to Microsoft Defender XDR portal (security.microsoft.com)" -ForegroundColor White
+    Write-Host "   • Go to Incidents & alerts → Alerts" -ForegroundColor White
+    Write-Host "   • Filter by Detection source: 'Defender for Cloud'" -ForegroundColor White
+    Write-Host ""
+    
+    Write-Host "🔍 Step 6: Confirm Sample Alerts are Synced to Sentinel" -ForegroundColor Yellow
+    Write-Host "   • Wait 5-15 minutes after alerts appear in Defender for Cloud" -ForegroundColor White
+    Write-Host "   • Navigate to Microsoft Sentinel → Your workspace" -ForegroundColor White
+    Write-Host "   • Go to Incidents to check for auto-generated incidents" -ForegroundColor White
+    Write-Host "   • Use KQL queries in Logs to verify alert ingestion" -ForegroundColor White
+    Write-Host ""
+    
+    Write-Host "✅ Portal configuration guide completed successfully" -ForegroundColor Green
+    $deploymentResults.Phases["Phase10"] = @{ Status = "Success"; Description = "Portal Configuration Guide" }
+} else {
+    Write-Host "⏭️ Skipping Phase 10: Portal Configuration Guide" -ForegroundColor Yellow
 }
 
 # =============================================================================
@@ -419,11 +661,21 @@ if ($WhatIf) {
     Write-Host "💡 Next Steps:" -ForegroundColor Yellow
     
     if ($deploymentResults.Overall.Success) {
-        Write-Host "   • 🎉 Deployment completed successfully!" -ForegroundColor Green
-        Write-Host "   • Visit Azure Portal to explore your Defender for Cloud deployment" -ForegroundColor White
-        Write-Host "   • Generate sample alerts: Defender for Cloud → Security alerts → Sample alerts" -ForegroundColor White
-        Write-Host "   • Review security recommendations in the portal" -ForegroundColor White
-        Write-Host "   • Consider integrating with Microsoft Sentinel for SIEM capabilities" -ForegroundColor White
+        Write-Host "   🎉 Deployment completed successfully!" -ForegroundColor Green
+        Write-Host ""
+        Write-Host "   📋 Complete these remaining portal configurations:" -ForegroundColor Cyan
+        Write-Host "   1. Configure Defender for Cloud workbooks (optional visualization)" -ForegroundColor White
+        Write-Host "   2. Enable Defender for Cloud connector in Sentinel" -ForegroundColor White
+        Write-Host "   3. Enable File Integrity Monitoring" -ForegroundColor White
+        Write-Host "   4. Generate sample alerts for testing" -ForegroundColor White
+        Write-Host "   5. Confirm sample alerts sync to Defender XDR" -ForegroundColor White
+        Write-Host "   6. Confirm sample alerts sync to Sentinel" -ForegroundColor White
+        Write-Host ""
+        Write-Host "   🔗 Helpful Links:" -ForegroundColor Cyan
+        Write-Host "   • Azure Portal: https://portal.azure.com" -ForegroundColor White
+        Write-Host "   • Defender for Cloud: https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade" -ForegroundColor White
+        Write-Host "   • Microsoft Sentinel: https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/microsoft.securityinsightsarg%2Fsentinel" -ForegroundColor White
+        Write-Host "   • Defender XDR: https://security.microsoft.com" -ForegroundColor White
     } else {
         Write-Host "   • Review failed phases and error messages above" -ForegroundColor White
         Write-Host "   • Run individual scripts to troubleshoot specific issues" -ForegroundColor White

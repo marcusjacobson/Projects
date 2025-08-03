@@ -99,11 +99,51 @@ Use colons when bullet points introduce or lead to sub-lists:
 ### Headers and Structure
 
 - **Use hash-based headers (#, ##, ###) instead of bold text for section titles.**
+- **Avoid using bold text followed by colons as section headers** - convert these to proper hash-based headers.
+- **Make header text unique to avoid duplicate heading lint warnings** - use descriptive, specific titles.
 - Use consistent header hierarchy (H1, H2, H3, etc.) to create proper document structure.
 - Include appropriate emoji icons for main sections when enhancing readability.
 - Use descriptive headers that clearly indicate section content.
 - Maintain logical content flow from general to specific information.
 - Reserve bold text for interface elements, resource names, and emphasis within content.
+
+#### Common Bold Text Header Issues to Avoid
+
+These patterns should be converted to proper headers:
+
+```markdown
+❌ Incorrect (Bold text acting as headers):
+**Configuration Steps:**
+**Verification Steps:** 
+**Expected Results:**
+**Important Notes:**
+**Cost Monitoring:**
+**What Gets Removed:**
+
+✅ Correct (Proper hash-based headers):
+#### Configuration Steps
+#### Verification Steps  
+#### Expected Results
+#### Important Notes
+#### Cost Monitoring
+#### What Gets Removed
+```
+
+#### Header Uniqueness Requirements
+
+Avoid duplicate headers by making them specific:
+
+```markdown
+❌ Incorrect (Duplicate headers):
+#### Configuration Steps (appears multiple times)
+#### Verification Steps (appears multiple times)
+
+✅ Correct (Unique descriptive headers):
+#### Workbook Configuration Steps
+#### Sentinel Connector Configuration Steps
+#### Defender XDR Verification Steps
+#### Sentinel Verification Steps
+```
 
 #### Correct Header Examples
 
@@ -124,8 +164,77 @@ Use colons when bullet points introduce or lead to sub-lists:
 
 #### When to Use Bold vs Headers
 
-- **Use Headers For**: Document structure, section titles, step titles, topic organization.
-- **Use Bold For**: Interface elements, button names, field names, resource names, emphasis within content.
+- **Use Headers For**: Document structure, section titles, step titles, topic organization, any text that serves as a section divider or organizer.
+- **Use Bold For**: Interface elements, button names, field names, resource names, emphasis within content, subsection labels within paragraphs.
+
+#### Bold Text vs Header Decision Matrix
+
+| Content Type | Formatting | Example |
+|--------------|------------|---------|
+| Section divider | Header (####) | `#### Configuration Steps` |
+| Subsection within content | Bold | `**Configuration Steps:** Follow these procedures...` |
+| Interface element | Bold | `Click **Save** to proceed` |
+| Resource name | Bold | `Navigate to **Resource Group**` |
+| Standalone section | Header (####) | `#### Expected Results` |
+| Timeline/status info | Header (####) | `#### Defender XDR Timeline` |
+
+### Code Block Formatting
+
+- Use appropriate language identifiers for syntax highlighting.
+- **Ensure code blocks are surrounded by blank lines** to avoid MD031 lint warnings.
+- Include clear explanations before and after code blocks.
+- Use consistent indentation and formatting within code blocks.
+- Add comments to complex code examples for clarity.
+
+#### Correct Code Block Formatting
+
+Use proper spacing and language identifiers:
+
+```text
+✅ Correct format:
+Text before code block.
+
+```powershell
+# PowerShell command example
+Get-AzResourceGroup
+```
+
+Text after code block.
+
+❌ Incorrect format:
+Text before code block.
+```powershell
+# PowerShell command example  
+Get-AzResourceGroup
+```
+Text after code block.
+```
+
+### List Formatting
+
+- **Ensure lists are surrounded by blank lines** to avoid MD032 lint warnings.
+- Use consistent list formatting throughout documents.
+- Maintain proper indentation for nested lists.
+- Follow punctuation rules for list items (periods for standalone, colons for introductory).
+
+#### Correct List Formatting
+
+```markdown
+✅ Correct (surrounded by blank lines):
+Text before list.
+
+- First list item.
+- Second list item.
+- Third list item.
+
+Text after list.
+
+❌ Incorrect (no blank lines):
+Text before list.
+- First list item.
+- Second list item.
+Text after list.
+```
 
 ### Links and References
 
@@ -133,13 +242,6 @@ Use colons when bullet points introduce or lead to sub-lists:
 - Include screenshot references with clear descriptions.
 - Format external links with full URLs when appropriate.
 - Use consistent link formatting throughout documents.
-
-### Code Blocks
-
-- Use appropriate language identifiers for syntax highlighting.
-- Include clear explanations before and after code blocks.
-- Use consistent indentation and formatting within code blocks.
-- Add comments to complex code examples for clarity.
 
 ---
 
@@ -211,40 +313,74 @@ Use colons when bullet points introduce or lead to sub-lists:
 
 When reviewing any markdown document, verify:
 
-### Punctuation Review
+### Core Formatting Standards
 
-- [ ] All bullet points end with periods
-- [ ] All sentences end with appropriate punctuation
-- [ ] Consistent punctuation usage throughout document
+- [ ] **Punctuation**: Standalone bullet points end with periods, introductory ones with colons
+- [ ] **Headers**: Hash-based headers (####) instead of bold text, unique descriptive names
+- [ ] **Interface Elements**: Bold formatting instead of quotes for UI elements
+- [ ] **Code Blocks**: Surrounded by blank lines with language identifiers
+- [ ] **Lists**: Surrounded by blank lines with proper punctuation
 
-### Formatting Review
+### Document Structure
 
-- [ ] Interface elements use bold formatting instead of quotes
-- [ ] Hash-based headers (#, ##, ###) used instead of bold text for section titles
-- [ ] Consistent header hierarchy and proper document structure
-- [ ] Proper code block formatting with language identifiers
-- [ ] Consistent link formatting and descriptions
+- [ ] **Header Hierarchy**: Proper progression (##, ###, ####) without skipping levels
+- [ ] **Professional Tone**: Clear, instructional language for technical audience
+- [ ] **Content Flow**: Logical progression from simple to complex topics
+- [ ] **Cross-References**: Valid links and consistent formatting
 
-### Content Review
+### Technical Standards
 
-- [ ] Professional technical documentation tone throughout
-- [ ] Clear, instructional language suitable for technical audience
-- [ ] Logical content progression from simple to complex
-- [ ] Sufficient context and explanation for procedures
+- [ ] **Azure Resources**: Consistent naming conventions, bold when referenced
+- [ ] **Terminology**: Official Microsoft product names, defined acronyms
+- [ ] **Accessibility**: Descriptive headings, alternative text for visuals
 
-### Technical Accuracy Review
+### Markdown Lint Compliance
 
-- [ ] Consistent Azure resource naming conventions
-- [ ] Accurate product names and terminology
-- [ ] Current version references and date information
-- [ ] Valid cross-references and external links
+- [ ] **MD001**: Header levels increment by one only
+- [ ] **MD024**: No duplicate headings (unique names required)
+- [ ] **MD031**: Code blocks surrounded by blank lines
+- [ ] **MD032**: Lists surrounded by blank lines  
+- [ ] **MD040**: Code blocks have language specified
 
-### Accessibility Review
+---
 
-- [ ] Descriptive headings and clear content structure
-- [ ] Alternative text for visual references
-- [ ] Consistent formatting for screen readers
-- [ ] Clear language and terminology definitions
+## 🔍 Quick Reference Guide
+
+### Most Common Formatting Issues
+
+1. **Bold text with colons acting as headers** → Convert to proper hash headers (####)
+2. **Duplicate header names** → Make headers unique and descriptive
+3. **Missing blank lines around code blocks/lists** → Add blank lines before and after
+4. **Interface elements in quotes** → Use bold formatting instead
+5. **Inconsistent header hierarchy** → Follow proper progression (##, ###, ####)
+
+### Essential Patterns to Remember
+
+```text
+✅ Correct patterns:
+
+#### Unique Descriptive Header
+
+- List item with period.
+- Introductory item with colon:
+  - Sub-item details.
+
+Click **Button Name** to proceed.
+
+```powershell
+# Code with blank lines before and after
+Get-AzResource
+```
+
+❌ Avoid these patterns:
+
+**Header Text:**
+
+- List item without period
+- Click "Button Name" to proceed
+
+Code without proper spacing or language ID
+```
 
 ---
 
@@ -288,27 +424,41 @@ Use this prompt when you want to ensure a markdown file is fully compliant with 
 ```text
 Please review this markdown document for compliance with the Azure AI Security Skills Challenge markdown style guide. Follow these requirements:
 
-1. **Systematic Section-by-Section Review**: Go through the document from beginning to end, section by section. Do not skip around or jump between sections.
+1. **Systematic Section-by-Section Review**: Go through the document from beginning to end, section by section. Do not skip around or jump between sections. Read the document in logical chunks (50-100 lines at a time) to ensure comprehensive coverage.
 
 2. **Style Guide Compliance Areas**: Check for compliance with:
    - Punctuation rules (standalone bullet points end with periods, introductory bullet points end with colons)
-   - Bold formatting for interface elements instead of quotes
+   - Bold formatting for interface elements instead of quotes  
    - Hash-based headers (#, ##, ###) instead of bold text for section titles
+   - **Bold text followed by colons converted to proper headers** (e.g., "**Configuration Steps:**" → "#### Configuration Steps")
+   - **Unique header names to avoid MD024 duplicate heading warnings** (e.g., "Configuration Steps" → "Workbook Configuration Steps")
+   - **Code blocks surrounded by blank lines** (MD031 compliance)
+   - **Lists surrounded by blank lines** (MD032 compliance)
    - Professional technical documentation tone
    - Consistent header hierarchy and proper document structure
-   - Proper code block formatting
+   - Proper code block formatting with language identifiers
    - Azure resource naming conventions
    - Clear, instructional language suitable for technical professionals
 
-3. **Implementation Method**: Use the replace_string_in_file tool with sufficient context (3-5 lines before and after) for precise edits.
+3. **Implementation Method**: Use the replace_string_in_file tool with sufficient context (3-5 lines before and after) for precise edits. Make one type of fix at a time rather than multiple simultaneous changes.
 
-4. **Multiple Passes**: After completing the first full section-by-section review, perform additional passes as needed until all style guide issues are resolved.
+4. **Common Issues to Look For**:
+   - Bold text acting as section headers (especially those ending with colons)
+   - Duplicate heading text (make headers unique and descriptive)
+   - Lists or code blocks not surrounded by blank lines
+   - Missing language identifiers in code blocks
+   - Interface elements in quotes instead of bold formatting
 
-5. **Quality Assurance**: Use the Quality Assurance Checklist from the style guide to verify compliance before declaring the review complete.
+5. **Multiple Passes**: After completing the first full section-by-section review, perform additional passes as needed until all style guide issues are resolved. Run get_errors tool to check for remaining lint warnings.
 
-6. **Completion Criteria**: Continue iterating through the document until you can confirm that all sections comply with the style guide standards.
+6. **Quality Assurance**: Use the Quality Assurance Checklist from the style guide to verify compliance before declaring the review complete.
 
-Please start the review from the beginning of the document and work systematically through each section.
+7. **Completion Criteria**: Continue iterating through the document until you can confirm that:
+   - All sections comply with the style guide standards
+   - No markdown lint warnings remain (MD024, MD031, MD032, MD001, MD040)
+   - The document maintains professional technical documentation standards throughout
+
+Please start the review from the beginning of the document and work systematically through each section. Focus on catching bold text that should be headers, ensuring header uniqueness, and verifying proper spacing around code blocks and lists.
 ```
 
 ---

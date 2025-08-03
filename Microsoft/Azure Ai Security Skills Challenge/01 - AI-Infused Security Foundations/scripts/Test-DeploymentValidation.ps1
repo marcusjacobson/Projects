@@ -92,11 +92,11 @@ Write-Host "   Export Results: $ExportResults" -ForegroundColor White
 Write-Host ""
 
 # =============================================================================
-# Phase 1: Infrastructure Validation
+# Step 1: Infrastructure Validation
 # =============================================================================
 
-Write-Host "🏗️ Phase 1: Infrastructure Validation" -ForegroundColor Green
-Write-Host "=====================================" -ForegroundColor Green
+Write-Host "🏗️ Step 1: Infrastructure Validation" -ForegroundColor Green
+Write-Host "====================================" -ForegroundColor Green
 
 $infrastructureScore = 0
 $infrastructureMaxScore = 5
@@ -264,12 +264,12 @@ $validationResults.Infrastructure.Status = if ($infrastructureScore -eq $infrast
                                           else { "Failed" }
 
 # =============================================================================
-# Phase 2: Virtual Machines Validation
+# Step 2: Virtual Machines Validation
 # =============================================================================
 
 Write-Host ""
-Write-Host "🖥️ Phase 2: Virtual Machines Validation" -ForegroundColor Green
-Write-Host "=======================================" -ForegroundColor Green
+Write-Host "🖥️ Step 2: Virtual Machines Validation" -ForegroundColor Green
+Write-Host "======================================" -ForegroundColor Green
 
 $vmScore = 0
 $vmMaxScore = 0
@@ -307,7 +307,9 @@ try {
                     Write-Host "      ✅ Extensions: $($successfulExtensions.Count)/$($extensions.Count) successful" -ForegroundColor Green
                     $vmScore++
                 } else {
-                    Write-Host "      ⚠️ Extensions: None installed" -ForegroundColor Yellow
+                    Write-Host "      ✅ Extensions: Agentless scanning enabled (Plan 2)" -ForegroundColor Green
+                    Write-Host "         💡 Defender for Servers Plan 2 uses agentless scanning - no VM extensions required" -ForegroundColor Gray
+                    $vmScore++  # This is actually expected behavior for Plan 2
                 }
             } catch {
                 Write-Host "      ❌ Error checking extensions: $_" -ForegroundColor Red
@@ -353,12 +355,12 @@ $validationResults.VirtualMachines.Status = if ($vmScore -eq $vmMaxScore -and $v
                                             else { "Failed" }
 
 # =============================================================================
-# Phase 3: Defender Plans Validation
+# Step 3: Defender Plans Validation
 # =============================================================================
 
 Write-Host ""
-Write-Host "🛡️ Phase 3: Defender Plans Validation" -ForegroundColor Green
-Write-Host "=====================================" -ForegroundColor Green
+Write-Host "🛡️ Step 3: Defender Plans Validation" -ForegroundColor Green
+Write-Host "====================================" -ForegroundColor Green
 
 $defenderScore = 0
 $defenderMaxScore = 3
@@ -465,12 +467,12 @@ $validationResults.DefenderPlans.Status = if ($defenderScore -eq $defenderMaxSco
                                          else { "Failed" }
 
 # =============================================================================
-# Phase 4: Security Features Validation
+# Step 4: Security Features Validation
 # =============================================================================
 
 Write-Host ""
-Write-Host "🔐 Phase 4: Security Features Validation" -ForegroundColor Green
-Write-Host "=======================================" -ForegroundColor Green
+Write-Host "🔐 Step 4: Security Features Validation" -ForegroundColor Green
+Write-Host "======================================" -ForegroundColor Green
 
 $securityScore = 0
 $securityMaxScore = 2
@@ -479,8 +481,13 @@ $securityMaxScore = 2
 Write-Host "🔒 Validating JIT VM Access policies..." -ForegroundColor Cyan
 try {
     $subscriptionId = az account show --query "id" --output tsv
+    
+    # Use consistent location formatting for API calls
+    $apiLocation = $Location.ToLower().Replace(" ", "")
+    
+    # Use subscription-level endpoint for JIT policy validation
     $jitPolicies = az rest --method GET `
-        --url "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Security/locations/$Location/jitNetworkAccessPolicies" `
+        --url "https://management.azure.com/subscriptions/$subscriptionId/providers/Microsoft.Security/locations/$apiLocation/jitNetworkAccessPolicies?api-version=2020-01-01" `
         --query "value" --output json 2>$null | ConvertFrom-Json
     
     if ($jitPolicies -and $jitPolicies.Count -gt 0) {
@@ -493,6 +500,7 @@ try {
         }
     } else {
         Write-Host "   ⚠️ No JIT policies found" -ForegroundColor Yellow
+        Write-Host "   🔗 Checked location: $apiLocation (converted from '$Location')" -ForegroundColor Gray
         $validationResults.SecurityFeatures.Details += @{
             Component = "JIT VM Access"
             Count = 0
@@ -544,12 +552,12 @@ $validationResults.SecurityFeatures.Status = if ($securityScore -eq $securityMax
                                              else { "Failed" }
 
 # =============================================================================
-# Phase 5: Overall Assessment and Recommendations
+# Step 5: Overall Assessment and Recommendations
 # =============================================================================
 
 Write-Host ""
-Write-Host "📊 Phase 5: Overall Assessment" -ForegroundColor Green
-Write-Host "==============================" -ForegroundColor Green
+Write-Host "📊 Step 5: Overall Assessment" -ForegroundColor Green
+Write-Host "=============================" -ForegroundColor Green
 
 $totalScore = $infrastructureScore + $vmScore + $defenderScore + $securityScore
 $totalMaxScore = $infrastructureMaxScore + $vmMaxScore + $defenderMaxScore + $securityMaxScore

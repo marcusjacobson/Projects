@@ -167,11 +167,11 @@ if (-not $Force -and -not $WhatIf) {
 }
 
 # =============================================================================
-# Phase 1: Current Configuration Assessment
+# Step 1: Current Configuration Assessment
 # =============================================================================
 
-Write-Host "🔍 Phase 1: Current Configuration Assessment" -ForegroundColor Green
-Write-Host "===========================================" -ForegroundColor Green
+Write-Host "🔍 Step 1: Current Configuration Assessment" -ForegroundColor Green
+Write-Host "==========================================" -ForegroundColor Green
 
 # Verify Azure CLI authentication
 Write-Host "🔐 Verifying Azure CLI authentication..." -ForegroundColor Cyan
@@ -226,12 +226,12 @@ try {
 }
 
 # =============================================================================
-# Phase 2: Plan Configuration Validation
+# Step 2: Plan Configuration Validation
 # =============================================================================
 
 Write-Host ""
-Write-Host "✅ Phase 2: Plan Configuration Validation" -ForegroundColor Green
-Write-Host "=========================================" -ForegroundColor Green
+Write-Host "✅ Step 2: Plan Configuration Validation" -ForegroundColor Green
+Write-Host "========================================" -ForegroundColor Green
 
 # Validate plan names
 Write-Host "🔍 Validating requested plans..." -ForegroundColor Cyan
@@ -272,12 +272,12 @@ if ($plansAlreadyEnabled.Count -gt 0) {
 }
 
 # =============================================================================
-# Phase 3: Execute Configuration Changes
+# Step 3: Execute Configuration Changes
 # =============================================================================
 
 Write-Host ""
-Write-Host "🚀 Phase 3: Execute Configuration Changes" -ForegroundColor Green
-Write-Host "=========================================" -ForegroundColor Green
+Write-Host "🚀 Step 3: Execute Configuration Changes" -ForegroundColor Green
+Write-Host "=======================================" -ForegroundColor Green
 
 if ($WhatIf) {
     Write-Host "👁️ Preview of changes (What-If mode):" -ForegroundColor Yellow
@@ -359,13 +359,13 @@ if ($WhatIf) {
 }
 
 # =============================================================================
-# Phase 4: Configuration Validation
+# Step 4: Configuration Validation
 # =============================================================================
 
 if (-not $WhatIf) {
     Write-Host ""
-    Write-Host "✅ Phase 4: Configuration Validation" -ForegroundColor Green
-    Write-Host "====================================" -ForegroundColor Green
+    Write-Host "✅ Step 4: Configuration Validation" -ForegroundColor Green
+    Write-Host "===================================" -ForegroundColor Green
     
     # Verify enabled plans
     Write-Host "🔍 Verifying enabled plans..." -ForegroundColor Cyan

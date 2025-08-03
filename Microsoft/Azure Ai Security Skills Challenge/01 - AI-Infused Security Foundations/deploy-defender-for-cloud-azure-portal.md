@@ -1,6 +1,30 @@
-# Deploy Microsoft Defender for Cloud via Azure Portal (2025 Edition)
+# Deploy Microsoft Defender for Cloud via Azure Portal - Step-by-Step Guide
 
-This guide provides a comprehensive walkthrough for deploying and configuring Microsoft Defender for Cloud in a fresh Azure environment using the Azure Portal, reflecting the latest architecture and features as of 2025.
+This guide provides a comprehensive, step-by-step approach to deploying Microsoft Defender for Cloud using the Azure Portal, following the same proven workflow as our Infrastructure-as-Code deployment. Each step can be completed independently, allowing you to understand each component of the security architecture.
+
+## 🎯 Overview
+
+This Azure Portal approach follows the same logical progression as our automated Infrastructure-as-Code deployment, providing:
+
+- **Learning-Focused Experience** - Understand each security component as you deploy it manually.
+- **Portal-Based Deployment** - Hands-on experience with Azure Portal interfaces and workflows.
+- **Comprehensive Validation** - Manual verification at every deployment step.
+- **Foundation for Automation** - Understanding portal workflows that can later be automated.
+
+### Core Deployment Steps
+
+This guide follows the same logical progression as our modular IaC deployment:
+
+1. **Access and Enable Foundation Infrastructure** - Set up core infrastructure and workspace via Azure Portal.
+2. **Enable Modern Server Protection** - Deploy VMs with agentless scanning and endpoint protection.
+3. **Configure Security Policies and Defender Plans** - Enable Defender plans and compliance standards.
+4. **Verify Protection Architecture** - Validate deployment and security coverage.
+5. **Enable Advanced Threat Protection Features** - Just-in-Time access and security features.
+6. **Configure Microsoft Sentinel Integration** - Set up SIEM for security data collection.
+7. **Generate and Monitor Security Alerts** - Test alert generation and investigation workflows.
+8. **Create Workbooks and Dashboards** - Set up security visualization and reporting.
+9. **Portal-Only Advanced Configuration** - Features requiring interactive configuration.
+10. **Set Up Analytics and Cost Management** - Compliance monitoring and cost optimization.
 
 ## 📋 Prerequisites
 
@@ -9,157 +33,469 @@ Before starting, ensure you have:
 - An active Azure subscription with Owner or Contributor permissions.
 - Access to the Azure Portal.
 - Basic understanding of Azure resources and security concepts.
-- 2-3 virtual machines ready for monitoring (or create them as part of this guide).
 
-## 🎯 Overview
-
-Microsoft Defender for Cloud provides unified security management and advanced threat protection across hybrid cloud workloads. This deployment leverages the modern agentless architecture and native integrations available in 2025:
-
-### Core Deployment Steps
-
-1. **Access and Enable Defender for Cloud** - Initial setup and environment configuration.
-2. **Enable Modern Server Protection** - Agentless scanning and Defender for Endpoint integration.
-3. **Create and Configure Resources** - Set up virtual machines for monitoring.
-4. **Verify Protection Architecture** - Confirm agentless scanning and endpoint protection status.
-5. **Configure Security Policies** - Set up compliance standards (MCSB, NIST CSF).
-6. **Review Security Recommendations** - Analyze findings from agentless scanning.
-7. **Set Up Alerts and Notifications** - Configure email notifications and monitoring.
-8. **Enable Advanced Threat Protection** - Just-in-Time access, malware scanning, EDR.
-9. **Generate and Monitor Security Alerts** - Test alert generation and investigation.
-10. **Create Workbooks and Dashboards** - Set up security visualization and reporting.
-
-### Advanced Configuration (Optional)
-
-- **Microsoft Sentinel Integration** - Unified SIEM experience with native connectors.
-- **File Integrity Monitoring** - Modern approach using Defender for Endpoint agent.
-- **Analytics and KQL Queries** - Advanced threat hunting and security data analysis.
-- **Cross-Subscription Management** - Azure Resource Graph Explorer for enterprise environments.
-- **Cost Optimization** - Best practices for modern agentless architecture.
+**Required Permissions**: Owner, Contributor, or Security Admin roles at subscription level.
 
 ---
 
-## Step 1: Access Microsoft Defender for Cloud
+## Step 1: Access and Enable Foundation Infrastructure
 
-### Sign in to Azure Portal
+Deploy the foundational infrastructure that supports Microsoft Defender for Cloud through the Azure Portal.
+
+### 🚀 Sign in to Azure Portal and Navigate to Defender for Cloud
+
+#### Initial Portal Access
 
 - Navigate to [https://portal.azure.com](https://portal.azure.com).
 - Sign in with your Azure account credentials.
-
-### Navigate to Defender for Cloud
-
 - In the Azure Portal search bar, type **Microsoft Defender for Cloud**.
 - Click **Microsoft Defender for Cloud** from the search results.
 - Alternatively, find it under **Security** in the Azure services menu.
 
 📸 **[View Screenshot: Azure Portal Search](https://learn.microsoft.com/en-us/azure/defender-for-cloud/media/get-started/defender-for-cloud-search.png)**
 
----
-
-## Step 2: Enable Defender for Cloud
-
-### Getting Started Page
+#### Getting Started Page
 
 - Upon first access, the Defender for Cloud Getting Started page appears.
 - Review the overview of capabilities and benefits.
 - Click **Enable Defender for Cloud** if not already enabled.
-
-### Choose Your Plan
-
 - The foundational CSPM (Cloud Security Posture Management) capabilities are free.
-- For enhanced protection, enable Defender plans for specific resource types.
-- For this guide, start with the free tier and then upgrade specific plans.
 
 📸 **[View Screenshot: Defender Overview](https://learn.microsoft.com/en-us/azure/reusable-content/ce-skilling/azure/media/defender-for-cloud/overview.png)**
 
----
+### 🚀 Create Resource Group for Organized Deployment
 
-## Step 3: Configure Environment Settings
-
-### Access Environment Settings
-
-- In the Defender for Cloud left navigation pane, click **Environment settings**.
-- Select your subscription from the list.
-- Review the current status of Defender plans.
-
-### Review Default Settings
-
-- Examine the current configuration.
-- Note which plans are enabled (typically CSPM is enabled by default).
-- Review the estimated monthly cost for enhanced plans.
-
-📸 **[View Screenshot: Environment Settings](https://learn.microsoft.com/en-us/azure/defender-for-cloud/media/get-started/environmental-settings.png)**
-
----
-
-## Step 4: Enable Modern Defender for Servers Architecture
-
-### Enable Server Protection
-
-- In Environment Settings, find **Defender for Servers**.
-- Toggle the status to **On** for Plan 2 (recommended for full features).
-- This automatically enables:
-  - **Agentless scanning** for vulnerability assessment and security posture.
-  - **Defender for Endpoint integration** for endpoint protection.
-  - **Malware scanning** without performance impact.
-
-### Configure Agentless Scanning (Enabled by Default)
-
-- Agentless scanning is automatically enabled with Defender for Servers Plan 2.
-- This provides:
-  - Vulnerability assessment without agents.
-  - Configuration assessment.
-  - Malware scanning.
-  - Software inventory.
-- No additional configuration required - works out-of-the-box.
-
-### Enable Defender for Endpoint Integration
-
-- In Environment Settings, under the **Defender for Servers** plan, click **Settings**.
-- In the **Settings and monitoring** section, locate **Endpoint protection**.
-- Toggle the **Status** to **On** (this is usually enabled by default with Plan 2).
-- Click **Continue** and **Save** to apply changes.
-- This provides:
-  - Real-time threat protection.
-  - Behavioral analysis.
-  - Advanced hunting capabilities.
-  - Single agent solution for endpoint protection.
-- **Note**: For new subscriptions, this integration is automatically enabled.
-
-📸 **[View Screenshot: Enable All Plans](https://learn.microsoft.com/en-us/azure/defender-for-cloud/media/get-started/enable-all-plans.png)**
-
----
-
-## Step 5: Create Virtual Machines for Monitoring
-
-To test Defender for Cloud without existing VMs, create a resource group first, then create 2-3 virtual machines for testing:
-
-### Create Resource Group
+Follow the same organizational structure as our IaC deployment by creating a dedicated resource group.
 
 #### Navigate to Resource Groups
 
 - In Azure Portal, search for **Resource groups**.
-- Click **Create** or **+ Create**.
+- Click **+ Create** to create a new resource group.
 
-#### Basic Information
+#### Configure Resource Group
 
 - **Subscription**: Select your subscription.
-- **Resource group**: Enter a name such as **rg-Project-AiSecuritySkillsChallenge**.
-- **Region**: Choose your preferred region (e.g., East US, West Europe).
+- **Resource group**: Enter a name such as **rg-aisec-defender-portal**.
+- **Region**: Choose your preferred region (e.g., West US, East US).
 
-#### Review and Create
+#### Review and Create Resource Group
 
 - Click **Review + create**.
 - After validation passes, click **Create**.
 - Wait for the resource group to be created.
+
+### 🚀 Create Log Analytics Workspace
+
+Create the foundational workspace for security monitoring and data collection.
+
+#### Navigate to Log Analytics Workspaces
+
+- In Azure Portal, search for **Log Analytics workspaces**.
+- Click **+ Create**.
+
+#### Configure Log Analytics Workspace
+
+- **Subscription**: Select your subscription.
+- **Resource Group**: Select the resource group created above.
+- **Name**: Enter **law-aisec-defender-portal**.
+- **Region**: Choose the same region as your resource group.
+- **Pricing tier**: **Pay-as-you-go (Per GB)** (recommended for most scenarios).
+
+#### Review and Create Workspace
+
+- Click **Review + create**.
+- After validation passes, click **Create**.
+- Wait for deployment to complete (typically 2-3 minutes).
+
+### Foundation Deployment Results
+
+After successful completion:
+
+- **Resource Group**: Created with standardized naming for organization.
+- **Log Analytics Workspace**: Ready for security data ingestion and monitoring.
+- **Defender for Cloud**: Initial access configured and ready for plan enablement.
+
+**Timeline**: 5-8 minutes for complete foundation setup via Azure Portal.
+
+## Step 2: Enable Modern Server Protection
+
+Deploy virtual machines with modern agentless scanning and Defender for Endpoint integration, along with the supporting network infrastructure.
+
+> **💰 COST AWARENESS**: This step deploys Azure virtual machines and network infrastructure which incur compute and networking costs:
+>
+> - **Windows Server VM** (Standard_B2s): ~$31-35/month or ~$1.05/day.
+> - **Linux VM** (Standard_B1ms): ~$15-18/month or ~$0.50/day.  
+> - **Virtual Network and NSG**: Minimal cost (~$0.05/month for public IP addresses if used).
+> - **Combined Daily Cost**: ~$1.55/day (~$47/month) when VMs are running.
+> - **Cost Optimization**: Stop/deallocate VMs when not in use to avoid compute charges.
+> - **Storage Costs**: Additional ~$2-4/month for VM disks (persist when VMs are stopped).
+
+### 🚀 Create Virtual Network Infrastructure
+
+Deploy the foundational network infrastructure that will securely host your virtual machines, following the same network design as our IaC deployment.
+
+#### Navigate to Virtual Networks
+
+- In Azure Portal, search for **Virtual networks**.
+- Click **+ Create**.
+
+#### Configure Virtual Network
+
+- **Subscription**: Select your subscription.
+- **Resource Group**: Select the resource group created in Step 1.
+- **Name**: Enter **vnet-aisec-defender-portal**.
+- **Region**: Choose the same region as your resource group.
+
+#### Configure IP Address Space
+
+- **IPv4 address space**: Enter **10.0.0.0/16** (provides 65,536 available IP addresses).
+- **IPv6 address space**: Leave unchecked (not needed for this deployment).
+
+#### Configure Subnets
+
+Create a dedicated subnet for the virtual machines:
+
+- **Subnet name**: Enter **subnet-vms**.
+- **Subnet address range**: Enter **10.0.1.0/24** (provides 256 IP addresses for VMs).
+- **Security services**: Leave default settings.
+
+#### Review and Create Virtual Network
+
+- Click **Review + create**.
+- After validation passes, click **Create**.
+- Wait for deployment to complete (typically 2-3 minutes).
+
+### 🚀 Create Network Security Groups
+
+Create network security groups to control traffic flow to your virtual machines, implementing defense-in-depth security principles.
+
+#### Navigate to Network Security Groups
+
+- In Azure Portal, search for **Network security groups**.
+- Click **+ Create**.
+
+#### Configure Network Security Group
+
+- **Subscription**: Select your subscription.
+- **Resource Group**: Select the same resource group.
+- **Name**: Enter **nsg-aisec-vms**.
+- **Region**: Choose the same region as your virtual network.
+
+#### Review and Create NSG
+
+- Click **Review + create**.
+- After validation passes, click **Create**.
+- Wait for deployment to complete (typically 1-2 minutes).
+
+#### Configure Security Rules
+
+After NSG creation, configure essential security rules:
+
+1. **Access the NSG**: Navigate to your newly created NSG **nsg-aisec-vms**.
+2. **Add Inbound Security Rules**: Click **Inbound security rules** → **+ Add**.
+
+##### Rule 1: Allow RDP for Windows VM
+
+- **Source**: **Any** (restrict to your IP in production).
+- **Source port ranges**: **\***.
+- **Destination**: **Any**.
+- **Service**: **RDP**.
+- **Action**: **Allow**.
+- **Priority**: **300**.
+- **Name**: **AllowRDP**.
+
+##### Rule 2: Allow SSH for Linux VM
+
+- **Source**: **Any** (restrict to your IP in production).
+- **Source port ranges**: **\***.
+- **Destination**: **Any**.
+- **Service**: **SSH**.
+- **Action**: **Allow**.
+- **Priority**: **310**.
+- **Name**: **AllowSSH**.
+
+1. **Review Default Rules**: Note the existing default rules that:
+
+   - Allow inbound traffic within the virtual network.
+   - Allow inbound traffic from Azure Load Balancer.
+   - Deny all other inbound traffic.
+
+### 🚀 Associate NSG with Subnet
+
+Connect the network security group to the virtual machine subnet for traffic filtering.
+
+#### Access NSG Subnet Association
+
+- In your NSG **nsg-aisec-vms**, click **Subnets** in the left navigation.
+- Click **+ Associate**.
+
+#### Configure Subnet Association
+
+- **Virtual network**: Select **vnet-aisec-defender-portal**.
+- **Subnet**: Select **subnet-vms**.
+- Click **OK**.
+
+### 🚀 Create Virtual Machines for Security Monitoring
+
+Deploy virtual machines within the secure network infrastructure.
 
 ### Create VM 1 - Windows Server
 
 #### Navigate to Virtual Machines
 
 - In Azure Portal, search for **Virtual machines**.
-- Click **Create** → **Virtual machine**.
+- Click **+ Create** → **Virtual machine**.
 
 #### Basic Configuration
+
+- **Subscription**: Select your subscription.
+- **Resource Group**: Select the resource group created in Step 1.
+- **Virtual machine name**: **vm-windows-testlab001**.
+- **Region**: Choose the same region as your resource group.
+- **Image**: **Windows Server 2022 Datacenter: Azure Edition - x64 Gen2**.
+- **Size**: **Standard_B2s** (cost-effective for testing).
+- **Security type**: Select **Trusted launch virtual machines** (recommended for enhanced security).
+
+#### Administrator Account
+
+- **Username**: **azureuser**.
+- **Password**: Create a strong password (save securely for later use).
+- **Confirm password**: Re-enter password.
+
+> **🔐 SECURITY IMPORTANT**: For production deployments, never hard-code passwords. Instead:
+>
+> - Store passwords securely in **Azure Key Vault**.
+> - Use **Azure AD authentication** with certificates or managed identities.  
+> - Enable **passwordless authentication** methods when possible.
+> - Implement proper **secret rotation** and access policies.
+
+#### Networking Configuration
+
+Configure the VM to use the secure network infrastructure created earlier:
+
+- **Virtual network**: Select **vnet-aisec-defender-portal** (created in previous step).
+- **Subnet**: Select **subnet-vms (10.0.1.0/24)** (created in previous step).
+- **Public IP**: **Create new** → Enter name **pip-vm-windows-testlab001**.
+  - **SKU**: **Standard** (recommended for production workloads).
+  - **Assignment**: **Static** (ensures consistent IP address).
+- **NIC network security group**: Select **Advanced**.
+- **Configure network security group**: Select **nsg-aisec-vms** (created in previous step).
+- **Public inbound ports**: Select **None** (NSG rules will handle access).
+
+> **🔐 NETWORK SECURITY NOTE**:
+>
+> - The VM will be deployed into the secure subnet with NSG protection.
+> - RDP access is controlled through NSG rules rather than direct VM configuration.
+> - This follows defense-in-depth security principles matching our IaC deployment.
+
+#### Inbound Port Rules
+
+The NSG rules created earlier will handle port access:
+
+- **RDP (3389)**: Already configured in NSG for secure remote access.
+- **Note**: This is for demo purposes only; restrict access in production environments.
+
+#### Review and Create Windows VM
+
+- Review settings and click **Create**
+- Wait for deployment to complete (typically 5-8 minutes)
+
+### Create VM 2 - Ubuntu Linux
+
+#### Create Second Virtual Machine
+
+- Follow similar steps as above for creating a new VM
+- **Virtual machine name**: **vm-linux-testlab001**
+- **Resource Group**: Select the same resource group
+- **Region**: Choose the same region as your resource group
+- **Image**: **Ubuntu Server 24.04 LTS - x64 Gen2**
+- **Size**: **Standard_B1ms** (1 vCPU, 2 GB RAM - cost-effective for testing)
+- **Security type**: Select **Trusted launch virtual machines** (recommended for enhanced security)
+
+#### Authentication Configuration
+
+- **Authentication type**: **SSH public key** (recommended for enhanced security)
+- **Username**: **azureuser**
+- **SSH public key source**: **Generate new key pair**
+- **Key pair name**: **vm-linux-testlab001-key**
+
+#### Linux VM Networking Configuration
+
+Configure the Linux VM to use the same secure network infrastructure:
+
+- **Virtual network**: Select **vnet-aisec-defender-portal** (same VNET as Windows VM).
+- **Subnet**: Select **subnet-vms (10.0.1.0/24)** (same subnet as Windows VM).
+- **Public IP**: **Create new** → Enter name **pip-vm-linux-testlab001**.
+  - **SKU**: **Standard** (recommended for production workloads).
+  - **Assignment**: **Static** (ensures consistent IP address).
+- **NIC network security group**: Select **Advanced**.
+- **Configure network security group**: Select **nsg-aisec-vms** (same NSG as Windows VM).
+- **Public inbound ports**: Select **None** (NSG rules will handle SSH access).
+
+> **🔐 NETWORK CONSISTENCY**: Both VMs are deployed in the same subnet for simplified network management and consistent security policies matching our IaC deployment architecture.
+
+#### Linux VM Inbound Port Rules
+
+The NSG rules created earlier will handle port access:
+
+- **SSH (22)**: Already configured in NSG for secure remote access.
+
+#### Review and Create Linux VM
+
+- Review settings and click **Create**.
+- **Download private key**: Save the SSH key securely for later access.
+- Wait for deployment to complete (typically 5-8 minutes).
+
+## ✅ Step 2 Network Infrastructure Verification
+
+The portal guide has been updated to match our proven IaC deployment structure:
+
+### **Network Infrastructure Alignment Confirmed:**
+
+✅ **Virtual Network Creation**:
+
+- Portal: `vnet-aisec-defender-portal` with `10.0.0.0/16`
+- IaC: `vnet-${environmentName}-${resourceToken}` with `10.0.0.0/16`
+
+✅ **Subnet Configuration**:
+
+- Portal: `subnet-vms` with `10.0.1.0/24`
+- IaC: `subnet-default` with `10.0.1.0/24`
+
+✅ **Network Security Group**:
+
+- Portal: `nsg-aisec-vms` with RDP/SSH rules
+- IaC: `nsg-${environmentName}-${resourceToken}` with identical rules
+
+✅ **VM Network Association**:
+
+- Portal: VMs explicitly configured to use the created VNET and subnet
+- IaC: NICs reference `virtualNetwork.properties.subnets[0].id`
+
+### **Deployment Validation Steps:**
+
+The portal guide now ensures that when VMs are created:
+
+1. **Networking Tab Configuration** explicitly selects the created VNET and subnet.
+2. **NIC Network Security Group** uses the Advanced option to reference the created NSG.
+3. **Public IP Configuration** follows the same pattern as IaC (Static Standard SKU).
+4. **Subnet Association** ensures both VMs are in the same secure subnet.
+
+This maintains complete consistency between the manual Azure Portal deployment and our automated Infrastructure-as-Code approach, ensuring users learn the exact same architecture they would deploy through automation.
+
+### Virtual Machine Deployment Results
+
+After successful completion:
+
+- **Network Infrastructure**: Secure virtual network with dedicated VM subnet and NSG protection.
+- **Windows VM**: Running with modern security baseline configuration within secure subnet.
+- **Linux VM**: Running with cross-platform security hardening within secure subnet.
+- **Network Security**: NSG rules controlling RDP and SSH access with defense-in-depth architecture.
+- **Extension Readiness**: VMs prepared for automatic security extension installation.
+
+**Timeline**: 15-20 minutes for complete network infrastructure and VM deployment via Azure Portal.
+
+---
+
+## Step 3: Configure Security Policies and Defender Plans
+
+Enable Defender for Cloud protection plans and establish security governance.
+
+> **💰 COST AWARENESS**: This step enables premium Defender for Cloud plans which incur subscription-level costs:
+>
+> - **Defender for Servers Plan 2**: ~$15/server/month (comprehensive protection with agentless scanning)
+> - **Defender for Storage**: ~$10/storage account/month (malware scanning and activity monitoring)
+> - **Defender for Key Vault**: ~$2/vault/month (protection for cryptographic keys and secrets)
+> - **Defender for Containers**: ~$7/vCore/month (security for containerized workloads)
+> - **Foundational CSPM**: Free (Cloud Security Posture Management - included)
+> - **Cost Management**: Plans can be disabled anytime to stop charges
+>
+> **💡 Cost Optimization**: This lab selectively enables only 4 out of 10+ available Defender plans, focusing on core infrastructure security while avoiding costs for services not deployed (App Service, Databases, AI Services, etc.). Estimated monthly savings: ~$50-100+ compared to enabling all plans.
+
+### 🚀 Configure Defender Plans and Security Contacts
+
+#### Access Environment Settings
+
+- In the Defender for Cloud left navigation pane, click **Environment settings**
+- Select your subscription from the list
+- Review the current status of Defender plans
+
+#### Enable Defender for Servers Plan 2
+
+- Find **Defender for Servers** in the plan list
+- Toggle the status to **On** for Plan 2 (recommended for full features)
+- This automatically enables:
+  - **Agentless scanning** for vulnerability assessment and security posture
+  - **Defender for Endpoint integration** for endpoint protection
+  - **Malware scanning** without performance impact
+
+#### Configure Agentless Scanning (Enabled by Default)
+
+- Agentless scanning is automatically enabled with Defender for Servers Plan 2
+- This provides:
+  - Vulnerability assessment without agents
+  - Configuration assessment
+  - Malware scanning
+  - Software inventory
+- No additional configuration required - works out-of-the-box
+
+#### Enable Additional Defender Plans
+
+Enable the same core plans as our IaC deployment:
+
+- **Defender for Storage**: Toggle to **On** (ready for future storage resources)
+- **Defender for Key Vault**: Toggle to **On** (ready for future vault resources)
+- **Defender for Containers**: Toggle to **On** (ready for future container workloads)
+- **Foundational CSPM**: Already enabled (free tier)
+
+#### Configure Security Contacts
+
+In Environment Settings, select **Email notifications**:
+
+- **Define notification recipients** using one or both options:
+  - **By Azure role**: Select from dropdown (Owner, Contributor, Security Admin, etc.).
+  - **By email address**: Enter specific email addresses separated by commas.
+- **Configure notification types**:
+  - **Notify about alerts with the following severity (or higher)**: Select **High**.
+  - **Notify about attack paths with the following risk level (or higher)**: Select **High**.
+- Click **Save** to apply the email notification settings.
+
+### What This Step Configures
+
+**Defender for Cloud Plans:**
+
+- ✅ **Defender for Servers Plan 2** - Comprehensive server protection with agentless scanning (protects deployed VMs).
+- ✅ **Defender for Storage** - Malware scanning and activity monitoring for storage accounts (ready for future storage resources).
+- ✅ **Defender for Key Vault** - Protection for cryptographic keys and secrets (ready for future vault resources).
+- ✅ **Defender for Containers** - Security for containerized workloads (ready for future AKS/ACI/Container Apps).
+- ✅ **Foundational CSPM** - Cloud Security Posture Management (free tier).
+
+**Security Governance:**
+
+- ✅ Security contact email notifications for critical alerts.
+- ✅ Alert severity thresholds and notification preferences.
+- ✅ Role-based notifications for subscription owners and contributors.
+- ✅ Microsoft Cloud Security Benchmark (MCSB) compliance monitoring.
+
+**Modern 2025 Features:**
+
+- ✅ Agentless scanning for vulnerabilities and malware.
+- ✅ Cross-platform endpoint protection integration.
+- ✅ Cloud workload protection capabilities.
+- ✅ Unified security posture management.
+
+### Security Policy Configuration Results
+
+After successful completion:
+
+- **Defender Plans**: 4 core plans enabled with Standard tier pricing.
+- **Security Contacts**: Email notifications configured and tested.
+- **Compliance Dashboard**: MCSB showing initial compliance assessment.
+- **Cost Estimation**: Monthly cost projections for enabled plans.
+
+**Timeline**: 5-8 minutes for plan configuration and validation via Azure Portal.
+
+---
 
 - **Subscription**: Select your subscription.
 - **Resource Group**: Select the resource group we just created.
@@ -171,13 +507,13 @@ To test Defender for Cloud without existing VMs, create a resource group first, 
   - This enables Secure Boot, vTPM, and integrity monitoring for protection against boot kits and rootkits.
   - Trusted Launch is the default for Gen2 VMs and provides verified boot loaders and OS kernels.
 
-#### Administrator Account
+#### Windows VM Administrator Account
 
 - **Username**: **azureuser**.
 - **Password**: Create a strong password.
 - **Confirm password**: Re-enter password.
 
-#### Inbound Port Rules
+#### Windows VM Inbound Port Rules
 
 - Allow selected ports: RDP (3389), HTTP (80), HTTPS (443).
 - **Note**: This is for demo purposes only; restrict access in production environments.
@@ -187,10 +523,11 @@ To test Defender for Cloud without existing VMs, create a resource group first, 
 - Review settings and click **Create**.
 - Wait for deployment to complete.
 
-### Create VM 2 - Ubuntu Linux
+### Create VM 2 - Ubuntu Linux Server
 
-- Follow similar steps as above for creating a new VM.
-- **Virtual machine name**: **vm-linux-db**
+Follow similar steps as above for creating a new VM:
+
+- **Virtual machine name**: **vm-linux-db**.
 - **Resource Group**: Select the resource group we created.
 - **Region**: Choose the same region as your resource group.
 - **Image**: **Ubuntu Server 24.04 LTS - x64 Gen2**.
@@ -211,8 +548,9 @@ To test Defender for Cloud without existing VMs, create a resource group first, 
 
 ### Create VM 3 - Windows Client (Optional)
 
-- Follow similar steps as above for creating a new VM.
-- **Virtual machine name**: **vm-windows-client**
+Follow similar steps as above for creating a new VM:
+
+- **Virtual machine name**: **vm-windows-client**.
 - **Resource Group**: Select the resource group we created.
 - **Region**: Choose the same region as your resource group.
 - **Image**: **Windows 10 Pro, version 22H2 - x64 Gen2**.
@@ -711,7 +1049,7 @@ This is the preferred 2025 approach - the Log Analytics workspace is created for
 
 #### Step 1a: Create Log Analytics Workspace for Sentinel
 
-##### Navigate to Log Analytics Workspaces
+##### Navigate to Log Analytics Workspaces in Azure Portal
 
 - In Azure Portal, search for **Log Analytics workspaces**.
 - Click **+ Create** to create a new workspace.
@@ -883,7 +1221,7 @@ Go to [security.microsoft.com](https://security.microsoft.com)
 
 Go to your Microsoft Sentinel workspace in the Azure portal
 
-###### Find Incidents
+###### Access Incident Management
 
 - Click **Threat management** → **Incidents** in the left menu.
 - Look for incidents with **Product name: Microsoft Defender for Cloud**.
@@ -1604,7 +1942,7 @@ After successful Defender for Cloud deployment via Azure Portal:
 - [Enable Agentless Scanning for VMs](https://learn.microsoft.com/en-us/azure/defender-for-cloud/enable-agentless-scanning-vms)
 - [Test Agentless Malware Scanning](https://learn.microsoft.com/en-us/azure/defender-for-cloud/test-agentless-malware-scanning)
 
-### Modern File Integrity Monitoring
+### Advanced File Integrity Monitoring
 
 - [File Integrity Monitoring Overview (2025)](https://learn.microsoft.com/en-us/azure/defender-for-cloud/file-integrity-monitoring-overview)
 - [Enable File Integrity Monitoring with Defender for Endpoint Agent](https://learn.microsoft.com/en-us/azure/defender-for-cloud/file-integrity-monitoring-enable-defender-endpoint)

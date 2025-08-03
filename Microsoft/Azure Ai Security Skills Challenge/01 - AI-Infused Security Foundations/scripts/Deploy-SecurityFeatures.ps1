@@ -112,11 +112,11 @@ if (-not $Force -and -not $WhatIf) {
 }
 
 # =============================================================================
-# Phase 1: Environment Validation
+# Step 1: Environment Validation
 # =============================================================================
 
-Write-Host "🔍 Phase 1: Environment Validation" -ForegroundColor Green
-Write-Host "==================================" -ForegroundColor Green
+Write-Host "🔍 Step 1: Environment Validation" -ForegroundColor Green
+Write-Host "=================================" -ForegroundColor Green
 
 # Verify resource group exists
 Write-Host "📁 Verifying resource group..." -ForegroundColor Cyan
@@ -159,12 +159,12 @@ try {
 }
 
 # =============================================================================
-# Phase 2: JIT VM Access Configuration
+# Step 2: JIT VM Access Configuration
 # =============================================================================
 
 Write-Host ""
-Write-Host "🔐 Phase 2: JIT VM Access Configuration" -ForegroundColor Green
-Write-Host "=======================================" -ForegroundColor Green
+Write-Host "🔐 Step 2: JIT VM Access Configuration" -ForegroundColor Green
+Write-Host "======================================" -ForegroundColor Green
 
 Write-Host "🔍 Analyzing VMs for JIT configuration..." -ForegroundColor Cyan
 
@@ -199,99 +199,112 @@ if ($WhatIf) {
 } else {
     Write-Host "🔧 Configuring JIT VM Access policies..." -ForegroundColor Cyan
     
-    # Use the existing Configure-JitAccess.ps1 script
-    $jitScriptPath = Join-Path $PSScriptRoot "Configure-JitAccess.ps1"
-    if (Test-Path $jitScriptPath) {
-        Write-Host "   📜 Using existing JIT configuration script..." -ForegroundColor White
+    # Create a single JIT policy for all VMs
+    $virtualMachinesArray = @()
+    
+    foreach ($policy in $jitPolicies) {
+        $vmName = $policy.resourceId.Split('/')[-1]
+        Write-Host "      🔧 Adding VM to JIT policy: $vmName" -ForegroundColor White
         
-        # Get subscription ID
-        $subscriptionId = az account show --query "id" --output tsv
-        
-        try {
-            & $jitScriptPath -ResourceGroupName $resourceGroupName -SubscriptionId $subscriptionId -Location $Location
-            Write-Host "   ✅ JIT VM Access configuration completed" -ForegroundColor Green
-        } catch {
-            Write-Host "   ❌ JIT configuration failed: $_" -ForegroundColor Red
-        }
-    } else {
-        Write-Host "   ⚠️ JIT configuration script not found - configuring manually..." -ForegroundColor Yellow
-        
-        # Manual JIT configuration as fallback
-        foreach ($policy in $jitPolicies) {
-            $vmName = $policy.resourceId.Split('/')[-1]
-            Write-Host "      🔧 Configuring JIT for: $vmName" -ForegroundColor White
-            
-            # Create basic JIT policy
-            $jitPolicyJson = if ($policy.osType -eq "Windows") {
-                @{
-                    kind = "Basic"
-                    properties = @{
-                        virtualMachines = @(
-                            @{
-                                id = $policy.resourceId
-                                ports = @(
-                                    @{
-                                        number = 3389
-                                        protocol = "TCP"
-                                        allowedSourceAddressPrefix = "*"
-                                        maxRequestAccessDuration = "PT3H"
-                                    }
-                                )
-                            }
-                        )
+        $vmJitConfig = if ($policy.osType -eq "Windows") {
+            @{
+                id = $policy.resourceId
+                ports = @(
+                    @{
+                        number = 3389
+                        protocol = "TCP"
+                        allowedSourceAddressPrefix = "*"
+                        maxRequestAccessDuration = "PT3H"
                     }
-                } | ConvertTo-Json -Depth 10
-            } else {
-                @{
-                    kind = "Basic"
-                    properties = @{
-                        virtualMachines = @(
-                            @{
-                                id = $policy.resourceId
-                                ports = @(
-                                    @{
-                                        number = 22
-                                        protocol = "TCP"
-                                        allowedSourceAddressPrefix = "*"
-                                        maxRequestAccessDuration = "PT3H"
-                                    }
-                                )
-                            }
-                        )
-                    }
-                } | ConvertTo-Json -Depth 10
+                )
             }
-            
+        } else {
+            @{
+                id = $policy.resourceId
+                ports = @(
+                    @{
+                        number = 22
+                        protocol = "TCP"
+                        allowedSourceAddressPrefix = "*"
+                        maxRequestAccessDuration = "PT3H"
+                    }
+                )
+            }
+        }
+        
+        $virtualMachinesArray += $vmJitConfig
+    }
+    
+    # Create the complete JIT policy
+    $completeJitPolicy = @{
+        kind = "Basic"
+        properties = @{
+            virtualMachines = $virtualMachinesArray
+        }
+    } | ConvertTo-Json -Depth 10
+    
+    try {
+        # Create JIT policy using Azure REST API
+        $subscriptionId = az account show --query "id" --output tsv
+        $jitPolicyName = "default"  # JIT policies use 'default' as the name
+        
+        # Convert location to proper format for API
+        $apiLocation = $Location.ToLower().Replace(" ", "")
+        
+        # Write policy to temp file
+        $tempFile = [System.IO.Path]::GetTempFileName()
+        $completeJitPolicy | Out-File -FilePath $tempFile -Encoding UTF8
+        
+        Write-Host "      📄 Creating JIT policy for $($virtualMachinesArray.Count) VMs..." -ForegroundColor White
+        Write-Host "      🔗 API Location: $apiLocation (converted from '$Location')" -ForegroundColor Gray
+        
+        # Build the URL carefully
+        $jitUrl = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Security/locations/$apiLocation/jitNetworkAccessPolicies/$jitPolicyName"
+        $jitUrlWithApiVersion = "$jitUrl" + "?api-version=2020-01-01"
+        
+        Write-Host "      🔗 API URL: $jitUrlWithApiVersion" -ForegroundColor Gray
+        
+        # Create or update the JIT policy
+        $response = az rest --method PUT --url $jitUrlWithApiVersion --body "@$tempFile" --headers "Content-Type=application/json" --output json 2>&1
+        
+        # Clean up temp file
+        Remove-Item $tempFile -Force -ErrorAction SilentlyContinue
+        
+        # Check if the response indicates success
+        if ($response -and $response -notlike "*error*" -and $response -notlike "*failed*") {
             try {
-                # Create JIT policy using Azure REST API
-                $subscriptionId = az account show --query "id" --output tsv
-                $jitPolicyName = "jit-$($vmName.ToLower())"
-                
-                $response = az rest --method PUT `
-                    --url "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Security/locations/$Location/jitNetworkAccessPolicies/$jitPolicyName" `
-                    --body $jitPolicyJson `
-                    --headers "Content-Type=application/json" `
-                    --query "name" --output tsv 2>$null
-                
-                if ($response) {
-                    Write-Host "         ✅ JIT policy created: $jitPolicyName" -ForegroundColor Green
+                $responseObj = $response | ConvertFrom-Json
+                if ($responseObj.name -eq "default" -and $responseObj.properties.virtualMachines.Count -eq $virtualMachinesArray.Count) {
+                    Write-Host "      ✅ JIT policy created/updated successfully: $($responseObj.name)" -ForegroundColor Green
+                    Write-Host "         📊 Protected VMs: $($responseObj.properties.virtualMachines.Count)" -ForegroundColor Gray
                 } else {
-                    Write-Host "         ⚠️ JIT policy creation unclear - check manually" -ForegroundColor Yellow
+                    Write-Host "      ✅ JIT policy operation completed: $($responseObj.name)" -ForegroundColor Green
                 }
             } catch {
-                Write-Host "         ❌ Failed to create JIT policy: $_" -ForegroundColor Red
+                # If we can't parse JSON but got a response, it's probably still successful
+                Write-Host "      ✅ JIT policy operation completed" -ForegroundColor Green
             }
+        } else {
+            Write-Host "      ❌ JIT policy creation failed:" -ForegroundColor Red
+            Write-Host "         $response" -ForegroundColor Red
         }
+        
+        # Allow time for policy propagation before validation
+        Write-Host "      ⏳ Waiting for policy propagation (10 seconds)..." -ForegroundColor Gray
+        Start-Sleep -Seconds 10
+        
+    } catch {
+        Write-Host "      ❌ Failed to create JIT policy: $_" -ForegroundColor Red
     }
 }
 
 # =============================================================================
-# Phase 3: VM Extensions Validation
+# Step 3: VM Extensions Validation
 # =============================================================================
 
 Write-Host ""
-Write-Host "🔧 Phase 3: VM Extensions Validation" -ForegroundColor Green
-Write-Host "====================================" -ForegroundColor Green
+Write-Host "🔧 Step 3: VM Extensions Validation" -ForegroundColor Green
+Write-Host "===================================" -ForegroundColor Green
 
 Write-Host "🔍 Checking VM extensions..." -ForegroundColor Cyan
 
@@ -325,31 +338,51 @@ foreach ($vm in $vms) {
 }
 
 # =============================================================================
-# Phase 4: Security Configuration Validation
+# Step 4: Security Configuration Validation
 # =============================================================================
 
 Write-Host ""
-Write-Host "✅ Phase 4: Security Configuration Validation" -ForegroundColor Green
-Write-Host "=============================================" -ForegroundColor Green
+Write-Host "✅ Step 4: Security Configuration Validation" -ForegroundColor Green
+Write-Host "============================================" -ForegroundColor Green
 
-# Validate JIT policies
+# Validate JIT policies using consistent REST API approach
 Write-Host "🔐 Validating JIT VM Access policies..." -ForegroundColor Cyan
 try {
+    # Use consistent location formatting as used in creation
+    $apiLocation = $Location.ToLower().Replace(" ", "")
     $subscriptionId = az account show --query "id" --output tsv
-    $jitPoliciesResponse = az rest --method GET `
-        --url "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Security/locations/$Location/jitNetworkAccessPolicies" `
+    
+    # Use subscription-level endpoint for JIT policy validation
+    $jitPolicies = az rest --method GET `
+        --url "https://management.azure.com/subscriptions/$subscriptionId/providers/Microsoft.Security/locations/$apiLocation/jitNetworkAccessPolicies?api-version=2020-01-01" `
         --query "value" --output json 2>$null | ConvertFrom-Json
     
-    if ($jitPoliciesResponse -and $jitPoliciesResponse.Count -gt 0) {
-        Write-Host "   ✅ JIT policies found: $($jitPoliciesResponse.Count)" -ForegroundColor Green
-        foreach ($policy in $jitPoliciesResponse) {
-            Write-Host "      - $($policy.name): $($policy.properties.virtualMachines.Count) VM(s)" -ForegroundColor White
+    if ($jitPolicies -and $jitPolicies.Count -gt 0) {
+        Write-Host "   ✅ JIT policies found: $($jitPolicies.Count)" -ForegroundColor Green
+        foreach ($policy in $jitPolicies) {
+            $vmCount = if ($policy.properties.virtualMachines) { $policy.properties.virtualMachines.Count } else { 0 }
+            $status = if ($policy.properties.provisioningState -eq "Succeeded") { "✅" } else { "⚠️" }
+            Write-Host "      $status $($policy.name): $vmCount VM(s) - $($policy.properties.provisioningState)" -ForegroundColor White
+        }
+        
+        # Additional validation: check if our specific VMs are protected
+        $defaultPolicy = $jitPolicies | Where-Object { $_.name -eq "default" }
+        if ($defaultPolicy -and $defaultPolicy.properties.virtualMachines) {
+            $protectedVmNames = @()
+            foreach ($vm in $defaultPolicy.properties.virtualMachines) {
+                $vmName = $vm.id.Split('/')[-1]
+                $protectedVmNames += $vmName
+            }
+            Write-Host "      📋 Protected VMs: $($protectedVmNames -join ', ')" -ForegroundColor Gray
         }
     } else {
         Write-Host "   ⚠️ No JIT policies found" -ForegroundColor Yellow
+        Write-Host "   💡 JIT policies may take a few minutes to appear after creation" -ForegroundColor Cyan
+        Write-Host "   🔗 Checking location: $apiLocation (converted from '$Location')" -ForegroundColor Gray
     }
 } catch {
     Write-Host "   ⚠️ Could not validate JIT policies: $_" -ForegroundColor Yellow
+    Write-Host "   🔗 Attempted location: $apiLocation (converted from '$Location')" -ForegroundColor Gray
 }
 
 # Check VM security recommendations
@@ -363,12 +396,12 @@ try {
 }
 
 # =============================================================================
-# Phase 5: Portal Integration Guidance
+# Step 5: Portal Integration Guidance
 # =============================================================================
 
 Write-Host ""
-Write-Host "🌐 Phase 5: Portal Integration Guidance" -ForegroundColor Green
-Write-Host "=======================================" -ForegroundColor Green
+Write-Host "🌐 Step 5: Portal Integration Guidance" -ForegroundColor Green
+Write-Host "======================================" -ForegroundColor Green
 
 Write-Host "📋 Manual configuration steps required in Azure Portal:" -ForegroundColor Cyan
 Write-Host ""

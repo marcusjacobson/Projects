@@ -134,8 +134,11 @@ if (-not $resourceGroupName) {
 }
 
 # =============================================================================
-# Azure Authentication and Subscription Validation
+# Step 1: Azure Authentication and Subscription Validation
 # =============================================================================
+
+Write-Host "🔐 Step 1: Azure Authentication and Subscription Validation" -ForegroundColor Green
+Write-Host "===========================================================" -ForegroundColor Green
 
 Write-Host "🔐 Validating Azure authentication and subscription..." -ForegroundColor Cyan
 
@@ -182,8 +185,12 @@ try {
 }
 
 # =============================================================================
-# Defender for Cloud Cost Analysis
+# Step 2: Defender for Cloud Cost Analysis
 # =============================================================================
+
+Write-Host ""
+Write-Host "🛡️ Step 2: Defender for Cloud Cost Analysis" -ForegroundColor Green
+Write-Host "============================================" -ForegroundColor Green
 
 Write-Host ""
 Write-Host "💰 Analyzing Defender for Cloud costs and usage..." -ForegroundColor Green

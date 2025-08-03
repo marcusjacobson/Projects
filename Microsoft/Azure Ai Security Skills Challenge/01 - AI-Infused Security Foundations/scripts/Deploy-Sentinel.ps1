@@ -158,8 +158,11 @@ catch {
 }
 
 # =============================================================================
-# Resource Name Construction
+# Step 1: Environment Validation and Setup
 # =============================================================================
+
+Write-Host "🏗️ Step 1: Environment Validation and Setup" -ForegroundColor Green
+Write-Host "=============================================" -ForegroundColor Green
 
 Write-Host "🏗️ Constructing resource names..." -ForegroundColor Cyan
 
@@ -180,8 +183,12 @@ Write-Host "   Log Analytics Workspace: $workspaceName" -ForegroundColor White
 Write-Host "   Subscription: $subscriptionId" -ForegroundColor White
 
 # =============================================================================
-# Pre-deployment Validation
+# Step 2: Pre-deployment Validation
 # =============================================================================
+
+Write-Host ""
+Write-Host "🔍 Step 2: Pre-deployment Validation" -ForegroundColor Green
+Write-Host "====================================" -ForegroundColor Green
 
 Write-Host "🔍 Validating Log Analytics Workspace..." -ForegroundColor Cyan
 try {
@@ -268,11 +275,12 @@ if (-not $Force) {
 }
 
 # =============================================================================
-# Microsoft Sentinel Enablement
+# Step 3: Microsoft Sentinel Enablement
 # =============================================================================
 
-Write-Host "🚀 Enabling Microsoft Sentinel on Log Analytics Workspace..." -ForegroundColor Green
-Write-Host "=========================================================" -ForegroundColor Green
+Write-Host ""
+Write-Host "🚀 Step 3: Microsoft Sentinel Enablement" -ForegroundColor Green
+Write-Host "=========================================" -ForegroundColor Green
 
 $sentinelBody = @{
     properties = @{

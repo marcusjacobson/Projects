@@ -2,9 +2,48 @@
 
 ## 🎯 Purpose and Scope
 
-This comprehensive decommissioning guide provides a systematic, step-by-step approach to safely remove Microsoft Defender for Cloud from your Azure environment and restore your lab to a clean slate. This guide is specifically designed for the Azure AI Security Skills Challenge lab environment and follows the exact reverse order of the deployment steps outlined in the **Deploy Microsoft Defender for Cloud via Azure Portal (2025 Edition)** guide.
+This comprehensive decommissioning guide provides a systematic approach to safely remove Microsoft Defender for Cloud from your Azure environment and restore your lab to a clean slate. This guide supports **two different decommissioning approaches** based on how you originally deployed Microsoft Defender for Cloud.
 
-### Why Use This Guide
+## 🚀 Choose Your Decommissioning Method
+
+### **Method 1: Automated Script Decommissioning** ⚡ (Recommended)
+
+**Use this method if you deployed using:**
+
+- **Modular Infrastructure-as-Code Guide** (`deploy-defender-for-cloud-modular-iac.md`)
+- **Complete Automation Guide** (`deploy-defender-for-cloud-complete-automation.md`)
+
+**✅ Advantages:**
+
+- **Fast**: Complete decommissioning in ~2-3 minutes
+- **Comprehensive**: 100% validation with 11 verification checks
+- **Safe**: Automated resource discovery and validation
+- **Cost-effective**: Immediate termination of all charges
+- **Reliable**: Handles complex dependencies automatically
+
+**🚀 Quick Start:**
+
+```powershell
+# Navigate to the scripts directory
+cd "scripts"
+
+# Run the automated decommission script
+.\Remove-DefenderInfrastructure.ps1 -UseParametersFile -DisableDefenderPlans -Force
+```
+
+### **Method 2: Manual Portal Decommissioning** 🖱️
+
+**Use this method if you deployed using:**
+
+- **Azure Portal Manual Guide** (`deploy-defender-for-cloud-azure-portal.md`)
+- **Manual configuration through Azure Portal**
+- **Step-by-step manual deployment**
+
+**📋 Process:** Follow the detailed [manual decommissioning steps](#step-1-remove-microsoft-sentinel-integration-if-configured) below for systematic portal-based removal.
+
+---
+
+## 💡 Why Use This Guide
 
 This decommissioning process serves multiple purposes:
 
@@ -14,9 +53,21 @@ This decommissioning process serves multiple purposes:
 - **Resource Management**: Ensure proper cleanup of all Azure resources created during the lab, preventing resource sprawl.
 - **Skills Development**: Practice systematic Azure resource management and governance procedures.
 
-### What This Guide Covers
+## 📋 What This Guide Covers
 
-This guide systematically reverses every component deployed in the original lab:
+### **Automated Script Decommissioning** ⚡
+
+The PowerShell script handles all decommissioning tasks automatically:
+
+- **Comprehensive Discovery**: Automatic detection of all lab resources.
+- **Security Configuration Removal**: JIT policies, auto-shutdown schedules, Sentinel integration.
+- **VM Management**: Proper VM shutdown, deallocation, and deletion with all dependencies.
+- **Defender Plan Management**: Automated disabling of all paid Defender plans.
+- **Complete Validation**: 11-point verification ensuring 100% cleanup success.
+
+### **Manual Portal Decommissioning** 🖱️
+
+The manual process systematically reverses deployment in this order:
 
 1. **Advanced Configuration Cleanup**: Remove Microsoft Sentinel integration, File Integrity Monitoring, and SIEM connectors.
 2. **Workbooks and Dashboards**: Clean up custom security dashboards and monitoring workbooks.
@@ -28,9 +79,9 @@ This guide systematically reverses every component deployed in the original lab:
 8. **Core Service Deactivation**: Disable Defender for Cloud plans and auto-provisioning settings.
 9. **Resource Group Cleanup**: Complete removal of lab infrastructure including network resources.
 
-### Expected Outcomes
+## ✅ Expected Outcomes
 
-After completing this guide, your Azure environment will have:
+After completing either decommissioning method, your Azure environment will have:
 
 - **Zero Defender for Cloud charges**: All paid plans disabled and billing stopped.
 - **Clean resource state**: All lab-specific resources removed with no orphaned components.
@@ -42,54 +93,127 @@ After completing this guide, your Azure environment will have:
 
 ## 📋 Prerequisites
 
-Before starting the decommissioning process, ensure you have:
+### **For Automated Script Decommissioning:**
 
 - Owner or Contributor permissions on the Azure subscription.
-- Access to the Azure Portal.
-- Administrative access to virtual machines (if applicable).
-- Understanding of which resources were created during deployment.
-- Backup of any important data or configurations you want to preserve.
+- PowerShell execution environment (Windows PowerShell 5.1+ or PowerShell 7+).
+- Azure CLI installed and authenticated.
+- Access to the scripts directory from your original deployment
+
+### **For Manual Portal Decommissioning:**
+
+- Owner or Contributor permissions on the Azure subscription
+- Access to the Azure Portal
+- Administrative access to virtual machines (if applicable)
+- Understanding of which resources were created during deployment
+- Backup of any important data or configurations you want to preserve
 
 ## ⚠️ Important Warnings
 
 **READ BEFORE PROCEEDING:**
 
-- This process will remove all security monitoring and protection.
-- Security alerts and historical data will be lost.
-- Compliance reports and assessments will be deleted.
-- VM extensions and agents will be uninstalled.
-- Log Analytics data may be permanently deleted.
+- This process will remove all security monitoring and protection
+- Security alerts and historical data will be lost
+- Compliance reports and assessments will be deleted
+- VM extensions and agents will be uninstalled
+- Log Analytics data may be permanently deleted
 
 **Recommended Actions:**
 
-- Export any required compliance reports before starting.
-- Document current security configurations.
-- Backup Log Analytics queries and workbooks.
-- Notify stakeholders of the decommissioning timeline.
+- Export any required compliance reports before starting
+- Document current security configurations
+- Backup Log Analytics queries and workbooks
+- Notify stakeholders of the decommissioning timeline
 
-## 🎯 Decommissioning Overview
+---
 
-This decommissioning process follows the exact reverse order of the deployment steps to ensure systematic and complete cleanup:
+## 🚀 Automated Script Decommissioning (Recommended)
+
+**Use this section if you deployed using the Modular Infrastructure-as-Code or Complete Automation guides.**
+
+### Quick Automated Decommissioning
+
+The `Remove-DefenderInfrastructure.ps1` script provides a comprehensive, automated approach to decommissioning your entire Microsoft Defender for Cloud lab environment.
+
+**🎯 Script Capabilities:**
+
+- **Comprehensive Resource Discovery**: Automatically identifies all lab resources using parameter files
+- **Safe Decommissioning**: 6-phase systematic removal with built-in validation
+- **Complete Cleanup**: Handles VMs, security policies, Sentinel integration, and Defender plans
+- **Cost Optimization**: Immediate termination of all ongoing charges
+- **Validation**: 11-point verification ensuring 100% cleanup success
+
+### Step 1: Navigate to Scripts Directory
+
+```powershell
+# Navigate to the scripts directory from your original deployment
+cd "c:\path\to\your\deployment\scripts"
+
+# Or if you're already in the project root:
+cd "01 - AI-Infused Security Foundations\scripts"
+```
+
+### Step 2: Run Complete Decommissioning
+
+```powershell
+# Complete decommissioning with Defender plan disabling (recommended)
+.\Remove-DefenderInfrastructure.ps1 -UseParametersFile -DisableDefenderPlans -Force
+
+# Alternative: Preview what will be removed first
+.\Remove-DefenderInfrastructure.ps1 -UseParametersFile -WhatIf
+
+# Alternative: Interactive confirmation (remove -Force flag)
+.\Remove-DefenderInfrastructure.ps1 -UseParametersFile -DisableDefenderPlans
+```
+
+### Step 3: Verify Complete Removal
+
+The script automatically performs comprehensive validation, but you can verify:
+
+- **Zero costs**: Check Azure Cost Management for elimination of Defender charges
+- **Clean subscription**: Verify no lab resources remain in the Azure Portal
+- **Resource groups**: Confirm lab resource groups have been deleted
+- **Defender plans**: All paid plans show as "Off" in Defender for Cloud settings
+
+### Script Output Example
+
+```text
+✅ Enhanced Decommission Summary
+================================
+🎯 Validation Score: 100% (11/11 checks passed)
+✅ All infrastructure successfully decommissioned and validated!
+📊 Total monthly savings: ~$52-92/month
+```
+
+**⏱️ Expected Duration**: 2-3 minutes for complete automated decommissioning
+
+---
+
+## 📋 Manual Portal Decommissioning Steps
+
+**Use this section if you deployed manually through the Azure Portal.**
+
+This manual process follows the exact reverse order of deployment steps to ensure systematic and complete cleanup:
 
 ### Phase 1: Advanced Features Cleanup (Steps 1-4)
 
-1. Remove Microsoft Sentinel integration and SIEM connectors.
-2. Clean up workbooks, dashboards, and custom monitoring.
-3. Remove File Integrity Monitoring configuration.
-4. Stop alert generation and clear sample alerts.
+1. Remove Microsoft Sentinel integration and SIEM connectors
+2. Clean up workbooks, dashboards, and custom monitoring
+3. Remove File Integrity Monitoring configuration
+4. Stop alert generation and clear sample alerts
 
 ### Phase 2: Core Security Features Cleanup (Steps 5-8)
 
-1. Disable advanced threat protection features.
-2. Remove email notifications and alert configurations.
-3. Reset security policies and compliance standards.
-4. Clear security recommendations and assessments.
+1. Disable advanced threat protection features
+2. Remove email notifications and alert configurations
+3. Reset security policies and compliance standards
+4. Clear security recommendations and assessments
 
 ### Phase 3: Agent and Infrastructure Cleanup (Steps 9-11)
 
-1. Remove monitoring agents and VM extensions.
-2. Delete virtual machines and associated resources.
-3. Disable Defender for Servers and auto-provisioning.
+1. Remove monitoring agents and VM extensions
+2. Delete virtual machines and associated resources
+3. Disable Defender for Servers and auto-provisioning
 
 ### Phase 4: Core Service and Resource Cleanup (Steps 12-14)
 
@@ -970,34 +1094,41 @@ Complete verification ensures no hidden costs remain and the lab environment is 
 
 **Congratulations!** You have successfully decommissioned Microsoft Defender for Cloud and reset your lab environment to a clean slate. Your Azure environment is now ready for:
 
-- **Redeploying the lab**: Start fresh with the deploy guide for additional practice.
-- **Cost optimization**: No ongoing Defender for Cloud or VM charges.
-- **Alternative deployments**: Try Infrastructure-as-Code approaches or different configurations.
-- **Advanced scenarios**: Explore more complex Defender for Cloud setups.
+- **Redeploying the lab**: Start fresh with any of the deployment guides for additional practice
+- **Cost optimization**: No ongoing Defender for Cloud or VM charges
+- **Alternative deployments**: Try different approaches (Infrastructure-as-Code vs manual, modular vs complete automation)
+- **Advanced scenarios**: Explore more complex Defender for Cloud setups
 
 ### Expected Cost Savings
 
-- **Defender for Cloud plans**: $30-45 USD/month → $0.
-- **Virtual machine compute**: $60-120 USD/month → $0.
-- **Log Analytics ingestion**: $2.76-5.52 USD/month → Minimal or $0.
-- **Total monthly savings**: $90-170 USD/month.
+- **Defender for Cloud plans**: $30-45 USD/month → $0
+- **Virtual machine compute**: $60-120 USD/month → $0
+- **Log Analytics ingestion**: $2.76-5.52 USD/month → Minimal or $0
+- **Total monthly savings**: $90-170 USD/month
 
-### Next Steps
+### Next Steps Based on Your Deployment Method
 
-- Review the **Deploy Microsoft Defender for Cloud via Azure Portal (2025 Edition)** guide to redeploy the lab.
-- Consider trying the Infrastructure-as-Code deployment approach for comparison.
-- Explore advanced Defender for Cloud features in a production environment.
-- **NEW**: Consider adopting the modern agentless architecture for improved cost optimization and simplified management.
+**If you used Automated Decommissioning:**
 
-### Key Improvements in This Enhanced Guide
+- Try the **Manual Azure Portal Guide** (`deploy-defender-for-cloud-azure-portal.md`) for hands-on learning
+- Explore the **Complete Automation Guide** for single-command deployment comparison
+- Practice with different parameters in the **Modular Infrastructure-as-Code Guide**
 
-This updated decommissioning guide incorporates **2025 best practices** based on Microsoft's latest documentation:
+**If you used Manual Decommissioning:**
 
-- **Modern Agent Management**: Properly handles the deprecation of MMA and adoption of agentless scanning.
-- **Enhanced Data Retention**: Includes soft-delete behavior and immediate purge options for compliance.
-- **Comprehensive Troubleshooting**: Addresses common issues with modern vs legacy architectures.
-- **Cost Optimization**: Updated with current pricing and retention policies.
-- **Security Best Practices**: Balances complete cleanup with security considerations.
+- Try the **Modular Infrastructure-as-Code Guide** (`deploy-defender-for-cloud-modular-iac.md`) for automated approach
+- Explore the **Complete Automation Guide** for rapid deployment and learning
+- Compare deployment times and complexity between manual vs automated approaches
+
+### Key Features of This Enhanced Guide
+
+This updated decommissioning guide incorporates **dual-method approach** for 2025:
+
+- **Automated Script Method**: Fast, reliable, comprehensive decommissioning for Infrastructure-as-Code deployments
+- **Manual Portal Method**: Step-by-step learning approach for manual deployments
+- **Method-Specific Guidance**: Clear recommendations based on original deployment approach
+- **Modern Architecture Support**: Handles agentless scanning, modern agents, and current Azure features
+- **Comprehensive Validation**: Ensures complete cleanup regardless of method used
 
 ---
 

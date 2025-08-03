@@ -1,0 +1,241 @@
+{
+  "DeploymentSteps": {
+    "Step9_AdvancedConfig": {
+      "Score": 1,
+      "Details": [
+        "Advanced configuration ready - portal interaction required for setup"
+      ],
+      "MaxScore": 1,
+      "Status": "Ready"
+    },
+    "Step3_DefenderPlans": {
+      "Details": [
+        "Defender plans enabled",
+        "Core security plans enabled",
+        "Security contacts configured"
+      ],
+      "Status": "Complete",
+      "MaxScore": 3,
+      "Score": 3,
+      "EnabledPlans": [
+        {
+          "Tier": "Standard",
+          "Name": "VirtualMachines",
+          "Status": "Enabled"
+        },
+        {
+          "Tier": "Standard",
+          "Name": "StorageAccounts",
+          "Status": "Enabled"
+        },
+        {
+          "Tier": "Standard",
+          "Name": "KeyVaults",
+          "Status": "Enabled"
+        },
+        {
+          "Tier": "Standard",
+          "Name": "Containers",
+          "Status": "Enabled"
+        }
+      ]
+    },
+    "Step6_Sentinel": {
+      "Score": 2,
+      "Details": [
+        "Microsoft Sentinel enabled",
+        "Data connectors configured"
+      ],
+      "MaxScore": 2,
+      "Status": "Complete"
+    },
+    "Step2_VirtualMachines": {
+      "Details": [
+        "Virtual machines deployed",
+        "Public IP addresses configured",
+        "Network interfaces configured",
+        "Security extensions installed"
+      ],
+      "Status": "Complete",
+      "MaxScore": 4,
+      "Score": 4,
+      "VMs": [
+        {
+          "Extensions": [
+            {
+              "Type": "1.0",
+              "Name": "MDE.Linux",
+              "Status": "Succeeded"
+            }
+          ],
+          "Status": "VM running",
+          "Name": "vm-linux-testlab001",
+          "Size": "Standard_B1ms",
+          "OS": "Linux"
+        },
+        {
+          "Extensions": [
+            {
+              "Type": "1.0",
+              "Name": "MDE.Windows",
+              "Status": "Succeeded"
+            }
+          ],
+          "Status": "VM running",
+          "Name": "vm-windows-testlab001",
+          "Size": "Standard_B2s",
+          "OS": "Windows"
+        }
+      ]
+    },
+    "Step8_Workbooks": {
+      "Score": 1,
+      "Details": [
+        "Workbook infrastructure ready - portal interaction required for setup"
+      ],
+      "MaxScore": 1,
+      "Status": "Ready"
+    },
+    "Step5_JITAccess": {
+      "Details": [
+        "JIT VM Access configured"
+      ],
+      "Status": "Complete",
+      "MaxScore": 2,
+      "Score": 2,
+      "JITPolicies": [
+        {
+          "ResourceGroup": "rg-aisec-defender-securitylab1",
+          "VirtualMachines": 2,
+          "Status": "Configured"
+        }
+      ]
+    },
+    "Step10_Analytics": {
+      "Score": 3,
+      "Details": [
+        "VM auto-shutdown configured (2 VMs)",
+        "Cost optimization implemented",
+        "Compliance assessments available"
+      ],
+      "MaxScore": 3,
+      "Status": "Complete"
+    },
+    "Step1_Infrastructure": {
+      "Score": 4,
+      "Details": [
+        "Resource group deployed successfully",
+        "Log Analytics workspace operational",
+        "Virtual network configured",
+        "Network security groups configured"
+      ],
+      "MaxScore": 4,
+      "Status": "Complete"
+    },
+    "Step7_Alerts": {
+      "Score": 1,
+      "Details": [
+        "Alert infrastructure ready - portal interaction required for testing"
+      ],
+      "MaxScore": 1,
+      "Status": "Ready"
+    },
+    "Step4_ArchitectureVerification": {
+      "Score": 3,
+      "Details": [
+        "Infrastructure foundation healthy",
+        "VM protection verified",
+        "Security plans verified"
+      ],
+      "MaxScore": 3,
+      "Status": "Complete"
+    }
+  },
+  "CostAnalysis": {
+    "SentinelSIEM": 7,
+    "DefenderPlans": 30.0,
+    "Total": 83.0,
+    "TotalWithSavings": 52.18,
+    "AutoShutdownSavings": 30.82,
+    "VMInfrastructure": 46
+  },
+  "Recommendations": [],
+  "ValidationTimestamp": "2025-08-03 09:19:40 UTC",
+  "SecurityPosture": {
+    "SecurityAssessments": 160,
+    "SentinelDataConnectors": 8,
+    "DefenderPlans": [
+      {
+        "Tier": "Standard",
+        "Name": "VirtualMachines",
+        "Status": "Enabled"
+      },
+      {
+        "Tier": "Standard",
+        "Name": "StorageAccounts",
+        "Status": "Enabled"
+      },
+      {
+        "Tier": "Standard",
+        "Name": "KeyVaults",
+        "Status": "Enabled"
+      },
+      {
+        "Tier": "Standard",
+        "Name": "Containers",
+        "Status": "Enabled"
+      }
+    ],
+    "SecurityContacts": 1,
+    "JITPolicies": [
+      {
+        "ResourceGroup": "rg-aisec-defender-securitylab1",
+        "VirtualMachines": 2,
+        "Status": "Configured"
+      }
+    ]
+  },
+  "OverallScore": {
+    "Total": 10,
+    "Percentage": 100.0,
+    "Completed": 10
+  },
+  "LabEnvironment": {
+    "SecurityContact": "marcus.jacobson@gmail.com",
+    "SubscriptionName": "Visual Studio Enterprise Subscription",
+    "VirtualMachines": [
+      {
+        "Extensions": [
+          {
+            "Type": "1.0",
+            "Name": "MDE.Linux",
+            "Status": "Succeeded"
+          }
+        ],
+        "Status": "VM running",
+        "Name": "vm-linux-testlab001",
+        "Size": "Standard_B1ms",
+        "OS": "Linux"
+      },
+      {
+        "Extensions": [
+          {
+            "Type": "1.0",
+            "Name": "MDE.Windows",
+            "Status": "Succeeded"
+          }
+        ],
+        "Status": "VM running",
+        "Name": "vm-windows-testlab001",
+        "Size": "Standard_B2s",
+        "OS": "Windows"
+      }
+    ],
+    "Name": "securitylab",
+    "Location": "West US",
+    "LogAnalyticsWorkspace": "log-aisec-defender-securitylab-testlab001",
+    "SubscriptionId": "d7a6da45-0839-4879-aecd-d89fb8178472",
+    "VirtualNetwork": "vnet-aisec-defender-securitylab-testlab001",
+    "ResourceGroup": "rg-aisec-defender-securitylab1"
+  }
+}

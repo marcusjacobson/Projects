@@ -125,11 +125,11 @@ if ($UseParametersFile) {
 }
 
 # =============================================================================
-# Phase 1: Pre-Deployment Validation
+# Step 1: Pre-Deployment Validation
 # =============================================================================
 
-Write-Host "🔍 Phase 1: Pre-Deployment Validation" -ForegroundColor Green
-Write-Host "=====================================" -ForegroundColor Green
+Write-Host "🔍 Step 1: Pre-Deployment Validation" -ForegroundColor Green
+Write-Host "====================================" -ForegroundColor Green
 
 # Verify resource group exists (from foundation deployment)
 Write-Host "📁 Verifying foundation infrastructure..." -ForegroundColor Cyan
@@ -210,16 +210,25 @@ if (-not $Force -and -not $WhatIf) {
 }
 
 # =============================================================================
-# Phase 2: VM Template Preparation
+# Step 2: VM Template Preparation
 # =============================================================================
 
 Write-Host ""
-Write-Host "🔧 Phase 2: VM Template Preparation" -ForegroundColor Green
-Write-Host "===================================" -ForegroundColor Green
+Write-Host "🔧 Step 2: VM Template Preparation" -ForegroundColor Green
+Write-Host "==================================" -ForegroundColor Green
 
 # Navigate to infrastructure directory
 $infraPath = Join-Path $PSScriptRoot "..\infra"
-Set-Location $infraPath
+# Use Push-Location to preserve current directory and restore it later
+Push-Location $infraPath
+
+# Set up automatic directory restoration on exit
+trap {
+    Pop-Location
+    Write-Host "🔄 Working directory restored due to script exit" -ForegroundColor Yellow
+    break
+}
+
 Write-Host "📂 Working directory: $infraPath" -ForegroundColor Cyan
 
 # Prepare parameters for VM deployment
@@ -290,12 +299,12 @@ if ($UseParametersFile) {
 }
 
 # =============================================================================
-# Phase 3: VM Template Validation
+# Step 3: VM Template Validation
 # =============================================================================
 
 Write-Host ""
-Write-Host "✅ Phase 3: VM Template Validation" -ForegroundColor Green
-Write-Host "==================================" -ForegroundColor Green
+Write-Host "✅ Step 3: VM Template Validation" -ForegroundColor Green
+Write-Host "=================================" -ForegroundColor Green
 
 Write-Host "🔍 Validating virtual machines template..." -ForegroundColor Cyan
 
@@ -347,12 +356,12 @@ try {
 }
 
 # =============================================================================
-# Phase 4: VM Deployment Execution
+# Step 4: VM Deployment Execution
 # =============================================================================
 
 Write-Host ""
-Write-Host "🚀 Phase 4: Virtual Machines Deployment" -ForegroundColor Green
-Write-Host "=======================================" -ForegroundColor Green
+Write-Host "🚀 Step 4: Virtual Machines Deployment" -ForegroundColor Green
+Write-Host "======================================" -ForegroundColor Green
 
 $deploymentName = "virtualmachines-deployment-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
 
@@ -414,13 +423,13 @@ if ($WhatIf) {
 }
 
 # =============================================================================
-# Phase 5: VM Deployment Validation
+# Step 5: VM Deployment Validation
 # =============================================================================
 
 if (-not $WhatIf) {
     Write-Host ""
-    Write-Host "✅ Phase 5: VM Deployment Validation" -ForegroundColor Green
-    Write-Host "====================================" -ForegroundColor Green
+    Write-Host "✅ Step 5: VM Deployment Validation" -ForegroundColor Green
+    Write-Host "===================================" -ForegroundColor Green
     
     # Verify virtual machines
     Write-Host "🖥️ Verifying virtual machines..." -ForegroundColor Cyan
@@ -521,3 +530,6 @@ if ($WhatIf) {
 
 Write-Host ""
 Write-Host "🎯 Virtual machines deployment script completed!" -ForegroundColor Green
+
+# Restore original working directory
+Pop-Location

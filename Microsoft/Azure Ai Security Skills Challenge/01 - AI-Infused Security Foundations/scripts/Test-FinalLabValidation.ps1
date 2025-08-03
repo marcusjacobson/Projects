@@ -126,11 +126,11 @@ try {
 Write-Host ""
 
 # =============================================================================
-# Step 1: Infrastructure Foundation Validation
+# Phase 1: Infrastructure Foundation Validation
 # =============================================================================
 
-Write-Host "🏗️ Step 1: Infrastructure Foundation Validation" -ForegroundColor Green
-Write-Host "================================================" -ForegroundColor Green
+Write-Host "🏗️ Phase 1: Infrastructure Foundation Validation" -ForegroundColor Magenta
+Write-Host "=================================================" -ForegroundColor Magenta
 
 $step1Status = @{ Status = "Unknown"; Details = @(); Score = 0; MaxScore = 4 }
 
@@ -212,6 +212,14 @@ $finalValidation.DeploymentSteps.Step1_Infrastructure = $step1Status
 if ($step1Status.Status -eq "Complete") { $finalValidation.OverallScore.Completed++ }
 
 Write-Host "📊 Step 1 Score: $($step1Status.Score)/$($step1Status.MaxScore) - Status: $($step1Status.Status)" -ForegroundColor $(if ($step1Status.Status -eq "Complete") { "Green" } elseif ($step1Status.Status -eq "Partial") { "Yellow" } else { "Red" })
+
+# =============================================================================
+# Phase 2: Virtual Machine Protection Validation
+# =============================================================================
+
+Write-Host ""
+Write-Host "🖥️ Phase 2: Virtual Machine Protection Validation" -ForegroundColor Magenta
+Write-Host "==================================================" -ForegroundColor Magenta
 Write-Host ""
 
 # =============================================================================
@@ -335,6 +343,14 @@ $finalValidation.DeploymentSteps.Step2_VirtualMachines = $step2Status
 if ($step2Status.Status -eq "Complete") { $finalValidation.OverallScore.Completed++ }
 
 Write-Host "📊 Step 2 Score: $($step2Status.Score)/$($step2Status.MaxScore) - Status: $($step2Status.Status)" -ForegroundColor $(if ($step2Status.Status -eq "Complete") { "Green" } elseif ($step2Status.Status -eq "Partial") { "Yellow" } else { "Red" })
+
+# =============================================================================
+# Phase 3: Defender for Cloud Plans Validation
+# =============================================================================
+
+Write-Host ""
+Write-Host "🛡️ Phase 3: Defender for Cloud Plans Validation" -ForegroundColor Magenta
+Write-Host "================================================" -ForegroundColor Magenta
 Write-Host ""
 
 # =============================================================================
@@ -427,6 +443,14 @@ $finalValidation.DeploymentSteps.Step3_DefenderPlans = $step3Status
 if ($step3Status.Status -eq "Complete") { $finalValidation.OverallScore.Completed++ }
 
 Write-Host "📊 Step 3 Score: $($step3Status.Score)/$($step3Status.MaxScore) - Status: $($step3Status.Status)" -ForegroundColor $(if ($step3Status.Status -eq "Complete") { "Green" } elseif ($step3Status.Status -eq "Partial") { "Yellow" } else { "Red" })
+
+# =============================================================================
+# Phase 4: Security Features Validation
+# =============================================================================
+
+Write-Host ""
+Write-Host "🔐 Phase 4: Security Features Validation" -ForegroundColor Magenta
+Write-Host "========================================" -ForegroundColor Magenta
 Write-Host ""
 
 # =============================================================================
@@ -471,6 +495,14 @@ $finalValidation.DeploymentSteps.Step4_ArchitectureVerification = $step4Status
 if ($step4Status.Status -eq "Complete") { $finalValidation.OverallScore.Completed++ }
 
 Write-Host "📊 Step 4 Score: $($step4Status.Score)/$($step4Status.MaxScore) - Status: $($step4Status.Status)" -ForegroundColor $(if ($step4Status.Status -eq "Complete") { "Green" } elseif ($step4Status.Status -eq "Partial") { "Yellow" } else { "Red" })
+
+# =============================================================================
+# Phase 5: Advanced Security Operations Validation
+# =============================================================================
+
+Write-Host ""
+Write-Host "🚀 Phase 5: Advanced Security Operations Validation" -ForegroundColor Magenta
+Write-Host "====================================================" -ForegroundColor Magenta
 Write-Host ""
 
 # =============================================================================
@@ -485,26 +517,39 @@ $step5Status = @{ Status = "Unknown"; Details = @(); Score = 0; MaxScore = 2; JI
 # Check JIT VM Access policies
 Write-Host "🔐 Validating JIT VM Access policies..." -ForegroundColor Cyan
 try {
-    $jitPolicies = az security jit-policy list --output json | ConvertFrom-Json
+    # Use consistent REST API approach with proper location formatting
+    $subscriptionId = az account show --query "id" --output tsv
+    $apiLocation = $Location.ToLower().Replace(" ", "")
+    
+    # Use subscription-level endpoint for JIT policy validation
+    $jitPolicies = az rest --method GET `
+        --url "https://management.azure.com/subscriptions/$subscriptionId/providers/Microsoft.Security/locations/$apiLocation/jitNetworkAccessPolicies?api-version=2020-01-01" `
+        --query "value" --output json 2>$null | ConvertFrom-Json
+    
     if ($jitPolicies -and $jitPolicies.Count -gt 0) {
         Write-Host "   ✅ JIT policies found: $($jitPolicies.Count) policies" -ForegroundColor Green
         $step5Status.Score += 2
         $step5Status.Details += "JIT VM Access configured"
         
         foreach ($policy in $jitPolicies) {
+            # Extract resource group from resource ID
+            $resourceGroup = if ($policy.id) { $policy.id.Split('/')[4] } else { "Unknown" }
+            $vmCount = if ($policy.properties.virtualMachines) { $policy.properties.virtualMachines.Count } else { 0 }
+            
             $policyInfo = @{
-                ResourceGroup = $policy.resourceGroup
-                VirtualMachines = $policy.properties.virtualMachines.Count
+                ResourceGroup = $resourceGroup
+                VirtualMachines = $vmCount
                 Status = "Configured"
             }
             $step5Status.JITPolicies += $policyInfo
-            Write-Host "      • RG: $($policy.resourceGroup) - VMs: $($policy.properties.virtualMachines.Count)" -ForegroundColor White
+            Write-Host "      • RG: $resourceGroup - VMs: $vmCount" -ForegroundColor White
         }
         
         $finalValidation.SecurityPosture.JITPolicies = $step5Status.JITPolicies
         
     } else {
         Write-Host "   ❌ No JIT policies found" -ForegroundColor Red
+        Write-Host "   🔗 Checked location: $apiLocation (converted from '$Location')" -ForegroundColor Gray
         $step5Status.Details += "JIT VM Access not configured"
     }
 } catch {

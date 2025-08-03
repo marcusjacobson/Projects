@@ -116,10 +116,10 @@ if (-not $Force -and -not $WhatIf) {
 }
 
 # =============================================================================
-# Phase 1: Prepare Deployment Environment
+# Step 1: Prepare Deployment Environment
 # =============================================================================
 
-Write-Host "🔧 Phase 1: Preparing Deployment Environment" -ForegroundColor Green
+Write-Host "🔧 Step 1: Preparing Deployment Environment" -ForegroundColor Green
 Write-Host "===========================================" -ForegroundColor Green
 
 # Verify Azure CLI authentication
@@ -169,11 +169,11 @@ if ($rgExists -eq "true") {
 }
 
 # =============================================================================
-# Phase 2: Infrastructure Template Validation
+# Step 2: Infrastructure Template Validation
 # =============================================================================
 
 Write-Host ""
-Write-Host "✅ Phase 2: Infrastructure Template Validation" -ForegroundColor Green
+Write-Host "✅ Step 2: Infrastructure Template Validation" -ForegroundColor Green
 Write-Host "=============================================" -ForegroundColor Green
 
 # Navigate to infrastructure directory
@@ -183,22 +183,48 @@ if (-not (Test-Path $infraPath)) {
     exit 1
 }
 
-Set-Location $infraPath
+# Use Push-Location to preserve current directory and restore it later
+Push-Location $infraPath
+
+# Set up automatic directory restoration on exit
+trap {
+    Pop-Location
+    Write-Host "🔄 Working directory restored due to script exit" -ForegroundColor Yellow
+    break
+}
+
 Write-Host "📂 Working directory: $infraPath" -ForegroundColor Cyan
 
-# Use main.parameters.json directly for deployment
-Write-Host "📝 Using main.parameters.json for foundation deployment..." -ForegroundColor Cyan
-$parametersFile = "main.parameters.json"
+# Use main.parameters.json as source but create foundation-specific parameters for deployment
+Write-Host "📝 Creating foundation-specific parameters from main.parameters.json..." -ForegroundColor Cyan
+
+# Create foundation-specific parameters file with only the parameters the template expects
+$foundationParameters = @{
+    '$schema' = "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#"
+    contentVersion = "1.0.0.0"
+    parameters = @{
+        environmentName = @{ value = $EnvironmentName }
+        location = @{ value = $Location }
+        resourceToken = @{ value = $ResourceToken }
+    }
+}
+
+$foundationParametersFile = "foundation.parameters.json"
+$foundationParameters | ConvertTo-Json -Depth 10 | Set-Content $foundationParametersFile
+Write-Host "   ✅ Foundation parameters file created: $foundationParametersFile" -ForegroundColor Green
+
+$parametersFile = $foundationParametersFile
 
 if (-not (Test-Path $parametersFile)) {
-    Write-Host "   ❌ main.parameters.json not found in infra directory" -ForegroundColor Red
+    Write-Host "   ❌ Foundation parameters file creation failed" -ForegroundColor Red
+    Pop-Location
     exit 1
 }
 
-Write-Host "   ✅ Parameters file found: $parametersFile" -ForegroundColor Green
+Write-Host "   ✅ Foundation parameters file created: $foundationParametersFile" -ForegroundColor Green
 Write-Host "      Environment Name: $EnvironmentName" -ForegroundColor White
 Write-Host "      Location: $Location" -ForegroundColor White
-Write-Host "      Resource Token: $resourceToken" -ForegroundColor White
+Write-Host "      Resource Token: $ResourceToken" -ForegroundColor White
 
 # Validate Bicep template exists and syntax is correct
 Write-Host "🔍 Validating infrastructure foundation template..." -ForegroundColor Cyan
@@ -207,6 +233,7 @@ Write-Host "🔍 Validating infrastructure foundation template..." -ForegroundCo
 $templatePath = "modules/foundation/foundation.bicep"
 if (-not (Test-Path $templatePath)) {
     Write-Host "   ❌ Template file not found: $templatePath" -ForegroundColor Red
+    Pop-Location
     exit 1
 }
 
@@ -221,10 +248,12 @@ try {
     } else {
         Write-Host "   ❌ Bicep template syntax validation failed:" -ForegroundColor Red
         Write-Host "      $buildResult" -ForegroundColor White
+        Pop-Location
         exit 1
     }
 } catch {
     Write-Host "   ❌ Bicep build validation failed: $_" -ForegroundColor Red
+    Pop-Location
     exit 1
 }
 
@@ -232,15 +261,16 @@ try {
 $rgReady = az group exists --name $resourceGroupName --output tsv
 if ($rgReady -ne "true" -and -not $WhatIf) {
     Write-Host "   ❌ Resource group not ready for validation" -ForegroundColor Red
+    Pop-Location
     exit 1
 }
 
 # =============================================================================
-# Phase 3: Preview or Execute Deployment
+# Step 3: Preview or Execute Deployment
 # =============================================================================
 
 Write-Host ""
-Write-Host "🚀 Phase 3: Infrastructure Foundation Deployment" -ForegroundColor Green
+Write-Host "🚀 Step 3: Infrastructure Foundation Deployment" -ForegroundColor Green
 Write-Host "===============================================" -ForegroundColor Green
 
 $deploymentName = "foundation-deployment-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
@@ -251,8 +281,11 @@ if ($WhatIf) {
     # Ensure resource group exists for What-If operation
     $rgReady = az group exists --name $resourceGroupName --output tsv
     if ($rgReady -ne "true") {
-        Write-Host "   ℹ️ Creating temporary resource group for What-If validation..." -ForegroundColor Cyan
+        Write-Host "   ℹ️ Creating resource group for What-If validation..." -ForegroundColor Cyan
+        Write-Host "   📍 Location: $Location" -ForegroundColor White
         az group create --name $resourceGroupName --location $Location --output none
+    } else {
+        Write-Host "   ✅ Resource group already exists for What-If validation" -ForegroundColor Green
     }
     
     try {
@@ -267,6 +300,7 @@ if ($WhatIf) {
         Write-Host "ℹ️ This was a preview only. Use without -WhatIf to execute deployment." -ForegroundColor Cyan
     } catch {
         Write-Host "   ❌ What-If operation failed: $_" -ForegroundColor Red
+        Pop-Location
         exit 1
     }
 } else {
@@ -301,22 +335,24 @@ if ($WhatIf) {
             Write-Host "   � Deployment state: $($deploymentDetails.properties.provisioningState)" -ForegroundColor White
         } else {
             Write-Host "   ❌ Azure CLI deployment command failed with exit code: $LASTEXITCODE" -ForegroundColor Red
+            Pop-Location
             exit 1
         }
     } catch {
         Write-Host "   ❌ Deployment execution failed: $_" -ForegroundColor Red
         Write-Host "   💡 Exception details: $($_.Exception.Message)" -ForegroundColor Yellow
+        Pop-Location
         exit 1
     }
 }
 
 # =============================================================================
-# Phase 4: Post-Deployment Validation
+# Step 4: Post-Deployment Validation
 # =============================================================================
 
 if (-not $WhatIf) {
     Write-Host ""
-    Write-Host "✅ Phase 4: Post-Deployment Validation" -ForegroundColor Green
+    Write-Host "✅ Step 4: Post-Deployment Validation" -ForegroundColor Green
     Write-Host "=====================================" -ForegroundColor Green
     
     # Verify resource group creation
@@ -396,3 +432,6 @@ if ($WhatIf) {
 
 Write-Host ""
 Write-Host "🎯 Foundation deployment script completed!" -ForegroundColor Green
+
+# Restore original working directory
+Pop-Location

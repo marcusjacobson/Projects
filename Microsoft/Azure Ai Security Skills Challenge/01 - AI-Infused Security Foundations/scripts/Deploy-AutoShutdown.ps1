@@ -133,8 +133,11 @@ Write-Host "   What-If Mode: $WhatIf" -ForegroundColor White
 Write-Host ""
 
 # =============================================================================
-# Azure Authentication and Subscription Validation
+# Step 1: Azure Authentication and Subscription Validation
 # =============================================================================
+
+Write-Host "🔐 Step 1: Azure Authentication and Subscription Validation" -ForegroundColor Green
+Write-Host "===========================================================" -ForegroundColor Green
 
 Write-Host "🔐 Validating Azure authentication and subscription..." -ForegroundColor Cyan
 
@@ -169,10 +172,13 @@ if (-not $resourceGroupName) {
 }
 
 # =============================================================================
-# Resource Group and VM Discovery
+# Step 2: Resource Group and VM Discovery
 # =============================================================================
 
 Write-Host ""
+Write-Host "🖥️ Step 2: Resource Group and VM Discovery" -ForegroundColor Green
+Write-Host "===========================================" -ForegroundColor Green
+
 Write-Host "🖥️ Discovering virtual machines for auto-shutdown configuration..." -ForegroundColor Cyan
 
 try {
@@ -286,11 +292,11 @@ if (-not $Force -and -not $WhatIf) {
 }
 
 # =============================================================================
-# Auto-Shutdown Configuration
+# Step 3: Auto-Shutdown Configuration
 # =============================================================================
 
-Write-Host "⏰ Configuring VM auto-shutdown..." -ForegroundColor Green
-Write-Host "==================================" -ForegroundColor Green
+Write-Host "⏰ Step 3: Auto-Shutdown Configuration" -ForegroundColor Green
+Write-Host "======================================" -ForegroundColor Green
 
 $configurationResults = @()
 

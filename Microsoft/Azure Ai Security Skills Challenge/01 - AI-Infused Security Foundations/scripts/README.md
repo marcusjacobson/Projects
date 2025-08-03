@@ -10,9 +10,9 @@ Automates the configuration of Just-in-Time (JIT) VM Access policies for Windows
 
 **Purpose**:
 
-- Discovers VMs in a resource group automatically
-- Applies JIT policies using reusable JSON templates
-- Provides verification and status reporting
+- Discovers VMs in a resource group automatically.
+- Applies JIT policies using reusable JSON templates.
+- Provides verification and status reporting.
 
 **Usage**:
 
@@ -26,17 +26,17 @@ Automates the configuration of Just-in-Time (JIT) VM Access policies for Windows
 
 **Parameters**:
 
-- `ResourceGroupName` (Required) - Name of the resource group containing VMs
-- `SubscriptionId` (Required) - Azure subscription ID
-- `Location` (Optional) - Azure region for JIT policies (default: "westus")
+- `ResourceGroupName` (Required) - Name of the resource group containing VMs.
+- `SubscriptionId` (Required) - Azure subscription ID.
+- `Location` (Optional) - Azure region for JIT policies (default: "westus").
 
 **Features**:
 
-- ✅ Automatic VM discovery
-- ✅ Template-based configuration
-- ✅ Error handling and validation
-- ✅ Status reporting and verification
-- ✅ Colorized output for better readability
+- ✅ Automatic VM discovery.
+- ✅ Template-based configuration.
+- ✅ Error handling and validation.
+- ✅ Status reporting and verification.
+- ✅ Colorized output for better readability.
 
 ### `Remove-DefenderInfrastructure.ps1`
 
@@ -44,10 +44,10 @@ Comprehensive decommission script that safely removes all resources created by t
 
 **Purpose**:
 
-- Safely removes all deployment resources in logical order
-- Handles security configuration cleanup
-- Provides validation and verification of removal
-- Preserves subscription-level configurations that may be shared
+- Safely removes all deployment resources in logical order.
+- Handles security configuration cleanup.
+- Provides validation and verification of removal.
+- Preserves subscription-level configurations that may be shared.
 
 **Usage**:
 

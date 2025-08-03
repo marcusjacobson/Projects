@@ -109,7 +109,7 @@ if (-not $Force -and -not $WhatIf) {
 # Phase 1: Pre-Decommission Validation and Discovery
 # =============================================================================
 
-Write-Host "🔍 Phase 1: Discovery and Validation" -ForegroundColor Green
+Write-Host "🔍 Phase 1: Discovery and Validation" -ForegroundColor Magenta
 Write-Host "=====================================" -ForegroundColor Green
 
 # Verify subscription access
@@ -246,7 +246,7 @@ if ($WhatIf) {
 # =============================================================================
 
 Write-Host ""
-Write-Host "🛡️ Phase 2: Removing Security Configurations" -ForegroundColor Green
+Write-Host "🛡️ Phase 2: Removing Security Configurations" -ForegroundColor Magenta
 Write-Host "============================================" -ForegroundColor Green
 
 # Remove JIT VM Access Policies
@@ -309,7 +309,7 @@ foreach ($workspace in $workspaces) {
 # =============================================================================
 
 Write-Host ""
-Write-Host "🖥️ Phase 3: Removing Virtual Machine Components" -ForegroundColor Green
+Write-Host "🖥️ Phase 3: Removing Virtual Machine Components" -ForegroundColor Magenta
 Write-Host "=============================================" -ForegroundColor Green
 
 # Stop VMs first
@@ -345,7 +345,7 @@ if ($vmCount -gt 0) {
 # =============================================================================
 
 Write-Host ""
-Write-Host "🗑️ Phase 4: Removing Resource Group and All Resources" -ForegroundColor Green
+Write-Host "🗑️ Phase 4: Removing Resource Group and All Resources" -ForegroundColor Magenta
 Write-Host "====================================================" -ForegroundColor Green
 
 Write-Host "🗂️ Deleting resource group: $ResourceGroupName" -ForegroundColor Cyan
@@ -391,7 +391,7 @@ try {
 # =============================================================================
 
 Write-Host ""
-Write-Host "🛡️ Phase 5: Managing Subscription-Level Security Configurations" -ForegroundColor Green
+Write-Host "🛡️ Phase 5: Managing Subscription-Level Security Configurations" -ForegroundColor Magenta
 Write-Host "===============================================================" -ForegroundColor Green
 
 # Check security contacts (these are subscription-level)
@@ -471,7 +471,7 @@ try {
 # =============================================================================
 
 Write-Host ""
-Write-Host "✅ Phase 6: Enhanced Post-Decommission Validation" -ForegroundColor Green
+Write-Host "✅ Phase 6: Enhanced Post-Decommission Validation" -ForegroundColor Magenta
 Write-Host "================================================" -ForegroundColor Green
 
 # Initialize validation tracking

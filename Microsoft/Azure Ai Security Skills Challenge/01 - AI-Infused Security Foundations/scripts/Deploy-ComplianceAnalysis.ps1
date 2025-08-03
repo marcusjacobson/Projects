@@ -98,8 +98,11 @@ Write-Host "   What-If Mode: $WhatIf" -ForegroundColor White
 Write-Host ""
 
 # =============================================================================
-# Azure Authentication and Subscription Validation
+# Step 1: Azure Authentication and Subscription Validation
 # =============================================================================
+
+Write-Host "🔐 Step 1: Azure Authentication and Subscription Validation" -ForegroundColor Green
+Write-Host "===========================================================" -ForegroundColor Green
 
 Write-Host "🔐 Validating Azure authentication and subscription..." -ForegroundColor Cyan
 
@@ -123,11 +126,14 @@ try {
 }
 
 # =============================================================================
-# Compliance Standards Analysis
+# Step 2: Compliance Standards Analysis
 # =============================================================================
 
 Write-Host ""
-Write-Host "📋 Analyzing compliance standards and security posture..." -ForegroundColor Green
+Write-Host "📋 Step 2: Compliance Standards Analysis" -ForegroundColor Green
+Write-Host "========================================" -ForegroundColor Green
+
+Write-Host "📋 Analyzing compliance standards and security posture..." -ForegroundColor Cyan
 Write-Host "=========================================================" -ForegroundColor Green
 
 $complianceResults = @{

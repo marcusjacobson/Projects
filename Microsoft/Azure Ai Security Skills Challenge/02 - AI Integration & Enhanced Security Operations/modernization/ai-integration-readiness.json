@@ -1,0 +1,96 @@
+{
+  "ValidationTimestamp": "2025-08-03 14:28:14 UTC",
+  "OverallScore": {
+    "Total": 4,
+    "Percentage": 75.0,
+    "Completed": 4
+  },
+  "Week2PreparationStatus": {
+    "Status": "Complete",
+    "Score": 2,
+    "Prerequisites": [
+      {
+        "EnabledPlans": 4,
+        "Status": "Ready",
+        "Component": "Defender for Cloud",
+        "Details": "Security foundation established"
+      },
+      {
+        "Status": "Ready",
+        "Component": "Log Analytics Workspace",
+        "WorkspaceName": "log-aisec-defender-securitylab-testlab001",
+        "Details": "Ready for AI telemetry and monitoring"
+      }
+    ],
+    "MaxScore": 2,
+    "Details": [
+      "Defender for Cloud foundation ready",
+      "All prerequisites met for Week 2 AI integration"
+    ]
+  },
+  "AIReadinessChecks": {
+    "AIServiceAvailability": {
+      "Status": "Complete",
+      "Score": 2,
+      "Services": [
+        {
+          "Status": "Available",
+          "Name": "Azure OpenAI",
+          "Tier": "S0",
+          "Location": "West US"
+        }
+      ],
+      "MaxScore": 2,
+      "Details": [
+        "Azure OpenAI service available",
+        "Logic Apps connectivity validated"
+      ]
+    },
+    "FinalAssessment": {
+      "Status": "Complete",
+      "Score": 1,
+      "ReadinessLevel": "READY",
+      "MaxScore": 1,
+      "Details": [
+        "Excellent readiness for Week 2 AI integration"
+      ]
+    },
+    "ResourcePlanning": {
+      "MaxScore": 2,
+      "Score": 2,
+      "Details": [
+        "Resource naming pattern identified",
+        "Resource location distribution analyzed"
+      ],
+      "NamingPattern": "nic-vm-",
+      "ResourceDistribution": {
+        "Location": "westus",
+        "ResourceCount": 18,
+        "IsPrimary": true
+      },
+      "Status": "Complete"
+    },
+    "ConnectivityTests": [
+      {
+        "Port": 443,
+        "Status": "Connected",
+        "Endpoint": "management.azure.com"
+      },
+      {
+        "Port": 443,
+        "Status": "Connected",
+        "Endpoint": "westus.logic.azure.com"
+      }
+    ]
+  },
+  "LabEnvironment": {
+    "SubscriptionName": "Visual Studio Enterprise Subscription",
+    "Location": "West US",
+    "SubscriptionId": "d7a6da45-0839-4879-aecd-d89fb8178472",
+    "ResourceGroup": "rg-aisec-defender-securitylab1"
+  },
+  "Recommendations": [
+    "Review Week 2 curriculum for Azure OpenAI + Sentinel integration requirements",
+    "Plan Logic Apps workflows for security automation with AI capabilities"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentName": {
+      "value": "securitylab"
+    },
+    "location": {
+      "value": "East US"
+    },
+    "resourceToken": {
+      "value": "testlab001"
+    }
+  },
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#"
+}

@@ -408,6 +408,64 @@ Code without proper spacing or language ID
 
 ---
 
+## 🤖 AI-Assisted Content Generation Requirements
+
+All comprehensive markdown documentation must include an AI-assisted content generation section at the end of the document to maintain transparency and provide attribution for AI assistance used in content creation.
+
+### Required Section Format
+
+```markdown
+## 🤖 AI-Assisted Content Generation
+
+This [document type] was [created/updated] with the assistance of **GitHub Copilot** powered by advanced AI language models. The content was generated, structured, and refined through iterative collaboration between human expertise and AI assistance within **Visual Studio Code**, [specific context about the content or technical aspects covered].
+
+*AI tools were used to enhance productivity and ensure comprehensive coverage of [specific domain or topic] while maintaining technical accuracy and reflecting [relevant standards or best practices].*
+```
+
+### Implementation Guidelines
+
+- **Placement**: Always place this section at the end of the document, before any final notes or disclaimers.
+- **Customization**: Adapt the template content to reflect the specific document type, technical domain, and scope of AI assistance.
+- **Consistency**: Use the same emoji (🤖) and header format across all documents.
+- **Attribution**: Always mention **GitHub Copilot** and **Visual Studio Code** as the primary AI tools used.
+
+### Examples of Proper Implementation
+
+#### For Technical Deployment Guides
+
+```markdown
+This comprehensive deployment guide was updated for 2025 with the assistance of **GitHub Copilot** powered by advanced AI language models. The content was generated, structured, and refined through iterative collaboration between human expertise and AI assistance within **Visual Studio Code**, incorporating the latest Microsoft Defender for Cloud architecture changes, MMA deprecation, and modern agentless capabilities.
+```
+
+#### For Infrastructure-as-Code Documentation
+
+```markdown
+This comprehensive modular Infrastructure-as-Code deployment guide was created with the assistance of **GitHub Copilot** powered by advanced AI language models. The content, PowerShell automation scripts, Bicep templates, and Infrastructure-as-Code architecture were generated, structured, and refined through iterative collaboration between human expertise and AI assistance within **Visual Studio Code**.
+```
+
+#### For Decommissioning Guides
+
+```markdown
+This comprehensive decommissioning guide was created with the assistance of **GitHub Copilot** powered by advanced AI language models. The content was generated, structured, and refined through iterative collaboration between human expertise and AI assistance within **Visual Studio Code**, leveraging GitHub Copilot's capabilities to ensure accuracy, completeness, and adherence to Microsoft Azure best practices.
+```
+
+### Documents Requiring AI-Assisted Content Generation Sections
+
+- **All comprehensive guides** (deployment, configuration, decommissioning)
+- **Technical documentation** longer than 500 lines
+- **Tutorial and step-by-step content**
+- **Reference documentation** with substantial AI-generated content
+- **Any document where AI assistance significantly contributed to content creation**
+
+### Documents That May Exclude This Section
+
+- **Simple README files** with basic project descriptions
+- **Template files** and boilerplate content
+- **Brief technical notes** under 100 lines
+- **Configuration files** and data-only content
+
+---
+
 ## 📚 Additional Resources
 
 - **Microsoft Learn Documentation**: [docs.microsoft.com](https://docs.microsoft.com)

@@ -1,8 +1,76 @@
+<#
+.SYNOPSIS
+    Deploys Windows and Linux virtual machines with security extensions and
+    configurations optimized for Microsoft Defender for Cloud testing.
+
+.DESCRIPTION
+    This script provisions Azure virtual machines (Windows Server and Linux)
+    with comprehensive security configurations for Microsoft Defender for Cloud
+    evaluation and testing. It includes security extension installations,
+    vulnerability assessment configurations, and integration with Log Analytics
+    workspace for centralized monitoring. The script handles secure password
+    management, cost optimization settings, network security configurations,
+    and automatic security agent deployment. Virtual machines are configured
+    with appropriate SKUs for testing scenarios while maintaining cost
+    efficiency through auto-shutdown schedules and proper resource sizing.
+
+.PARAMETER EnvironmentName
+    Name for the environment (must match foundation deployment). Default: "securitylab"
+
+.PARAMETER Location
+    Azure region for deployment. Default: "East US"
+
+.PARAMETER AdminPassword
+    Administrator password for VMs. WARNING: For production use, retrieve from Azure Key Vault.
+
+.PARAMETER UseParametersFile
+    Switch to load configuration from main.parameters.json file.
+
+.PARAMETER WhatIf
+    Preview deployment without executing changes.
+
+.PARAMETER Force
+    Skip confirmation prompts and proceed with automated deployment.
+
+.EXAMPLE
+    .\Deploy-VirtualMachines.ps1 -UseParametersFile
+    
+    Deploy VMs using parameters file with secure password management.
+
+.EXAMPLE
+    .\Deploy-VirtualMachines.ps1 -EnvironmentName "seclab" -AdminPassword (ConvertTo-SecureString "SecurePassword123!" -AsPlainText -Force)
+    
+    Deploy VMs with explicit environment name and password.
+
+.EXAMPLE
+    .\Deploy-VirtualMachines.ps1 -UseParametersFile -WhatIf
+    
+    Preview VM deployment without creating resources.
+
+.EXAMPLE
+    .\Deploy-VirtualMachines.ps1 -UseParametersFile -Force
+    
+    Deploy VMs with cost confirmation bypass.
+
+.NOTES
+    Author: Marcus Jacobson
+    Version: 1.0.0
+    Created: 2025-08-04
+    
+    Creates testing virtual machines with security extensions for threat protection evaluation.
+    Script development orchestrated using GitHub Copilot.
+
+.VM_CONFIGURATIONS
+    - Windows Server VM (Standard_B2s): Security extensions, vulnerability assessment
+    - Linux VM (Standard_B1ms): Security agents, log forwarding configuration
+    - Network Security Groups: Configured for secure access patterns
+    - Auto-shutdown schedules: Cost optimization for non-production environments
+    - Security agent deployment: Automatic integration with Defender for Cloud
+    - Password management: Secure handling with Azure Key Vault recommendations
+#>
+
 # =============================================================================
 # Microsoft Defender for Cloud - Virtual Machines Deployment Script
-# =============================================================================
-# This script deploys the virtual machines (Windows and Linux) with security
-# extensions and configurations for Microsoft Defender for Cloud testing.
 # =============================================================================
 
 param(

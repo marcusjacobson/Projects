@@ -1,9 +1,74 @@
-# =============================================================================
-# Microsoft Defender for Cloud - Final Lab State Validation Script
-# =============================================================================
-# This script performs comprehensive end-to-end validation of the complete
-# Microsoft Defender for Cloud lab after all 10 deployment steps.
-# =============================================================================
+<#
+.SYNOPSIS
+    Performs comprehensive end-to-end validation of the complete Microsoft
+    Defender for Cloud lab deployment covering all 10 deployment steps.
+
+.DESCRIPTION
+    This script provides thorough final validation and certification of the
+    complete Microsoft Defender for Cloud laboratory environment after all
+    deployment phases are completed. It validates infrastructure foundation,
+    virtual machine protection, Defender plan configuration, security feature
+    implementation, monitoring capabilities, compliance posture, cost analysis,
+    and operational readiness. The script generates comprehensive scoring
+    metrics, detailed compliance reports, security posture assessments, and
+    provides final certification status for the complete lab environment.
+    Results include recommendations for optimization, cost management insights,
+    and operational excellence guidelines for production environments.
+
+.PARAMETER UseParametersFile
+    Switch to load configuration from main.parameters.json file.
+
+.PARAMETER DetailedReport
+    Switch to generate detailed validation report with comprehensive metrics.
+
+.PARAMETER ExportResults
+    Switch to export validation results to JSON file for audit purposes.
+
+.PARAMETER ExportPath
+    Export path for results. Default: "final-lab-validation.json"
+
+.EXAMPLE
+    .\Test-FinalLabValidation.ps1 -UseParametersFile
+    
+    Final validation using parameters file.
+
+.EXAMPLE
+    .\Test-FinalLabValidation.ps1 -UseParametersFile -DetailedReport -ExportResults
+    
+    Generate comprehensive detailed report with JSON export.
+
+.EXAMPLE
+    .\Test-FinalLabValidation.ps1 -DetailedReport -ExportPath "lab-certification.json"
+    
+    Export validation results to custom path.
+
+.EXAMPLE
+    .\Test-FinalLabValidation.ps1 -UseParametersFile -DetailedReport -ExportResults -ExportPath "final-lab-certification.json"
+    
+    Complete certification validation with all reporting options.
+
+.NOTES
+    Author: Marcus Jacobson
+    Version: 1.0.0
+    Created: 2025-08-04
+    
+    Should be run after completing all 10 deployment steps to certify the
+    complete lab environment. Provides comprehensive validation suitable for
+    compliance reporting and operational readiness assessment.
+    Script development orchestrated using GitHub Copilot.
+
+.VALIDATION_PHASES
+    - Phase 1: Infrastructure foundation (resource groups, networking, Log Analytics)
+    - Phase 2: Virtual machine protection (VM deployment, extensions, monitoring)
+    - Phase 3: Defender plan configuration (pricing plans, coverage validation)
+    - Phase 4: Security feature implementation (JIT access, vulnerability assessment)
+    - Phase 5: Monitoring and alerting (Sentinel integration, data connectors)
+    - Phase 6: Compliance posture (recommendations, policy compliance)
+    - Phase 7: Cost analysis (resource utilization, optimization opportunities)
+    - Phase 8: Operational readiness (automation, maintenance procedures)
+    - Phase 9: Security validation (threat detection, incident response)
+    - Phase 10: Final certification (overall scoring, recommendations)
+#>
 
 param(
     [Parameter(Mandatory=$false, HelpMessage="Use parameters from main.parameters.json file")]

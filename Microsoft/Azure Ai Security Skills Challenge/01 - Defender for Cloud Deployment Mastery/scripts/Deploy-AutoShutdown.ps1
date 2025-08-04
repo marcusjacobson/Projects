@@ -1,8 +1,72 @@
+<#
+.SYNOPSIS
+    Configures automatic VM shutdown for cost optimization while maintaining 
+    security monitoring and protection capabilities.
+
+.DESCRIPTION
+    This script automates the configuration of Azure VM auto-shutdown policies
+    to provide significant cost savings (60-70% reduction in compute costs) 
+    while preserving all security monitoring, extensions, and protection 
+    capabilities. The script discovers VMs in the specified environment and
+    applies consistent shutdown schedules with optional notification settings.
+
+.PARAMETER EnvironmentName
+    Environment name for resource identification. Default: ""
+
+.PARAMETER AutoShutdownTime
+    Auto-shutdown time in 24-hour format (e.g., 1800 for 6:00 PM). Default: "1800"
+
+.PARAMETER TimeZone
+    Time zone for shutdown schedule (e.g., 'UTC', 'Eastern Standard Time'). Default: "UTC"
+
+.PARAMETER NotificationEmail
+    Email address for shutdown notifications. Default: ""
+
+.PARAMETER UseParametersFile
+    Switch to load configuration from main.parameters.json file.
+
+.PARAMETER WhatIf
+    Preview configuration without applying changes.
+
+.PARAMETER Force
+    Skip confirmation prompts and proceed with automated deployment.
+
+.PARAMETER EnableNotifications
+    Switch to enable shutdown notifications.
+
+.EXAMPLE
+    .\Deploy-AutoShutdown.ps1 -UseParametersFile -Force
+    
+    Configure auto-shutdown using parameters file.
+
+.EXAMPLE
+    .\Deploy-AutoShutdown.ps1 -EnvironmentName "testlab" -AutoShutdownTime "1900" -EnableNotifications
+    
+    Configure auto-shutdown with custom settings.
+
+.EXAMPLE
+    .\Deploy-AutoShutdown.ps1 -UseParametersFile -WhatIf
+    
+    Preview configuration without applying changes.
+
+.NOTES
+    Author: Marcus Jacobson
+    Version: 1.0.0
+    Created: 2025-08-04
+    
+    Configures VM auto-shutdown for cost optimization while maintaining security capabilities.
+    Script development orchestrated using GitHub Copilot.
+
+.COST_OPTIMIZATION
+    - VM auto-shutdown policies: 60-70% reduction in compute costs
+    - Security monitoring preserved: All extensions and monitoring remain active
+    - Flexible scheduling: Customizable shutdown times and time zones
+    - Notification support: Email alerts for shutdown events
+    - Production considerations: Manual override capabilities for critical workloads
+#>
+
 # =============================================================================
 # Microsoft Defender for Cloud - VM Auto-Shutdown Configuration Script
-# =============================================================================
-# This script configures automatic VM shutdown for cost optimization while
-# maintaining security monitoring and protection capabilities.
 # =============================================================================
 
 param(

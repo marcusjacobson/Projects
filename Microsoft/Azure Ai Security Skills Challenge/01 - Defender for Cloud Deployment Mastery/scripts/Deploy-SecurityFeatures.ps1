@@ -1,8 +1,67 @@
+<#
+.SYNOPSIS
+    Configures advanced security features including Just-in-Time VM Access,
+    security extensions, and additional security configurations.
+
+.DESCRIPTION
+    This script deploys and configures advanced security features for Microsoft
+    Defender for Cloud environments. It establishes Just-in-Time (JIT) VM Access
+    policies to reduce attack surface by providing time-limited access to virtual
+    machines, validates security extensions are properly deployed, and configures
+    additional security baseline compliance settings. The script automatically
+    detects VM operating systems and applies appropriate JIT policies for both
+    Windows (RDP) and Linux (SSH) access. It integrates with Defender for Cloud
+    to provide comprehensive security posture management and access control.
+
+.PARAMETER EnvironmentName
+    Name for the environment (must match previous deployments). Default: "securitylab"
+
+.PARAMETER Location
+    Azure region for deployment. Default: "East US"
+
+.PARAMETER UseParametersFile
+    Switch to load configuration from main.parameters.json file.
+
+.PARAMETER WhatIf
+    Preview security feature configuration without applying changes.
+
+.PARAMETER Force
+    Skip confirmation prompts and proceed with automated deployment.
+
+.EXAMPLE
+    .\Deploy-SecurityFeatures.ps1 -UseParametersFile
+    
+    Configure security features using parameters file.
+
+.EXAMPLE
+    .\Deploy-SecurityFeatures.ps1 -EnvironmentName "prodlab" -Location "West US 2"
+    
+    Configure features for specific environment.
+
+.EXAMPLE
+    .\Deploy-SecurityFeatures.ps1 -UseParametersFile -WhatIf
+    
+    Preview security feature configuration without applying changes.
+
+.NOTES
+    Author: Marcus Jacobson
+    Version: 1.0.0
+    Created: 2025-08-04
+    
+    Configures advanced security features for comprehensive threat protection and access control.
+    Script development orchestrated using GitHub Copilot.
+
+.SECURITY_FEATURES
+    - Just-in-Time VM Access: Time-limited access with 3-hour maximum duration
+    - Port-specific access rules: RDP 3389 for Windows, SSH 22 for Linux
+    - Source IP restrictions: Enhanced security control for VM access
+    - VM security extensions: Validation and configuration of security agents
+    - Security baseline compliance: Verification and remediation capabilities
+    - Integration requirements: Microsoft Defender for Servers Plan 2 enabled
+#>
+
 # =============================================================================
 # Microsoft Defender for Cloud - Security Features Deployment Script
-# =============================================================================
-# This script configures advanced security features including JIT VM Access,
-# Microsoft Defender for Endpoint, and additional security configurations.
 # =============================================================================
 
 param(

@@ -1,9 +1,72 @@
-# =============================================================================
-# Microsoft Defender for Cloud - Complete Deployment Validation Script
-# =============================================================================
-# This script performs comprehensive end-to-end validation of the entire
-# Microsoft Defender for Cloud deployment including all resources and configurations.
-# =============================================================================
+<#
+.SYNOPSIS
+    Performs comprehensive end-to-end validation of Microsoft Defender for Cloud
+    deployments including infrastructure, security configurations, and monitoring.
+
+.DESCRIPTION
+    This script provides thorough validation and testing of Microsoft Defender
+    for Cloud environments deployed via Infrastructure-as-Code. It validates
+    infrastructure components, virtual machine configurations, Defender plan
+    enablement, security feature implementation, and monitoring capabilities.
+    The script generates detailed validation reports with scoring metrics,
+    identifies configuration gaps, provides remediation recommendations, and
+    exports results for audit purposes. It performs health checks on Log
+    Analytics workspaces, network security groups, security agents, JIT VM
+    access policies, and integration points across the security ecosystem.
+
+.PARAMETER EnvironmentName
+    Name for the environment (must match previous deployments). Default: "securitylab"
+
+.PARAMETER Location
+    Azure region for deployment validation. Default: "East US"
+
+.PARAMETER UseParametersFile
+    Switch to load configuration from main.parameters.json file.
+
+.PARAMETER DetailedReport
+    Switch to generate detailed validation report with comprehensive metrics.
+
+.PARAMETER ExportResults
+    Switch to export validation results to JSON file for audit purposes.
+
+.EXAMPLE
+    .\Test-DeploymentValidation.ps1 -UseParametersFile
+    
+    Validate deployment using parameters file.
+
+.EXAMPLE
+    .\Test-DeploymentValidation.ps1 -EnvironmentName "prodlab" -DetailedReport
+    
+    Generate detailed validation report with specific environment.
+
+.EXAMPLE
+    .\Test-DeploymentValidation.ps1 -UseParametersFile -ExportResults
+    
+    Export validation results to JSON for audit purposes.
+
+.EXAMPLE
+    .\Test-DeploymentValidation.ps1 -UseParametersFile -DetailedReport -ExportResults
+    
+    Comprehensive validation with full reporting and export.
+
+.NOTES
+    Author: Marcus Jacobson
+    Version: 1.0.0
+    Created: 2025-08-04
+    
+    Designed to run after all deployment steps are completed and provides
+    comprehensive validation of the entire security infrastructure. Results
+    can be used for compliance reporting and configuration auditing.
+    Script development orchestrated using GitHub Copilot.
+
+.VALIDATION_CATEGORIES
+    - Infrastructure: Resource groups, Log Analytics, networking, storage
+    - Virtual Machines: VM status, extensions, security agent deployment
+    - Defender Plans: Plan enablement, coverage validation, cost verification
+    - Security Features: JIT VM access, vulnerability assessment, monitoring
+    - Integration Points: Sentinel onboarding, data connector validation
+    - Compliance: Security recommendations, policy compliance, configuration drift
+#>
 
 param(
     [Parameter(Mandatory=$false, HelpMessage="Name for the environment (must match previous deployments)")]

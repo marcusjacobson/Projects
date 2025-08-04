@@ -1,8 +1,68 @@
+<#
+.SYNOPSIS
+    Analyzes compliance standards and provides detailed security posture
+    assessment for governance and reporting requirements.
+
+.DESCRIPTION
+    This script performs comprehensive compliance analysis against industry
+    standards including Microsoft Cloud Security Benchmark (MCSB), NIST
+    Cybersecurity Framework, PCI DSS, and ISO 27001. It generates detailed
+    compliance reports, identifies security gaps, provides remediation
+    guidance, and enables continuous governance monitoring for regulatory
+    and organizational requirements.
+
+.PARAMETER EnvironmentName
+    Environment name for resource identification. Default: ""
+
+.PARAMETER AdditionalStandards
+    Additional compliance standards to analyze (comma-separated). Options: nist, pci, iso27001. Default: ""
+
+.PARAMETER UseParametersFile
+    Switch to load configuration from main.parameters.json file.
+
+.PARAMETER WhatIf
+    Preview compliance analysis without generating reports.
+
+.PARAMETER Force
+    Skip confirmation prompts and proceed with automated analysis.
+
+.PARAMETER OutputPath
+    Path to save compliance reports. Default: current directory.
+
+.EXAMPLE
+    .\Deploy-ComplianceAnalysis.ps1 -UseParametersFile
+    
+    Analyze MCSB compliance using parameters file.
+
+.EXAMPLE
+    .\Deploy-ComplianceAnalysis.ps1 -EnvironmentName "prodlab" -AdditionalStandards "nist,pci"
+    
+    Analyze multiple compliance standards.
+
+.EXAMPLE
+    .\Deploy-ComplianceAnalysis.ps1 -UseParametersFile -WhatIf
+    
+    Preview compliance analysis without generating reports.
+
+.NOTES
+    Author: Marcus Jacobson
+    Version: 1.0.0
+    Created: 2025-08-04
+    
+    Analyzes compliance standards for security posture assessment and governance reporting.
+    Script development orchestrated using GitHub Copilot.
+
+.COMPLIANCE_STANDARDS
+    - Microsoft Cloud Security Benchmark (MCSB): Default baseline security framework
+    - NIST Cybersecurity Framework v2.0: Industry standard cybersecurity framework
+    - PCI DSS: Payment card industry security requirements and standards
+    - ISO 27001: International security management standard framework
+    - Compliance reporting: Detailed gap analysis and remediation guidance
+    - Continuous monitoring: Ongoing governance and security posture assessment
+#>
+
 # =============================================================================
 # Microsoft Defender for Cloud - Compliance Analysis Script
-# =============================================================================
-# This script analyzes compliance standards and provides detailed security
-# posture assessment for governance and reporting.
 # =============================================================================
 
 param(
@@ -414,7 +474,6 @@ try {
                     Write-Host ""
                     Write-Host "      � Learning Opportunities (Improvement Areas):" -ForegroundColor Yellow
                     Write-Host "         📚 These are areas where Azure suggests enhancements (not problems!):" -ForegroundColor Gray
-                    $failedControls = $mcsbControls | Where-Object { $_.State -eq "Failed" } | Select-Object -First 5
                     Write-Host ""
                     Write-Host "         🔧 Common Security Improvement Categories:" -ForegroundColor Cyan
                     Write-Host "            • Network Security: Secure network configurations and access controls" -ForegroundColor White

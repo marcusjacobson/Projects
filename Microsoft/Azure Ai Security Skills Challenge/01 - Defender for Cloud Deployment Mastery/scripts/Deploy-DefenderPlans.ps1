@@ -1,8 +1,67 @@
+<#
+.SYNOPSIS
+    Configures Microsoft Defender for Cloud pricing plans and security contacts
+    for comprehensive subscription-level security coverage.
+
+.DESCRIPTION
+    This script enables and configures Microsoft Defender for Cloud premium
+    pricing plans across various Azure services including Virtual Machines,
+    Storage Accounts, Key Vaults, and Containers. It provides comprehensive
+    security coverage by upgrading from free tier to premium Standard tier
+    plans with advanced threat protection, vulnerability assessment, and
+    security monitoring capabilities. The script also configures security
+    contact information for notifications and alerts, ensuring proper
+    incident response coordination.
+
+.PARAMETER SecurityContactEmail
+    Security contact email for notifications. If not provided, defaults to user's Azure account.
+
+.PARAMETER PlansToEnable
+    Plans to enable (comma-separated). Default: "VirtualMachines,StorageAccounts,KeyVaults,CloudPosture"
+
+.PARAMETER UseParametersFile
+    Switch to load configuration from main.parameters.json file.
+
+.PARAMETER WhatIf
+    Preview plan configuration without making changes.
+
+.PARAMETER Force
+    Skip confirmation prompts and proceed with automated deployment.
+
+.EXAMPLE
+    .\Deploy-DefenderPlans.ps1 -UseParametersFile
+    
+    Enable default plans using parameters file.
+
+.EXAMPLE
+    .\Deploy-DefenderPlans.ps1 -PlansToEnable "VirtualMachines,StorageAccounts" -SecurityContactEmail "security@company.com"
+    
+    Enable specific plans with custom security contact.
+
+.EXAMPLE
+    .\Deploy-DefenderPlans.ps1 -UseParametersFile -WhatIf
+    
+    Preview plan configuration without making changes.
+
+.NOTES
+    Author: Marcus Jacobson
+    Version: 1.0.0
+    Created: 2025-08-04
+    
+    Configures Microsoft Defender for Cloud pricing plans for comprehensive security coverage.
+    Script development orchestrated using GitHub Copilot.
+
+.DEFENDER_PLANS
+    - Defender for Servers Plan 2: Comprehensive VM protection (~$15/server/month)
+    - Defender for Storage: Malware scanning and threat protection (~$10/storage account/month)
+    - Defender for Key Vault: Secrets and certificate protection (~$2/vault/month)
+    - Defender for Containers: Container security scanning (~$7/vCore/month)
+    - Foundational CSPM: Cloud Security Posture Management (free tier)
+    - Security contact configuration: Incident response coordination
+#>
+
 # =============================================================================
 # Microsoft Defender for Cloud - Defender Plans Configuration Script
-# =============================================================================
-# This script configures Microsoft Defender for Cloud pricing plans and
-# security contacts for comprehensive security coverage.
 # =============================================================================
 
 param(

@@ -1,8 +1,65 @@
+<#
+.SYNOPSIS
+    Enables Microsoft Sentinel SIEM on the Log Analytics workspace and configures
+    data connectors for enhanced security information and event management.
+
+.DESCRIPTION
+    This script integrates Microsoft Sentinel (Security Information and Event
+    Management) with the existing Log Analytics workspace created in the
+    infrastructure foundation. It enables Sentinel workspace onboarding,
+    configures essential data connectors for security event collection,
+    validates workspace health, and handles orphaned onboarding states that
+    can prevent proper data connector functionality. The script provides
+    comprehensive SIEM capabilities including threat detection, investigation
+    tools, and automated response capabilities through integration with
+    Microsoft Defender for Cloud security alerts and recommendations.
+
+.PARAMETER EnvironmentName
+    Name for the environment (matching previous deployment steps). Default: ""
+
+.PARAMETER UseParametersFile
+    Switch to load configuration from main.parameters.json file.
+
+.PARAMETER WhatIf
+    Preview Sentinel integration without executing changes.
+
+.PARAMETER Force
+    Skip confirmation prompts and proceed with automated deployment.
+
+.EXAMPLE
+    .\Deploy-Sentinel.ps1 -UseParametersFile
+    
+    Enable Sentinel using parameters file.
+
+.EXAMPLE
+    .\Deploy-Sentinel.ps1 -EnvironmentName "prodlab"
+    
+    Enable Sentinel for specific environment.
+
+.EXAMPLE
+    .\Deploy-Sentinel.ps1 -UseParametersFile -WhatIf
+    
+    Preview Sentinel integration without executing changes.
+
+.NOTES
+    Author: Marcus Jacobson
+    Version: 1.0.0
+    Created: 2025-08-04
+    
+    Enables Microsoft Sentinel SIEM integration for comprehensive security monitoring.
+    Script development orchestrated using GitHub Copilot.
+
+.SIEM_CAPABILITIES
+    - Microsoft Sentinel workspace: Onboarding and configuration
+    - Data connector setup: Security event collection automation
+    - Orphaned state cleanup: Detection and resolution of onboarding issues
+    - Defender integration: Alerts and recommendations forwarding
+    - Threat detection: Automated response capabilities
+    - Licensing requirements: Microsoft Sentinel licensing or 31-day free trial
+#>
+
 # =============================================================================
 # Microsoft Defender for Cloud - Microsoft Sentinel Integration Script
-# =============================================================================
-# This script enables Microsoft Sentinel on the Log Analytics Workspace created
-# in Step 1, preparing the environment for enhanced SIEM capabilities.
 # =============================================================================
 
 param(

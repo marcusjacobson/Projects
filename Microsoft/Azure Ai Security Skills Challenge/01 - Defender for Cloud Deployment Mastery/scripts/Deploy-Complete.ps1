@@ -1,8 +1,77 @@
+<#
+.SYNOPSIS
+    Orchestrates the complete deployment of Microsoft Defender for Cloud using
+    all modular scripts in the correct sequence with comprehensive validation.
+
+.DESCRIPTION
+    This master orchestration script automates the end-to-end deployment of a
+    complete Microsoft Defender for Cloud environment. It executes all deployment
+    phases in the correct order: infrastructure foundation, virtual machines,
+    security plans, advanced features, Sentinel integration, compliance analysis,
+    cost management, and auto-shutdown configuration. The script provides
+    comprehensive validation, error handling, and rollback capabilities.
+
+.PARAMETER EnvironmentName
+    Name for the environment. Default: "securitylab"
+
+.PARAMETER Location
+    Azure region for deployment. Default: "East US"
+
+.PARAMETER SecurityContactEmail
+    Security contact email address for Microsoft Defender for Cloud notifications.
+
+.PARAMETER AdminUsername
+    Admin username for virtual machines. Default: "azureadmin"
+
+.PARAMETER UseParametersFile
+    Switch to load configuration from main.parameters.json file.
+
+.PARAMETER WhatIf
+    Preview all deployments without executing them.
+
+.PARAMETER Force
+    Skip confirmation prompts and proceed with automated deployment.
+
+.PARAMETER Phases
+    Deploy only specific phases (1-10). Default: all phases.
+
+.EXAMPLE
+    .\Deploy-Complete.ps1 -UseParametersFile -Force
+    
+    Complete automated deployment using parameters file configuration.
+
+.EXAMPLE
+    .\Deploy-Complete.ps1 -EnvironmentName "prodlab" -Location "West US 2" -SecurityContactEmail "admin@company.com"
+    
+    Interactive deployment with custom settings.
+
+.EXAMPLE
+    .\Deploy-Complete.ps1 -UseParametersFile -Phases @(3,4,5)
+    
+    Deploy specific phases only (Defender Plans, Security Features, Sentinel Integration).
+
+.NOTES
+    Author: Marcus Jacobson
+    Version: 1.0.0
+    Created: 2025-08-04
+    
+    Master orchestrator script coordinating all deployment scripts in the suite.
+    Script development orchestrated using GitHub Copilot.
+
+.DEPLOYMENT_PHASES
+    1. Infrastructure Foundation (Resource Groups, Log Analytics, Networking)
+    2. Virtual Machines (Windows/Linux VMs with security extensions)
+    3. Defender Plans (Server, Storage, Key Vault, Container protection)
+    4. Security Features (JIT Access, agentless scanning, threat protection)
+    5. Sentinel Integration (SIEM capabilities and data connectors)
+    6. Compliance Analysis (Security posture and governance reporting)
+    7. Cost Analysis (Cost optimization recommendations and monitoring)
+    8. Auto-Shutdown (VM power management for cost optimization)
+    9. Final Validation (Comprehensive deployment verification)
+#>
+
 # =============================================================================
 # Microsoft Defender for Cloud - Complete Deployment Orchestrator
-# =============================================================================
-# This script orchestrates the complete deployment of Microsoft Defender for Cloud
-# using all modular scripts in the correct sequence with comprehensive validation.
 # =============================================================================
 
 param(

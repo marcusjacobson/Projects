@@ -1,8 +1,70 @@
+<#
+.SYNOPSIS
+    Deploys the foundational infrastructure components for Microsoft Defender
+    for Cloud including resource groups, Log Analytics workspace, and networking.
+
+.DESCRIPTION
+    This script establishes the core infrastructure foundation required for
+    Microsoft Defender for Cloud deployment. It creates and configures the
+    resource group, Log Analytics workspace for security data collection,
+    network security groups, virtual networks, and other foundational
+    components. The script uses Infrastructure as Code (IaC) principles
+    with Bicep templates to ensure consistent, repeatable deployments.
+    It integrates with the broader security automation suite and provides
+    comprehensive validation and error handling for reliable infrastructure
+    provisioning.
+
+.PARAMETER EnvironmentName
+    Name for the environment (will be used in resource names). Default: "securitylab"
+
+.PARAMETER Location
+    Azure region for deployment. Default: "East US"
+
+.PARAMETER SecurityContactEmail
+    Security contact email for notifications and alerts.
+
+.PARAMETER UseParametersFile
+    Switch to load configuration from main.parameters.json file.
+
+.PARAMETER WhatIf
+    Preview deployment without executing changes.
+
+.PARAMETER Force
+    Skip confirmation prompts and proceed with automated deployment.
+
+.EXAMPLE
+    .\Deploy-InfrastructureFoundation.ps1 -UseParametersFile
+    
+    Deploy foundation using parameters file configuration.
+
+.EXAMPLE
+    .\Deploy-InfrastructureFoundation.ps1 -EnvironmentName "prodlab" -Location "West US 2" -SecurityContactEmail "admin@company.com"
+    
+    Deploy with custom environment and location settings.
+
+.EXAMPLE
+    .\Deploy-InfrastructureFoundation.ps1 -UseParametersFile -WhatIf
+    
+    Preview infrastructure deployment without executing changes.
+
+.NOTES
+    Author: Marcus Jacobson
+    Version: 1.0.0
+    Created: 2025-08-04
+    
+    Foundation script supporting all other security components and services.
+    Script development orchestrated using GitHub Copilot.
+
+.INFRASTRUCTURE_COMPONENTS
+    - Resource Group (container for all security resources)
+    - Log Analytics Workspace (centralized logging and monitoring)
+    - Virtual Network (network isolation and security)
+    - Network Security Groups (traffic filtering and access control)
+    - Storage Account (diagnostic data and configuration storage)
+#>
+
 # =============================================================================
 # Microsoft Defender for Cloud - Infrastructure Foundation Deployment Script
-# =============================================================================
-# This script deploys the foundational infrastructure components including
-# resource group, Log Analytics workspace, and network infrastructure.
 # =============================================================================
 
 param(

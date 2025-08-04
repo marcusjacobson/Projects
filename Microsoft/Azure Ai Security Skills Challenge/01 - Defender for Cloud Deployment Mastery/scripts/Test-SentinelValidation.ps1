@@ -1,10 +1,67 @@
-# =============================================================================
-# Microsoft Sentinel Infrastructure Validation Script
-# =============================================================================
-# This script validates Microsoft Sentinel onboarding and tenant-based data 
-# connector configuration for the Microsoft Defender for Cloud integration.
-# Data flow validation is performed separately using KQL queries after alert generation.
-# =============================================================================
+<#
+.SYNOPSIS
+    Validates Microsoft Sentinel onboarding and data connector configuration
+    for comprehensive SIEM integration with Microsoft Defender for Cloud.
+
+.DESCRIPTION
+    This script provides thorough validation of Microsoft Sentinel deployment
+    and configuration within the Defender for Cloud security ecosystem. It
+    validates Log Analytics workspace health, Sentinel onboarding status,
+    data connector installation and configuration, solution package deployment,
+    and tenant-based connector functionality. The script performs comprehensive
+    health checks on SIEM infrastructure components, validates data flow paths,
+    verifies security content package installations, and provides detailed
+    reporting on Sentinel integration status. It includes error handling for
+    complex Sentinel API interactions and provides actionable remediation
+    guidance for configuration issues.
+
+.PARAMETER EnvironmentName
+    Name for the environment (matching previous deployment steps). Default: ""
+
+.PARAMETER UseParametersFile
+    Switch to load configuration from main.parameters.json file.
+
+.PARAMETER DetailedReport
+    Switch to generate detailed validation report with comprehensive metrics.
+
+.EXAMPLE
+    .\Test-SentinelValidation.ps1 -UseParametersFile
+    
+    Validate Sentinel using parameters file.
+
+.EXAMPLE
+    .\Test-SentinelValidation.ps1 -EnvironmentName "prodlab" -DetailedReport
+    
+    Validate specific environment with detailed reporting.
+
+.EXAMPLE
+    .\Test-SentinelValidation.ps1 -EnvironmentName "seclab"
+    
+    Quick validation check without detailed output.
+
+.EXAMPLE
+    .\Test-SentinelValidation.ps1 -UseParametersFile -DetailedReport
+    
+    Comprehensive validation with full parameter integration.
+
+.NOTES
+    Author: Marcus Jacobson
+    Version: 1.0.0
+    Created: 2025-08-04
+    
+    Validates SIEM infrastructure components and should be run after Sentinel
+    deployment to ensure proper integration with Defender for Cloud. Data flow
+    validation requires separate KQL query testing.
+    Script development orchestrated using GitHub Copilot.
+
+.VALIDATION_COMPONENTS
+    - Log Analytics Workspace: Health status and operational verification
+    - Sentinel Onboarding: Workspace integration and configuration validation
+    - Data Connectors: Installation status and configuration health checks
+    - Solution Packages: Defender for Cloud content package deployment
+    - Tenant Connectors: Subscription-level data connector functionality
+    - API Integration: REST API connectivity and response validation
+#>
 
 param(
     [Parameter(Mandatory=$false, HelpMessage="Name for the environment (matching previous deployment steps)")]

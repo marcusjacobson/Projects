@@ -1,8 +1,78 @@
+<#
+.SYNOPSIS
+    Safely removes all Microsoft Defender for Cloud infrastructure components
+    in the correct logical order to prevent orphaned resources and dependency conflicts.
+
+.DESCRIPTION
+    This script provides comprehensive decommission capabilities for Microsoft
+    Defender for Cloud environments deployed via Infrastructure-as-Code. It
+    performs ordered removal of security configurations, virtual machines,
+    networking components, monitoring resources, and storage accounts while
+    maintaining data integrity and preventing resource conflicts. The script
+    includes safety mechanisms such as What-If mode, confirmation prompts,
+    resource validation, and optional Defender plan deactivation. It handles
+    complex dependencies including JIT VM Access policies, auto-shutdown
+    schedules, security extensions, and Microsoft Sentinel integrations.
+
+.PARAMETER EnvironmentName
+    Name for the environment to decommission. Default: "securitylab"
+
+.PARAMETER UseParametersFile
+    Switch to load configuration from main.parameters.json file.
+
+.PARAMETER WhatIf
+    Preview decommission without making changes.
+
+.PARAMETER Force
+    Force decommission without confirmation prompts (automation scenarios).
+
+.PARAMETER DisableDefenderPlans
+    Switch to also disable Defender for Cloud plans during decommission.
+
+.PARAMETER PreserveData
+    Switch to preserve data and logs during infrastructure removal.
+
+.EXAMPLE
+    .\Remove-DefenderInfrastructure.ps1 -UseParametersFile -WhatIf
+    
+    Preview decommission without making changes.
+
+.EXAMPLE
+    .\Remove-DefenderInfrastructure.ps1 -EnvironmentName "seclab"
+    
+    Safely decommission with confirmation prompts.
+
+.EXAMPLE
+    .\Remove-DefenderInfrastructure.ps1 -UseParametersFile -Force
+    
+    Force decommission without confirmation (automation scenarios).
+
+.EXAMPLE
+    .\Remove-DefenderInfrastructure.ps1 -UseParametersFile -DisableDefenderPlans -Force
+    
+    Complete lab teardown including Defender plan deactivation.
+
+.NOTES
+    Author: Marcus Jacobson
+    Version: 1.0.0
+    Created: 2025-08-04
+    
+    Safely removes Microsoft Defender for Cloud infrastructure with proper dependency management.
+    Script development orchestrated using GitHub Copilot.
+    WARNING: This script performs permanent deletion of Azure resources.
+
+.DECOMMISSION_PHASES
+    - Phase 1: Discovery and validation of existing resources
+    - Phase 2: Security configuration removal (JIT policies, contacts)
+    - Phase 3: Virtual machine decommission and extension cleanup
+    - Phase 4: Network infrastructure removal (NSGs, NICs, IPs)
+    - Phase 5: Monitoring and storage resource cleanup
+    - Phase 6: Resource group deletion and plan deactivation
+    - Validation: Comprehensive cleanup verification and reporting
+#>
+
 # =============================================================================
 # Microsoft Defender for Cloud - Infrastructure Decommission Script
-# =============================================================================
-# This script safely removes all resources created by the Defender for Cloud
-# Infrastructure-as-Code deployment in the correct logical order.
 # =============================================================================
 
 param(
@@ -770,8 +840,8 @@ if ($validationErrors.Count -gt 0) {
     Write-Host ""
     Write-Host "⚠️ Validation Issues Found:" -ForegroundColor Yellow
     Write-Host "=========================" -ForegroundColor Yellow
-    foreach ($error in $validationErrors) {
-        Write-Host "   - $error" -ForegroundColor White
+    foreach ($validationError in $validationErrors) {
+        Write-Host "   - $validationError" -ForegroundColor White
     }
 }
 

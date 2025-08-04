@@ -1,8 +1,71 @@
+<#
+.SYNOPSIS
+    Analyzes security costs, provides spending insights, and offers optimization
+    recommendations for Defender for Cloud deployments.
+
+.DESCRIPTION
+    This script performs comprehensive cost analysis for Microsoft Defender for
+    Cloud environments, including VM compute costs, security plan pricing,
+    storage expenses, and networking charges. It provides detailed spending
+    breakdowns, identifies cost optimization opportunities, sets up budget
+    alerts, and generates actionable recommendations for reducing Azure
+    security infrastructure costs while maintaining protection levels.
+
+.PARAMETER EnvironmentName
+    Environment name for resource identification. Default: ""
+
+.PARAMETER CostAlertThreshold
+    Cost alert threshold in USD. Default: 100
+
+.PARAMETER AnalysisPeriodDays
+    Analysis period in days. Default: 30
+
+.PARAMETER UseParametersFile
+    Switch to load configuration from main.parameters.json file.
+
+.PARAMETER WhatIf
+    Preview cost analysis without setting up alerts.
+
+.PARAMETER Force
+    Skip confirmation prompts and proceed with automated analysis.
+
+.PARAMETER ExportPath
+    Path to save cost analysis reports. Default: current directory.
+
+.EXAMPLE
+    .\Deploy-CostAnalysis.ps1 -UseParametersFile
+    
+    Analyze costs using parameters file with default 30-day period.
+
+.EXAMPLE
+    .\Deploy-CostAnalysis.ps1 -EnvironmentName "prodlab" -CostAlertThreshold 200 -AnalysisPeriodDays 60
+    
+    Custom cost analysis with budget alerts.
+
+.EXAMPLE
+    .\Deploy-CostAnalysis.ps1 -UseParametersFile -WhatIf
+    
+    Preview cost analysis without setting up alerts.
+
+.NOTES
+    Author: Marcus Jacobson
+    Version: 1.0.0
+    Created: 2025-08-04
+    
+    Analyzes security costs and provides optimization recommendations for cost-effective operations.
+    Script development orchestrated using GitHub Copilot.
+
+.COST_CATEGORIES
+    - VM Compute Costs: Largest expense category for virtual machine operations
+    - Defender Plan Pricing: Subscription-level security service costs
+    - Storage Costs: Disks, logs, backup data, and retention expenses
+    - Networking Costs: Bandwidth, public IPs, load balancers
+    - Log Analytics Workspace: Security data ingestion and retention charges
+    - Cost optimization: Budget alerts and spending recommendations
+#>
+
 # =============================================================================
 # Microsoft Defender for Cloud - Cost Analysis Script
-# =============================================================================
-# This script analyzes security costs, provides spending insights, and offers
-# optimization recommendations for Defender for Cloud deployments.
 # =============================================================================
 
 param(

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentName": {
+      "value": "aisec"
+    },
+    "location": {
+      "value": "East US"
+    },
+    "notificationEmail": {
+      "value": "marcus.jacobson@gmail.com"
+    },
+    "storageBlobContributorAccount": {
+      "value": "marcus@marcusj-dev.cloud"
+    },
+    "monthlyBudgetLimit": {
+      "value": 150
+    },
+    "enableOpenAI": {
+      "value": false
+    },
+    "enableCostManagement": {
+      "value": true
+    }
+  }
+}

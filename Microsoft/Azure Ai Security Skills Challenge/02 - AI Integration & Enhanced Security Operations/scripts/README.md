@@ -42,7 +42,7 @@ Deploy individual components for controlled automation:
 |--------|---------|--------------|
 | **Deploy-StorageFoundation.ps1** | Deploy AI storage accounts | Cost-optimized storage, containers, lifecycle policies |
 | **Deploy-CostManagement.ps1** | Configure budget controls | Progressive alerts, automated monitoring, notifications |
-| **Deploy-OpenAIService.ps1** | Deploy Azure OpenAI service | GPT-3.5-turbo, cost-effective models, capacity controls |
+| **Deploy-OpenAIService.ps1** | Deploy Azure OpenAI service | GPT-5, cost-effective models, capacity controls |
 
 ### 🤖 AI Integration Scripts
 
@@ -78,7 +78,7 @@ Deploy individual components for controlled automation:
 
 ### AI Service Cost Controls
 
-- **GPT-3.5-turbo** deployment (90% cost savings vs GPT-4)
+- **GPT-5** deployment (90% cost savings vs GPT-4)
 - **Token limits** and prompt optimization
 - **Capacity management** with minimal viable units
 - **Usage monitoring** and pattern analysis
@@ -104,7 +104,7 @@ Common functions used across all AI integration scripts:
 
 | Template | Purpose | Configuration |
 |----------|---------|---------------|
-| **openai-deployment.json** | OpenAI model deployment | GPT-3.5-turbo, capacity settings, cost controls |
+| **openai-deployment.json** | OpenAI model deployment | GPT-5, capacity settings, cost controls |
 | **logic-app-sentinel.json** | Sentinel integration workflow | AI automation, prompt templates, cost optimization |
 | **cost-alert-rules.json** | Budget monitoring templates | Progressive alerts, notification settings |
 

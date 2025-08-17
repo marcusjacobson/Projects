@@ -133,7 +133,7 @@ try {
         $estimatedCost += 12.5
     }
     if ($deploymentParams.enableOpenAI) {
-        Write-Host "Azure OpenAI (GPT-3.5-turbo): ~$15-30/month" -ForegroundColor Green
+        Write-Host "Azure OpenAI (GPT-5): ~$15-30/month" -ForegroundColor Green
         $estimatedCost += 22.5
     }
     if ($deploymentParams.enableCostManagement) {

@@ -234,7 +234,7 @@ All resources are tagged for cost tracking:
 ## 💡 Cost Optimization Tips
 
 ### Immediate Savings
-- Use GPT-3.5-turbo instead of GPT-4 (90% cost savings)
+- Use GPT-5 instead of GPT-4 (90% cost savings)
 - Implement token limits in prompts (500 max tokens)
 - Use temperature 0.3 for focused responses
 - Deploy minimal OpenAI capacity (10 units)

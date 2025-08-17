@@ -15,7 +15,7 @@ This week focuses on implementing cost-effective AI-driven capabilities within t
 
 ## 🎯 Objectives
 
-- Deploy Azure OpenAI with cost-effective models (GPT-3.5-turbo) and automated budget controls.
+- Deploy Azure OpenAI with cost-effective models (GPT-5) and automated budget controls.
 - Implement Azure OpenAI + Sentinel integration using Logic Apps for AI-driven alert analysis.
 - Enable built-in AI features (UEBA, Fusion, Anomaly Detection) within existing deployments.
 - Configure comprehensive cost monitoring, alerts, and automated service shutdown capabilities.
@@ -39,10 +39,12 @@ This week focuses on implementing cost-effective AI-driven capabilities within t
 ## ✅ Checklist
 
 - [x] **AI-driven security recommendations research completed** (from Week 1).
-- [x] **Storage Account Deployment** - Deploy storage accounts for AI data processing, model storage, and logging:
+- [x] **[Storage Account Deployment](./deploy-ai-storage-foundation.md)** - Deploy storage accounts for AI data processing, model storage, and logging:
   - [x] **[Azure Portal Guide](./deploy-ai-storage-foundation-azure-portal.md)** - Step-by-step portal deployment (Recommended for learning)
   - [x] **[Infrastructure-as-Code Guide](./deploy-ai-storage-foundation-iac.md)** - Automated Bicep deployment (Recommended for quick deployment)
-- [ ] **[Azure OpenAI Service Deployment](./deploy-azure-openai-service.md)** - Deploy cost-effective OpenAI service with budget controls.
+- [x] **[Azure OpenAI Service Deployment](./deploy-azure-openai-service.md)** - Deploy cost-effective OpenAI service with enhanced automation and soft-delete handling:
+  - [x] **[Azure Portal Guide](./deploy-azure-openai-service-azure-portal.md)** - Step-by-step portal deployment (Recommended for learning)
+  - [x] **[Infrastructure-as-Code Guide](./deploy-azure-openai-service-iac.md)** - Automated Bicep deployment (Recommended for quick deployment)
 - [ ] **[Azure OpenAI + Sentinel Integration](./deploy-openai-sentinel-integration.md)** - Implement Logic Apps-based AI automation.
 - [ ] **[Built-in AI Features Enablement](./deploy-builtin-ai-features.md)** - Enable UEBA, Fusion, and Anomaly Detection.
 - [ ] **[AI Prompt Templates Creation](./ai-prompt-templates.md)** - Create cost-optimized prompt templates for security scenarios.
@@ -69,6 +71,8 @@ This week's project follows Week 1's proven structure with AI-focused enhancemen
 - **[AI Storage Foundation - COMPLETED](./infra/)** - Production-ready Bicep templates with full cost optimization compliance
 - **[AI Integration Scripts - READY](./scripts/)** - PowerShell scripts for AI service deployment, configuration, and automated management
   - **Deploy-StorageFoundation.ps1** - Fully functional with UPN auto-resolution and cost optimization
+  - **Deploy-OpenAIService.ps1** - Enhanced with automated soft-delete detection and purge capabilities
+  - **Remove-OpenAIInfrastructure.ps1** - Comprehensive decommission script with phase-based cleanup
   - **Test-StorageFoundation.ps1** - Comprehensive validation with 100% test coverage
   - **Remove-StorageResourceGroup.ps1** - Reliable cleanup with verification and wait logic
 
@@ -129,7 +133,7 @@ Week 2 follows the proven Week 1 structure optimized for AI services and cost ma
 
 - Deploy AI storage foundation with cost optimization
 - Configure comprehensive budget alerts and automated shutdown capabilities
-- Deploy Azure OpenAI service with cost-effective GPT-3.5-turbo model
+- Deploy Azure OpenAI service with cost-effective GPT-5 model
 
 ### **Phase 2: AI Integration (Wednesday-Thursday)**
 
@@ -165,11 +169,7 @@ The AI storage foundation has been **successfully implemented** with two product
 - **Compliance**: 100% portal guide compliance + enhanced automation features
 - **Best For**: Production environments, CI/CD pipelines, repeatable deployments
 
-### 🎯 Next: AI Service Deployment Approaches
-
-With storage foundation complete, proceed to AI service deployment:
-
-### 🚀 Next: AI Service Deployment Approaches
+### 🚀 AI Service Deployment Approaches
 
 With storage foundation complete, proceed to AI service deployment:
 
@@ -187,13 +187,20 @@ With storage foundation complete, proceed to AI service deployment:
 - **Time Investment**: 15-20 minutes (structured AI automation)
 - **Best For**: Production AI environments, learning AI automation, controlled AI deployments
 
+#### 🚀 Enhanced PowerShell Scripts - *Best for Advanced Automation*
+
+- **Target Audience**: Advanced users requiring sophisticated deployment automation
+- **Key Benefits**: Automated soft-delete detection and purge, smart wait periods, comprehensive validation
+- **Time Investment**: 5-10 minutes (fully automated deployment)
+- **Best For**: Rapid prototyping, advanced learning scenarios, professional development workflows
+
 ## 💰 Cost Management Priority
 
 Week 2 implements comprehensive cost management as a core requirement:
 
 - **Budget Alerts**: Automated alerts at 50%, 75%, and 90% of $150 monthly budget
 - **Automated Shutdown**: Logic Apps to automatically disable expensive services when not in use
-- **Cost-Effective Models**: GPT-3.5-turbo preferred over GPT-4 for optimal cost/performance ratio
+- **Cost-Effective Models**: GPT-5 preferred over GPT-4 for optimal cost/performance ratio
 - **Usage Monitoring**: Real-time cost tracking and usage analytics
 - **Resource Lifecycle**: Automated cleanup scripts and scheduled resource management
 
@@ -207,4 +214,4 @@ Week 2 implements comprehensive cost management as a core requirement:
 
 ---
 
-**📋 Week 2 Status**: Storage foundation deployment **COMPLETED** ✅ - Ready for AI service integration phase.
+**📋 Week 2 Status**: Storage foundation and Azure OpenAI service deployment **COMPLETED** ✅ - Ready for AI integration phase.

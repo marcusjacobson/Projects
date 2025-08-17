@@ -179,7 +179,7 @@ Schedule regular cost reviews:
 
 **For Azure OpenAI:**
 - Track token usage and optimize prompts
-- Use appropriate model tiers (GPT-3.5 vs GPT-4)
+- Use appropriate model tiers (GPT-5 vs GPT-4)
 - Implement request throttling in applications
 
 **For Logic Apps:**

@@ -258,7 +258,7 @@ Max Response: 200 tokens
 | Risk Assessment | 100 | $0.0002 | $6 (1000 assessments) |
 | Remediation | 300 | $0.0006 | $18 (1000 remediations) |
 
-*Based on GPT-3.5-turbo pricing and estimated usage
+*Based on GPT-5 pricing and estimated usage
 
 ### Budget Alerts Integration
 
@@ -339,4 +339,4 @@ Track these metrics for prompt optimization:
 
 ---
 
-**📋 Usage Note**: These templates are optimized for GPT-3.5-turbo. Adjust token limits and complexity for other models as needed.
+**📋 Usage Note**: These templates are optimized for GPT-5. Adjust token limits and complexity for other models as needed.

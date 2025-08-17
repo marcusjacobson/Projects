@@ -8,19 +8,19 @@
     "location": {
       "value": "East US"
     },
-    "notificationEmail": {
-      "value": "marcus.jacobson@gmail.com"
-    },
     "storageBlobContributorAccount": {
       "value": "marcus@marcusj-dev.cloud"
     },
-    "monthlyBudgetLimit": {
-      "value": 150
-    },
     "enableOpenAI": {
+      "value": true
+    },
+    "deployGPT5": {
       "value": false
     },
-    "enableCostManagement": {
+    "deployo4Mini": {
+      "value": true
+    },
+    "deployTextEmbedding": {
       "value": true
     }
   }

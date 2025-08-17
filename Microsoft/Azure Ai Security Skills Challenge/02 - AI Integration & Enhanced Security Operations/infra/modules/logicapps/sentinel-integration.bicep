@@ -69,7 +69,7 @@ resource sentinelLogicApp 'Microsoft.Logic/workflows@2019-05-01' = {
             incidentId: '@triggerBody()[\'incidentId\']'
             openAIService: openAIServiceName
             status: 'Ready for AI analysis'
-            estimatedCost: 'GPT-3.5-turbo: ~$0.001-0.002 per incident'
+            estimatedCost: 'GPT-5: ~$0.001-0.002 per incident'
           }
           runAfter: {
             ComposeOpenAIRequest: [
@@ -103,7 +103,7 @@ output connectionId string = sentinelConnection.id
 output logicAppUrl string = sentinelLogicApp.properties.accessEndpoint
 output integrationSummary object = {
   status: 'Foundation deployed - manual configuration required'
-  aiModel: 'GPT-3.5-turbo integration ready'
+  aiModel: 'GPT-5 integration ready'
   costOptimization: {
     maxTokens: 500
     temperature: '0.3'

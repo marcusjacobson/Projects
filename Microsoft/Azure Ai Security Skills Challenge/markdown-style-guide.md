@@ -216,6 +216,7 @@ Text after code block.
 - Use consistent list formatting throughout documents.
 - Maintain proper indentation for nested lists.
 - Follow punctuation rules for list items (periods for standalone, colons for introductory).
+- **For step-by-step instructions, use bullet points with paragraph breaks between logical groupings for enhanced readability.**
 
 #### Correct List Formatting
 
@@ -235,6 +236,36 @@ Text before list.
 - Second list item.
 Text after list.
 ```
+
+#### Step-by-Step Instruction Formatting
+
+**Bullet Point Steps with Logical Groupings** (Required format for all procedures)
+
+```markdown
+- Go to [portal.azure.com](https://portal.azure.com) and sign in.
+- Navigate to **Resource Groups** in the left menu.
+  - This opens the resource group management interface.
+- Click **+ Create** to start the creation process.
+- Enter the required information.
+```
+
+Navigate to your newly created resource group.
+
+- Verify the resource group appears in the list.
+- Check that all settings are configured correctly.
+- Test access to ensure proper permissions.
+
+```markdown
+```
+
+**Key Benefits of Bullet/Paragraph Format:**
+
+
+- **Enhanced Readability**: Logical groupings with paragraph breaks improve scanning and comprehension.
+- **Flexible Structure**: Accommodates complex procedures with multiple phases or contexts.
+- **Natural Flow**: Paragraph breaks between sections create natural reading rhythm.
+- **Accessibility**: Easier to follow for users with different learning preferences.
+- **Modern Documentation Style**: Aligns with current technical writing best practices.
 
 ### Links and References
 
@@ -380,6 +411,9 @@ Get-AzResource
 - Click "Button Name" to proceed
 
 Code without proper spacing or language ID
+
+```text
+# Example without proper formatting
 ```
 
 ---
@@ -492,31 +526,40 @@ Please review this markdown document for compliance with the Azure AI Security S
    - **Unique header names to avoid MD024 duplicate heading warnings** (e.g., "Configuration Steps" → "Workbook Configuration Steps")
    - **Code blocks surrounded by blank lines** (MD031 compliance)
    - **Lists surrounded by blank lines** (MD032 compliance)
+   - **Step-by-step instruction formatting**: Use either numbered lists OR bullet points with logical paragraph groupings (mixed format preferred for complex procedures)
    - Professional technical documentation tone
    - Consistent header hierarchy and proper document structure
    - Proper code block formatting with language identifiers
    - Azure resource naming conventions
    - Clear, instructional language suitable for technical professionals
 
-3. **Implementation Method**: Use the replace_string_in_file tool with sufficient context (3-5 lines before and after) for precise edits. Make one type of fix at a time rather than multiple simultaneous changes.
+3. **Step-by-Step Instruction Guidelines**: 
+   - **Traditional numbered format**: Use for simple, sequential procedures
+   - **Mixed bullet/paragraph format**: Preferred for complex procedures with multiple phases
+   - **Logical groupings**: Use paragraph breaks between related step groups for enhanced readability
+   - **Consistent formatting**: Maintain the same approach throughout each section
 
-4. **Common Issues to Look For**:
+4. **Implementation Method**: Use the replace_string_in_file tool with sufficient context (3-5 lines before and after) for precise edits. Make one type of fix at a time rather than multiple simultaneous changes.
+
+5. **Common Issues to Look For**:
    - Bold text acting as section headers (especially those ending with colons)
    - Duplicate heading text (make headers unique and descriptive)
    - Lists or code blocks not surrounded by blank lines
    - Missing language identifiers in code blocks
    - Interface elements in quotes instead of bold formatting
+   - Inconsistent step-by-step formatting within sections
 
-5. **Multiple Passes**: After completing the first full section-by-section review, perform additional passes as needed until all style guide issues are resolved. Run get_errors tool to check for remaining lint warnings.
+6. **Multiple Passes**: After completing the first full section-by-section review, perform additional passes as needed until all style guide issues are resolved. Run get_errors tool to check for remaining lint warnings.
 
-6. **Quality Assurance**: Use the Quality Assurance Checklist from the style guide to verify compliance before declaring the review complete.
+7. **Quality Assurance**: Use the Quality Assurance Checklist from the style guide to verify compliance before declaring the review complete.
 
-7. **Completion Criteria**: Continue iterating through the document until you can confirm that:
+8. **Completion Criteria**: Continue iterating through the document until you can confirm that:
    - All sections comply with the style guide standards
    - No markdown lint warnings remain (MD024, MD031, MD032, MD001, MD040)
+   - Step-by-step instructions use consistent, appropriate formatting
    - The document maintains professional technical documentation standards throughout
 
-Please start the review from the beginning of the document and work systematically through each section. Focus on catching bold text that should be headers, ensuring header uniqueness, and verifying proper spacing around code blocks and lists.
+Please start the review from the beginning of the document and work systematically through each section. Focus on catching bold text that should be headers, ensuring header uniqueness, verifying proper spacing around code blocks and lists, and ensuring step-by-step instructions follow the appropriate formatting pattern.
 ```
 
 ---

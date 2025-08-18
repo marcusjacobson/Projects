@@ -15,7 +15,7 @@ This week focuses on implementing cost-effective AI-driven capabilities within t
 
 ## 🎯 Objectives
 
-- Deploy Azure OpenAI with cost-effective models (GPT-5) and automated budget controls.
+- Deploy Azure OpenAI with cost-effective models (GPT-o4-mini) and automated budget controls.
 - Implement Azure OpenAI + Sentinel integration using Logic Apps for AI-driven alert analysis.
 - Enable built-in AI features (UEBA, Fusion, Anomaly Detection) within existing deployments.
 - Configure comprehensive cost monitoring, alerts, and automated service shutdown capabilities.
@@ -45,10 +45,11 @@ This week focuses on implementing cost-effective AI-driven capabilities within t
 - [x] **[Azure OpenAI Service Deployment](./deploy-azure-openai-service.md)** - Deploy cost-effective OpenAI service with enhanced automation and soft-delete handling:
   - [x] **[Azure Portal Guide](./deploy-azure-openai-service-azure-portal.md)** - Step-by-step portal deployment (Recommended for learning)
   - [x] **[Infrastructure-as-Code Guide](./deploy-azure-openai-service-iac.md)** - Automated Bicep deployment (Recommended for quick deployment)
+- [x] **[OpenAI Model Customization](./customize-openai-model.md)** - Configure GPT-o4-mini with cybersecurity analyst persona, optimized parameters (Temperature 0.2, 450 tokens), and industry compliance frameworks (NIST AI RMF, OWASP LLM Top 10).
+- [x] **[AI Prompt Templates Creation](./ai-prompt-templates.md)** - Identified GPT-o4-mini optimized prompt templates for Defender for Cloud security scenarios with cost optimization and industry compliance.
 - [ ] **[Azure OpenAI + Sentinel Integration](./deploy-openai-sentinel-integration.md)** - Implement Logic Apps-based AI automation.
-- [ ] **[Built-in AI Features Enablement](./deploy-builtin-ai-features.md)** - Enable UEBA, Fusion, and Anomaly Detection.
-- [ ] **[AI Prompt Templates Creation](./ai-prompt-templates.md)** - Create cost-optimized prompt templates for security scenarios.
 - [ ] **[Threat Scenario Simulation](./simulate-threat-scenarios.md)** - Execute benign threat scenarios with AI analysis.
+- [ ] **[Built-in AI Features Enablement](./deploy-builtin-ai-features.md)** - Enable UEBA, Fusion, and Anomaly Detection after data flows are established.
 - [ ] **[Azure Cost Management Setup](./deploy-ai-cost-management.md)** - Configure budget alerts and automated shutdown capabilities.
 - [ ] **[Cost Optimization Documentation](./ai-cost-optimization-guide.md)** - Document cost optimization strategies and automated controls.
 - [ ] **Week 2 Validation** - Confirm AI integration effectiveness and cost compliance.
@@ -64,6 +65,7 @@ This week's project follows Week 1's proven structure with AI-focused enhancemen
 
 - **[AI-Driven Security Recommendations Research](../reports/full-ai-driven-security-recommendations-research.md)** - Comprehensive research report on cost-effective AI integration strategies (completed in Week 1)
 - **[AI Cost Optimization Guide](./ai-cost-optimization-guide.md)** - Comprehensive cost management and automated control strategies
+- **[OpenAI Model Customization](./customize-openai-model.md)** - GPT-o4-mini configuration with cybersecurity analyst system instructions, optimized parameters, and Azure AI Foundry interface guidance
 - **[AI Prompt Templates](./ai-prompt-templates.md)** - Cost-optimized prompt templates for security scenarios
 
 ### 🏗️ Infrastructure-as-Code
@@ -92,6 +94,7 @@ Week 2 follows the proven Week 1 structure optimized for AI services and cost ma
 │   ├── deploy-ai-storage-foundation.md             # AI storage infrastructure deployment
 │   ├── deploy-ai-cost-management.md                # Budget controls and automated shutdown
 │   ├── deploy-azure-openai-service.md              # Cost-effective OpenAI service deployment
+│   ├── customize-openai-model.md                   # Security-focused model configuration
 │   ├── deploy-openai-sentinel-integration.md       # Logic Apps + Sentinel automation
 │   ├── deploy-builtin-ai-features.md               # UEBA, Fusion, Anomaly Detection enablement
 │   └── simulate-threat-scenarios.md                # AI-driven threat simulation and validation
@@ -121,6 +124,7 @@ Week 2 follows the proven Week 1 structure optimized for AI services and cost ma
 │           ├── logic-app-sentinel.json              # Sentinel integration workflow
 │           └── cost-alert-rules.json                # Budget monitoring templates
 └── 🤖 AI Templates & Resources/
+    ├── customize-openai-model.md                    # Security-focused model configuration guide
     ├── ai-prompt-templates.md                       # Cost-optimized security prompt library
     ├── ai-cost-optimization-guide.md                # Comprehensive cost management strategies
     ├── cost-management-best-practices.md            # Automated cost control patterns
@@ -133,17 +137,18 @@ Week 2 follows the proven Week 1 structure optimized for AI services and cost ma
 
 - Deploy AI storage foundation with cost optimization
 - Configure comprehensive budget alerts and automated shutdown capabilities
-- Deploy Azure OpenAI service with cost-effective GPT-5 model
+- Deploy Azure OpenAI service with cost-effective GPT-o4-mini model
 
 ### **Phase 2: AI Integration (Wednesday-Thursday)**
 
 - Implement Azure OpenAI + Sentinel integration using Logic Apps
-- Enable built-in AI features (UEBA, Fusion, Anomaly Detection)
 - Create cost-optimized prompt templates for security scenarios
+- Simulate threat scenarios to establish baseline data for AI features
 
-### **Phase 3: Validation & Documentation (Friday-Weekend)**
+### **Phase 3: Advanced AI & Validation (Friday-Weekend)**
 
-- Simulate threat scenarios and validate AI integration with cost tracking
+- Enable built-in AI features (UEBA, Fusion, Anomaly Detection) after data flows are established
+- Validate AI integration effectiveness with cost tracking
 - Document cost optimization strategies and automated controls
 - Prepare infrastructure foundation for Week 3 XDR integration
 
@@ -194,13 +199,40 @@ With storage foundation complete, proceed to AI service deployment:
 - **Time Investment**: 5-10 minutes (fully automated deployment)
 - **Best For**: Rapid prototyping, advanced learning scenarios, professional development workflows
 
+### 🤖 OpenAI Model Customization for Security Operations
+
+After deploying your Azure OpenAI service, the next critical step is customizing the GPT-o4-mini model for cybersecurity use cases. This bridges the infrastructure deployment and AI prompt template implementation.
+
+#### 🎯 Security-Focused Model Configuration
+
+**System Instructions & Role Definitions**: Configure your GPT-o4-mini model with comprehensive cybersecurity analyst persona, including threat detection expertise, incident response knowledge, and MITRE ATT&CK framework awareness for enterprise security operations.
+
+**Azure AI Foundry Interface**: Utilize the modern consolidated system message interface with managed identity authentication for streamlined configuration and enhanced security.
+
+**Parameter Tuning**: Research-validated optimization with Temperature 0.2 (down from default 0.7), 450 token limit (down from 4000), Top P 0.9, and strategic penalty settings for cost-effective security operations.
+
+**Model Behavior Configuration**: Ensure consistent security outputs with structured summary report format (replacing inefficient JSON), confidence indicators, and automated human review triggers for high-impact decisions.
+
+#### 🛡️ Security Context Integration
+
+- **Industry Compliance**: NIST AI Risk Management Framework (AI RMF 1.0), OWASP LLM Top 10 (2025), Microsoft Responsible AI principles
+- **Threat Intelligence Awareness**: Current APT groups, attack vectors, and priority indicators with MITRE ATT&CK integration
+- **Security Vocabulary Optimization**: IOCs, TTPs, IOAs, SOAR, UEBA terminology focus with context-aware analysis
+- **Incident Classification Standards**: True positive, false positive, benign positive categorization with business impact assessment
+
+#### 💰 Cost-Optimized Configuration
+
+- **Production Settings**: 450 token limit, Temperature 0.2, research-validated parameters for completeness vs. cost balance
+- **Cost Analysis**: $0.15 per 1M input tokens, $0.60 per 1M output tokens (Azure OpenAI GPT-o4-mini pricing, August 2025)
+- **Performance Metrics**: ~250 system prompt tokens, ~380 average response tokens optimized for complete analysis within token limits
+
 ## 💰 Cost Management Priority
 
 Week 2 implements comprehensive cost management as a core requirement:
 
 - **Budget Alerts**: Automated alerts at 50%, 75%, and 90% of $150 monthly budget
 - **Automated Shutdown**: Logic Apps to automatically disable expensive services when not in use
-- **Cost-Effective Models**: GPT-5 preferred over GPT-4 for optimal cost/performance ratio
+- **Cost-Effective Models**: GPT-o4-mini preferred for optimal cost/performance ratio with research-validated parameter optimization
 - **Usage Monitoring**: Real-time cost tracking and usage analytics
 - **Resource Lifecycle**: Automated cleanup scripts and scheduled resource management
 

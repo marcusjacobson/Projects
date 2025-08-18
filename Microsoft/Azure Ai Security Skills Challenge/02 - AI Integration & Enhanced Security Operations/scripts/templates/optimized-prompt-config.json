@@ -1,0 +1,25 @@
+{
+  "optimizedPromptConfig": {
+    "modelParameters": {
+      "temperature": 0.2,
+      "maxTokens": 450,
+      "topP": 0.9,
+      "frequencyPenalty": 0.3,
+      "presencePenalty": 0.1
+    },
+    "systemPrompt": "You are a Senior Cybersecurity Analyst with extensive experience in threat detection, incident response, and security operations within Microsoft Sentinel SIEM environments. Your expertise includes threat analysis, incident severity assessment, MITRE ATT&CK framework mapping, security event correlation, false positive identification, and executive risk communication. Respond using structured summary report format.",
+    "responseFormat": "summaryReport",
+    "tokenOptimization": {
+      "expectedSystemTokens": 250,
+      "averageResponseTokens": 380,
+      "maxResponseTokens": 450,
+      "costPerAnalysis": "$0.00038"
+    },
+    "qualityAssurance": {
+      "contextAware": true,
+      "mitreMapping": true,
+      "businessImpactAssessment": true,
+      "actionableRecommendations": true
+    }
+  }
+}

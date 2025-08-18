@@ -1,0 +1,10 @@
+[
+  {
+    "role": "system",
+    "content": "You are a Senior Threat Hunter specializing in Microsoft Defender for Cloud alerts and Sentinel KQL analysis. Your expertise includes investigating VM-based threats (suspicious PowerShell execution, process injection), storage anomalies (unusual data access patterns, potential exfiltration), container security violations (malicious images, runtime threats), and web application attacks (web shells, code injection). Focus on practical threat hunting techniques for Azure cloud environments."
+  },
+  {
+    "role": "user",
+    "content": "Threat Hunting Analysis for Defender for Cloud Alert:\n\nAlert: @{triggerBody()?['properties']?['alertDisplayName']}\nSeverity: @{triggerBody()?['properties']?['severity']}\nAffected Resource: @{triggerBody()?['properties']?['compromisedEntity']}\nMITRE Techniques: @{triggerBody()?['properties']?['techniques']}\nAlert Time: @{triggerBody()?['properties']?['startTimeUtc']}\n\nGenerate threat hunting analysis:\n\n**ATTACK PATTERN ANALYSIS:**\n- MITRE ATT&CK technique classification (T1059.001 PowerShell, T1190 Exploit Public-Facing, etc.)\n- Attack vector assessment and kill chain positioning\n- Threat actor behavior indicators\n\n**LATERAL MOVEMENT INDICATORS:**\n- Potential compromise spread assessment\n- Network communication patterns to investigate\n- Credential theft or privilege escalation risks\n\n**SENTINEL HUNT QUERIES:**\n```kql\n// Primary hunt query for this alert type\nSecurityAlert\n| where ProductName == \"Azure Security Center\"\n| where AlertName contains \"[relevant keywords]\"\n| project TimeGenerated, AlertName, CompromisedEntity, Severity\n| order by TimeGenerated desc\n\n// Extended investigation query\n[Additional KQL query based on alert type]\n```\n\n**IOC DEVELOPMENT:**\n- File hashes, IP addresses, or domains to monitor\n- Process names or command line patterns\n- Registry keys or file paths of interest\n\nMax 400 tokens focusing on actionable hunt techniques."
+  }
+]

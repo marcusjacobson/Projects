@@ -1,0 +1,6 @@
+{
+  "batchSize": 5,
+  "processingInterval": "4 hours",  
+  "estimatedCost": "$0.0005 per batch",
+  "monthlyCostTarget": "$5-8 for 1000 incidents"
+}

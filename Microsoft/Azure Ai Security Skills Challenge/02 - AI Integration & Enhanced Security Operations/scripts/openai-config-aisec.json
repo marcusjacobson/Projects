@@ -1,0 +1,19 @@
+{
+  "DeploymentDate": "2025-08-17 18:28:05",
+  "LogAnalyticsIntegration": true,
+  "ModelDeployments": {
+    "GPT35Turbo": false,
+    "TextEmbedding": true,
+    "GPT4oMini": true
+  },
+  "ManagedIdentityType": "System-assigned",
+  "OpenAIServiceName": "openai-aisec-001",
+  "ResourceGroupName": "rg-aisec-ai",
+  "SecurityTesting": {
+    "IsPresent": false
+  },
+  "Location": "East US",
+  "DeploymentMethod": "Bicep-PowerShell-Hybrid",
+  "OpenAIEndpoint": "https://openai-aisec-001.openai.azure.com/",
+  "EnvironmentName": "aisec"
+}

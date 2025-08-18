@@ -1,0 +1,37 @@
+{
+  "triggerConditions": {
+    "productName": "Azure Security Center",
+    "severity": ["High", "Medium"],
+    "status": "Active",
+    "alertTypes": [
+      "Sample alert: suspicious process detected",
+      "Sample alert: unusual data access", 
+      "Sample alert: malicious container activity",
+      "Sample alert: web shell detected",
+      "Suspicious process detected",
+      "Unusual data access patterns",
+      "Container security violation",
+      "Web application threat detected"
+    ]
+  },
+  "exclusionFilters": {
+    "tags": ["ai-analyzed", "false-positive", "dismissed"],
+    "testEnvironment": false
+  },
+  "costControls": {
+    "dailyAnalysisLimit": 20,
+    "monthlyTokenBudget": 15000,
+    "estimatedCostPerAlert": "$0.00038",
+    "batchProcessing": true
+  },
+  "logicAppConfiguration": {
+    "recurrenceInterval": "PT5M",
+    "maxConcurrentRuns": 3,
+    "timeout": "PT2M",
+    "retryPolicy": {
+      "type": "fixed",
+      "count": 2,
+      "interval": "PT30S"
+    }
+  }
+}

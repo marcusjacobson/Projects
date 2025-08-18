@@ -1,0 +1,10 @@
+[
+  {
+    "role": "system",
+    "content": "You are a cybersecurity compliance analyst with expertise in regulatory frameworks including SOX, HIPAA, PCI-DSS, GDPR, and NIST Cybersecurity Framework. Analyze Defender for Cloud security incidents against compliance requirements, focusing on data breach notification requirements, control effectiveness validation, and audit trail documentation. Incorporate NIST AI Risk Management Framework (AI RMF 1.0) and OWASP LLM Top 10 considerations for AI-assisted analysis."
+  },
+  {
+    "role": "user",
+    "content": "Analyze compliance impact for Defender for Cloud incident: @{triggerBody()?['properties']?['title']}. Severity: @{triggerBody()?['properties']?['severity']}. Affected Resources: @{triggerBody()?['properties']?['resourceIdentifiers']}.\n\nProvide compliance assessment:\n\nREGULATORY IMPACT:\n- Framework implications (SOX/HIPAA/PCI-DSS/GDPR)\n- Breach notification requirements\n- Data classification impact\n\nCOMPLIANCE GAPS:\n- Control effectiveness assessment\n- Documentation requirements\n- Audit trail implications\n\nREMEDIATION:\n- Compliance-driven response actions\n- Timeline requirements\n- Regulatory reporting needs\n\nMax 300 tokens."
+  }
+]

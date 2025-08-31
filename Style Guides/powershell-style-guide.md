@@ -255,6 +255,45 @@ Write-Host "====================================" -ForegroundColor Magenta
 # =============================================================================
 
 Write-Host "🔍 Step 1: Environment Validation" -ForegroundColor Green
+Write-Host "=================================" -ForegroundColor Green
+```
+
+### Pipeline-Executed Scripts (Use "Action" Terminology)
+
+**Purpose**: Scripts designed to be executed within Azure DevOps pipelines or CI/CD environments, typically performing single focused tasks with parameter-driven configuration.
+
+**Examples**:
+
+- `rg-deploy.ps1` - Resource group creation/validation for pipeline.
+- `analytics-rule-deploy.ps1` - Analytics rule deployment in pipeline context.
+- `watchlist-deploy.ps1` - Watchlist management through pipeline.
+- `deploy-log-analytics-sentinel.ps1` - Log Analytics workspace pipeline deployment.
+
+**Structure**:
+
+```powershell
+# =============================================================================
+# Action: Resource Group Validation and Creation
+# =============================================================================
+
+Write-Verbose "🔍 Validating Azure subscription access..." -Verbose
+Write-Verbose "==========================================" -Verbose
+```
+
+**Key Characteristics:**
+
+- **Parameter-Driven**: Heavy reliance on input parameters from pipeline variables
+- **Verbose Logging**: Use `Write-Verbose` with `-Verbose` for pipeline visibility
+- **REST API Integration**: Often use direct REST calls for enhanced control
+- **Error Handling**: Comprehensive try-catch blocks for pipeline stability
+- **No Interactive Elements**: No user prompts or interactive components
+
+```powershell
+# =============================================================================
+# Step 1: Environment Validation
+# =============================================================================
+
+Write-Host "🔍 Step 1: Environment Validation" -ForegroundColor Green
 Write-Host "==================================" -ForegroundColor Green
 ```
 
@@ -269,6 +308,35 @@ Write-Host "==================================" -ForegroundColor Green
 - **Blue** (`-ForegroundColor Blue`): Script orchestration notifications (calling scripts, completion status).
 - **Red** (`-ForegroundColor Red`): Error messages, failure notifications.
 - **Cyan** (`-ForegroundColor Cyan`): Informational messages, section descriptions.
+- **Yellow** (`-ForegroundColor Yellow`): Warnings, confirmations, important notices.
+
+### Pipeline-Specific Output Standards
+
+**For Pipeline-Executed Scripts:**
+
+- **Write-Verbose with -Verbose**: Primary output method for pipeline visibility
+- **Write-Error**: For errors that should appear in pipeline logs
+- **Write-Warning**: For warnings that need pipeline attention
+- **No Write-Host**: Avoid colored output in pipeline contexts (use verbose instead)
+
+**Pipeline Output Examples:**
+
+```powershell
+# Pipeline-friendly verbose output
+Write-Verbose "🔍 Validating Azure subscription access..." -Verbose
+Write-Verbose "    ✅ Subscription validation successful" -Verbose
+Write-Verbose "    ❌ Subscription validation failed: $($_.Exception.Message)" -Verbose
+
+# Error handling for pipelines
+try {
+    # Operation code
+    Write-Verbose "    ✅ Operation completed successfully" -Verbose
+} catch {
+    Write-Error "Operation failed: $($_.Exception.Message)"
+    throw
+}
+```
+
 - **Yellow** (`-ForegroundColor Yellow`): Warnings, confirmations, important notices.
 
 ### Status Indicators

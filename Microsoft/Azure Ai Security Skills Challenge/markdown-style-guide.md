@@ -4,7 +4,7 @@ This style guide defines the formatting, punctuation, and tone standards for all
 
 ## 📋 General Principles
 
-### Professional Technical Documentation Voice
+### Professional Documentation Voice
 
 - Use clear, concise, and professional language throughout all documentation.
 - Write in an instructional tone suitable for technical professionals.
@@ -29,6 +29,48 @@ This style guide defines the formatting, punctuation, and tone standards for all
 - **Introductory bullet points that lead to sub-lists must end with colons.**
 - This applies to all list items, maintaining logical punctuation based on their function.
 - Use consistent bullet point formatting throughout the document.
+
+### Table Cell Descriptions vs. Bullet Point Lists
+
+**Critical Distinction**: Table cell descriptions are NOT bullet point lists and should NOT have periods added to them.
+
+#### Table Cell Descriptions (NO Periods)
+
+Table cells contain descriptions, explanations, or values - they are NOT standalone statements requiring periods:
+
+| Setting | Value | Purpose |
+|---------|-------|---------|
+| **Authentication type** | **Active Directory OAuth** | OAuth 2.0 with Azure AD |
+| **Method** | `GET` | Retrieve incidents from Microsoft Graph |
+| **Plan Type** | **Consumption** | Cost-effective pay-per-execution |
+
+#### Actual Bullet Point Lists (Periods Required)
+
+These are true bulleted lists that require periods:
+
+- Enable disk encryption on virtual machines.
+- Install endpoint protection solution on machines.
+- Apply system updates using Azure Update Manager integration.
+
+#### Common Mistake to Avoid
+
+❌ **Incorrect**: Adding periods to table cell descriptions
+
+```markdown
+| Purpose |
+|---------|
+| OAuth 2.0 with Azure AD. |
+| Retrieve incidents from Microsoft Graph. |
+```
+
+✅ **Correct**: Table cell descriptions without periods
+
+```markdown
+| Purpose |
+|---------|
+| OAuth 2.0 with Azure AD |
+| Retrieve incidents from Microsoft Graph |
+```
 
 #### Standalone Bullet Points (End with Periods)
 
@@ -71,6 +113,108 @@ Use colons when bullet points introduce or lead to sub-lists:
 - Use backticks for single words, commands, or short code snippets: `command`.
 - Use code blocks for multi-line code or extended commands.
 - Use periods after sentences that contain inline code elements.
+
+### Blockquote Usage
+
+- **Use blockquotes for callouts, alerts, and highlighted information** that requires special attention from readers.
+- **Blockquotes must be surrounded by blank lines** to ensure proper rendering and avoid MD032 lint warnings.
+- **Use emoji indicators** to categorize different types of blockquotes for visual clarity and quick recognition.
+
+#### Blockquote Categories and Appropriate Usage
+
+**Security Notices and Warnings** (Use ⚠️ or 🚨):
+
+- Security-related warnings and important operational considerations
+- Permission scope explanations and access control information
+- Production vs. lab environment distinctions
+
+**Tips and Best Practices** (Use 💡, ✅, or 🔧):
+
+- Helpful guidance and professional recommendations
+- Technical explanations and "why" information
+- Best practice recommendations and production tips
+
+**Important Notes and Considerations** (Use 🔒, 🏢, or 📚):
+
+- Critical information that affects decision-making
+- Cost considerations and operational impact information
+- Additional learning resources and documentation links
+
+**Results and Outcomes** (Use 🎯, 🎉):
+
+- Expected results from procedures
+- Success indicators and validation points
+- Achievement summaries and accomplishments
+
+#### Blockquote Formatting Standards
+
+**Single-Line Blockquotes:**
+
+```markdown
+> **💡 Production Tip**: Start with high-severity incidents only, then expand to medium/low severity as you validate the system works reliably.
+```
+
+**Multi-Line Blockquotes with Lists:**
+
+```markdown
+> **⚠️ Security Notice - Write Permissions**: The `ReadWrite.All` permissions grant significant access to modify security incidents and alerts. This allows the Logic App to add comments, update incident properties, and modify alert classifications. Only grant these permissions in trusted environments and ensure proper app registration security:
+>
+> • **Application Scope**: These permissions apply to all security incidents/alerts in your tenant
+> • **Audit Trail**: All changes made by the app registration are logged and auditable
+> • **Principle of Least Privilege**: Consider using `Read.All` permissions initially, then upgrade to `ReadWrite.All` only when write operations are needed
+```
+
+**Multi-Paragraph Blockquotes:**
+
+```markdown
+> **🚨 Microsoft Graph API Limitation**: While incidents have a `comments` property in their schema, **there is no functional API endpoint to POST comments directly to incidents**. The `/comments` endpoint for incidents either doesn't exist or returns errors consistently.
+>
+> **🎯 Working Solution**: Add comments to individual **alerts** within the incident. Alert comments work reliably and appear in the Defender XDR portal.
+>
+> **📱 UI vs API Limitation**: Even in the Defender XDR web interface, incident comments are limited and primarily appear in the Activity Log. Alert comments provide better visibility and programmatic access.
+```
+
+#### Blockquote Best Practices
+
+**Spacing Requirements:**
+
+- Always include blank lines before and after blockquotes
+- Use `>` followed by a space for all blockquote lines
+- Include `>` on empty lines within multi-paragraph blockquotes
+
+**Content Guidelines:**
+
+- Start with a bold emoji-prefixed label for categorization
+- Use professional, instructional tone consistent with document standards
+- Include actionable information and specific guidance
+- Limit blockquote length to maintain readability (typically 3-5 sentences per section)
+
+**When to Use Blockquotes vs. Regular Text:**
+
+- **Use blockquotes for**: Warnings, tips, important notes, special considerations, and highlighted information that requires reader attention
+- **Use regular text for**: Step-by-step instructions, configuration details, standard explanations, and general procedural content
+
+**Common Blockquote Anti-Patterns to Avoid:**
+
+```markdown
+❌ Incorrect (no spacing):
+Regular text here.
+> **Tip**: This is a blockquote.
+More regular text.
+
+❌ Incorrect (inconsistent emoji usage):
+> This is important information without proper categorization.
+
+❌ Incorrect (too long and unfocused):
+> This blockquote contains multiple unrelated pieces of information that should be broken into separate callouts or moved to regular text for better readability and organization.
+
+✅ Correct (proper spacing and categorization):
+Regular text here.
+
+> **💡 Production Tip**: This is a focused, well-categorized blockquote with proper spacing.
+
+More regular text here.
+```
 
 ---
 
@@ -203,11 +347,16 @@ Text after code block.
 
 ❌ Incorrect format:
 Text before code block.
+
 ```powershell
 # PowerShell command example  
 Get-AzResourceGroup
 ```
+
 Text after code block.
+
+```text
+# Example without proper formatting
 ```
 
 ### List Formatting
@@ -346,11 +495,13 @@ When reviewing any markdown document, verify:
 
 ### Core Formatting Standards
 
-- [ ] **Punctuation**: Standalone bullet points end with periods, introductory ones with colons
+- [ ] **Punctuation - Lists**: Standalone bullet points end with periods, introductory ones with colons
+- [ ] **Punctuation - Tables**: Table cell descriptions do NOT have periods added (they are descriptions, not lists)
 - [ ] **Headers**: Hash-based headers (####) instead of bold text, unique descriptive names
 - [ ] **Interface Elements**: Bold formatting instead of quotes for UI elements
 - [ ] **Code Blocks**: Surrounded by blank lines with language identifiers
 - [ ] **Lists**: Surrounded by blank lines with proper punctuation
+- [ ] **Blockquotes**: Proper emoji categorization, surrounded by blank lines, appropriate usage for callouts/warnings
 
 ### Document Structure
 
@@ -384,6 +535,8 @@ When reviewing any markdown document, verify:
 3. **Missing blank lines around code blocks/lists** → Add blank lines before and after
 4. **Interface elements in quotes** → Use bold formatting instead
 5. **Inconsistent header hierarchy** → Follow proper progression (##, ###, ####)
+6. **Blockquotes without proper spacing or categorization** → Add blank lines and emoji indicators
+7. **Adding periods to table cell descriptions** → Table descriptions are NOT lists, do not add periods
 
 ### Essential Patterns to Remember
 
@@ -398,10 +551,17 @@ When reviewing any markdown document, verify:
 
 Click **Button Name** to proceed.
 
+| Setting | Purpose |
+|---------|---------|
+| **OAuth** | Authentication method |
+| **GET** | HTTP request type |
+
 ```powershell
 # Code with blank lines before and after
 Get-AzResource
 ```
+
+> **💡 Production Tip**: This is a properly formatted blockquote with emoji categorization.
 
 ❌ Avoid these patterns:
 
@@ -409,6 +569,11 @@ Get-AzResource
 
 - List item without period
 - Click "Button Name" to proceed
+
+| Setting | Purpose |
+|---------|---------|
+| **OAuth** | Authentication method. |
+| **GET** | HTTP request type. |
 
 Code without proper spacing or language ID
 
@@ -514,52 +679,126 @@ This comprehensive decommissioning guide was created with the assistance of **Gi
 Use this prompt when you want to ensure a markdown file is fully compliant with this style guide:
 
 ```text
-Please review this markdown document for compliance with the Azure AI Security Skills Challenge markdown style guide. Follow these requirements:
+Please review this markdown document for compliance with the Azure AI Security Skills Challenge markdown style guide. Follow this systematic methodology:
 
-1. **Systematic Section-by-Section Review**: Go through the document from beginning to end, section by section. Do not skip around or jump between sections. Read the document in logical chunks (50-100 lines at a time) to ensure comprehensive coverage.
+## PHASE 1: COMPREHENSIVE ANALYSIS BEFORE EDITING
 
-2. **Style Guide Compliance Areas**: Check for compliance with:
-   - Punctuation rules (standalone bullet points end with periods, introductory bullet points end with colons)
-   - Bold formatting for interface elements instead of quotes  
-   - Hash-based headers (#, ##, ###) instead of bold text for section titles
-   - **Bold text followed by colons converted to proper headers** (e.g., "**Configuration Steps:**" → "#### Configuration Steps")
-   - **Unique header names to avoid MD024 duplicate heading warnings** (e.g., "Configuration Steps" → "Workbook Configuration Steps")
-   - **Code blocks surrounded by blank lines** (MD031 compliance)
-   - **Lists surrounded by blank lines** (MD032 compliance)
-   - **Step-by-step instruction formatting**: Use either numbered lists OR bullet points with logical paragraph groupings (mixed format preferred for complex procedures)
-   - Professional technical documentation tone
-   - Consistent header hierarchy and proper document structure
-   - Proper code block formatting with language identifiers
-   - Azure resource naming conventions
-   - Clear, instructional language suitable for technical professionals
+1. **Full Document Scan**: Read through the ENTIRE document first to understand structure and identify ALL issues before making any edits. Create a comprehensive issue inventory categorized by type.
 
-3. **Step-by-Step Instruction Guidelines**: 
-   - **Traditional numbered format**: Use for simple, sequential procedures
-   - **Mixed bullet/paragraph format**: Preferred for complex procedures with multiple phases
-   - **Logical groupings**: Use paragraph breaks between related step groups for enhanced readability
-   - **Consistent formatting**: Maintain the same approach throughout each section
-
-4. **Implementation Method**: Use the replace_string_in_file tool with sufficient context (3-5 lines before and after) for precise edits. Make one type of fix at a time rather than multiple simultaneous changes.
-
-5. **Common Issues to Look For**:
-   - Bold text acting as section headers (especially those ending with colons)
-   - Duplicate heading text (make headers unique and descriptive)
-   - Lists or code blocks not surrounded by blank lines
-   - Missing language identifiers in code blocks
+2. **Issue Classification**: Categorize ALL findings into these specific types:
+   
+   **A. PUNCTUATION VIOLATIONS:**
+   - Standalone bullet points missing periods (should end with ".")
+   - Introductory bullet points missing colons (should end with ":")
+   - Lists within blockquotes missing periods
+   - NOTE: Table cell descriptions are NOT lists - do not add periods to table cells
+   
+   **B. HEADER FORMATTING VIOLATIONS:**
+   - Bold text acting as section headers (convert to proper hash headers)
+   - Bold text followed by colons that should be headers
+   - Duplicate header names (make unique and descriptive)
+   - Incorrect header hierarchy (MD001 violations)
+   
+   **C. INTERFACE ELEMENT VIOLATIONS:**
    - Interface elements in quotes instead of bold formatting
-   - Inconsistent step-by-step formatting within sections
+   - Resource names not properly bolded
+   
+   **D. SPACING AND STRUCTURE VIOLATIONS:**
+   - Code blocks not surrounded by blank lines (MD031)
+   - Lists not surrounded by blank lines (MD032)
+   - Blockquotes improperly spaced or categorized
+   
+   **E. CONTENT STRUCTURE VIOLATIONS:**
+   - Missing language identifiers in code blocks (MD040)
+   - Inconsistent step-by-step formatting
+   - Improper blockquote usage or categorization
 
-6. **Multiple Passes**: After completing the first full section-by-section review, perform additional passes as needed until all style guide issues are resolved. Run get_errors tool to check for remaining lint warnings.
+3. **Critical Distinction - Table Cells vs Lists**: 
+   - **NEVER add periods to table cell descriptions** - they are descriptions, not standalone bullet points
+   - **DO add periods to actual bulleted lists** outside of tables
+   - **Example CORRECT**: Table cell: "OAuth 2.0 with Azure AD" (no period)
+   - **Example CORRECT**: List item: "Enable authentication for security." (with period)
 
-7. **Quality Assurance**: Use the Quality Assurance Checklist from the style guide to verify compliance before declaring the review complete.
+## PHASE 2: SYSTEMATIC CORRECTION BY CATEGORY
 
-8. **Completion Criteria**: Continue iterating through the document until you can confirm that:
-   - All sections comply with the style guide standards
-   - No markdown lint warnings remain (MD024, MD031, MD032, MD001, MD040)
-   - Step-by-step instructions use consistent, appropriate formatting
-   - The document maintains professional technical documentation standards throughout
+4. **Fix by Category, Not by Location**: Address all issues of ONE type across the entire document before moving to the next type:
+   
+   **Step A: Fix ALL punctuation violations**
+   - Find all standalone bullet point lists and add periods
+   - Find all introductory bullet point lists and ensure colons
+   - Fix lists within blockquotes
+   - SKIP table cell descriptions completely
+   
+   **Step B: Fix ALL header violations**
+   - Convert bold text headers to proper hash headers
+   - Make duplicate headers unique
+   - Fix header hierarchy issues
+   
+   **Step C: Fix ALL interface element violations**
+   - Convert quoted interface elements to bold
+   - Bold resource names consistently
+   
+   **Step D: Fix ALL spacing violations**
+   - Add blank lines around code blocks
+   - Add blank lines around lists
+   - Fix blockquote spacing
+   
+   **Step E: Fix ALL structure violations**
+   - Add language identifiers to code blocks
+   - Standardize step-by-step formatting
+   - Improve blockquote categorization
 
-Please start the review from the beginning of the document and work systematically through each section. Focus on catching bold text that should be headers, ensuring header uniqueness, verifying proper spacing around code blocks and lists, and ensuring step-by-step instructions follow the appropriate formatting pattern.
+5. **Single-Type Edits Only**: Make only ONE type of edit per replace_string_in_file call. Never combine multiple violation types in a single edit.
+
+## PHASE 3: VALIDATION AND QUALITY ASSURANCE
+
+6. **Comprehensive Validation**: After each category of fixes:
+   - Run get_errors tool to check for new lint warnings
+   - Verify changes didn't introduce new issues
+   - Confirm the specific violation type is fully resolved
+
+7. **Final Quality Check**: Use the Quality Assurance Checklist:
+   - [ ] Standalone bullet points end with periods
+   - [ ] Introductory bullet points end with colons  
+   - [ ] Lists within blockquotes have proper punctuation
+   - [ ] Table cell descriptions remain unchanged (no periods added)
+   - [ ] Bold text headers converted to hash headers
+   - [ ] Headers are unique and descriptive
+   - [ ] Interface elements are bolded, not quoted
+   - [ ] Code blocks surrounded by blank lines with language identifiers
+   - [ ] Lists surrounded by blank lines
+   - [ ] Blockquotes properly spaced and categorized
+   - [ ] Zero markdown lint warnings (MD001, MD024, MD031, MD032, MD040)
+
+## CRITICAL RULES TO PREVENT COMMON MISTAKES:
+
+**❌ NEVER DO:**
+- Add periods to table cell descriptions
+- Mix multiple violation types in one edit
+- Skip the comprehensive analysis phase
+- Make assumptions about document structure
+
+**✅ ALWAYS DO:**
+- Read entire document before editing
+- Categorize ALL issues before fixing ANY issues
+- Fix one violation type at a time across entire document  
+- Distinguish between table descriptions and actual lists
+- Use sufficient context (3-5 lines) in replace_string_in_file calls
+- Validate after each category of fixes
+
+## SYSTEMATIC IMPLEMENTATION:
+
+1. Read entire document and create issue inventory by category
+2. Report comprehensive findings to user before making any edits
+3. Fix all punctuation issues across entire document
+4. Fix all header issues across entire document  
+5. Fix all interface element issues across entire document
+6. Fix all spacing issues across entire document
+7. Fix all structure issues across entire document
+8. Run final validation and quality assurance checklist
+9. Report completion with summary of all changes made
+
+This methodology ensures systematic, comprehensive compliance while preventing common mistakes like treating table descriptions as lists or making partial fixes that require multiple iterations.
 ```
 
 ---

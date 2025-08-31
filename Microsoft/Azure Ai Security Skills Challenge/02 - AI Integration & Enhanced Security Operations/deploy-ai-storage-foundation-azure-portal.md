@@ -388,7 +388,7 @@ After successful storage deployment:
 
 1. **[Deploy Azure OpenAI Service](./deploy-azure-openai-service.md)** - Add AI capabilities
 2. **[Configure Logic Apps Integration](./deploy-logic-apps-ai-automation.md)** - AI automation workflows
-3. **[Deploy Sentinel Integration](./deploy-openai-sentinel-integration.md)** - Complete AI security pipeline
+3. **[Deploy Defender XDR Integration](./deploy-openai-defender-xdr-integration.md)** - Complete AI security pipeline
 
 ### 📅 End of Week 2 Tasks
 

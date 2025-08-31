@@ -398,7 +398,7 @@ Install-Module -Name Az.OperationalInsights -Force -AllowClobber
 
 **Recommended Path**: Continue with Sentinel integration to build automated AI-driven security workflows:
 
-1. **[Azure OpenAI + Sentinel Integration](./deploy-openai-sentinel-integration.md)** - Implement Logic Apps-based AI automation.
+1. **[Azure OpenAI + Defender XDR Integration](./deploy-openai-defender-xdr-integration.md)** - Implement Logic Apps-based AI automation.
 2. **[AI Prompt Templates](./ai-prompt-templates.md)** - Create cost-optimized prompt templates for security scenarios.
 3. **[Cost Management Setup](./deploy-ai-cost-management.md)** - Configure comprehensive budget controls and monitoring.
 

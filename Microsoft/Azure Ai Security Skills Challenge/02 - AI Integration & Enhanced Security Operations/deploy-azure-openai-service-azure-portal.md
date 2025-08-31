@@ -782,7 +782,7 @@ Your Azure OpenAI service is now successfully deployed and integrated with your 
 **Next Phase in Week 2**: Build upon your OpenAI foundation with Sentinel automation:
 
 - **Prerequisites Met**: ✅ Azure OpenAI deployed, ✅ Models configured, ✅ Cost monitoring active.
-- **Next Step**: [Azure OpenAI + Sentinel Integration](./deploy-openai-sentinel-integration.md).
+- **Next Step**: [Azure OpenAI + Defender XDR Integration](./deploy-openai-defender-xdr-integration.md).
 - **Expected Timeline**: 30-45 minutes to complete Logic Apps integration.
 - **Key Benefits**: Automated incident analysis, AI-powered alert triage, intelligent security workflows.
 
@@ -813,7 +813,7 @@ Your Azure OpenAI service is now successfully deployed and integrated with your 
 
 ---
 
-**🎯 Recommended Next Action**: Proceed to [Azure OpenAI + Sentinel Integration](./deploy-openai-sentinel-integration.md) to continue Week 2 and create automated AI-driven security workflows.
+**🎯 Recommended Next Action**: Proceed to [Azure OpenAI + Defender XDR Integration](./deploy-openai-defender-xdr-integration.md) to continue Week 2 and create automated AI-driven security workflows.
 
 ---
 

@@ -300,7 +300,7 @@ With storage foundation complete, proceed to:
 
 1. **[Deploy AI Cost Management](./deploy-ai-cost-management-modular-iac.md)** - Enhanced budget controls and monitoring
 2. **[Deploy Azure OpenAI Service](./deploy-azure-openai-service-modular-iac.md)** - Add AI capabilities
-3. **[Configure Sentinel Integration](./deploy-openai-sentinel-integration-modular-iac.md)** - Complete AI automation pipeline
+3. **[Configure Defender XDR Integration](./deploy-openai-defender-xdr-integration-iac.md)** - Complete AI automation pipeline
 
 ---
 

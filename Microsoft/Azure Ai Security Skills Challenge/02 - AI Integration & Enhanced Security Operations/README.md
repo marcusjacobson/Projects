@@ -16,30 +16,30 @@ This week focuses on implementing cost-effective AI-driven capabilities within t
 ## 🎯 Objectives
 
 - Deploy Azure OpenAI with cost-effective models (GPT-o4-mini) and automated budget controls.
-- Implement Azure OpenAI + Sentinel integration using Logic Apps for AI-driven alert analysis.
-- Enable built-in AI features (UEBA, Fusion, Anomaly Detection) within existing deployments.
+- Implement Azure OpenAI + Sentinel integration using Logic Apps for AI-driven alert analysis through Defender XDR unified portal.
+- Enable built-in AI features (UEBA, Fusion, Anomaly Detection) within existing deployments via unified security operations.
 - Configure comprehensive cost monitoring, alerts, and automated service shutdown capabilities.
 - Create foundational prompt templates for security scenarios with cost-optimized token usage.
-- Simulate threat scenarios to observe AI-driven insights and validate cost controls.
-- Document AI integration patterns with detailed cost optimization strategies.
+- Simulate threat scenarios to observe AI-driven insights and validate cost controls within unified portal workflows.
+- Document AI integration patterns with detailed cost optimization strategies for modern unified security operations.
 
 ## 📁 Deliverables
 
-- **AI Foundation Infrastructure**: Storage accounts and Azure OpenAI service with budget controls.
-- **Azure OpenAI + Sentinel Integration**: Logic Apps-based automation for AI-driven alert summarization.
-- **Built-in AI Features**: UEBA, Fusion, and Anomaly Detection enabled and validated.
+- **AI Foundation Infrastructure**: Azure OpenAI service with budget controls + storage account for logic app data processing.
+- **Azure OpenAI + Defender XDR Integration**: Logic Apps-based automation for AI-driven alert analysis through Defender XDR unified portal.
+- **Built-in AI Features**: UEBA, Fusion, and Anomaly Detection enabled and validated within unified security operations.
 - **Cost Management System**: Comprehensive monitoring, alerts, and automated shutdown capabilities.
 - **AI Prompt Library**: Basic templates optimized for cost-effective token usage:
-  - Threat detection and alert triage
-  - Security incident summarization  
-  - AI-assisted remediation guidance
-- **Validation Scenarios**: Simulated threat scenarios with AI analysis and cost tracking.
-- **Integration Documentation**: Complete guides with cost optimization strategies.
+  - Threat detection and alert triage via unified portal workflows
+  - Security incident summarization for unified incident management
+  - AI-assisted remediation guidance integrated with Defender XDR operations
+- **Validation Scenarios**: Simulated threat scenarios with AI analysis and cost tracking within unified portal.
+- **Integration Documentation**: Complete guides with cost optimization strategies for modern unified security operations.
 
 ## ✅ Checklist
 
 - [x] **AI-driven security recommendations research completed** (from Week 1).
-- [x] **[Storage Account Deployment](./deploy-ai-storage-foundation.md)** - Deploy storage accounts for AI data processing, model storage, and logging:
+- [x] **[Storage Account Deployment](./deploy-ai-storage-foundation.md)** - Deploy storage accounts for Defender XDR Integration state management and duplicate prevention:
   - [x] **[Azure Portal Guide](./deploy-ai-storage-foundation-azure-portal.md)** - Step-by-step portal deployment (Recommended for learning)
   - [x] **[Infrastructure-as-Code Guide](./deploy-ai-storage-foundation-iac.md)** - Automated Bicep deployment (Recommended for quick deployment)
 - [x] **[Azure OpenAI Service Deployment](./deploy-azure-openai-service.md)** - Deploy cost-effective OpenAI service with enhanced automation and soft-delete handling:
@@ -47,7 +47,9 @@ This week focuses on implementing cost-effective AI-driven capabilities within t
   - [x] **[Infrastructure-as-Code Guide](./deploy-azure-openai-service-iac.md)** - Automated Bicep deployment (Recommended for quick deployment)
 - [x] **[OpenAI Model Customization](./customize-openai-model.md)** - Configure GPT-o4-mini with cybersecurity analyst persona, optimized parameters (Temperature 0.2, 450 tokens), and industry compliance frameworks (NIST AI RMF, OWASP LLM Top 10).
 - [x] **[AI Prompt Templates Creation](./ai-prompt-templates.md)** - Identified GPT-o4-mini optimized prompt templates for Defender for Cloud security scenarios with cost optimization and industry compliance.
-- [ ] **[Azure OpenAI + Sentinel Integration](./deploy-openai-sentinel-integration.md)** - Implement Logic Apps-based AI automation.
+- [ ] **[Azure OpenAI + Defender XDR Integration](./deploy-openai-defender-xdr-integration.md)** - Implement Logic Apps-based AI automation for intelligent incident analysis through Defender XDR unified portal:
+  - [ ] **[Azure Portal Guide](./deploy-openai-defender-xdr-integration-azure-portal.md)** - Step-by-step Logic Apps designer configuration with unified portal integration (Recommended for learning)
+  - [ ] **[Infrastructure-as-Code Guide](./deploy-openai-defender-xdr-integration-iac.md)** - Automated PowerShell scripts and REST API deployment for unified operations (Recommended for production)
 - [ ] **[Threat Scenario Simulation](./simulate-threat-scenarios.md)** - Execute benign threat scenarios with AI analysis.
 - [ ] **[Built-in AI Features Enablement](./deploy-builtin-ai-features.md)** - Enable UEBA, Fusion, and Anomaly Detection after data flows are established.
 - [ ] **[Azure Cost Management Setup](./deploy-ai-cost-management.md)** - Configure budget alerts and automated shutdown capabilities.
@@ -95,9 +97,9 @@ Week 2 follows the proven Week 1 structure optimized for AI services and cost ma
 │   ├── deploy-ai-cost-management.md                # Budget controls and automated shutdown
 │   ├── deploy-azure-openai-service.md              # Cost-effective OpenAI service deployment
 │   ├── customize-openai-model.md                   # Security-focused model configuration
-│   ├── deploy-openai-sentinel-integration.md       # Logic Apps + Sentinel automation
-│   ├── deploy-builtin-ai-features.md               # UEBA, Fusion, Anomaly Detection enablement
-│   └── simulate-threat-scenarios.md                # AI-driven threat simulation and validation
+│   ├── deploy-openai-defender-xdr-integration.md   # Logic Apps + Sentinel automation via Defender XDR unified portal
+│   ├── deploy-builtin-ai-features.md               # UEBA, Fusion, Anomaly Detection enablement through unified operations
+│   └── simulate-threat-scenarios.md                # AI-driven threat simulation and validation within unified portal
 ├── 🏗️ Infrastructure-as-Code/
 │   └── infra/                                       # AI-focused Bicep templates
 │       ├── main.bicep                               # Main AI infrastructure orchestration
@@ -106,7 +108,7 @@ Week 2 follows the proven Week 1 structure optimized for AI services and cost ma
 │       └── modules/                                 # Modular AI service components
 │           ├── storage/                             # AI storage accounts and containers
 │           ├── openai/                              # Azure OpenAI service deployment
-│           ├── logicapps/                           # Sentinel integration automation
+│           ├── logicapps/                           # Sentinel integration automation via unified portal
 │           └── monitoring/                          # AI cost monitoring and alerting
 ├── 📊 PowerShell Scripts/
 │   └── scripts/                                     # AI deployment and cost management automation
@@ -115,13 +117,13 @@ Week 2 follows the proven Week 1 structure optimized for AI services and cost ma
 │       ├── Deploy-StorageFoundation.ps1            # AI storage infrastructure
 │       ├── Deploy-CostManagement.ps1               # Budget alerts and automated controls
 │       ├── Deploy-OpenAIService.ps1                # Azure OpenAI service deployment
-│       ├── Deploy-SentinelIntegration.ps1          # Logic Apps + Sentinel automation
-│       ├── Deploy-BuiltinAIFeatures.ps1            # Enable AI security features
+│       ├── Deploy-SentinelIntegration.ps1          # Logic Apps + Sentinel automation via Defender XDR unified portal
+│       ├── Deploy-BuiltinAIFeatures.ps1            # Enable AI security features through unified operations
 │       ├── Test-AIIntegration.ps1                  # AI integration validation
 │       ├── Remove-AIInfrastructure.ps1             # AI service cleanup and cost control
 │       └── templates/                               # AI configuration templates
 │           ├── openai-deployment.json               # OpenAI model deployment configuration
-│           ├── logic-app-sentinel.json              # Sentinel integration workflow
+│           ├── logic-app-sentinel.json              # Sentinel integration workflow via unified portal
 │           └── cost-alert-rules.json                # Budget monitoring templates
 └── 🤖 AI Templates & Resources/
     ├── customize-openai-model.md                    # Security-focused model configuration guide
@@ -141,16 +143,16 @@ Week 2 follows the proven Week 1 structure optimized for AI services and cost ma
 
 ### **Phase 2: AI Integration (Wednesday-Thursday)**
 
-- Implement Azure OpenAI + Sentinel integration using Logic Apps
-- Create cost-optimized prompt templates for security scenarios
-- Simulate threat scenarios to establish baseline data for AI features
+- Implement Azure OpenAI + Defender XDR integration using Logic Apps through Defender XDR unified portal
+- Create cost-optimized prompt templates for security scenarios within unified operations
+- Simulate threat scenarios to establish baseline data for AI features via unified portal workflows
 
 ### **Phase 3: Advanced AI & Validation (Friday-Weekend)**
 
-- Enable built-in AI features (UEBA, Fusion, Anomaly Detection) after data flows are established
-- Validate AI integration effectiveness with cost tracking
-- Document cost optimization strategies and automated controls
-- Prepare infrastructure foundation for Week 3 XDR integration
+- Enable built-in AI features (UEBA, Fusion, Anomaly Detection) after data flows are established through unified operations
+- Validate AI integration effectiveness with cost tracking within unified portal
+- Document cost optimization strategies and automated controls for modern unified security operations
+- Prepare infrastructure foundation for Week 3 XDR integration and advanced unified operations
 
 ## 🔄 Storage Foundation Deployment - COMPLETED ✅
 

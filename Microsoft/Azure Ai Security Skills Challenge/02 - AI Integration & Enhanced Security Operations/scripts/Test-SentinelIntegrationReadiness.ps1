@@ -645,7 +645,7 @@ Write-Host "-------------" -ForegroundColor Magenta
 
 if ($ValidationResults.OverallSuccess -and $successPercentage -ge 80) {
     Write-Host "   1. Proceed with Azure OpenAI + Sentinel integration deployment" -ForegroundColor Green
-    Write-Host "   2. Follow the deployment guide: deploy-openai-sentinel-integration.md" -ForegroundColor Green
+    Write-Host "   2. Follow the deployment guide: deploy-openai-defender-xdr-integration.md" -ForegroundColor Green
     Write-Host "   3. Configure Logic Apps for AI-driven incident analysis" -ForegroundColor Green
 } else {
     Write-Host "   1. Address the failed validation items listed above" -ForegroundColor Red

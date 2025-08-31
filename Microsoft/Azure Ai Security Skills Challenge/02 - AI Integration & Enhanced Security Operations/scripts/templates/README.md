@@ -110,7 +110,7 @@ Use templates with Logic Apps **Test** functionality:
 
 ## 📚 Related Documentation
 
-- **[Main Deployment Guide](../deploy-openai-sentinel-integration.md)** - Complete integration walkthrough
+- **[Main Deployment Guide](../deploy-openai-defender-xdr-integration.md)** - Complete integration walkthrough
 - **[AI Prompt Templates](../ai-prompt-templates.md)** - Additional prompt engineering guidance
 - **[Cost Management Guide](../deploy-ai-cost-management.md)** - Budget monitoring and controls
 

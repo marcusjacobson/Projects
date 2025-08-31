@@ -47,8 +47,8 @@ This week focuses on implementing cost-effective AI-driven capabilities within t
   - [x] **[Infrastructure-as-Code Guide](./deploy-azure-openai-service-iac.md)** - Automated Bicep deployment (Recommended for quick deployment)
 - [x] **[OpenAI Model Customization](./customize-openai-model.md)** - Configure GPT-o4-mini with cybersecurity analyst persona, optimized parameters (Temperature 0.2, 450 tokens), and industry compliance frameworks (NIST AI RMF, OWASP LLM Top 10).
 - [x] **[AI Prompt Templates Creation](./ai-prompt-templates.md)** - Identified GPT-o4-mini optimized prompt templates for Defender for Cloud security scenarios with cost optimization and industry compliance.
-- [ ] **[Azure OpenAI + Defender XDR Integration](./deploy-openai-defender-xdr-integration.md)** - Implement Logic Apps-based AI automation for intelligent incident analysis through Defender XDR unified portal:
-  - [ ] **[Azure Portal Guide](./deploy-openai-defender-xdr-integration-azure-portal.md)** - Step-by-step Logic Apps designer configuration with unified portal integration (Recommended for learning)
+- [X] **[Azure OpenAI + Defender XDR Integration](./deploy-openai-defender-xdr-integration.md)** - Implement Logic Apps-based AI automation for intelligent incident analysis through Defender XDR unified portal:
+  - [X] **[Azure Portal Guide](./deploy-openai-defender-xdr-integration-azure-portal.md)** - Step-by-step Logic Apps designer configuration with unified portal integration (Recommended for learning)
   - [ ] **[Infrastructure-as-Code Guide](./deploy-openai-defender-xdr-integration-iac.md)** - Automated PowerShell scripts and REST API deployment for unified operations (Recommended for production)
 - [ ] **[Threat Scenario Simulation](./simulate-threat-scenarios.md)** - Execute benign threat scenarios with AI analysis.
 - [ ] **[Built-in AI Features Enablement](./deploy-builtin-ai-features.md)** - Enable UEBA, Fusion, and Anomaly Detection after data flows are established.

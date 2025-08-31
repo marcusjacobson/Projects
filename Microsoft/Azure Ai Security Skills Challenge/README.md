@@ -90,6 +90,15 @@ As project weeks are completed, the **Completed** checkbox will be marked.
 | 8 | [Copilot Studio for Security Agents](./08%20-%20Copilot%20Studio%20for%20Security%20Agents/README.md) | [ ] |
 | 9 | [Secure Copilot Deployment & Delivery Practices](./09%20-%20Secure%20Copilot%20Deployment%20&%20Delivery%20Practices/README.md) | [ ] |
 
+## � Documentation Standards
+
+This project follows established style guides to ensure consistency and professionalism across all documentation and code:
+
+- **[Markdown Style Guide](../../Style%20Guides/markdown-style-guide.md)** - Formatting, punctuation, and tone standards for all markdown documentation
+- **[PowerShell Style Guide](../../Style%20Guides/powershell-style-guide.md)** - Consistent visual and organizational patterns for PowerShell scripts
+
+These guides define comprehensive standards for headers, lists, code blocks, interface elements, and professional documentation practices.
+
 ## 📬 Contributions & Feedback
 
 This is a personal skilling initiative, but collaboration and feedback are welcome! If you’re working on similar goals or want to reuse parts of this roadmap, feel free to fork or adapt.

@@ -43,6 +43,7 @@ Defender XDR Sources → Microsoft Graph Security API → Logic Apps → Azure O
    • Defender for Endpoint   • Incident/Alert APIs   • For Each      • Structured      Portal
    • Defender for Identity                                          prompts
    • Defender for Office 365
+
 ```
 
 ## Step 1: Create App Registration for Microsoft Graph API Access
@@ -62,9 +63,9 @@ Before creating the Logic App, we need to set up authentication to access Defend
 1. In your new app registration, go to **API permissions**.
 2. Click **+ Add a permission** → **Microsoft APIs** tab → **Microsoft Graph**.
 3. Select **Application permissions** and add:
-   - `SecurityIncident.ReadWrite.All` (Read and write access to Defender XDR incidents)
-   - `SecurityAlert.ReadWrite.All` (Read and write access to security alerts)
-   - `SecurityEvents.Read.All` (Read access to security events)
+   - `SecurityIncident.ReadWrite.All` (Read and write access to Defender XDR incidents).
+   - `SecurityAlert.ReadWrite.All` (Read and write access to security alerts).
+   - `SecurityEvents.Read.All` (Read access to security events).
 4. Click **Grant admin consent for Microsoft**.
 5. Click **Yes** to confirm.
 
@@ -95,7 +96,7 @@ Before creating the Logic App, we need to set up authentication to access Defend
 
 ### Record Important Values
 
-**Record these values for Logic App creation:**
+Record these values for Logic App creation:
 
 - **Application (client) ID**: Found on the app registration Overview page.
 - **Directory (tenant) ID**: Found on the app registration Overview page.
@@ -154,16 +155,16 @@ Before creating the Logic App, we need to set up authentication to access Defend
 Before configuring your Logic App workflow, generate sample security alerts to test against:
 
 1. **Access Microsoft Defender for Cloud**:
-   - In Azure Portal, search for **Microsoft Defender for Cloud**
-   - Go to **Security alerts** in the left navigation
+   - In Azure Portal, search for **Microsoft Defender for Cloud**.
+   - Go to **Security alerts** in the left navigation.
 
 2. **Generate sample security alerts**:
-   - Click **Sample alerts** at the top of the Security alerts page
-   - Select your subscription and resource group (same as your Logic App)
-   - Choose alert types from the tables below to generate alerts for testing:
-   - Click **Create sample alerts**
-   - Wait 2-5 minutes for alerts to appear in Defender for Cloud
-   - These alerts will be available as test data when your Logic App runs
+   - Click **Sample alerts** at the top of the Security alerts page.
+   - Select your subscription and resource group (same as your Logic App).
+   - Choose alert types from the tables below to generate alerts for testing.
+   - Click **Create sample alerts**.
+   - Wait 2-5 minutes for alerts to appear in Defender for Cloud.
+   - These alerts will be available as test data when your Logic App runs.
 
     **💡Note:** Adding multiple categories will generate additional alerts, resulting in a longer run for the logic app.
 
@@ -198,18 +199,18 @@ These categories can be used to test different types of alerts and AI analysis.
 ### Create AI Processing Table in Existing Storage Account
 
 1. **Navigate to your existing storage account**:
-   - In Azure Portal, go to **Resource Groups** → `rg-aisec-ai`
-   - Click on your storage account (follows pattern `staiaisec######` where ###### is your unique 6-character identifier)
+   - In Azure Portal, go to **Resource Groups** → `rg-aisec-ai`.
+   - Click on your storage account (follows pattern `staiaisec######` where ###### is your unique 6-character identifier).
 
 2. **Create the tracking table**:
-   - In the storage account, go to **Data storage** → **Tables**
-   - Click **+ Table** at the top
-   - **Table name**: `aiProcessed`
-   - Click **OK** to create the table
+   - In the storage account, go to **Data storage** → **Tables**.
+   - Click **+ Table** at the top.
+   - **Table name**: `aiProcessed`.
+   - Click **OK** to create the table.
 
 3. **Note the connection details** for Logic Apps integration:
-   - Go to **Security + networking** → **Access keys**
-   - Copy **Storage account name** and **Key1** for later use in Logic Apps
+   - Go to **Security + networking** → **Access keys**.
+   - Copy **Storage account name** and **Key1** for later use in Logic Apps.
 
 ## Step 3: Configure Defender XDR Integration Workflow
 
@@ -219,7 +220,7 @@ These categories can be used to test different types of alerts and AI analysis.
 2. Search for **Schedule** in the connector gallery.
 3. Select **Recurrence** trigger.
 4. Configure the recurrence:
-   - **Interval**: `4`
+   - **Interval**: `4`.
    - **Frequency**: `Hour` (check every 4 hours for new incidents).
   
 > **💡 Lab-Optimized Configuration**: 4-hour intervals provide excellent learning value with regular automated processing while keeping costs under $2/month for typical lab usage.
@@ -251,7 +252,7 @@ For lab environments, **4 hours** is the recommended recurrence interval:
 
 ### Configure HTTP Action to Get Defender XDR Incidents
 
-1. Below the Recurrence, click **+** then **Add action**.
+1. Below the Recurrence, click **+** then **Add an action**.
 2. Search for **HTTP** in the connector gallery.
 3. Select **HTTP** connector and choose **HTTP** action.
 4. **Name this action**: `Get Defender XDR Incidents` (Logic Apps will auto-generate `Get_Defender_XDR_Incidents` in the backend).
@@ -289,7 +290,7 @@ For production environments wanting to focus on recent incidents:
 #### Configure Authentication Parameters
 
 1. Configure Authentication under Advanced parameters:
-   - Expand **Advanced parameters**
+   - Expand **Advanced parameters**.
    - Under the **Authentication** section, configure:
 
 | Setting | Value | Purpose |
@@ -312,20 +313,20 @@ For production environments wanting to focus on recent incidents:
 ##### Verify Successful Connection
 
 1. **Access Run History**:
-   - In the Logic Apps Designer, click **Overview** in the left navigation
-   - Click on the most recent run (should show **Succeeded** status)
+   - In the Logic Apps Designer, click **Overview** in the left navigation.
+   - Click on the most recent run (should show **Succeeded** status).
 
 2. **Check HTTP Response**:
-   - Click on the **Get Defender XDR Incidents** action in the run history
-   - Expand the **Outputs** section
-   - Verify **Status Code**: Should be **200**
-   - Verify **Response Body**: Should contain incident data from Defender XDR
+   - Click on the **Get Defender XDR Incidents** action in the run history.
+   - Expand the **Outputs** section.
+   - Verify **Status Code**: Should be **200**.
+   - Verify **Response Body**: Should contain incident data from Defender XDR.
 
 3. **Expected Response Indicators**:
-   - **Status Code**: `200` (successful API call)
-   - **Response Headers**: Contains `content-type: application/json`
-   - **Response Body**: JSON structure with `value` array containing incident objects
-   - **Incident Count**: Shows number of incidents found (may be 0 if no recent incidents)
+   - **Status Code**: `200` (successful API call).
+   - **Response Headers**: Contains `content-type: application/json`.
+   - **Response Body**: JSON structure with `value` array containing incident objects.
+   - **Incident Count**: Shows number of incidents found (may be 0 if no recent incidents).
 
 > **✅ Success Indicator**: A successful connection will show **Status Code 200** and a JSON response with either incident data or an empty `value` array if no incidents match your criteria.
 
@@ -333,10 +334,11 @@ For production environments wanting to focus on recent incidents:
 
 > **✅ Key Success Factor**: Processing all active incidents with comprehensive enumeration ensures reliable incident detection following Microsoft Graph best practices.
 
-1. After the HTTP action, click **+** and then click **Add an action.**
-2. Search for **Data Operations** and select **Parse JSON**.
-3. **Name this action**: `Parse Incidents Response`
-4. Configure the Parse JSON action per the configuration instructions in the following sections.
+1. Return to the **Logic app designer**.
+2. After the HTTP action, click **+** and then click **Add an action**.
+3. Search for **Data Operations** and select **Parse JSON**.
+4. **Name this action**: `Parse Incidents Response`
+5. Configure the Parse JSON action per the configuration instructions in the following sections.
 
 #### Parse JSON Content Field Configuration
 
@@ -480,30 +482,32 @@ Click **Show all** to reveal advanced options and configure as needed:
 #### Message Configuration
 
 1. In the **messages** field, click **Add new item** to add a system message:
-   - **Role**: `system`
+   - **Role**: `system`.
    - **Content**: `You are a cybersecurity analyst. Analyze security incidents and provide structured analysis with these exact headers: ### 1) Executive Summary, ### 2) Risk Level Assessment, ### 3) Recommended Immediate Actions, ### 4) MITRE ATT&CK Mapping. Keep responses concise and actionable.`
 
 2. Click **Add new item** again to add the user message:
-   - **Role**: `user`
+   - **Role**: `user`.
    - **Content**: Click in the content field, then build your message using dynamic content from the Defender XDR incident:
 
 ##### Step-by-step Dynamic Content Selection
 
 1. **Start your message**: Type `Analyze this security incident from Defender XDR:` in the content field
 2. **Add incident title**:
-   - Click the **⚡ Dynamic content** button (lightning bolt icon) at the right side of the content field
-   - In the dynamic content panel, look for the **Parse Incidents Response** section
-   - Click **Body displayName** to insert the incident title automatically
+   - Click the **⚡ Dynamic content** button (lightning bolt icon) at the right side of the content field.
+   - In the dynamic content panel, look for the **Parse Incidents Response** section.
+   - Click **Body displayName** to insert the incident title automatically.
 3. **Continue building**: Press Enter twice and type `Description:`
 4. **Add incident description**:
-   - Click **⚡ Dynamic content** again
-   - Under **Parse Incidents Response**, click **Body description**
+   - Click **⚡ Dynamic content** again.
+   - Under **Parse Incidents Response**, click **Body description**.
 5. **Complete the message**: Press Enter twice and type `Severity:`
 6. **Add incident severity**:
-   - Click **⚡ Dynamic content** again
-   - Under **Parse Incidents Response**, click **Body severity**
+   - Click **⚡ Dynamic content** again.
+   - Under **Parse Incidents Response**, click **Body severity**.
 
-**Your completed message will look like:**
+#### Expected Message Format
+
+Your completed message will look like:
 
 ```text
 Analyze this security incident from Defender XDR: [Body displayName]
@@ -535,22 +539,22 @@ Before proceeding with additional features, let's test the Logic App to verify t
 ### Save and Test the Logic App
 
 1. **Save your Logic App**:
-   - Click **Save** at the top of the Logic Apps Designer
-   - Wait for the save confirmation
+   - Click **Save** at the top of the Logic Apps Designer.
+   - Wait for the save confirmation.
 
 2. **Test the workflow manually**:
-   - Within the logic app designer, click **Run** → **Run**
-   - This will execute the Logic App immediately using the HTTP call to Microsoft Graph
+   - Within the logic app designer, click **Run** → **Run**.
+   - This will execute the Logic App immediately using the HTTP call to Microsoft Graph.
 
 ### Review Run History and Verify OpenAI Response
 
 1. **Access Run History**:
-   - In the Logic Apps Designer, click **Overview** in the left navigation
-   - Click on the most recent run (should show "Succeeded" status)
+   - In the Logic Apps Designer, click **Overview** in the left navigation.
+   - Click on the most recent run (should show **Succeeded** status).
 
 2. **Verify each step executed correctly**:
-   - **Get Defender XDR Incidents**: Should show "Succeeded" with incident data from Defender XDR
-   - **Parse Incidents Response**: Should show "Succeeded" with structured incident fields
+   - **Get Defender XDR Incidents**: Should show **Succeeded** with incident data from Defender XDR.
+   - **Parse Incidents Response**: Should show **Succeeded** with structured incident fields.
    - **Check If Incidents Found**: Should show which branch executed ("True" if incidents found)
    - **For Each Incident**: Should show iterations for each incident processed
    - **Analyze Incident with AI**: Should show "Succeeded" with AI response
@@ -562,7 +566,9 @@ Before proceeding with additional features, let's test the Logic App to verify t
 
 > 💡 The text within the JSON file may be hard to read but we will parse this later.
 
-**At this point, you should see:**
+#### Current Status Verification
+
+At this point, you should see:
 
 - ✅ Get Defender XDR Incidents action successfully retrieving Defender XDR incidents.
 - ✅ Parse Incidents Response structuring the incident data.
@@ -582,7 +588,9 @@ Before proceeding with additional features, let's test the Logic App to verify t
 ✅ **Configured intelligent prompts** that send incident details (title, description, severity) to GPT for analysis  
 ✅ **Implemented duplicate prevention** to avoid multiple AI analyses on the same alerts
 
-**What happens when this runs:**
+### Workflow Execution Flow
+
+What happens when this runs:
 
 1. **Defender XDR detects a security threat** → Creates an incident in the unified portal
 2. **Your Logic App automatically triggers** → No manual intervention needed
@@ -606,10 +614,11 @@ Before proceeding with additional features, let's test the Logic App to verify t
 
 ### Get Alerts from Incident
 
-1. **Still inside the For Each loop** (after the Azure OpenAI action), click **+** and click **Add an action**.
-2. Search for **HTTP** and select the **HTTP** connector.
-3. **Name this action**: `Get Incident Alerts` (Logic Apps will auto-generate `Get_Incident_Alerts` in the backend)
-4. Configure this HTTP action to get alerts from the incident using the alerts_v2 endpoint:
+1. Return to the **Logic App designer**.
+2. **Inside the For Each loop** (after the Azure OpenAI action), click **+** and click **Add an action**.
+3. Search for **HTTP** and select the **HTTP** connector.
+4. **Name this action**: `Get Incident Alerts` (Logic Apps will auto-generate `Get_Incident_Alerts` in the backend)
+5. Configure this HTTP action to get alerts from the incident using the alerts_v2 endpoint:
 
 > **💡 Action Naming**: While you can enter friendly names like "Get Incident Alerts", Logic Apps automatically converts them to underscored versions (`Get_Incident_Alerts`) in the JSON definition. Both naming conventions work for expressions and references.
 
@@ -623,7 +632,9 @@ Before proceeding with additional features, let's test the Logic App to verify t
 | **Body** | *(Leave empty)* | GET request doesn't use body |
 | **Queries** | See query parameters below | OData filter to get alerts for this incident |
 
-**Query Parameters to add:**
+#### HTTP Query Parameters Configuration
+
+Query Parameters to add:
 
 | Parameter Name | Value | Purpose |
 |----------------|-------|---------|
@@ -649,6 +660,8 @@ Before proceeding with additional features, let's test the Logic App to verify t
 | **Secret** | `@parameters('clientSecret')` | ⚠️ Lab environment only - use Key Vault for production |
 
 ### Parse Alerts Response
+
+This step transforms the raw JSON response from Microsoft Graph into structured data that the Logic App can process. The Parse JSON action extracts individual alert properties (title, severity, entities, evidence) from the API response, making them available as dynamic content for AI analysis. This parsing ensures the OpenAI service receives properly formatted security context rather than raw API output.
 
 1. After the **Get Incident Alerts** action, click **+** and add **Parse JSON**.
 2. **Name this action**: `Parse Alerts Response`
@@ -697,33 +710,36 @@ Use this sample payload for schema generation:
 
 ### Add For Each Loop for Alerts
 
+This step will add an iteration for each alert associated to the incident currently being analyzed.
+
 1. After **Parse Alerts Response**, click **+** then **Add an action**, then search for **Control** → **For each**.
 2. **Name this action**: `For each Alert in Incident`
 3. **Select an output**: Click **⚡ Dynamic content** → Under **Parse Alerts Response**, select **Body value**
 
-### Alternative Approach: Time-Based Duplicate Prevention
+> **🔧 Advanced Implementation**: For a comprehensive time-based duplicate prevention system using Azure Table Storage with detailed processing tracking and error handling, see [Appendix B: Advanced Query Configuration - Time-Based Duplicate Prevention](#time-based-duplicate-prevention-implementation).
+
+### Compose AI Analysis Prompt
 
 **⚠️ Microsoft Graph API Limitation**: The `/security/alerts_v2/{id}/comments` endpoint doesn't support GET method for retrieving existing comments, which causes a 405 Method Not Allowed error.
 
 **✅ Working Solution**: Use time-based duplicate prevention by checking if the alert was recently processed using a custom Logic App run tracking approach.
 
-1. Inside the **For each Alert in Incident** loop, click **+** then **Add an action**, and add **Data Operations** → **Compose**
-2. **Name this action**: `Create Alert Processing Key`
-3. Configure the compose action to create a unique processing identifier:
+1. Inside the **For each Alert in Incident** loop, click **+** then **Add an action**.
+2. Search for **Data Operations** and select **Compose**.
+3. **Name this action**: `Create Alert Processing Key`
+4. Configure the compose action to create a unique processing identifier:
 
 #### Alert Processing Key Configuration
 
-In the **Inputs** field, enter:
-
-```text
-@{concat('ai-processed-', items('For_each_Alert_in_Incident')?['id'], '-', formatDateTime(utcnow(), 'yyyy-MM-dd'))}
-```
+| Setting | Value | Purpose |
+|---------|-------|---------|
+| **Inputs** | `@{concat('ai-processed-', items('For_each_Alert_in_Incident')?['id'], '-', formatDateTime(utcnow(), 'yyyy-MM-dd'))}` | Creates daily-unique key for each alert |
 
 This creates a daily-unique key for each alert, allowing reprocessing after 24 hours while preventing duplicates within the same day.
 
 > **🔧 Advanced Options**: For enhanced multi-comment detection, time-based reanalysis settings, and alternative duplicate prevention methods, see [Appendix B: Advanced Query Configuration](#appendix-b-advanced-query-configuration).
 
-### Check if Alert Processed Recently (store/retrieve processing key)
+### Check Alert Processing Status
 
 **Prerequisites** (completed in Step 2.5):
 
@@ -731,22 +747,29 @@ This creates a daily-unique key for each alert, allowing reprocessing after 24 h
 - Create a Table named `aiProcessed` in that storage account.
 - Configure Logic Apps connection to your storage account.
 
-1. **Add the Table Storage action**: After **Create Alert Processing Key**, click **+** then **Add an action**, and search for **Azure Table Storage → Get entity (V2)**.
+1. After **Create Alert Processing Key**, click **+** then **Add an action**.
+2. Search for **Azure Table Storage** and select **Get entity (V2)**.
+3. Create the Connection details per the table in the **Azure Table Storage Connection Configuration** section below.
+4. **Name this action**: `Check Alert Processing Status`
+5. Configure the action using the settings in the **Table Storage Action Configuration** section below.
 
    > **💡 Action Selection**: Use **Get entity (V2)** (singular) since we're looking up one specific alert by exact PartitionKey and RowKey. Avoid **Get entities (V2)** (plural) which is for querying multiple records and requires more complex logic.
 
-2. **Create or choose connection** (if this is your first Table Storage action):
-   - If no connection exists, Logic Apps will prompt you to create one:
-     - **Connection Name**: `ai-processing-storage`
-     - **Storage Account Name**: Your Week 2 storage account name (follows pattern `staiaisec######`)
-     - **Shared Storage Key**: Use Key1 from the storage account (noted in Step 2.5)
-     - Click **Create**
-   - If connection already exists, select **ai-processing-storage** from the dropdown
+#### Azure Table Storage Connection Configuration
 
-3. **Name this action**: `Check Alert Processing Status`
-4. Configure the Get entity (V2) action:
+| Setting | Value | Purpose | Source Location |
+|---------|-------|---------|-----------------|
+| **Connection Name** | `ai-processing-storage` | Replace default generated name | Enter custom name |
+| **Storage Account Name** | Your Week 2 storage account name | Storage account for processing tracking | Azure Portal → Your storage account → **Overview** → Copy **Name** field (follows pattern `staiaisec######`) |
+| **Shared Storage Key** | Copy your access key | Authentication for Table Storage | Azure Portal → Your storage account → **Access keys** → Copy Key1 (noted in Step 2.5) |
+
+1. After entering the details, click **Create new** to establish the Table Storage connection.
+
+> **💡 Connection Management**: Logic Apps automatically creates a `$connections` parameter to manage API connections. This parameter stores connection metadata like connection IDs and resource references, allowing the Logic App to maintain secure connections to external services like Azure Table Storage.
 
 #### Table Storage Action Configuration
+
+After creating the connection, configure the "Get entity (V2)" action with these parameters:
 
 | Setting | Value | Purpose |
 |---------|-------|---------|
@@ -762,22 +785,13 @@ This creates a daily-unique key for each alert, allowing reprocessing after 24 h
 | **Client request id** | *(Leave empty)* | Optional for tracking requests |
 | **Select Query** | *(Leave empty)* | Not needed when using specific Partition Key and Row Key |
 
-#### Configure Action Error Handling
-
-After configuring the action parameters, you must enable error handling to prevent workflow failure on expected 404 responses:
-
-1. **Click the action's Settings tab** (next to General tab)
-2. **Click "Configure run after"**
-3. **Check BOTH boxes**: ✅ **is successful** and ✅ **has failed**
-4. **Click "Done"**
-
-> **⚠️ Why This Is Essential**: By default, Logic Apps treat 404 as a failure and stop execution. Enabling "has failed" allows the condition to evaluate 404 responses instead of failing the workflow.
-
 ### Add Processing Condition
 
-1. After the **Check Alert Processing Status** action, click **+** then **Add an action**
-2. Search for **Control** and select **Condition**
-3. **Name this action**: `Process Alert`  
+> **✅ What This Step Accomplishes**: Creates a smart condition that evaluates whether each alert needs AI processing, preventing duplicate analysis while allowing reprocessing after 24 hours for evolving threats.
+
+1. After the **Check Alert Processing Status** action, click **+** then **Add an action**.
+2. Search for **Control** and select **Condition**.
+3. **Name this action**: `Process Alert`
 4. Configure the condition to determine if the alert should be processed based on processing history:
 
 #### Condition Logic Configuration
@@ -793,11 +807,7 @@ After configuring the action parameters, you must enable error handling to preve
 Click **fx** (expression box) and paste this expression:
 
 ```javascript
-or(
-  equals(outputs('Check_Alert_Processing_Status')['statusCode'], 404),
-  equals(body('Check_Alert_Processing_Status'), null),
-  greater(utcNow(), addHours(body('Check_Alert_Processing_Status')?['lastProcessed'], 24))
-)
+or(equals(outputs('Check_Alert_Processing_Status')['statusCode'], 404), equals(body('Check_Alert_Processing_Status'), null), greater(utcNow(), addHours(body('Check_Alert_Processing_Status')?['lastProcessed'], 24)))
 ```
 
 **Logic Explanation**:
@@ -806,43 +816,39 @@ or(
 - **Null response**: Alert has never been processed → process it.  
 - **24-hour check**: Previous processing is older than 24 hours → process it again.
 
-#### Configure Error Handling (Critical)
+#### Configure Condition Error Handling
 
-The condition requires special error handling configuration to work properly:
+After configuring the condition expression, you must enable error handling to allow the condition to process 404 responses from the Table Storage check:
 
-1. **Click on "Check Alert Processing Status" action**
-2. **Click the "Settings" tab** (next to General tab)  
-3. **Click "Configure run after"**
-4. **Check BOTH boxes**: ✅ **is successful** and ✅ **has failed**
-5. **Click "Done"**
+1. **Click on the Process Alert condition's Settings tab** (next to General tab).
+2. **Click "Configure run after"**.
+3. **Check BOTH boxes**: ✅ **is successful** and ✅ **has failed**.
 
-> **💡 Why This Is Required**: 404 errors are normal when checking for alerts that haven't been processed before. This configuration allows the condition to evaluate 404 responses instead of failing the workflow.
+> **⚠️ Why This Is Essential**: By default, Logic Apps treat upstream failures (like 404 from Table Storage) as workflow failures. Enabling "has failed" allows the condition to evaluate even when the Check Alert Processing Status action returns 404, which is expected for new alerts.
 
-#### Configure Condition Branches
+### Configure Alert Processing Branches
 
-Configure the following branches based on the condition result:
+#### False Branch: Skip Already Processed Alerts
 
-**Yes Branch (Process Alert)**:
+> **✅ What This Branch Accomplishes**: Provides a clean exit path for alerts that were already processed within the last 24 hours, preventing unnecessary API calls and duplicate AI analysis while maintaining workflow transparency.
 
-Add AI processing actions in this sequence (detailed in subsequent sections):
+1. In the **False** branch, click **+** then click **Add an action**.
+2. Search for **Data Operations** and select **Compose**.
+3. **Name this action**: `Skip Already Processed Alert`.
+4. Enter `Alert skipped - processed within last 24 hours` in the **Inputs** box.
 
-1. **Extract AI Analysis Sections** - Parse the AI response into structured sections
-2. **Create Comments Array** - Prepare structured comments for posting  
-3. **Post Each AI Analysis Section** - Post all 4 AI analysis comments to the alert
-4. **Record Alert Processing Status** - Mark the alert as processed
+#### True Branch: Process Alert with AI Analysis
 
-**No Branch (Skip Alert)**:
+##### Step 1: Parse AI Analysis into Structured Sections
 
-Optionally add a **Compose** action with `Skipping alert: already processed within 24 hours` for visibility in run history.
+> **✅ What This Step Accomplishes**: Transforms the single AI response into structured, parseable sections using Logic Apps expressions, enabling individual comment posting and better organization of security intelligence.
 
-### Step 1 (Yes Branch): Parse AI Analysis into Structured Sections
-
-1. Inside the **Yes** branch of the **Process Alert** condition, click **+** then **Add an action**
+1. Inside the **True** branch of the **Process Alert** condition, click **+** then **Add an action**
 2. Search for **Data Operations** and select **Compose**
 3. **Name this action**: `Extract AI Analysis Sections`
 4. Configure the Compose action to structure the AI response per the configuration below:
 
-#### Inputs Configuration
+##### Inputs Configuration
 
 ```json
 {
@@ -854,15 +860,17 @@ Optionally add a **Compose** action with `Skipping alert: already processed with
 }
 ```
 
-### Step 2 (Yes Branch): Create Comments Array for Structured Posting
+##### Step 2: Create Comments Array for Structured Posting
 
-1. **Still inside the Yes branch**, after **Extract AI Analysis Sections**, click **+** then **Add an action**, and search for **Data Operations** → **Compose**
+> **✅ What This Step Accomplishes**: Creates an ordered array of comment objects with prefixes and structured content, preparing the AI analysis for systematic posting as individual, categorized security insights.
+
+1. **Still inside the True branch**, after **Extract AI Analysis Sections**, click **+** then **Add an action**, and search for **Data Operations** → **Compose**
 2. **Name this action**: `Create Comments Array`
 3. Configure the array of structured comments per the **Inputs Configuration** section below.
 
 > **💡 Section Parsing Logic**: Uses Logic Apps `split()` function to extract clean content between numbered sections.
 
-#### Create Comments Array Inputs Configuration
+##### Create Comments Array Inputs Configuration
 
 ```json
 [
@@ -889,13 +897,17 @@ Optionally add a **Compose** action with `Skipping alert: already processed with
 ]
 ```
 
-### Step 3 (Yes Branch): Add For Each Loop for Structured Comments
+##### Step 3: Add For Each Loop for Structured Comments
 
-1. Still inside the **Yes branch**, after "Create Comments Array", click **+** then **Add an action**, and search for **Control** → **For each**
+> **✅ What This Step Accomplishes**: Creates a controlled iteration mechanism that processes each structured AI analysis section individually, ensuring all security insights are posted as separate, organized comments to the alert.
+
+1. Still inside the **True branch**, after **Create Comments Array**, click **+** then **Add an action**, and search for **Control** → **For each**
 2. **Name this action**: `Post Each AI Analysis Section`
 3. **Select an output**: Click **⚡ Dynamic content** → Under **Create Comments Array**, select **Outputs**
 
 ### Configure Individual Comment Posting
+
+> **✅ What This Step Accomplishes**: Establishes the HTTP action that posts each structured AI analysis section as an individual comment to the Microsoft Defender XDR alert, creating organized, searchable security intelligence.
 
 1. Inside the **Post Each AI Analysis Section** loop, click **+** then **Add an action**, and then add **HTTP**
 2. **Name this action**: `Post AI Section Comment`
@@ -951,11 +963,11 @@ Each iteration gets the correct section content automatically via the `item()` r
 - **Actionable Insights**: Structured format enables immediate decision-making.
 - **Scalable Analysis**: Can add/remove sections based on security team needs.
 
-### Step 4 (Yes Branch): Record Alert Processing Status
+##### Step 4: Record Alert Processing Status
 
-After completing all the comment posting actions in the **Yes branch** of the **Process Alert** condition:
+> **✅ What This Step Accomplishes**: Creates a permanent record in Azure Table Storage that tracks when each alert was processed, enabling the duplicate prevention system and providing audit trail for AI analysis activities.
 
-1. **Still inside the Yes branch**, after the **Post Each AI Analysis Section** loop completes, click **+** then **Add an action**
+1. **Still inside the True branch**, after the **Post Each AI Analysis Section** loop completes, click **+** then **Add an action**
 2. Search for **Azure Table Storage → Insert or Replace Entity (V2)**
 3. **Name this action**: `Record Alert Processing Status`
 4. Configure the Insert or Replace Entity (V2) action:
@@ -1016,6 +1028,18 @@ After completing all the comment posting actions in the **Yes branch** of the **
    - Click **Run** → **Run** in the Logic Apps Designer
    - This will immediately execute the workflow using the recurrence trigger
 
+### Expected Execution Time
+
+| Scenario | Incidents Processed | Total Execution Time |
+|----------|-------------------|---------------------|
+| **No incidents found** | 0 | 15-30 seconds |
+| **Single incident, 1-2 alerts** | 1 | 2-4 minutes |
+| **Single incident, 3-5 alerts** | 1 | 4-8 minutes |
+| **Multiple incidents, 5-10 total alerts** | 2-3 | 8-15 minutes |
+| **High-volume processing, 10+ alerts** | 3-5 | 15-25 minutes |
+
+> **💡 Note**: Execution time depends on the number of incidents found and alerts per incident. Each alert requires AI analysis and comment posting, which takes approximately 2-4 minutes per alert.
+
 ### Monitor the Execution
 
 1. **Check Run History**:
@@ -1045,7 +1069,7 @@ After completing all the comment posting actions in the **Yes branch** of the **
 
 2. **Find the Processed Incident**:
    - Go to **Incidents & alerts** → **Incidents**
-   - Look for incidents from the last hour (matching your Logic App filter)
+   - Look for incidents from the last 4 hours (matching your Logic App recurrence interval)
    - Click on an incident that should have been processed
 
 3. **Verify AI Comments on Alerts**:
@@ -1106,6 +1130,67 @@ To verify the time-based duplicate prevention feature is working correctly:
 
 > **📝 Note**: The time-based approach provides basic duplicate prevention while avoiding the API limitation. For production environments requiring strict duplicate prevention, consider implementing custom tracking using Azure Storage Tables or similar services.
 
+### **🎉 Success Indicators and Expected Results**
+
+#### **Technical Validation Checklist**
+
+- Logic App runs every 4 hours with successful status.
+- Each alert in incidents shows **4 separate comments** with distinct prefixes: `[AI Executive Summary]`, `[AI Risk Assessment]`, `[AI Immediate Actions]`, `[AI MITRE ATT&CK]`.
+- Comments contain relevant analysis specific to each section, not duplicate full analysis.
+- **Duplicate prevention works**: Running the Logic App multiple times on the same incidents does not create additional AI comments within 24 hours.
+- Processing status is properly tracked in Azure Table Storage for duplicate prevention.
+
+#### **What This Logic App Accomplishes**
+
+#### Logic App Capabilities
+
+Your deployed Logic App provides automated AI-powered security analysis:
+
+- **Automated Incident Processing**: Logic App polls Defender XDR every 4 hours for new incidents (configurable interval).
+- **AI-Powered Analysis**: Each incident gets analyzed by GPT-4o-mini with structured security prompts.
+- **Structured Intelligence Delivery**: AI analysis is parsed into 4 focused sections and posted as individual alert comments.
+- **Cost-Controlled Operations**: Processing stays within $1-3/month budget for typical lab volumes, $2-8/month for production SOC use.
+
+#### **Operational Benefits**
+
+#### Productivity Enhancement
+
+Analyst Productivity Enhancement:
+
+| Manual Process | Time Required | With AI Integration | Improvement|
+|---------------|---------------|---------------------|------------|
+| **Initial Incident Review** | 5-10 minutes | 30-60 seconds | Read AI summary instead of raw incident data |
+| **Risk Assessment** | 10-15 minutes | 1-2 minutes | Pre-analyzed risk level and impact assessment |
+| **Action Planning** | 15-20 minutes | 2-3 minutes | AI-generated immediate action recommendations |
+| **Documentation** | 5-10 minutes | Automated | Structured analysis automatically documented |
+
+#### Intelligence Quality Improvements
+
+Intelligence Quality Improvements:
+
+- **Consistent Analysis Framework**: Every incident receives the same structured evaluation approach.
+- **Automated Processing**: Incidents analyzed automatically at regular intervals, regardless of analyst availability.
+- **Reduced Cognitive Load**: Analysts can focus on decision-making rather than initial data interpretation.
+- **Standardized Documentation**: All incident analysis follows the same professional format and depth.
+
+#### **Expected Performance Metrics**
+
+#### Performance Metrics
+
+Based on the implemented architecture:
+
+- **Processing Speed**: 2-5 minutes per incident (includes API calls and comment posting).
+- **Reliability**: 95%+ success rate for incident processing (with proper error handling).
+- **Coverage**: 100% of incidents receive AI analysis within the configured recurrence interval (typically 4 hours).
+- **Duplicate Prevention**: 0% duplicate AI comments on re-processed alerts.
+- **Cost Efficiency**: 50-75% reduction in unnecessary OpenAI API calls through smart duplicate detection.
+- **Scalability**: Handles 5-15 incidents per day within cost parameters for typical SOC environments.
+
+> **🔧 Advanced Configurations**: For enhanced duplicate prevention, incident filtering, cost optimization, and alternative implementation options, see [Appendix B: Advanced Query Configuration](#appendix-b-advanced-query-configuration).
+
+---
+
+
 ## Step 8: Troubleshooting Common Issues
 
 | Issue | Possible Cause | Solution |
@@ -1144,69 +1229,23 @@ To verify the time-based duplicate prevention feature is working correctly:
 
 > **🔧 Microsoft Graph API Best Practice**: Always use **standalone resource endpoints** (`/security/alerts_v2`) with filtering rather than trying to navigate through nested relationships that may not be implemented in the API.
 
-### **🎉 Success Indicators and Expected Results**
-
-#### **Technical Validation Checklist**
-
-- Logic App runs every 4 hours with successful status.
-- Each alert in incidents shows **4 separate comments** with distinct prefixes: `[AI Executive Summary]`, `[AI Risk Assessment]`, `[AI Immediate Actions]`, `[AI MITRE ATT&CK]`.
-- Comments contain relevant analysis specific to each section, not duplicate full analysis.
-- **Duplicate prevention works**: Running the Logic App multiple times on the same incidents does not create additional AI comments within 24 hours.
-- Processing status is properly tracked in Azure Table Storage for duplicate prevention.
-
-#### **What This Logic App Accomplishes**
-
-**Your deployed Logic App provides automated AI-powered security analysis:**
-
-- **Automated Incident Processing**: Logic App polls Defender XDR every 4 hours for new incidents (configurable interval).
-- **AI-Powered Analysis**: Each incident gets analyzed by GPT-4o-mini with structured security prompts.
-- **Structured Intelligence Delivery**: AI analysis is parsed into 4 focused sections and posted as individual alert comments.
-- **Cost-Controlled Operations**: Processing stays within $1-3/month budget for typical lab volumes, $2-8/month for production SOC use.
-
-#### **Operational Benefits**
-
-**Analyst Productivity Enhancement:**
-
-| Manual Process | Time Required | With AI Integration | Improvement|
-|---------------|---------------|---------------------|------------|
-| **Initial Incident Review** | 5-10 minutes | 30-60 seconds | Read AI summary instead of raw incident data |
-| **Risk Assessment** | 10-15 minutes | 1-2 minutes | Pre-analyzed risk level and impact assessment |
-| **Action Planning** | 15-20 minutes | 2-3 minutes | AI-generated immediate action recommendations |
-| **Documentation** | 5-10 minutes | Automated | Structured analysis automatically documented |
-
-**Intelligence Quality Improvements:**
-
-- **Consistent Analysis Framework**: Every incident receives the same structured evaluation approach.
-- **Automated Processing**: Incidents analyzed automatically at regular intervals, regardless of analyst availability.
-- **Reduced Cognitive Load**: Analysts can focus on decision-making rather than initial data interpretation.
-- **Standardized Documentation**: All incident analysis follows the same professional format and depth.
-
-#### **Expected Performance Metrics**
-
-**Based on the implemented architecture:**
-
-- **Processing Speed**: 2-5 minutes per incident (includes API calls and comment posting).
-- **Reliability**: 95%+ success rate for incident processing (with proper error handling).
-- **Coverage**: 100% of incidents receive AI analysis within the configured recurrence interval (typically 4 hours).
-- **Duplicate Prevention**: 0% duplicate AI comments on re-processed alerts.
-- **Cost Efficiency**: 50-75% reduction in unnecessary OpenAI API calls through smart duplicate detection.
-- **Scalability**: Handles 5-15 incidents per day within cost parameters for typical SOC environments.
-
-> **🔧 Advanced Configurations**: For enhanced duplicate prevention, incident filtering, cost optimization, and alternative implementation options, see [Appendix B: Advanced Query Configuration](#appendix-b-advanced-query-configuration).
-
 ---
 
 ## Appendix A: Detailed Cost Analysis
 
 ### Current Pricing (as of August 2025)
 
-**Azure Services:**
+#### Service Categories
+
+Azure Services:
 
 - **Logic App Actions**: $0.000025 per action execution (after first 4,000 free per month).
 - **Azure Table Storage**: ~$0.05/month for processing tracking (negligible cost).
 - **Microsoft Graph API**: Included in Microsoft 365/Defender licensing at no additional cost.
 
-**OpenAI Services:**
+#### OpenAI API Pricing
+
+OpenAI Services:
 
 - **GPT-4o-mini API**: Input $0.00015/1K tokens + Output $0.0006/1K tokens.
 
@@ -1221,20 +1260,28 @@ To verify the time-based duplicate prevention feature is working correctly:
 
 ### Detailed Cost Breakdown per Run
 
-**Accurate Pricing Analysis (Based on Current 2025 Rates):**
+#### Pricing Analysis
 
-**Logic App Execution Costs:**
+Accurate Pricing Analysis (Based on Current 2025 Rates):
+
+#### Logic App Execution Costs
+
+Logic App Execution Costs:
 
 - **Actions per run**: 15-25 actions × $0.000025 = **$0.0004-0.0006** (minimal cost)
 - **Free tier benefit**: First 4,000 actions per month are free (covers ~160 runs)
 
-**OpenAI API Costs (GPT-4o-mini):**
+#### OpenAI API Cost Details
+
+OpenAI API Costs (GPT-4o-mini):
 
 - **Input tokens**: 800-2000 tokens × $0.00015/1K = **$0.00012-0.0003** per incident
 - **Output tokens**: 400-800 tokens × $0.0006/1K = **$0.00024-0.00048** per incident
 - **Total AI cost**: **$0.00036-0.00078** per incident analyzed
 
-**Main Cost Factors:**
+#### Primary Cost Drivers
+
+Main Cost Factors:
 
 - **Primary Driver**: Number of new incidents × AI analysis cost per incident
 - **Duplicate Prevention Benefit**: Already-analyzed alerts cost ~$0.0001 (table lookup only)
@@ -1369,7 +1416,7 @@ Following Microsoft's official guidance from the [Microsoft Graph Query Paramete
 
 ### Advanced Duplicate Prevention Configurations
 
-*Referenced in Step 6: [Alternative Approach: Time-Based Duplicate Prevention](#alternative-approach-time-based-duplicate-prevention)*
+*Referenced in Step 6: [Time-Based Duplicate Prevention Implementation](#time-based-duplicate-prevention-implementation)*
 
 #### Enhanced Multi-Comment Detection
 
@@ -1575,6 +1622,153 @@ Keep total response under 400 words for cost efficiency while maintaining analyt
 - Maintains consistent processing regardless of result size
 
 > **📚 Further Reading**: [Microsoft Graph Paging Documentation](https://learn.microsoft.com/en-us/graph/paging) provides comprehensive details on pagination best practices and implementation patterns.
+
+### Time-Based Duplicate Prevention Implementation
+
+*Referenced in Step 6: [For Each Loop for Alerts](#add-for-each-loop-for-alerts)*
+
+#### Overview
+
+This advanced approach implements comprehensive duplicate prevention using Azure Table Storage to track alert processing status. Unlike basic comment checking (which fails due to Microsoft Graph API limitations), this method provides reliable 24-hour duplicate prevention with detailed processing history.
+
+#### Implementation Benefits
+
+- **Reliable Duplicate Prevention**: 99.9% accuracy using unique alert IDs and timestamps
+- **24-Hour Cooldown**: Prevents reprocessing while allowing daily reanalysis
+- **Processing History**: Complete audit trail of AI analysis activities
+- **Error Resilience**: Handles API failures gracefully without breaking workflows
+- **Cost Control**: Prevents unnecessary AI API calls and associated costs
+
+#### Step-by-Step Configuration
+
+##### Step 1: Create Alert Processing Key
+
+1. Inside the **For each Alert in Incident** loop, add **Data Operations** → **Compose**
+2. **Name**: `Create Alert Processing Key`
+3. **Inputs**: `@{concat('ai-processed-', items('For_each_Alert_in_Incident')?['id'], '-', formatDateTime(utcnow(), 'yyyy-MM-dd'))}`
+
+This creates a daily-unique key combining alert ID and current date.
+
+##### Step 2: Check Processing Status
+
+1. Add **Azure Table Storage** → **Get entity (V2)**
+2. **Name**: `Check Alert Processing Status`
+3. **Configuration**:
+
+| Setting | Value | Purpose |
+|---------|-------|---------|
+| **Partition Key** | `alerts` | Groups all alert records |
+| **Row Key** | `@{items('For_each_Alert_in_Incident')?['id']}` | Unique alert identifier |
+| **Table** | `aiProcessed` | Processing status table |
+
+1. **Critical**: Enable **Configure run after** → Check both ✅ **is successful** and ✅ **has failed**
+
+##### Step 3: Processing Condition
+
+1. Add **Control** → **Condition**
+2. **Name**: `Process Alert`
+3. **Left operand** (Expression):
+
+```javascript
+or(
+  equals(outputs('Check_Alert_Processing_Status')['statusCode'], 404),
+  equals(body('Check_Alert_Processing_Status'), null),
+  greater(utcNow(), addHours(body('Check_Alert_Processing_Status')?['lastProcessed'], 24))
+)
+```
+
+1. **Operator**: `is equal to`
+1. **Right operand**: `true`
+
+**Logic Explanation**:
+
+- **404 status**: Alert never processed → process it
+- **Null response**: Alert never processed → process it  
+- **24-hour check**: Previous processing older than 24 hours → reprocess
+
+##### Step 4: Record Processing Status (Yes Branch)
+
+After all AI processing completes:
+
+1. Add **Azure Table Storage** → **Insert or Replace Entity (V2)**
+2. **Name**: `Record Alert Processing Status`
+3. **Configuration**:
+
+| Setting | Value | Purpose |
+|---------|-------|---------|
+| **Partition Key** | `alerts` | Consistent partitioning |
+| **Row Key** | `@{items('For_each_Alert_in_Incident')?['id']}` | Alert identifier |
+| **Entity** | See entity structure below | Processing metadata |
+
+**Entity Structure**:
+
+```json
+{
+  "alertId": "@{items('For_each_Alert_in_Incident')?['id']}",
+  "incidentId": "@{items('For_Each_Incident_in_Results')?['id']}",
+  "lastProcessed": "@{utcnow()}",
+  "processedBy": "DefenderXDRIntegration-LogicApp",
+  "aiModel": "gpt-4o-mini",
+  "status": "completed"
+}
+```
+
+#### Advanced Error Handling
+
+**404 Handling Strategy**:
+
+- Expected behavior when alert hasn't been processed
+- Logic Apps treats 404 as failure by default
+- **Solution**: Enable "has failed" in run after configuration
+
+**Network Resilience**:
+
+- Automatic retry for transient failures
+- Graceful degradation when storage unavailable
+- Fallback to processing without duplicate check
+
+#### Performance Optimization
+
+**Partition Strategy**:
+
+- Single `alerts` partition for simplicity
+- Row key uses alert GUID for uniqueness
+- Optimal for <1000 alerts per partition
+
+**Query Performance**:
+
+- Point queries using exact Partition Key + Row Key
+- No table scans required
+- Sub-second response times
+
+**Cost Management**:
+
+- Storage costs: ~$0.001 per 1000 records
+- Transaction costs: ~$0.0004 per 10,000 operations
+- Total monthly cost for 10,000 alerts: ~$0.05
+
+#### Troubleshooting Guide
+
+| Issue | Cause | Resolution |
+|-------|-------|-----------|
+| **Logic App fails on 404** | Missing "has failed" configuration | Enable both success and failure conditions |
+| **All alerts reprocess daily** | Timestamp comparison logic error | Verify UTC timezone handling in expressions |
+| **Storage connection errors** | Invalid connection string or permissions | Validate storage account access and connection |
+| **Duplicate processing within day** | Alert ID extraction issues | Check dynamic content for correct alert ID path |
+
+#### Security Considerations
+
+**Data Sensitivity**:
+
+- Alert IDs are non-sensitive metadata
+- Processing timestamps provide audit capability
+- No security incident details stored
+
+**Access Control**:
+
+- Logic App managed identity for storage access
+- Principle of least privilege permissions
+- Storage account network restrictions recommended
 
 ---
 

@@ -119,6 +119,8 @@ Before beginning the decommission process, complete these preparatory steps:
 
 ### Clean Up API Connections
 
+> **⚠️ IMPORTANT**: Only remove API connections created for the **Week 2 Logic App integration**. **DO NOT** modify or remove the **Week 1 Sentinel foundation** data connector or any existing Sentinel API connections that enable security alert ingestion.
+
 Logic Apps automatically creates API connections that should be cleaned up:
 
 1. **Navigate to API Connections**:
@@ -129,6 +131,7 @@ Logic Apps automatically creates API connections that should be cleaned up:
    - Look for connections with names like:
      - `azureopenai-1` or similar OpenAI connections.
      - Any connections created specifically for this Logic App.
+   - **Do NOT delete**: Any Sentinel-related connections from Week 1 deployment.
 
 3. **Delete OpenAI API Connection**:
    - Click on the OpenAI connection resource.
@@ -181,7 +184,7 @@ The Logic App created an `aiProcessed` table in your Week 2 storage account for 
 ### Delete Client Secret
 
 1. **Navigate to App Registration**:
-   - In the **Azure Portal**, go to **Azure Active Directory** → **App registrations**.
+   - In the **Azure Portal**, go to **Entra ID** → **App registrations**.
    - Search for **`LogicApp-DefenderXDRIntegration`**.
    - Click on the app registration to open it.
 
@@ -210,13 +213,14 @@ The Logic App created an `aiProcessed` table in your Week 2 storage account for 
 3. **Revoke Admin Consent**:
    - After removing permissions, click **Grant admin consent**.
    - Select **No, remove other granted permissions** if available.
+   - Click **Grant admin consent** at the bottom of the window.
    - Click **Yes** to confirm.
    - This ensures no residual permissions remain active.
 
 ### Delete App Registration
 
 1. **Delete the Application**:
-   - Still in the app registration overview page.
+   - Return to the app registration overview page.
    - Click **Delete** at the top of the page.
    - Select **I understand the implications of deleting this app registration.**.
    - Click **Delete** at the bottom of the page to permanently remove the app registration.
@@ -243,6 +247,11 @@ The Logic App created an `aiProcessed` table in your Week 2 storage account for 
    - Confirm Defender XDR incidents no longer receive AI comments.
    - Ensure security team is aware of automation removal.
 
+3. **Preserve Week 1 Foundation**:
+   - Verify Microsoft Sentinel data connector remains active.
+   - Confirm Log Analytics workspace integration is intact.
+   - Ensure Defender for Cloud solution package is preserved.
+
 ---
 
 ## ✅ Decommission Verification Checklist
@@ -259,6 +268,7 @@ Complete this checklist to verify successful decommission:
 - [ ] **Resource Group**: No orphaned resources remain
 - [ ] **SOC Notification**: Security team aware of automation removal
 - [ ] **Documentation**: Configuration backed up if needed for future use
+- [ ] **Week 1 Foundation Preserved**: Sentinel data connector and solution package remain active
 
 ---
 
@@ -282,6 +292,11 @@ Complete this checklist to verify successful decommission:
 - **Defender XDR Configuration**: Security policies and settings unaffected
 - **Historical AI Comments**: Previous analysis comments remain in alerts
 - **Log Analytics Workspace**: Monitoring infrastructure can be reused
+- **Microsoft Sentinel Foundation (Week 1)**:
+  - **Tenant-based Defender for Cloud Data Connector**: Preserves security alert ingestion from Week 1 foundation
+  - **Defender for Cloud Solution Package**: Analytics rules, workbooks, and hunting queries remain active
+  - **Log Analytics Workspace Integration**: Sentinel enablement and workspace configuration maintained
+  - **Security Alert Pipeline**: Historical alert data and ingestion capabilities preserved
 
 ---
 

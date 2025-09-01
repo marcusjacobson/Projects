@@ -35,12 +35,12 @@ The `main.parameters.json` file is configured for East US deployment. **Do not c
 
 ## ✅ Checklist
 
-- [x] **[Defender for Cloud deployed via Azure Portal](./deploy-defender-for-cloud-azure-portal.md)**.
-- [x] **[Defender for Cloud deployed via Modular Infrastructure-as-Code](./deploy-defender-for-cloud-modular-iac.md)** (PowerShell + Bicep).
-- [x] **[Defender for Cloud deployed via Complete Automation](./deploy-defender-for-cloud-complete-automation.md)** (enterprise-ready).
-- [x] **[Decommission script created and tested for lab cleanup](./decommission-defender-for-cloud.md)**.
+- [x] **[Defender for Cloud deployed via Azure Portal](./01.01%20Defender%20for%20Cloud%20Foundation/Azure%20Portal/deploy-defender-for-cloud-azure-portal.md)**.
+- [x] **[Defender for Cloud deployed via Modular Infrastructure-as-Code](./01.01%20Defender%20for%20Cloud%20Foundation/Infrastructure%20as%20Code/deploy-defender-for-cloud-modular-iac.md)** (PowerShell + Bicep).
+- [x] **[Defender for Cloud deployed via Complete Automation](./01.01%20Defender%20for%20Cloud%20Foundation/Automation/deploy-defender-for-cloud-complete-automation.md)** (enterprise-ready).
+- [x] **[Decommission script created and tested for lab cleanup](./01.01%20Defender%20for%20Cloud%20Foundation/Decommission/decommission-defender-for-cloud.md)**.
 - [x] **Deployment Method Comparison** - Comprehensive analysis and decision matrix included in this README.
-- [ ] **[🎯 Week 2 Bridge: Unified Security Operations Validation](./week1-to-week2-bridge-validation.md)** - Essential post-deployment validation and Week 2 preparation
+- [X] **[🎯 Week 2 Bridge: Unified Security Operations Validation](./01.02%20Week%201%20to%20Week%202%20Bridge/week1-to-week2-bridge-validation.md)** - Essential post-deployment validation and Week 2 preparation
 
 > **📋 Week 1 Complete**: After deployment and bridge validation, continue to Week 2 for advanced AI security operations. All modernization documentation has been moved to Week 2.
 
@@ -72,12 +72,18 @@ The project follows a well-organized folder structure to separate concerns and m
 01 - Defender for Cloud Deployment Mastery/
 ├── 📋 Deployment Guides/
 │   ├── README.md                                      # Project overview and deployment comparison
-│   ├── deploy-defender-for-cloud-azure-portal.md     # Azure Portal deployment guide
-│   ├── deploy-defender-for-cloud-modular-iac.md      # Modular Infrastructure-as-Code guide
-│   ├── deploy-defender-for-cloud-complete-automation.md # Complete automation guide
-│   ├── decommission-defender-for-cloud.md            # Environment cleanup guide
-│   ├── learning-resources.md                         # Curated learning materials
-│   └── week1-to-week2-bridge-validation.md           # Week 2 bridge validation guide
+│   ├── 01.01 Defender for Cloud Foundation/
+│   │   ├── Azure Portal/
+│   │   │   └── deploy-defender-for-cloud-azure-portal.md     # Azure Portal deployment guide
+│   │   ├── Infrastructure as Code/
+│   │   │   └── deploy-defender-for-cloud-modular-iac.md      # Modular Infrastructure-as-Code guide
+│   │   ├── Automation/
+│   │   │   └── deploy-defender-for-cloud-complete-automation.md # Complete automation guide
+│   │   └── Decommission/
+│   │       └── decommission-defender-for-cloud.md            # Environment cleanup guide
+│   ├── 01.02 Week 1 to Week 2 Bridge/
+│   │   └── week1-to-week2-bridge-validation.md           # Week 2 bridge validation guide
+│   └── learning-resources.md                         # Curated learning materials
 ├── 🏗️ Infrastructure-as-Code/
 │   └── infra/                                         # Bicep templates and parameters
 │       ├── main.bicep                                 # Main orchestration template

@@ -644,6 +644,70 @@ All PowerShell scripts in the Azure deployment automation project should follow 
 
 ---
 
+## 🔧 Emoji Corruption Handling
+
+### Detection and Resolution of Emoji Corruption Issues
+
+PowerShell scripts may occasionally experience emoji corruption where Unicode characters become malformed, typically displaying as � replacement characters or causing mixed content within files. This issue has been observed in development environments and requires specific handling procedures.
+
+#### Common Corruption Symptoms
+
+- **Mixed Content**: Script text becomes interleaved with corrupted characters
+- **Malformed Emojis**: Emojis display as � or other replacement characters  
+- **Preamble Corruption**: Comment-based help sections become fragmented
+- **Header Disruption**: Step headers and formatting become unreadable
+- **File Structure Issues**: Code blocks appear out of order or duplicated
+
+#### Corruption Resolution Methodology
+
+**When emoji corruption is detected, follow this systematic approach:**
+
+1. **Assessment Phase**:
+   - Verify corruption scope using `grep_search` with `�` pattern
+   - Check if corruption affects preamble, headers, or content body
+   - Determine if file structure remains intact or requires complete recreation
+
+2. **Resolution Strategy**:
+   - **Minor Corruption**: Use targeted `replace_string_in_file` operations
+   - **Extensive Corruption**: Complete file recreation is the most reliable solution
+   - **Preamble Corruption**: Often requires full file recreation due to interleaved content
+
+3. **File Recreation Process**:
+
+   ```powershell
+   # Remove corrupted file
+   Remove-Item "path\to\corrupted-script.ps1" -Force
+   
+   # Recreate using clean content in sections
+   # Build preamble, parameters, and script body separately
+   # Use terminal commands with proper escaping for emojis
+   ```
+
+4. **Validation Steps**:
+   - Verify syntax with `get_errors` tool
+   - Check emoji integrity with targeted `grep_search`
+   - Confirm no � corruption characters remain
+   - Validate PowerShell style guide compliance
+
+#### Prevention Best Practices
+
+- **File Encoding**: Always use UTF-8 encoding for PowerShell scripts
+- **Terminal Creation**: Use PowerShell terminal commands for complex emoji content
+- **Systematic Building**: Create scripts in logical sections rather than single operations
+- **Regular Validation**: Check emoji integrity during development process
+
+#### Recovery Success Indicators
+
+- Zero PowerShell syntax errors
+- Clean emoji display (🔍, 🚀, ✅, etc.)
+- No � replacement characters
+- Proper PowerShell style guide compliance
+- Functional script execution
+
+This approach has proven effective in resolving severe emoji corruption issues that cannot be addressed through standard editing operations.
+
+---
+
 *This style guide is a living document that should be updated as project standards evolve and new PowerShell scripting requirements are identified.*
 
 ---

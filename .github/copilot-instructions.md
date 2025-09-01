@@ -163,6 +163,28 @@ All PowerShell content must follow the [PowerShell Style Guide](../Style Guides/
 - Authentication requirements or token formats.
 - JSON schema without verification.
 
+### 3.3 Emoji Corruption Resolution
+
+**PowerShell scripts may experience Unicode emoji corruption requiring specific handling:**
+
+**Detection Indicators:**
+- Mixed content with interleaved characters
+- Emojis displaying as � replacement characters
+- Corrupted preamble sections with fragmented help content
+- Malformed step headers and formatting disruption
+
+**Resolution Protocol:**
+1. **Assess corruption scope** using `grep_search` with `�` pattern
+2. **For extensive corruption**: Complete file recreation is most reliable solution
+3. **Recreation process**: 
+   - Remove corrupted file with `Remove-Item`
+   - Build script in logical sections using terminal commands
+   - Use proper PowerShell escaping for emoji characters
+   - Validate with `get_errors` and emoji integrity checks
+4. **Success validation**: Zero syntax errors, clean emoji display, no � characters
+
+**This methodology has proven effective for severe corruption cases that cannot be resolved through standard editing operations.**
+
 ---
 
 ## 4. � Azure DevOps Pipeline Development Standards

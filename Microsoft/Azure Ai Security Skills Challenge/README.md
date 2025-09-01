@@ -22,7 +22,6 @@ Welcome to the AI Skilling Roadmap repository! This project outlines a **9-week 
 - Build a structured, week-by-week AI skilling plan tailored to security-focused consulting.
 - Integrate Microsoft Defender, Purview, Priva, Fabric, and Copilot Studio into real-world scenarios.
 - Develop and publish reusable prompt libraries and deployment guides.
-- Automate publishing workflows using GitHub Pages and Hugo.
 - Share learnings and artifacts incrementally to support internal enablement and customer delivery.
 
 ## 🎯 **9-Week Learning Path Structure**
@@ -57,11 +56,6 @@ This roadmap has been optimized for working professionals with a logical progres
 - **Balanced Workload**: Complex deployment work separated from AI integration
 - **Practical Outcomes**: Every week delivers deployable solutions and reusable assets
 - **Enterprise Ready**: Progresses from foundational skills to customer-facing delivery capability
-
-## 🌐 Project Site
-
-All publications and guides will be integrated into the main Hugo site.  
-🔗 **Site URL:** _[Coming Soon – Placeholder for Hugo site link]_
 
 ## 🗂️ Repository Structure
 

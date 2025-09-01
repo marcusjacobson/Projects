@@ -211,7 +211,7 @@ Once you've completed your chosen deployment method and the Week 2 bridge valida
 ## 🔗 Quick Navigation
 
 - [Week 2: AI Integration & Enhanced Security Operations](../02%20-%20AI%20Integration%20&%20Enhanced%20Security%20Operations/README.md)
-- [Week 2 Modernization Documentation](../02%20-%20AI%20Integration%20&%20Enhanced%20Security%20Operations/modernization/README.md)
+- [Week 2: AI Integration & Enhanced Security Operations](../02%20-%20AI%20Integration%20&%20Enhanced%20Security%20Operations/README.md)
 - [Project Root](../README.md)
 
 ---

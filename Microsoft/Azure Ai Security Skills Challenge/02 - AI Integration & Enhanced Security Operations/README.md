@@ -38,7 +38,7 @@ This week focuses on implementing cost-effective AI-driven capabilities within t
 
 ## ✅ Checklist
 
-- [x] **AI-driven security recommendations research completed** (from Week 1).
+- [x] **AI integration strategic planning research completed** (foundational research from Week 1, updated for modern unified portal operations).
 - [x] **[Storage Account Deployment](./02.02%20Storage%20Account%20Deployment/deploy-ai-storage-foundation.md)** - Deploy storage accounts for Defender XDR Integration state management and duplicate prevention:
   - [x] **[Azure Portal Guide](./02.02%20Storage%20Account%20Deployment/Azure%20Portal/deploy-ai-storage-foundation-azure-portal.md)** - Step-by-step portal deployment (Recommended for learning)
   - [x] **[Infrastructure-as-Code Guide](./02.02%20Storage%20Account%20Deployment/Infrastructure%20as%20Code/deploy-ai-storage-foundation-iac.md)** - Automated Bicep deployment (Recommended for quick deployment)
@@ -65,10 +65,7 @@ This week's project follows Week 1's proven structure with AI-focused enhancemen
 
 ### 🔬 Research & Strategy
 
-- **[AI-Driven Security Recommendations Research](../reports/full-ai-driven-security-recommendations-research.md)** - Comprehensive research report on cost-effective AI integration strategies (completed in Week 1)
-- **[AI Cost Optimization Guide](./deploy-ai-cost-management.md)** - Comprehensive cost management and automated control strategies
-- **[OpenAI Model Customization](./02.04%20OpenAI%20Model%20Customization/customize-openai-model.md)** - GPT-o4-mini configuration with cybersecurity analyst system instructions, optimized parameters, and Azure AI Foundry interface guidance
-- **[AI Prompt Templates](./02.05%20AI%20Prompt%20Templates%20Creation/ai-prompt-templates.md)** - Cost-optimized prompt templates for security scenarios
+- **[AI Integration Strategic Planning Guide](../reports/ai-integration-strategic-planning-guide.md)** - Comprehensive strategic reference covering cost-effective AI security implementation with detailed Security Copilot deployment strategies (SCU cost management, on-demand provisioning, automated lifecycle management), Azure OpenAI integration through Defender XDR unified portal, and comparative analysis for optimizing AI-driven security operations within organizational budget frameworks (updated for 2025 unified security operations terminology)
 
 ### 🏗️ Infrastructure-as-Code
 

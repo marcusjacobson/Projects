@@ -56,7 +56,7 @@ Prepare for the deployment of the core storage infrastructure using the simplifi
 
 ### 🔧 Configure Deployment Parameters
 
-The deployment uses the centralized **[`infra/main.parameters.json`](./infra/main.parameters.json)** file for configuration. For this storage foundation deployment, configure the following parameters:
+The deployment uses the centralized **[`infra/main.parameters.json`](../../infra/main.parameters.json)** file for configuration. For this storage foundation deployment, configure the following parameters:
 
 | Parameter | Current Value | What to Change | Purpose |
 |-----------|---------------|----------------|---------|
@@ -66,9 +66,9 @@ The deployment uses the centralized **[`infra/main.parameters.json`](./infra/mai
 
 **Template files involved:**
 
-- **Main template**: [`infra/main.bicep`](./infra/main.bicep) - Orchestrates the complete deployment
-- **Storage module**: [`infra/modules/storage/ai-storage.bicep`](./infra/modules/storage/ai-storage.bicep) - Deploys storage account and containers  
-- **PowerShell deployment**: [`scripts/Deploy-StorageFoundation.ps1`](./scripts/Deploy-StorageFoundation.ps1) - Handles UPN resolution and deployment
+- **Main template**: [`infra/main.bicep`](../../infra/main.bicep) - Orchestrates the complete deployment
+- **Storage module**: [`infra/modules/storage/ai-storage.bicep`](../../infra/modules/storage/ai-storage.bicep) - Deploys storage account and containers  
+- **PowerShell deployment**: [`scripts/Deploy-StorageFoundation.ps1`](../../scripts/Deploy-StorageFoundation.ps1) - Handles UPN resolution and deployment
 
 ### 🔍 Automatic Object ID Resolution
 
@@ -298,9 +298,9 @@ Your storage foundation provides:
 
 With storage foundation complete, proceed to:
 
-1. **[Deploy AI Cost Management](./deploy-ai-cost-management-modular-iac.md)** - Enhanced budget controls and monitoring
-2. **[Deploy Azure OpenAI Service](./deploy-azure-openai-service-modular-iac.md)** - Add AI capabilities
-3. **[Configure Defender XDR Integration](./deploy-openai-defender-xdr-integration-iac.md)** - Complete AI automation pipeline
+1. **[Deploy AI Cost Management](../../deploy-ai-cost-management.md)** - Enhanced budget controls and monitoring
+2. **[Deploy Azure OpenAI Service](../../02.03%20Azure%20OpenAI%20Service%20Deployment/Infrastructure%20as%20Code/deploy-azure-openai-service-iac.md)** - Add AI capabilities
+3. **[Configure Defender XDR Integration](../../02.06%20Azure%20OpenAI%20+%20Defender%20XDR%20Integration/Infrastructure%20as%20Code/deploy-openai-defender-xdr-integration-iac.md)** - Complete AI automation pipeline
 
 ---
 

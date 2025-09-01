@@ -830,9 +830,9 @@ Preview what will be deleted without executing:
 
 ## 🔗 Related Guides
 
-- **[Deploy via Azure Portal](./deploy-defender-for-cloud-azure-portal.md)** - Manual step-by-step deployment for hands-on learning
-- **[Modular Infrastructure-as-Code](./deploy-defender-for-cloud-modular-iac.md)** - Phase-by-phase IaC approach with detailed explanations
-- **[Decommission Guide](./decommission-defender-for-cloud.md)** - Comprehensive teardown procedures and cleanup verification
+- **[Deploy via Azure Portal](../Azure%20Portal/deploy-defender-for-cloud-azure-portal.md)** - Manual step-by-step deployment for hands-on learning
+- **[Modular Infrastructure-as-Code](../Infrastructure%20as%20Code/deploy-defender-for-cloud-modular-iac.md)** - Phase-by-phase IaC approach with detailed explanations
+- **[Decommission Guide](../Decommission/decommission-defender-for-cloud.md)** - Comprehensive teardown procedures and cleanup verification
 
 ---
 

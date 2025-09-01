@@ -9,7 +9,7 @@ The IaC deployment provides:
 - **Automated Logic Apps Creation**: PowerShell scripts create consumption-based Logic Apps with proper configuration
 - **Template-Driven Configuration**: JSON templates for OpenAI integration settings and Sentinel connections
 - **REST API Integration**: Direct Azure REST API calls for advanced configuration scenarios
-- **PowerShell Style Compliance**: All scripts follow the [project's PowerShell style guide standards](../../../Style%20Guides/powershell-style-guide.md)
+- **PowerShell Style Compliance**: All scripts follow the [project's PowerShell style guide standards](../../../../Style%20Guides/powershell-style-guide.md)
 - **Cost Control Automation**: Built-in budget monitoring and alert configuration
 
 ## 🚀 PowerShell Script Deployment

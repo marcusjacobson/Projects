@@ -1859,7 +1859,7 @@ securityresources
 
 For complete removal of all Defender for Cloud resources and costs, follow the comprehensive decommission guide:
 
-📖 **[Complete Decommission Guide: Remove Defender for Cloud](./decommission-defender-for-cloud.md)**
+📖 **[Complete Decommission Guide: Remove Defender for Cloud](../Decommission/decommission-defender-for-cloud.md)**
 
 ##### What Full Decommission Includes
 
@@ -1927,9 +1927,9 @@ After successful Defender for Cloud deployment via Azure Portal:
 
 ### Resources for Continuation
 
-- [Week 2: AI Integration & Enhanced Security Operations](../02%20-%20AI%20Integration%20&%20Enhanced%20Security%20Operations/README.md)
-- [Main Project Roadmap](../README.md)
-- [Prompt Library Template](../Prompt-Library/README.md)
+- [Week 2: AI Integration & Enhanced Security Operations](../../../../02%20-%20AI%20Integration%20&%20Enhanced%20Security%20Operations/README.md)
+- [Main Project Roadmap](../../../../README.md)
+- [Prompt Library Template](../../../../Prompt-Library/README.md)
 
 ---
 

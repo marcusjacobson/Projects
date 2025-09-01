@@ -261,7 +261,7 @@ Monitor these cost components for your AI storage foundation:
 
 **⏰ Budget Setup Timing**: Due to Azure Cost Management's 24-48 hour latency for recognizing new resource groups, budget configuration should be performed **at the end of Week 2** when all resources have generated cost data.
 
-**🔗 Complete Budget Guide**: For comprehensive budget setup with alerts and monitoring, see **[Configure AI Cost Management & Budgets](./configure-ai-cost-management-budgets.md)**.
+**🔗 Complete Budget Guide**: For comprehensive budget setup with alerts and monitoring, see **[Configure AI Cost Management & Budgets](../../configure-ai-cost-management-budgets.md)**.
 
 ### � Immediate Cost Controls
 
@@ -352,7 +352,7 @@ Mark each item as complete:
 - ✅ Access keys retrieved and stored securely.
 - ✅ Cost awareness documented and monitoring planned.
 - ✅ Storage connectivity tested successfully.
-- 📋 **Budget setup scheduled** for end of Week 2 (see [Cost Management Guide](./configure-ai-cost-management-budgets.md)).
+- 📋 **Budget setup scheduled** for end of Week 2 (see [Cost Management Guide](../../configure-ai-cost-management-budgets.md)).
 
 ### 📝 Configuration Summary
 
@@ -386,15 +386,15 @@ Your storage foundation is now ready for:
 
 After successful storage deployment:
 
-1. **[Deploy Azure OpenAI Service](./deploy-azure-openai-service.md)** - Add AI capabilities
+1. **[Deploy Azure OpenAI Service](../../02.03%20Azure%20OpenAI%20Service%20Deployment/deploy-azure-openai-service.md)** - Add AI capabilities
 2. **[Configure Logic Apps Integration](./deploy-logic-apps-ai-automation.md)** - AI automation workflows
-3. **[Deploy Defender XDR Integration](./deploy-openai-defender-xdr-integration.md)** - Complete AI security pipeline
+3. **[Deploy Defender XDR Integration](../../02.06%20Azure%20OpenAI%20+%20Defender%20XDR%20Integration/deploy-openai-defender-xdr-integration.md)** - Complete AI security pipeline
 
 ### 📅 End of Week 2 Tasks
 
 Complete these tasks at the end of Week 2 after all resources have been active for 24-48 hours:
 
-1. **[Configure AI Cost Management & Budgets](./configure-ai-cost-management-budgets.md)** - Comprehensive budget setup and monitoring
+1. **[Configure AI Cost Management & Budgets](../../configure-ai-cost-management-budgets.md)** - Comprehensive budget setup and monitoring
 
 ---
 

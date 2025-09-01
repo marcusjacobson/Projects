@@ -233,7 +233,7 @@ All scripts follow the [PowerShell Style Guide](../../Style%20Guides/powershell-
 ### Project Integration
 
 - **Style Guides**: [Markdown](../../Style%20Guides/markdown-style-guide.md) and [PowerShell](../../Style%20Guides/powershell-style-guide.md)
-- **Week 01 README**: [Defender for Cloud Deployment Mastery](../01%20-%20Defender%20for%20Cloud%20Deployment%20Mastery/README.md)
+- **Week 01 README**: [Defender for Cloud Deployment Mastery](../../01%20-%20Defender%20for%20Cloud%20Deployment%20Mastery/README.md)
 
 ---
 

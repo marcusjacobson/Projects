@@ -152,7 +152,7 @@ All scripts require:
 
 ## 📖 Additional Resources
 
-- [Main Deployment Guide](../deploy-defender-for-cloud-azure-portal.md)
+- [Main Deployment Guide](../01.01%20Defender%20for%20Cloud%20Foundation/Azure%20Portal/deploy-defender-for-cloud-azure-portal.md)
 - [Microsoft Defender for Cloud Documentation](https://docs.microsoft.com/en-us/azure/defender-for-cloud/)
 - [Azure CLI Reference](https://docs.microsoft.com/en-us/cli/azure/)
 - [PowerShell Azure Module](https://docs.microsoft.com/en-us/powershell/azure/)

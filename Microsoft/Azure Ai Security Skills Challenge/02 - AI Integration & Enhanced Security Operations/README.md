@@ -39,17 +39,17 @@ This week focuses on implementing cost-effective AI-driven capabilities within t
 ## ✅ Checklist
 
 - [x] **AI-driven security recommendations research completed** (from Week 1).
-- [x] **[Storage Account Deployment](./deploy-ai-storage-foundation.md)** - Deploy storage accounts for Defender XDR Integration state management and duplicate prevention:
-  - [x] **[Azure Portal Guide](./deploy-ai-storage-foundation-azure-portal.md)** - Step-by-step portal deployment (Recommended for learning)
-  - [x] **[Infrastructure-as-Code Guide](./deploy-ai-storage-foundation-iac.md)** - Automated Bicep deployment (Recommended for quick deployment)
-- [x] **[Azure OpenAI Service Deployment](./deploy-azure-openai-service.md)** - Deploy cost-effective OpenAI service with enhanced automation and soft-delete handling:
-  - [x] **[Azure Portal Guide](./deploy-azure-openai-service-azure-portal.md)** - Step-by-step portal deployment (Recommended for learning)
-  - [x] **[Infrastructure-as-Code Guide](./deploy-azure-openai-service-iac.md)** - Automated Bicep deployment (Recommended for quick deployment)
-- [x] **[OpenAI Model Customization](./customize-openai-model.md)** - Configure GPT-o4-mini with cybersecurity analyst persona, optimized parameters (Temperature 0.2, 450 tokens), and industry compliance frameworks (NIST AI RMF, OWASP LLM Top 10).
-- [x] **[AI Prompt Templates Creation](./ai-prompt-templates.md)** - Identified GPT-o4-mini optimized prompt templates for Defender for Cloud security scenarios with cost optimization and industry compliance.
-- [X] **[Azure OpenAI + Defender XDR Integration](./deploy-openai-defender-xdr-integration.md)** - Implement Logic Apps-based AI automation for intelligent incident analysis through Defender XDR unified portal:
-  - [X] **[Azure Portal Guide](./deploy-openai-defender-xdr-integration-azure-portal.md)** - Step-by-step Logic Apps designer configuration with unified portal integration (Recommended for learning)
-  - [ ] **[Infrastructure-as-Code Guide](./deploy-openai-defender-xdr-integration-iac.md)** - Automated PowerShell scripts and REST API deployment for unified operations (Recommended for production)
+- [x] **[Storage Account Deployment](./02.02%20Storage%20Account%20Deployment/deploy-ai-storage-foundation.md)** - Deploy storage accounts for Defender XDR Integration state management and duplicate prevention:
+  - [x] **[Azure Portal Guide](./02.02%20Storage%20Account%20Deployment/Azure%20Portal/deploy-ai-storage-foundation-azure-portal.md)** - Step-by-step portal deployment (Recommended for learning)
+  - [x] **[Infrastructure-as-Code Guide](./02.02%20Storage%20Account%20Deployment/Infrastructure%20as%20Code/deploy-ai-storage-foundation-iac.md)** - Automated Bicep deployment (Recommended for quick deployment)
+- [x] **[Azure OpenAI Service Deployment](./02.03%20Azure%20OpenAI%20Service%20Deployment/deploy-azure-openai-service.md)** - Deploy cost-effective OpenAI service with enhanced automation and soft-delete handling:
+  - [x] **[Azure Portal Guide](./02.03%20Azure%20OpenAI%20Service%20Deployment/Azure%20Portal/deploy-azure-openai-service-azure-portal.md)** - Step-by-step portal deployment (Recommended for learning)
+  - [x] **[Infrastructure-as-Code Guide](./02.03%20Azure%20OpenAI%20Service%20Deployment/Infrastructure%20as%20Code/deploy-azure-openai-service-iac.md)** - Automated Bicep deployment (Recommended for quick deployment)
+- [x] **[OpenAI Model Customization](./02.04%20OpenAI%20Model%20Customization/customize-openai-model.md)** - Configure GPT-o4-mini with cybersecurity analyst persona, optimized parameters (Temperature 0.2, 450 tokens), and industry compliance frameworks (NIST AI RMF, OWASP LLM Top 10).
+- [x] **[AI Prompt Templates Creation](./02.05%20AI%20Prompt%20Templates%20Creation/ai-prompt-templates.md)** - Identified GPT-o4-mini optimized prompt templates for Defender for Cloud security scenarios with cost optimization and industry compliance.
+- [X] **[Azure OpenAI + Defender XDR Integration](./02.06%20Azure%20OpenAI%20+%20Defender%20XDR%20Integration/deploy-openai-defender-xdr-integration.md)** - Implement Logic Apps-based AI automation for intelligent incident analysis through Defender XDR unified portal:
+  - [X] **[Azure Portal Guide](./02.06%20Azure%20OpenAI%20+%20Defender%20XDR%20Integration/Azure%20Portal/deploy-openai-defender-xdr-integration-azure-portal.md)** - Step-by-step Logic Apps designer configuration with unified portal integration (Recommended for learning)
+  - [ ] **[Infrastructure-as-Code Guide](./02.06%20Azure%20OpenAI%20+%20Defender%20XDR%20Integration/Infrastructure%20as%20Code/deploy-openai-defender-xdr-integration-iac.md)** - Automated PowerShell scripts and REST API deployment for unified operations (Recommended for production)
 - [ ] **[Threat Scenario Simulation](./simulate-threat-scenarios.md)** - Execute benign threat scenarios with AI analysis.
 - [ ] **[Built-in AI Features Enablement](./deploy-builtin-ai-features.md)** - Enable UEBA, Fusion, and Anomaly Detection after data flows are established.
 - [ ] **[Azure Cost Management Setup](./deploy-ai-cost-management.md)** - Configure budget alerts and automated shutdown capabilities.
@@ -66,9 +66,9 @@ This week's project follows Week 1's proven structure with AI-focused enhancemen
 ### 🔬 Research & Strategy
 
 - **[AI-Driven Security Recommendations Research](../reports/full-ai-driven-security-recommendations-research.md)** - Comprehensive research report on cost-effective AI integration strategies (completed in Week 1)
-- **[AI Cost Optimization Guide](./ai-cost-optimization-guide.md)** - Comprehensive cost management and automated control strategies
-- **[OpenAI Model Customization](./customize-openai-model.md)** - GPT-o4-mini configuration with cybersecurity analyst system instructions, optimized parameters, and Azure AI Foundry interface guidance
-- **[AI Prompt Templates](./ai-prompt-templates.md)** - Cost-optimized prompt templates for security scenarios
+- **[AI Cost Optimization Guide](./deploy-ai-cost-management.md)** - Comprehensive cost management and automated control strategies
+- **[OpenAI Model Customization](./02.04%20OpenAI%20Model%20Customization/customize-openai-model.md)** - GPT-o4-mini configuration with cybersecurity analyst system instructions, optimized parameters, and Azure AI Foundry interface guidance
+- **[AI Prompt Templates](./02.05%20AI%20Prompt%20Templates%20Creation/ai-prompt-templates.md)** - Cost-optimized prompt templates for security scenarios
 
 ### 🏗️ Infrastructure-as-Code
 
@@ -82,8 +82,8 @@ This week's project follows Week 1's proven structure with AI-focused enhancemen
 
 ### 📚 Learning Resources
 
-- **[AI Integration Learning Guide](./learning-resources-ai.md)** - Curated Azure OpenAI and AI security integration resources
-- **[Cost Management Best Practices](./cost-management-best-practices.md)** - Detailed cost control strategies and automation patterns
+- **[AI Integration Learning Guide](./02.01%20AI-driven%20security%20recommendations%20research/learning-resources.md)** - Curated Azure OpenAI and AI security integration resources
+- **[Cost Management Best Practices](./configure-ai-cost-management-budgets.md)** - Detailed cost control strategies and automation patterns
 
 ## 📁 Project Organization
 

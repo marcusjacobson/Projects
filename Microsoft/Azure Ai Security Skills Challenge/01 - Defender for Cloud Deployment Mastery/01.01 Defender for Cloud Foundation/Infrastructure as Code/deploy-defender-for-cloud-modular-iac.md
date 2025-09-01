@@ -1073,9 +1073,9 @@ This modular deployment serves as the foundation for upcoming weeks:
 
 ## 🔗 Related Guides
 
-- **[Complete Automation Guide](./deploy-defender-for-cloud-complete-automation.md)** - Single-command deployment
-- **[Azure Portal Manual Guide](./deploy-defender-for-cloud-azure-portal.md)** - Manual deployment for learning
-- **[Decommission Guide](./decommission-defender-for-cloud.md)** - Detailed teardown procedures
+- **[Complete Automation Guide](../Automation/deploy-defender-for-cloud-complete-automation.md)** - Single-command deployment
+- **[Azure Portal Manual Guide](../Azure%20Portal/deploy-defender-for-cloud-azure-portal.md)** - Manual deployment for learning
+- **[Decommission Guide](../Decommission/decommission-defender-for-cloud.md)** - Detailed teardown procedures
 
 ---
 

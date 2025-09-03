@@ -50,7 +50,8 @@ This week focuses on implementing cost-effective AI-driven capabilities within t
 - [X] **[Azure OpenAI + Defender XDR Integration](./02.06%20Azure%20OpenAI%20+%20Defender%20XDR%20Integration/deploy-openai-defender-xdr-integration.md)** - Implement Logic Apps-based AI automation for intelligent incident analysis through Defender XDR unified portal:
   - [X] **[Azure Portal Guide](./02.06%20Azure%20OpenAI%20+%20Defender%20XDR%20Integration/Azure%20Portal/deploy-openai-defender-xdr-integration-azure-portal.md)** - Step-by-step Logic Apps designer configuration using manual secret assignment for simplicity and learning experience (Recommended for learning Azure AI security workflows)
   - [X] **[Infrastructure-as-Code Guide](./02.06%20Azure%20OpenAI%20+%20Defender%20XDR%20Integration/Infrastructure%20as%20Code/deploy-openai-defender-xdr-integration-iac.md)** - Comprehensive PowerShell automation with Key Vault integration, App Registration management, and complete workflow orchestration including API connections, duplicate prevention, and enterprise-grade security controls (Recommended for production deployments and advanced automation scenarios)
-- [ ] **[Threat Scenario Simulation](./simulate-threat-scenarios.md)** - Execute benign threat scenarios with AI analysis.
+- [ ] **[Logic App Integration Testing](./test-logic-app-integration.md)** - Validate AI workflow integration and establish baseline response patterns before threat simulation.
+- [ ] **[Threat Scenario Simulation](./simulate-threat-scenarios.md)** - Execute benign threat scenarios with AI analysis leveraging validated Logic App workflows.
 - [ ] **[Built-in AI Features Enablement](./deploy-builtin-ai-features.md)** - Enable UEBA, Fusion, and Anomaly Detection after data flows are established.
 - [ ] **[Azure Cost Management Setup](./deploy-ai-cost-management.md)** - Configure budget alerts and automated shutdown capabilities.
 - [ ] **[Cost Optimization Documentation](./ai-cost-optimization-guide.md)** - Document cost optimization strategies and automated controls.
@@ -71,19 +72,19 @@ This week's project follows Week 1's proven structure with AI-focused enhancemen
 
 - **[AI Storage Foundation - COMPLETED](./infra/)** - Production-ready Bicep templates with full cost optimization compliance
 - **[AI Integration Scripts - READY](./scripts/)** - PowerShell scripts for AI service deployment, configuration, and automated management
-  - **Deploy-StorageFoundation.ps1** - Fully functional with UPN auto-resolution and cost optimization
-  - **Deploy-OpenAIService.ps1** - Enhanced with automated soft-delete detection and purge capabilities
-  - **Deploy-DefenderXDRIntegration.ps1** - Complete XDR integration orchestrator with Key Vault, App Registration, and Logic Apps deployment
-  - **Deploy-KeyVault.ps1** - Secure credential storage and OpenAI secrets management
-  - **Deploy-AppRegistration.ps1** - Entra ID app setup with Microsoft Graph Security API permissions  
-  - **Deploy-APIConnections.ps1** - API connections for OpenAI, Table Storage, and Microsoft Graph
-  - **Deploy-LogicAppWorkflow.ps1** - Complete Logic Apps workflow with ARM template deployment
-  - **Deploy-ProcessingStorage.ps1** - Table Storage for duplicate prevention and audit trails
-  - **Test-DefenderXDRIntegrationValidation.ps1** - Comprehensive validation with detailed reporting
-  - **Remove-DefenderXDRIntegration.ps1** - Complete decommission script with intelligent cleanup
-  - **Remove-OpenAIInfrastructure.ps1** - Comprehensive decommission script with phase-based cleanup
-  - **Test-StorageFoundation.ps1** - Comprehensive validation with 100% test coverage
-  - **Remove-StorageResourceGroup.ps1** - Reliable cleanup with verification and wait logic
+  - **scripts-deployment/Deploy-StorageFoundation.ps1** - Fully functional with UPN auto-resolution and cost optimization
+  - **scripts-deployment/Deploy-OpenAIService.ps1** - Enhanced with automated soft-delete detection and purge capabilities
+  - **scripts-orchestration/Deploy-DefenderXDRIntegration.ps1** - Complete XDR integration orchestrator with Key Vault, App Registration, and Logic Apps deployment
+  - **scripts-deployment/Deploy-KeyVault.ps1** - Secure credential storage and OpenAI secrets management
+  - **scripts-deployment/Deploy-AppRegistration.ps1** - Entra ID app setup with Microsoft Graph Security API permissions  
+  - **scripts-deployment/Deploy-APIConnections.ps1** - API connections for OpenAI, Table Storage, and Microsoft Graph
+  - **scripts-deployment/Deploy-LogicAppWorkflow.ps1** - Complete Logic Apps workflow with ARM template deployment
+  - **scripts-deployment/Deploy-ProcessingStorage.ps1** - Table Storage for duplicate prevention and audit trails
+  - **scripts-validation/Test-DefenderXDRIntegrationValidation.ps1** - Comprehensive validation with detailed reporting
+  - **scripts-decommission/Remove-DefenderXDRIntegration.ps1** - Complete decommission script with intelligent cleanup
+  - **scripts-decommission/Remove-OpenAIInfrastructure.ps1** - Comprehensive decommission script with phase-based cleanup
+  - **scripts-validation/Test-StorageFoundation.ps1** - Comprehensive validation with 100% test coverage
+  - **scripts-decommission/Remove-StorageResourceGroup.ps1** - Reliable cleanup with verification and wait logic
 
 ### 📚 Learning Resources
 
@@ -118,22 +119,28 @@ Week 2 follows the proven Week 1 structure optimized for AI services and cost ma
 ├── 📊 PowerShell Scripts/
 │   └── scripts/                                     # AI deployment and cost management automation
 │       ├── README.md                                # AI script usage documentation
-│       ├── Deploy-AIFoundation.ps1                 # Complete AI foundation deployment
-│       ├── Deploy-StorageFoundation.ps1            # AI storage infrastructure
-│       ├── Deploy-CostManagement.ps1               # Budget alerts and automated controls
-│       ├── Deploy-OpenAIService.ps1                # Azure OpenAI service deployment
-│       ├── Deploy-DefenderXDRIntegration.ps1       # Complete XDR integration orchestrator
-│       ├── Deploy-KeyVault.ps1                     # Secure credential storage and secrets management
-│       ├── Deploy-AppRegistration.ps1              # Entra ID app setup with Graph permissions
-│       ├── Deploy-APIConnections.ps1               # API connections deployment for Logic Apps
-│       ├── Deploy-LogicAppWorkflow.ps1             # Logic Apps workflow with ARM template deployment
-│       ├── Deploy-ProcessingStorage.ps1            # Table Storage for duplicate prevention
-│       ├── Test-DefenderXDRIntegrationValidation.ps1 # Comprehensive XDR integration validation
-│       ├── Remove-DefenderXDRIntegration.ps1       # Complete XDR integration cleanup
-│       ├── Deploy-SentinelIntegration.ps1          # Legacy - now consolidated in DefenderXDR scripts
-│       ├── Deploy-BuiltinAIFeatures.ps1            # Enable AI security features through unified operations
-│       ├── Test-AIIntegration.ps1                  # AI integration validation
-│       ├── Remove-AIInfrastructure.ps1             # AI service cleanup and cost control
+│       ├── scripts-orchestration/                  # Master deployment orchestrators
+│       │   └── Deploy-DefenderXDRIntegration.ps1   # Complete XDR integration orchestrator
+│       ├── scripts-deployment/                     # Individual deployment scripts
+│       │   ├── Deploy-AIFoundation.ps1             # Complete AI foundation deployment
+│       │   ├── Deploy-StorageFoundation.ps1        # AI storage infrastructure
+│       │   ├── Deploy-CostManagement.ps1           # Budget alerts and automated controls
+│       │   ├── Deploy-OpenAIService.ps1            # Azure OpenAI service deployment
+│       │   ├── Deploy-KeyVault.ps1                 # Secure credential storage and secrets management
+│       │   ├── Deploy-AppRegistration.ps1          # Entra ID app setup with Graph permissions
+│       │   ├── Deploy-APIConnections.ps1           # API connections deployment for Logic Apps
+│       │   ├── Deploy-LogicAppWorkflow.ps1         # Logic Apps workflow with ARM template deployment
+│       │   └── Deploy-ProcessingStorage.ps1        # Table Storage for duplicate prevention
+│       ├── scripts-validation/                     # Testing and validation scripts
+│       │   ├── Test-DefenderXDRIntegrationValidation.ps1 # Comprehensive XDR integration validation
+│       │   ├── Test-AIIntegration.ps1              # AI integration validation
+│       │   └── Test-StorageFoundation.ps1          # AI storage foundation validation
+│       ├── scripts-decommission/                   # Cleanup and removal scripts
+│       │   ├── Remove-DefenderXDRIntegration.ps1   # Complete XDR integration cleanup
+│       │   ├── Remove-AIInfrastructure.ps1         # AI service cleanup and cost control
+│       │   ├── Remove-OpenAIInfrastructure.ps1     # OpenAI service cleanup
+│       │   └── Remove-StorageResourceGroup.ps1     # AI storage resource group cleanup
+│       ├── lib/                                     # Helper functions and utilities
 │       └── templates/                               # AI configuration templates
 │           ├── logic-app-arm-template.json          # Primary Logic App ARM template for XDR integration
 │           ├── logic-app-initial.json               # Initial Logic App configuration

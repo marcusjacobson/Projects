@@ -1,6 +1,20 @@
 # AI Integration & Enhanced Security Operations Scripts
 
-This folder contains a comprehensive suite of PowerShell scripts for deploying, configuring, and managing AI-driven security operations with automated cost management and budget controls.
+This folder contains a comprehensive suite of PowerShell scripts for deploying, configuring, and managing AI-driven security operations with automated cost management and budget controls. Scripts are organized into specialized folders for better maintainability and workflow management.
+
+## � Folder Organization
+
+### 🎬 scripts-orchestration/
+
+| Folder | Purpose | Description |
+|--------|---------|-------------|
+| **🎬 scripts-orchestration/** | Master Orchestrators | Coordinate multiple deployment phases and components |
+| **🏗️ scripts-deployment/** | Component Deployment | Individual deployment scripts for specific services |
+| **✅ scripts-validation/** | Testing & Validation | Verify deployments and configurations |
+| **🧹 scripts-decommission/** | Cleanup & Removal | Safe infrastructure decommissioning scripts |
+| **📚 lib/** | Helper Functions | Shared utilities used across deployment scripts |
+| **📄 templates/** | Configuration Templates | ARM template files for various services |
+
 
 ## 🚀 Quick Start
 
@@ -10,10 +24,12 @@ For a full end-to-end AI foundation deployment:
 
 ```powershell
 # Complete deployment with preview
-.\Deploy-AIFoundation.ps1 -EnvironmentName "aisec" -NotificationEmail "admin@company.com" -WhatIf
+cd "scripts\scripts-orchestration"
+.\Deploy-DefenderXDRIntegration.ps1 -EnvironmentName "aisec" -NotificationEmail "admin@company.com" -WhatIf
 
 # Execute complete AI foundation deployment
-.\Deploy-AIFoundation.ps1 -EnvironmentName "aisec" -NotificationEmail "admin@company.com"
+cd "scripts\scripts-orchestration"
+.\Deploy-DefenderXDRIntegration.ps1 -EnvironmentName "aisec" -NotificationEmail "admin@company.com"
 ```
 
 ### Modular Component Deployment
@@ -22,48 +38,60 @@ Deploy individual components for controlled automation:
 
 ```powershell
 # Deploy AI storage foundation
+cd "scripts\scripts-deployment"
 .\Deploy-StorageFoundation.ps1 -EnvironmentName "aisec" -NotificationEmail "admin@company.com"
 
 # Deploy cost management and budget controls
+cd "scripts\scripts-deployment"
 .\Deploy-CostManagement.ps1 -EnvironmentName "aisec" -NotificationEmail "admin@company.com" -BudgetLimit 150
 ```
 
 ## 📁 Available Scripts
 
-### 🎬 Orchestration Scripts
+### 🎬 Orchestration Scripts (scripts-orchestration/)
 
 | Script | Purpose | Key Features |
 |--------|---------|--------------|
-| **Deploy-AIFoundation.ps1** | Complete AI foundation orchestrator | Multi-phase execution, cost controls, validation |
+| **Deploy-DefenderXDRIntegration.ps1** | Complete XDR integration orchestrator | Multi-phase execution, Key Vault management, API connections |
 
-### 🏗️ Foundation Deployment Scripts
+### 🏗️ Foundation Deployment Scripts (scripts-deployment/)
 
 | Script | Purpose | Key Features |
 |--------|---------|--------------|
 | **Deploy-StorageFoundation.ps1** | Deploy AI storage accounts | Cost-optimized storage, containers, lifecycle policies |
-| **Deploy-CostManagement.ps1** | Configure budget controls | Progressive alerts, automated monitoring, notifications |
-| **Deploy-OpenAIService.ps1** | Deploy Azure OpenAI service | GPT-5, cost-effective models, capacity controls |
+| **Deploy-AIFoundation.ps1** | Complete AI foundation deployment | OpenAI service, storage, and monitoring integration |
+| **Deploy-OpenAIService.ps1** | Deploy Azure OpenAI service | GPT-4o-mini, cost-effective models, capacity controls |
+| **Deploy-KeyVault.ps1** | Secure credential storage | OpenAI secrets, app registration credentials |
+| **Deploy-AppRegistration.ps1** | Entra ID app registration | Microsoft Graph permissions, secure authentication |
+| **Deploy-APIConnections.ps1** | Logic Apps API connections | OpenAI, Table Storage, Microsoft Graph integration |
+| **Deploy-LogicAppWorkflow.ps1** | Logic Apps workflow deployment | ARM template-based, comprehensive AI integration |
+| **Deploy-ProcessingStorage.ps1** | Table Storage for duplicate prevention | Processing tracking, audit trails |
 
 ### 🤖 AI Integration Scripts
 
 | Script | Purpose | Key Features |
 |--------|---------|--------------|
-| **Deploy-SentinelIntegration.ps1** | Logic Apps + Sentinel automation | AI-driven alert analysis, cost-optimized prompts |
+| **Deploy-SentinelIntegration.ps1** | Logic Apps + Sentinel automation (Legacy) | AI-driven alert analysis, cost-optimized prompts |
 | **Deploy-BuiltinAIFeatures.ps1** | Enable AI security features | UEBA, Fusion, Anomaly Detection configuration |
 
-### ✅ Validation & Testing Scripts
+### ✅ Validation & Testing Scripts (scripts-validation/)
 
 | Script | Purpose | Key Features |
 |--------|---------|--------------|
-| **Test-AIIntegration.ps1** | Comprehensive AI validation | Service validation, cost compliance, integration testing |
+| **Test-DefenderXDRIntegrationValidation.ps1** | Comprehensive XDR validation | Infrastructure validation, API testing, workflow verification |
+| **Test-AIIntegration.ps1** | AI integration validation | Service validation, cost compliance, integration testing |
+| **Test-StorageFoundation.ps1** | Storage foundation validation | Container access, security configuration, role assignments |
 | **Test-CostCompliance.ps1** | Budget and cost validation | Cost monitoring, budget utilization, optimization recommendations |
 | **Test-PromptEffectiveness.ps1** | AI prompt validation | Token usage, response quality, cost per interaction |
 
-### 🧹 Management Scripts
+### 🧹 Management Scripts (scripts-decommission/)
 
 | Script | Purpose | Key Features |
 |--------|---------|--------------|
+| **Remove-DefenderXDRIntegration.ps1** | Clean XDR integration resources | Safe cleanup, selective removal, comprehensive validation |
+| **Remove-OpenAIInfrastructure.ps1** | OpenAI service cleanup | Phase-based removal, cost control, soft-delete handling |
 | **Remove-AIInfrastructure.ps1** | Clean AI resources | Safe cleanup, cost control, selective removal |
+| **Remove-StorageResourceGroup.ps1** | Storage resource group cleanup | Complete resource group removal, validation |
 | **Optimize-AICosts.ps1** | Cost optimization automation | Usage analysis, capacity adjustment, budget optimization |
 | **Monitor-AIUsage.ps1** | Real-time AI monitoring | Token tracking, cost analysis, usage patterns |
 
@@ -113,21 +141,27 @@ Common functions used across all AI integration scripts:
 ### Phase 1: Foundation & Cost Controls
 
 ```powershell
+cd "scripts\scripts-deployment"
 .\Deploy-StorageFoundation.ps1 -EnvironmentName "aisec" -NotificationEmail "admin@company.com"
+cd "scripts\scripts-deployment"
 .\Deploy-CostManagement.ps1 -EnvironmentName "aisec" -NotificationEmail "admin@company.com" -BudgetLimit 150
 ```
 
 ### Phase 2: AI Services
 
 ```powershell
+cd "scripts\scripts-deployment"
 .\Deploy-OpenAIService.ps1 -EnvironmentName "aisec" -NotificationEmail "admin@company.com"
-.\Deploy-SentinelIntegration.ps1 -EnvironmentName "aisec"
+cd "scripts\scripts-orchestration"
+.\Deploy-DefenderXDRIntegration.ps1 -EnvironmentName "aisec"
 ```
 
 ### Phase 3: Enhanced Features
 
 ```powershell
+cd "scripts\scripts-deployment"
 .\Deploy-BuiltinAIFeatures.ps1 -EnvironmentName "aisec"
+cd "scripts\scripts-validation"
 .\Test-AIIntegration.ps1 -EnvironmentName "aisec"
 ```
 
@@ -158,6 +192,7 @@ Each validation script provides detailed scoring:
 
 ```powershell
 # Check quotas and regional availability
+cd "scripts\scripts-validation"
 .\Test-AIIntegration.ps1 -EnvironmentName "aisec" -CheckQuotas
 ```
 
@@ -165,6 +200,7 @@ Each validation script provides detailed scoring:
 
 ```powershell
 # Optimize costs and adjust capacity
+cd "scripts\scripts-decommission"
 .\Optimize-AICosts.ps1 -EnvironmentName "aisec" -ReduceCapacity
 ```
 
@@ -172,6 +208,7 @@ Each validation script provides detailed scoring:
 
 ```powershell
 # Validate connections and configurations
+cd "scripts\scripts-validation"
 .\Test-AIIntegration.ps1 -EnvironmentName "aisec" -Verbose
 ```
 

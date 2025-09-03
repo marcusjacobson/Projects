@@ -1,5 +1,0 @@
-{
-  "budgetName": "ai-security-budget",
-  "resourceGroupName": "rg-ai-integration-eastus",
-  "thresholdPercentage": 80
-}

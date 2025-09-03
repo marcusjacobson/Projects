@@ -1,7 +1,0 @@
-{
-  "condition": "@less(float(outputs('Get_budget_consumption')?['body']?['percentage']), 80)",
-  "actions": {
-    "true": "Continue with AI processing",
-    "false": "Skip AI processing and log cost alert"
-  }
-}

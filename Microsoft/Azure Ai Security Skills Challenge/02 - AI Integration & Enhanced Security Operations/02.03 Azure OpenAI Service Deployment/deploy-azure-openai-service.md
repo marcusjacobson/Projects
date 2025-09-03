@@ -45,9 +45,7 @@ The Azure OpenAI Service deployment provides:
 
 ```powershell
 # Navigate to scripts directory
-cd ".\scripts"
-
-# Deploy with enhanced automation
+cd "scripts\scripts-deployment"
 .\Deploy-OpenAIService.ps1 -UseParametersFile
 ```
 

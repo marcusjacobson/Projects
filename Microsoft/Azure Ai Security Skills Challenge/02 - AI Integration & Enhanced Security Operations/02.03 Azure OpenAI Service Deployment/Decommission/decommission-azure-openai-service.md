@@ -22,7 +22,7 @@ This comprehensive decommissioning guide provides a systematic approach to safel
 
 ```powershell
 # Navigate to the scripts directory
-cd "scripts"
+cd "scripts\scripts-decommission"
 
 # Preview decommission (recommended first step)
 .\Remove-OpenAIInfrastructure.ps1 -UseParametersFile -WhatIf

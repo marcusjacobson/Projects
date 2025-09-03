@@ -40,7 +40,8 @@ This deployment requires successful completion of Week 2 AI foundation:
 
 ```powershell
 # Verify Week 2 foundation components
-.\scripts\Test-AIFoundationReadiness.ps1 -UseParametersFile
+cd "scripts\scripts-validation"
+.\Test-AIFoundationReadiness.ps1 -UseParametersFile
 ```
 
 ### Required Permissions
@@ -57,14 +58,18 @@ This deployment requires successful completion of Week 2 AI foundation:
 
 ```text
 scripts/
-├── Deploy-DefenderXDRIntegration.ps1      # Master deployment orchestrator
-├── Deploy-KeyVault.ps1                    # Key Vault and OpenAI secrets
-├── Deploy-AppRegistration.ps1             # App registration and permissions
-├── Deploy-APIConnections.ps1              # API connections deployment
-├── Deploy-LogicAppWorkflow.ps1            # Logic Apps workflow deployment
-├── Deploy-ProcessingStorage.ps1           # Table Storage for duplicate prevention
-├── Test-DefenderXDRIntegrationValidation.ps1 # Comprehensive validation testing
-├── Remove-DefenderXDRIntegration.ps1      # Clean decommission
+├── scripts-orchestration/
+│   └── Deploy-DefenderXDRIntegration.ps1      # Master deployment orchestrator
+├── scripts-deployment/
+│   ├── Deploy-KeyVault.ps1                    # Key Vault and OpenAI secrets
+│   ├── Deploy-AppRegistration.ps1             # App registration and permissions
+│   ├── Deploy-APIConnections.ps1              # API connections deployment
+│   ├── Deploy-LogicAppWorkflow.ps1            # Logic Apps workflow deployment
+│   └── Deploy-ProcessingStorage.ps1           # Table Storage for duplicate prevention
+├── scripts-validation/
+│   └── Test-DefenderXDRIntegrationValidation.ps1 # Comprehensive validation testing
+├── scripts-decommission/
+│   └── Remove-DefenderXDRIntegration.ps1      # Clean decommission
 └── templates/
     ├── logic-app-arm-template.json        # Main Logic App ARM template
     ├── logic-app-initial.json             # Initial Logic App configuration
@@ -270,6 +275,7 @@ Create secure credential storage and store OpenAI service secrets for Logic Apps
 
 ```powershell
 # Create Key Vault and store OpenAI secrets
+cd "scripts\scripts-deployment"
 .\Deploy-KeyVault.ps1 -UseParametersFile
 ```
 
@@ -311,6 +317,7 @@ Create the Entra ID app registration with proper Microsoft Graph permissions for
 
 ```powershell
 # Deploy app registration with Microsoft Graph Security permissions
+cd "scripts\scripts-deployment"
 .\Deploy-AppRegistration.ps1 -UseParametersFile
 ```
 
@@ -366,7 +373,11 @@ Configure Azure Table Storage for intelligent duplicate prevention and processin
 
 ```powershell
 # Deploy Table Storage for duplicate prevention
+```powershell
+# Deploy processing and archive storage for Defender XDR/AI data
+cd "scripts\scripts-deployment"
 .\Deploy-ProcessingStorage.ps1 -UseParametersFile
+```
 ```
 
 **This script will:**
@@ -399,7 +410,11 @@ First, deploy the required API connections that the Logic App workflow will use:
 
 ```powershell
 # Deploy API connections for Logic Apps integration
+```powershell
+# Create API connections and validate authentication
+cd "scripts\scripts-deployment"
 .\Deploy-APIConnections.ps1 -UseParametersFile
+```
 ```
 
 This script performs an 8-step deployment process: parameter loading → authentication validation → service discovery → Azure OpenAI connection → Table Storage connection → Microsoft Graph validation → connection validation → deployment summary.
@@ -420,6 +435,7 @@ After API connections are created, deploy the main Logic App workflow:
 
 ```powershell
 # Deploy Logic Apps workflow using existing API connections
+cd "scripts\scripts-deployment"
 .\Deploy-LogicAppWorkflow.ps1 -UseParametersFile
 ```
 
@@ -475,7 +491,7 @@ The deployment uses parameters from `infra/main.parameters.json` for complete cu
 | **Duplicate Prevention** | 24 hours tracking | Prevent reprocessing | `duplicatePreventionHours` |
 | **OpenAI Model** | `gpt-4o-mini` deployment | Cost-effective AI analysis | `openAIDeploymentName` |
 
-**To customize these settings**: Edit the values in `infra/main.parameters.json` and redeploy using `.\Deploy-LogicAppWorkflow.ps1 -UseParametersFile`.
+**To customize these settings**: Edit the values in `infra/main.parameters.json` and redeploy using `.\scripts-deployment\Deploy-LogicAppWorkflow.ps1 -UseParametersFile`.
 
 ---
 
@@ -489,6 +505,7 @@ Run the comprehensive validation script to verify successful deployment:
 
 ```powershell
 # Run comprehensive infrastructure validation with detailed reporting
+cd "scripts\scripts-validation"
 .\Test-DefenderXDRIntegrationValidation.ps1 -UseParametersFile -DetailedReport
 ```
 
@@ -638,10 +655,8 @@ This section provides a streamlined approach to deploying the complete Azure Ope
 Deploy using the parameters file with no user interaction:
 
 ```powershell
-# Navigate to the scripts directory
-cd "02 - AI Integration & Enhanced Security Operations\scripts"
-
 # Deploy everything using parameters file (no prompts)
+cd "scripts\scripts-orchestration"
 .\Deploy-DefenderXDRIntegration.ps1 -UseParametersFile -Force
 ```
 
@@ -650,10 +665,8 @@ cd "02 - AI Integration & Enhanced Security Operations\scripts"
 Deploy with user prompts and confirmations:
 
 ```powershell
-# Navigate to the scripts directory  
-cd "02 - AI Integration & Enhanced Security Operations\scripts"
-
 # Deploy with interactive prompts using parameters file
+cd "scripts\scripts-orchestration"
 .\Deploy-DefenderXDRIntegration.ps1 -UseParametersFile
 ```
 
@@ -709,10 +722,10 @@ The following scripts have been created specifically for the Defender XDR integr
 
 | Script | Purpose | Dependencies |
 |--------|---------|--------------|
-| `Deploy-DefenderXDRIntegration.ps1` | **Master orchestrator script** | All component scripts |
-| `Deploy-KeyVault.ps1` | Key Vault creation and OpenAI secrets storage | Azure CLI, Week 2 OpenAI service |
-| `Deploy-AppRegistration.ps1` | Entra ID app setup with Graph permissions | Azure CLI, existing Key Vault |
-| `Deploy-LogicAppWorkflow.ps1` | Complete Logic Apps deployment | Key Vault secrets, app registration |
+| `scripts-orchestration/Deploy-DefenderXDRIntegration.ps1` | **Master orchestrator script** | All component scripts |
+| `scripts-deployment/Deploy-KeyVault.ps1` | Key Vault creation and OpenAI secrets storage | Azure CLI, Week 2 OpenAI service |
+| `scripts-deployment/Deploy-AppRegistration.ps1` | Entra ID app setup with Graph permissions | Azure CLI, existing Key Vault |
+| `scripts-deployment/Deploy-LogicAppWorkflow.ps1` | Complete Logic Apps deployment | Key Vault secrets, app registration |
 
 ### Referenced Week 2 Foundation Scripts
 
@@ -729,12 +742,12 @@ The following ARM/JSON templates are used to deploy the XDR integration componen
 
 | Template | Purpose | Used By |
 |----------|---------|---------|
-| `logic-app-arm-template.json` | **Primary Logic App deployment** | Deploy-LogicAppWorkflow.ps1 |
-| `logic-app-initial.json` | Logic App initial configuration | Deploy-LogicAppWorkflow.ps1 |
-| `logic-app-diagnostics.json` | Logic App monitoring setup | Deploy-LogicAppWorkflow.ps1 |
-| `openai-connection.json` | Azure OpenAI API connection | Deploy-APIConnections.ps1 |
-| `graph-connection.json` | Microsoft Graph API connection | Deploy-APIConnections.ps1 |
-| `table-connection.json` | Table Storage API connection | Deploy-APIConnections.ps1 |
+| `logic-app-arm-template.json` | **Primary Logic App deployment** | scripts-deployment/Deploy-LogicAppWorkflow.ps1 |
+| `logic-app-initial.json` | Logic App initial configuration | scripts-deployment/Deploy-LogicAppWorkflow.ps1 |
+| `logic-app-diagnostics.json` | Logic App monitoring setup | scripts-deployment/Deploy-LogicAppWorkflow.ps1 |
+| `openai-connection.json` | Azure OpenAI API connection | scripts-deployment/Deploy-APIConnections.ps1 |
+| `graph-connection.json` | Microsoft Graph API connection | scripts-deployment/Deploy-APIConnections.ps1 |
+| `table-connection.json` | Table Storage API connection | scripts-deployment/Deploy-APIConnections.ps1 |
 
 ### Configuration Templates
 
@@ -782,6 +795,7 @@ cd "c:\REPO\GitHub\Projects\Microsoft\Azure Ai Security Skills Challenge\02 - AI
 
 ```powershell
 # Preview decommission (recommended first step)
+cd "scripts\scripts-decommission"
 .\Remove-DefenderXDRIntegration.ps1 -UseParametersFile -WhatIf
 ```
 
@@ -791,11 +805,14 @@ Choose one of the following based on your needs:
 
 ```powershell
 # Standard decommission
+cd "scripts\scripts-decommission"
 .\Remove-DefenderXDRIntegration.ps1 -UseParametersFile -Force
 ```
 
 ```powershell
 # Preserve cost management budgets during removal
+# Enhanced decommission (preserves cost management and includes detailed logging)
+cd "scripts\scripts-decommission"
 .\Remove-DefenderXDRIntegration.ps1 -UseParametersFile -PreserveCostManagement -DetailedLog
 ```
 

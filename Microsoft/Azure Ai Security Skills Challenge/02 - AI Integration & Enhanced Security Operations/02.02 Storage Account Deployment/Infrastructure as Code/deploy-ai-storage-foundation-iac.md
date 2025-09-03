@@ -68,7 +68,7 @@ The deployment uses the centralized **[`infra/main.parameters.json`](../../infra
 
 - **Main template**: [`infra/main.bicep`](../../infra/main.bicep) - Orchestrates the complete deployment
 - **Storage module**: [`infra/modules/storage/ai-storage.bicep`](../../infra/modules/storage/ai-storage.bicep) - Deploys storage account and containers  
-- **PowerShell deployment**: [`scripts/Deploy-StorageFoundation.ps1`](../../scripts/Deploy-StorageFoundation.ps1) - Handles UPN resolution and deployment
+- **PowerShell deployment**: [`scripts-deployment/Deploy-StorageFoundation.ps1`](../../scripts-deployment/Deploy-StorageFoundation.ps1) - Handles UPN resolution and deployment
 
 ### 🔍 Automatic Object ID Resolution
 
@@ -112,13 +112,12 @@ This simplified deployment creates:
 Deploy the storage foundation using the PowerShell script with parameters file:
 
 ```powershell
-# Navigate to the scripts directory
-cd "scripts"
-
-# Deploy the storage foundation using parameters file
+# Navigate to the scripts directory and deploy storage foundation
+cd "scripts\scripts-deployment"
 .\Deploy-StorageFoundation.ps1 -UseParametersFile
 
 # Or preview deployment first (recommended)
+cd "scripts\scripts-deployment"
 .\Deploy-StorageFoundation.ps1 -UseParametersFile -WhatIf
 ```
 
@@ -163,15 +162,15 @@ Test storage connectivity and permissions using the PowerShell validation script
 
 ```powershell
 # Navigate to the scripts directory
-cd "scripts"
-
-# Test storage upload using parameters file (recommended)
+cd "scripts\scripts-validation"
 .\Test-StorageUpload.ps1 -UseParametersFile
 
 # Or test specific container
+cd "scripts\scripts-validation"
 .\Test-StorageUpload.ps1 -UseParametersFile -ContainerName "ai-logs"
 
 # Alternative: Manual parameters
+cd "scripts\scripts-validation"
 .\Test-StorageUpload.ps1 -EnvironmentName "aisec" -ContainerName "ai-data" -TestFilePath "templates\ai-storage-test-upload.txt"
 ```
 
@@ -200,12 +199,15 @@ Run the complete storage foundation validation to verify all components:
 
 ```powershell
 # Run comprehensive storage validation using parameters file (recommended)
+cd "scripts\scripts-validation"
 .\Test-StorageFoundation.ps1 -UseParametersFile
 
 # Run basic validation only
+cd "scripts\scripts-validation"
 .\Test-StorageFoundation.ps1 -UseParametersFile -ValidationScope "Basic"
 
 # Alternative: Manual parameters
+cd "scripts\scripts-validation"
 .\Test-StorageFoundation.ps1 -EnvironmentName "aisec" -ValidationScope "Complete"
 ```
 
@@ -259,6 +261,7 @@ The deployment script generates a configuration summary. You can also create one
 
 ```powershell
 # Generate deployment summary and integration guide
+cd "scripts\scripts-validation"
 .\Get-AIConfiguration.ps1 -EnvironmentName "aisec" -OutputFormat "Summary"
 ```
 
@@ -311,19 +314,20 @@ With storage foundation complete, proceed to:
 For this learning lab, the simplest cleanup approach is to delete the entire resource group:
 
 ```powershell
-# Navigate to scripts directory
-cd "scripts"
-
 # Quick cleanup using parameters file (recommended)
+cd "scripts\scripts-decommission"
 .\Remove-StorageResourceGroup.ps1 -UseParametersFile
 
 # Preview cleanup first (recommended)
+cd "scripts\scripts-decommission"
 .\Remove-StorageResourceGroup.ps1 -UseParametersFile -WhatIf
 
 # Force cleanup without confirmation (automation)
+cd "scripts\scripts-decommission"
 .\Remove-StorageResourceGroup.ps1 -UseParametersFile -Force
 
 # Alternative: Manual environment name
+cd "scripts\scripts-decommission"
 .\Remove-StorageResourceGroup.ps1 -EnvironmentName "aisec"
 ```
 
@@ -370,6 +374,7 @@ cd "scripts"
 **Storage Account Name Conflicts**
 ```powershell
 # The script automatically generates unique names, but if conflicts occur:
+cd "scripts\scripts-deployment"
 .\Deploy-StorageFoundation.ps1 -EnvironmentName "aisec" -StoragePrefix "staialt"
 ```
 
@@ -389,6 +394,7 @@ az role assignment list --assignee $(az account show --query user.name -o tsv) -
 **Deployment Validation Failures**
 ```powershell
 # Run detailed diagnostics
+cd "scripts\scripts-validation"
 .\Test-AIIntegration.ps1 -EnvironmentName "aisec" -ValidationScope "Storage" -Verbose
 ```
 

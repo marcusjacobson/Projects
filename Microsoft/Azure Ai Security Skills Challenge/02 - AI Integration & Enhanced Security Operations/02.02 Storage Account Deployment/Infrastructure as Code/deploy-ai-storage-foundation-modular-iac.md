@@ -130,13 +130,12 @@ Use the automated PowerShell script for fastest and most reliable deployment.
 Navigate to the scripts directory and run the storage foundation script:
 
 ```powershell
-# Navigate to the scripts directory
-cd "scripts"
-
 # Preview the deployment (What-If mode)
+cd "scripts\scripts-deployment"
 .\Deploy-StorageFoundation.ps1 -EnvironmentName "aisec" -NotificationEmail "your-email@domain.com" -WhatIf
 
 # Execute the storage foundation deployment
+cd "scripts\scripts-deployment"
 .\Deploy-StorageFoundation.ps1 -EnvironmentName "aisec" -NotificationEmail "your-email@domain.com"
 ```
 
@@ -304,6 +303,7 @@ The deployment script generates a configuration summary. You can also create one
 
 ```powershell
 # Generate deployment summary and integration guide
+cd "scripts\scripts-validation"
 .\Get-AIConfiguration.ps1 -EnvironmentName "aisec" -OutputFormat "Summary"
 ```
 

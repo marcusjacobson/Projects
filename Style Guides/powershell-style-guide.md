@@ -464,6 +464,127 @@ try {
 
 ---
 
+## 🌐 REST API Integration Standards
+
+### Preferred Azure Operation Methods
+
+**Always prefer REST API calls via `az rest` commands** over direct Azure PowerShell cmdlets or standard Azure CLI commands when possible. This approach provides enhanced control, better error handling, and more precise resource management.
+
+### REST API Method Hierarchy
+
+**Recommended Order of Operations:**
+
+1. **Primary**: `az rest` commands for direct REST API calls
+2. **Secondary**: Azure CLI commands (`az resource`, `az group`, etc.)
+3. **Tertiary**: Azure PowerShell cmdlets (only when REST API unavailable)
+
+### REST API Implementation Patterns
+
+**Resource Management Examples:**
+
+```powershell
+# Preferred: Direct REST API call
+$response = az rest --method GET --url "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/resources?api-version=2021-04-01"
+$resources = $response | ConvertFrom-Json
+
+# Alternative: Standard Azure CLI (when REST API is complex)
+$resources = az resource list --resource-group $resourceGroupName --output json | ConvertFrom-Json
+```
+
+**Resource Validation Examples:**
+
+```powershell
+# Preferred: REST API for resource existence check
+try {
+    $response = az rest --method GET --url "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Storage/storageAccounts/$storageAccountName?api-version=2023-01-01"
+    $storageAccount = $response | ConvertFrom-Json
+    Write-Verbose "   ✅ Storage account validated via REST API" -Verbose
+} catch {
+    Write-Error "Storage account validation failed: $($_.Exception.Message)"
+}
+```
+
+**Microsoft Graph API Integration:**
+
+```powershell
+# Microsoft Graph REST API calls
+$graphResponse = az rest --method GET --url "https://graph.microsoft.com/v1.0/security/incidents" --resource "https://graph.microsoft.com"
+$incidents = $graphResponse | ConvertFrom-Json
+
+# Enhanced error handling for Graph API
+try {
+    $response = az rest --method POST --url "https://graph.microsoft.com/v1.0/security/incidents/$incidentId/comments" --body $commentJson --resource "https://graph.microsoft.com"
+    Write-Verbose "   ✅ Comment added via Microsoft Graph API" -Verbose
+} catch {
+    Write-Warning "Graph API operation failed: $($_.Exception.Message)"
+}
+```
+
+### Pipeline-Specific REST API Usage
+
+**For Pipeline-Executed Scripts:**
+
+```powershell
+# Use REST API for enhanced Azure resource control in pipelines
+Write-Verbose "🔍 Validating resource via REST API..." -Verbose
+
+try {
+    $apiResponse = az rest --method GET --url $resourceUrl --query "{name:name, status:properties.provisioningState}"
+    $resourceInfo = $apiResponse | ConvertFrom-Json
+    
+    Write-Verbose "    ✅ Resource validation successful: $($resourceInfo.name)" -Verbose
+} catch {
+    Write-Error "REST API validation failed: $($_.Exception.Message)"
+    throw
+}
+```
+
+### REST API Benefits
+
+**Why Prefer REST API Calls:**
+
+- **Enhanced Control**: Direct access to Azure Resource Manager APIs
+- **Better Error Handling**: More precise error messages and status codes
+- **API Version Control**: Explicit API version specification for consistency
+- **Pipeline Reliability**: More stable execution in automated environments
+- **Future-Proofing**: Direct alignment with Azure's native REST interface
+- **Advanced Features**: Access to preview features and advanced configurations
+
+### REST API Best Practices
+
+**Implementation Guidelines:**
+
+- **Always specify API versions** explicitly in REST URLs
+- **Include comprehensive error handling** for REST API responses
+- **Use appropriate HTTP methods** (GET, POST, PUT, DELETE, PATCH)
+- **Validate JSON responses** before processing data
+- **Include retry logic** for transient failures
+- **Log REST API calls** for debugging and audit purposes
+
+**Error Handling Pattern:**
+
+```powershell
+# Standard REST API error handling pattern
+try {
+    $response = az rest --method $httpMethod --url $apiUrl --body $requestBody
+    $result = $response | ConvertFrom-Json
+    
+    # Validate response structure
+    if ($result -and $result.name) {
+        Write-Verbose "   ✅ REST API operation successful" -Verbose
+        return $result
+    } else {
+        throw "Invalid response structure from REST API"
+    }
+} catch {
+    Write-Error "REST API operation failed: $($_.Exception.Message)"
+    # Include specific retry logic if appropriate
+    throw
+}
+```
+
+---
+
 ## 💡 Best Practices
 
 ### 1. Consistent Indentation

@@ -1,0 +1,197 @@
+{
+  "Summary": {
+    "SuccessfulActions": 2,
+    "OverallStatus": "PREVIEW",
+    "WhatIfActions": 9,
+    "FailedActions": 0,
+    "TotalActions": 20,
+    "SkippedActions": 9
+  },
+  "SubscriptionId": "d7a6da45-0839-4879-aecd-d89fb8178472",
+  "Mode": "WhatIf",
+  "DecommissionDate": "2025-09-02T13:09:50.4160604-07:00",
+  "Environment": "aisec",
+  "Results": [
+    {
+      "Phase": "Setup",
+      "Component": "Configuration",
+      "Action": "Load Parameters",
+      "Status": "Success",
+      "Message": "Parameters loaded from main.parameters.json",
+      "ResourceId": "",
+      "Timestamp": "2025-09-02T13:09:50.4219591-07:00"
+    },
+    {
+      "Phase": "Setup",
+      "Component": "Authentication",
+      "Action": "Validate Azure CLI",
+      "Status": "Success",
+      "Message": "Authenticated as marcus@marcusj-dev.cloud",
+      "ResourceId": "",
+      "Timestamp": "2025-09-02T13:09:54.9519445-07:00"
+    },
+    {
+      "Phase": "Phase 4",
+      "Component": "Logic Apps",
+      "Action": "Remove Workflow",
+      "Status": "WhatIf",
+      "Message": "Would remove Logic App: la-defender-xdr-ai-aisec",
+      "ResourceId": "/subscriptions/d7a6da45-0839-4879-aecd-d89fb8178472/resourceGroups/rg-aisec-defender-securitylab1/providers/Microsoft.Logic/workflows/la-defender-xdr-ai-aisec",
+      "Timestamp": "2025-09-02T13:10:00.6131398-07:00"
+    },
+    {
+      "Phase": "Phase 3",
+      "Component": "API Connections",
+      "Action": "Preserve Connection",
+      "Status": "Skipped",
+      "Message": "Preserved existing connection: azuresentinel",
+      "ResourceId": "/subscriptions/d7a6da45-0839-4879-aecd-d89fb8178472/resourceGroups/rg-aisec-defender-securitylab1/providers/Microsoft.Web/connections/azuresentinel",
+      "Timestamp": "2025-09-02T13:10:05.5759181-07:00"
+    },
+    {
+      "Phase": "Phase 3",
+      "Component": "API Connections",
+      "Action": "Remove Connection",
+      "Status": "WhatIf",
+      "Message": "Would remove API connection: azureopenai",
+      "ResourceId": "/subscriptions/d7a6da45-0839-4879-aecd-d89fb8178472/resourceGroups/rg-aisec-defender-securitylab1/providers/Microsoft.Web/connections/azureopenai",
+      "Timestamp": "2025-09-02T13:10:05.5813336-07:00"
+    },
+    {
+      "Phase": "Phase 3",
+      "Component": "API Connections",
+      "Action": "Remove Connection",
+      "Status": "WhatIf",
+      "Message": "Would remove API connection: azuretables",
+      "ResourceId": "/subscriptions/d7a6da45-0839-4879-aecd-d89fb8178472/resourceGroups/rg-aisec-defender-securitylab1/providers/Microsoft.Web/connections/azuretables",
+      "Timestamp": "2025-09-02T13:10:05.5844777-07:00"
+    },
+    {
+      "Phase": "Phase 2",
+      "Component": "AI Infrastructure",
+      "Action": "Remove OpenAI Service",
+      "Status": "WhatIf",
+      "Message": "Would remove OpenAI service: openai-aisec-001",
+      "ResourceId": "/subscriptions/d7a6da45-0839-4879-aecd-d89fb8178472/resourceGroups/rg-aisec-ai/providers/Microsoft.CognitiveServices/accounts/openai-aisec-001",
+      "Timestamp": "2025-09-02T13:10:13.0294062-07:00"
+    },
+    {
+      "Phase": "Phase 2",
+      "Component": "AI Infrastructure",
+      "Action": "Remove Storage Account",
+      "Status": "WhatIf",
+      "Message": "Would remove storage account: staiaisecogq2dm",
+      "ResourceId": "/subscriptions/d7a6da45-0839-4879-aecd-d89fb8178472/resourceGroups/rg-aisec-ai/providers/Microsoft.Storage/storageAccounts/staiaisecogq2dm",
+      "Timestamp": "2025-09-02T13:10:17.8360789-07:00"
+    },
+    {
+      "Phase": "Phase 2",
+      "Component": "AI Infrastructure",
+      "Action": "Discover Budget",
+      "Status": "Skipped",
+      "Message": "No cost budgets found",
+      "ResourceId": "",
+      "Timestamp": "2025-09-02T13:10:21.2657248-07:00"
+    },
+    {
+      "Phase": "Phase 2",
+      "Component": "AI Infrastructure",
+      "Action": "Remove Resource Group",
+      "Status": "WhatIf",
+      "Message": "Would remove AI resource group: rg-aisec-ai",
+      "ResourceId": "/subscriptions/d7a6da45-0839-4879-aecd-d89fb8178472/resourceGroups/rg-aisec-ai",
+      "Timestamp": "2025-09-02T13:10:21.2676545-07:00"
+    },
+    {
+      "Phase": "Phase 1",
+      "Component": "Key Vault Secrets",
+      "Action": "Preserve Secret",
+      "Status": "Skipped",
+      "Message": "Preserved existing secret: DefenderXDR-App-ServicePrincipalId",
+      "ResourceId": "",
+      "Timestamp": "2025-09-02T13:10:30.5819742-07:00"
+    },
+    {
+      "Phase": "Phase 1",
+      "Component": "Key Vault Secrets",
+      "Action": "Preserve Secret",
+      "Status": "Skipped",
+      "Message": "Preserved existing secret: OpenAI-Deployment-Names",
+      "ResourceId": "",
+      "Timestamp": "2025-09-02T13:10:30.5837858-07:00"
+    },
+    {
+      "Phase": "Phase 1",
+      "Component": "Key Vault Secrets",
+      "Action": "Preserve Secret",
+      "Status": "Skipped",
+      "Message": "Preserved existing secret: OpenAI-Primary-Deployment",
+      "ResourceId": "",
+      "Timestamp": "2025-09-02T13:10:30.5858031-07:00"
+    },
+    {
+      "Phase": "Phase 1",
+      "Component": "Key Vault Secrets",
+      "Action": "Preserve Secret",
+      "Status": "Skipped",
+      "Message": "Preserved existing secret: OpenAI-ResourceGroup",
+      "ResourceId": "",
+      "Timestamp": "2025-09-02T13:10:30.5873036-07:00"
+    },
+    {
+      "Phase": "Phase 1",
+      "Component": "Key Vault Secrets",
+      "Action": "Preserve Secret",
+      "Status": "Skipped",
+      "Message": "Preserved existing secret: OpenAI-Service-APIKey",
+      "ResourceId": "",
+      "Timestamp": "2025-09-02T13:10:30.5897754-07:00"
+    },
+    {
+      "Phase": "Phase 1",
+      "Component": "Key Vault Secrets",
+      "Action": "Preserve Secret",
+      "Status": "Skipped",
+      "Message": "Preserved existing secret: OpenAI-Service-Endpoint",
+      "ResourceId": "",
+      "Timestamp": "2025-09-02T13:10:30.5912057-07:00"
+    },
+    {
+      "Phase": "Phase 1",
+      "Component": "Key Vault Secrets",
+      "Action": "Preserve Secret",
+      "Status": "Skipped",
+      "Message": "Preserved existing secret: OpenAI-Service-Name",
+      "ResourceId": "",
+      "Timestamp": "2025-09-02T13:10:30.59245-07:00"
+    },
+    {
+      "Phase": "Phase 1",
+      "Component": "Key Vault Secrets",
+      "Action": "Remove Secret",
+      "Status": "WhatIf",
+      "Message": "Would remove secret: DefenderXDR-App-ClientId",
+      "ResourceId": "",
+      "Timestamp": "2025-09-02T13:10:30.5968941-07:00"
+    },
+    {
+      "Phase": "Phase 1",
+      "Component": "Key Vault Secrets",
+      "Action": "Remove Secret",
+      "Status": "WhatIf",
+      "Message": "Would remove secret: DefenderXDR-App-ClientSecret",
+      "ResourceId": "",
+      "Timestamp": "2025-09-02T13:10:30.6023473-07:00"
+    },
+    {
+      "Phase": "Phase 1",
+      "Component": "Key Vault Secrets",
+      "Action": "Remove Secret",
+      "Status": "WhatIf",
+      "Message": "Would remove secret: DefenderXDR-App-TenantId",
+      "ResourceId": "",
+      "Timestamp": "2025-09-02T13:10:30.6060086-07:00"
+    }
+  ],
+  "Duration": 40.1938292
+}

@@ -156,6 +156,7 @@ The project includes comprehensive automation and validation tools to ensure rel
 
 - **[Markdown Style Guide](../../Style%20Guides/markdown-style-guide.md)** compliance across all documentation
 - **[PowerShell Style Guide](../../Style%20Guides/powershell-style-guide.md)** implementation in all automation scripts
+- **[Parameters File Style Guide](../../Style%20Guides/parameters-file-style-guide.md)** standardization for Infrastructure-as-Code configuration
 - **Comprehensive AI-Assisted Content Attribution** - Transparency in AI tool usage for content generation
 
 This enhanced tooling ensures reliable setup, deployment success, and professional-grade automation throughout the 9-week learning journey.
@@ -172,7 +173,7 @@ This enhanced tooling ensures reliable setup, deployment success, and profession
 
 ### Technical Excellence Standards
 
-- **Style Guide Compliance**: All documentation follows centralized [Markdown](../../Style%20Guides/markdown-style-guide.md) and [PowerShell](../../Style%20Guides/powershell-style-guide.md) style guides
+- **Style Guide Compliance**: All documentation follows centralized [Markdown](../../Style%20Guides/markdown-style-guide.md), [PowerShell](../../Style%20Guides/powershell-style-guide.md), and [Parameters File](../../Style%20Guides/parameters-file-style-guide.md) style guides
 - **AI-Assisted Development**: Transparent acknowledgment of GitHub Copilot usage in content generation and script development
 - **Enterprise Deployment Readiness**: Production-ready automation with comprehensive error handling and validation
 - **Modern Security Integration**: Complete unified security operations platform foundation for Weeks 1-2
@@ -183,8 +184,9 @@ This project follows established style guides to ensure consistency and professi
 
 - **[Markdown Style Guide](../../Style%20Guides/markdown-style-guide.md)** - Formatting, punctuation, and tone standards for all markdown documentation
 - **[PowerShell Style Guide](../../Style%20Guides/powershell-style-guide.md)** - Consistent visual and organizational patterns for PowerShell scripts
+- **[Parameters File Style Guide](../../Style%20Guides/parameters-file-style-guide.md)** - Configuration standards for Azure parameters files
 
-These guides define comprehensive standards for headers, lists, code blocks, interface elements, and professional documentation practices.
+These guides define comprehensive standards for headers, lists, code blocks, interface elements, professional documentation practices, and Infrastructure-as-Code configuration patterns.
 
 ## 📬 Contributions & Feedback
 

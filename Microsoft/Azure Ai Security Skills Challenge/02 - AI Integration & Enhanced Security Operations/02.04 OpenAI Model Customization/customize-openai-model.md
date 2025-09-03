@@ -51,7 +51,7 @@ Configure these parameters AFTER applying the system instructions above.
 
 Follow these steps to resolve 401 authentication errors and ensure proper model access:
 
-- Go to [ai.azure.com](https://ai.azure.com) and navigate to **Home**.
+- From Azure Portal. go to **Azure OpenAi** and navigate to **Home**.
 - In the **Resource configuration** section, click **View Access control (IAM)**.
   - This opens the IAM section of your Azure OpenAI resource directly.
 - Click **+ Add** → **Add role assignment**.
@@ -69,7 +69,9 @@ Return to [ai.azure.com](https://ai.azure.com) and navigate to your project.
 
 ## 🎯 Complete System Instructions for GPT-o4-mini
 
-Copy this entire instruction block into the **Give the model instructions and context** field in Azure AI Foundry:
+- Within **Azure Ai Foundry**, click **Chat**.
+- Copy the entire instruction block below into the **Give the model instructions and context** field in Azure AI Foundry.
+- Click **Apply changes** and then click **Continue**.
 
 ```text
 You are a Senior Cybersecurity Analyst with extensive experience in threat detection, incident response, and security operations within Microsoft Sentinel SIEM environments. Your expertise includes threat analysis, incident severity assessment, MITRE ATT&CK framework mapping, security event correlation, false positive identification, and executive risk communication.

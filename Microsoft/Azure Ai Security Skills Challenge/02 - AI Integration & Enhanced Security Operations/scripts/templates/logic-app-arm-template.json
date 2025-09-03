@@ -1,0 +1,711 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "logicAppName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Logic App"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for the Logic App"
+            }
+        },
+        "frequency": {
+            "type": "string",
+            "allowedValues": ["Minute", "Hour", "Day"],
+            "defaultValue": "Hour",
+            "metadata": {
+                "description": "Recurrence frequency"
+            }
+        },
+        "interval": {
+            "type": "int",
+            "defaultValue": 4,
+            "metadata": {
+                "description": "Recurrence interval"
+            }
+        },
+        "incidentFilter": {
+            "type": "string",
+            "defaultValue": "status eq 'active'",
+            "metadata": {
+                "description": "OData filter for incidents"
+            }
+        },
+        "maxIncidentsPerRun": {
+            "type": "int",
+            "defaultValue": 50,
+            "metadata": {
+                "description": "Maximum incidents to process per run"
+            }
+        },
+        "openAIDeploymentName": {
+            "type": "string",
+            "metadata": {
+                "description": "OpenAI deployment name"
+            }
+        },
+        "maxTokens": {
+            "type": "int",
+            "defaultValue": 500,
+            "metadata": {
+                "description": "Maximum tokens for OpenAI response"
+            }
+        },
+        "temperature": {
+            "type": "string",
+            "defaultValue": "0.3",
+            "metadata": {
+                "description": "OpenAI temperature setting for response consistency (0.0-1.0)"
+            }
+        },
+        "topP": {
+            "type": "string",
+            "defaultValue": "0.95",
+            "metadata": {
+                "description": "OpenAI top_p setting for response diversity (0.0-1.0)"
+            }
+        },
+        "presencePenalty": {
+            "type": "string",
+            "defaultValue": "0",
+            "metadata": {
+                "description": "OpenAI presence penalty to encourage new topics (-2.0 to 2.0)"
+            }
+        },
+        "frequencyPenalty": {
+            "type": "string",
+            "defaultValue": "0",
+            "metadata": {
+                "description": "OpenAI frequency penalty to reduce repetition (-2.0 to 2.0)"
+            }
+        },
+        "numberOfCompletions": {
+            "type": "int",
+            "defaultValue": 1,
+            "metadata": {
+                "description": "Number of chat completion choices to generate"
+            }
+        },
+        "seedValue": {
+            "type": "int",
+            "defaultValue": 0,
+            "metadata": {
+                "description": "OpenAI seed for deterministic responses"
+            }
+        },
+        "systemPrompt": {
+            "type": "string",
+            "defaultValue": "You are a cybersecurity analyst. Analyze security incidents and provide structured analysis with these exact headers: ### 1) Executive Summary, ### 2) Risk Level Assessment, ### 3) Recommended Immediate Actions, ### 4) MITRE ATT&CK Mapping. Keep responses concise and actionable.",
+            "metadata": {
+                "description": "System prompt that defines the AI analyst role and output format requirements"
+            }
+        },
+        "tenantId": {
+            "type": "string",
+            "metadata": {
+                "description": "Azure AD tenant ID for authentication"
+            }
+        },
+        "clientId": {
+            "type": "string",
+            "metadata": {
+                "description": "Azure AD application client ID for authentication"
+            }
+        },
+        "clientSecret": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Azure AD application client secret for authentication"
+            }
+        },
+        "openAIConnectionId": {
+            "type": "string",
+            "metadata": {
+                "description": "Resource ID of the OpenAI connection"
+            }
+        },
+        "tableConnectionId": {
+            "type": "string",
+            "metadata": {
+                "description": "Resource ID of the Table Storage connection"
+            }
+        }
+    },
+    "variables": {
+        "openAIConnectionName": "[split(parameters('openAIConnectionId'), '/')[8]]", 
+        "tableConnectionName": "[split(parameters('tableConnectionId'), '/')[8]]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('logicAppName')]",
+            "location": "[parameters('location')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        },
+                        "frequency": {
+                            "type": "String"
+                        },
+                        "interval": {
+                            "type": "Int"
+                        },
+                        "incidentFilter": {
+                            "type": "String"
+                        },
+                        "maxIncidentsPerRun": {
+                            "type": "Int"
+                        },
+                        "openAIDeploymentName": {
+                            "type": "String"
+                        },
+                        "maxTokens": {
+                            "type": "Int"
+                        },
+                        "temperature": {
+                            "type": "String"
+                        },
+                        "topP": {
+                            "type": "String"
+                        },
+                        "presencePenalty": {
+                            "type": "String"
+                        },
+                        "frequencyPenalty": {
+                            "type": "String"
+                        },
+                        "numberOfCompletions": {
+                            "type": "Int"
+                        },
+                        "seedValue": {
+                            "type": "Int"
+                        },
+                        "systemPrompt": {
+                            "type": "String"
+                        },
+                        "tenantId": {
+                            "type": "String"
+                        },
+                        "clientId": {
+                            "type": "String"
+                        },
+                        "clientSecret": {
+                            "type": "String"
+                        }
+                    },
+                    "triggers": {
+                        "Recurrence": {
+                            "recurrence": {
+                                "frequency": "@parameters('frequency')",
+                                "interval": "@parameters('interval')"
+                            },
+                            "type": "Recurrence"
+                        }
+                    },
+                    "actions": {
+                        "Get_Defender_XDR_Incidents": {
+                            "runAfter": {},
+                            "type": "Http",
+                            "inputs": {
+                                "uri": "https://graph.microsoft.com/v1.0/security/incidents",
+                                "method": "GET",
+                                "queries": {
+                                    "$filter": "@parameters('incidentFilter')",
+                                    "$orderby": "createdDateTime desc",
+                                    "$top": "@parameters('maxIncidentsPerRun')"
+                                },
+                                "authentication": {
+                                    "type": "ActiveDirectoryOAuth",
+                                    "authority": "https://login.microsoftonline.com",
+                                    "tenant": "@parameters('tenantId')",
+                                    "audience": "https://graph.microsoft.com",
+                                    "clientId": "@parameters('clientId')",
+                                    "secret": "@parameters('clientSecret')"
+                                }
+                            }
+                        },
+                        "Parse_Incidents_Response": {
+                            "runAfter": {
+                                "Get_Defender_XDR_Incidents": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ParseJson",
+                            "inputs": {
+                                "content": "@body('Get_Defender_XDR_Incidents')",
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "@@odata.context": {
+                                            "type": "string"
+                                        },
+                                        "@@odata.nextLink": {
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "displayName": {
+                                                        "type": "string"
+                                                    },
+                                                    "severity": {
+                                                        "type": "string"
+                                                    },
+                                                    "description": {},
+                                                    "status": {
+                                                        "type": "string"
+                                                    },
+                                                    "createdDateTime": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "id",
+                                                    "displayName",
+                                                    "severity",
+                                                    "description",
+                                                    "status",
+                                                    "createdDateTime"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "Check_If_Incidents_Found": {
+                            "runAfter": {
+                                "Parse_Incidents_Response": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "If",
+                            "expression": {
+                                "and": [
+                                    {
+                                        "not": {
+                                            "equals": [
+                                                "@body('Parse_Incidents_Response')?['value']",
+                                                ""
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "actions": {
+                                "For_Each_Incident": {
+                                    "foreach": "@body('Parse_Incidents_Response')?['value']",
+                                    "actions": {
+                                        "Generate_AI_Analysis": {
+                                            "runAfter": {},
+                                            "type": "ApiConnection",
+                                            "inputs": {
+                                                "host": {
+                                                    "connection": {
+                                                        "name": "@parameters('$connections')['azureopenai']['connectionId']"
+                                                    },
+                                                    "api": {
+                                                        "runtimeUrl": "https://logic-apis-eastus.azure-apim.net/apim/azureopenai"
+                                                    }
+                                                },
+                                                "method": "post",
+                                                "body": {
+                                                    "messages": [
+                                                        {
+                                                            "role": "system",
+                                                            "content": "@parameters('systemPrompt')"
+                                                        },
+                                                        {
+                                                            "role": "user",
+                                                            "content": "Analyze this security incident from Defender XDR: @{item()?['displayName']}\n\nDescription: @{item()?['description']}\n\nSeverity: @{item()?['severity']}"
+                                                        }
+                                                    ],
+                                                    "temperature": "@decimal(parameters('temperature'))",
+                                                    "top_p": "@decimal(parameters('topP'))",
+                                                    "stream": false,
+                                                    "stop": null,
+                                                    "max_tokens": "@parameters('maxTokens')",
+                                                    "presence_penalty": "@decimal(parameters('presencePenalty'))",
+                                                    "frequency_penalty": "@decimal(parameters('frequencyPenalty'))",
+                                                    "n": "@parameters('numberOfCompletions')",
+                                                    "seed": "@parameters('seedValue')",
+                                                    "logprobs": false,
+                                                    "response_format": {
+                                                        "type": "text"
+                                                    }
+                                                },
+                                                "path": "/2024-02-15-preview/deployments/@{encodeURIComponent(parameters('openAIDeploymentName'))}/chat/completions",
+                                                "queries": {
+                                                    "api-version": "2024-12-01-preview"
+                                                }
+                                            },
+                                            "limit": {
+                                                "timeout": "PT2M"
+                                            }
+                                        },
+                                        "Get_Incident_Alerts": {
+                                            "runAfter": {
+                                                "Generate_AI_Analysis": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "type": "Http",
+                                            "inputs": {
+                                                "uri": "https://graph.microsoft.com/v1.0/security/alerts_v2",
+                                                "method": "GET",
+                                                "queries": {
+                                                    "$filter": "incidentId eq '@{items('For_Each_Incident')?['id']}'",
+                                                    "$select": "id,title,severity,category,description,status,incidentId"
+                                                },
+                                                "authentication": {
+                                                    "type": "ActiveDirectoryOAuth",
+                                                    "authority": "https://login.microsoftonline.com",
+                                                    "tenant": "@parameters('tenantId')",
+                                                    "audience": "https://graph.microsoft.com",
+                                                    "clientId": "@parameters('clientId')",
+                                                    "secret": "@parameters('clientSecret')"
+                                                }
+                                            }
+                                        },
+                                        "Parse_Alerts_Response": {
+                                            "runAfter": {
+                                                "Get_Incident_Alerts": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "type": "ParseJson",
+                                            "inputs": {
+                                                "content": "@body('Get_Incident_Alerts')",
+                                                "schema": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "value": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "title": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "severity": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "category": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "description": {
+                                                                        "type": ["string", "null"]
+                                                                    },
+                                                                    "status": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "incidentId": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "For_each_Alert_in_Incident": {
+                                            "foreach": "@body('Parse_Alerts_Response')?['value']",
+                                            "actions": {
+                                                "Create_Alert_Processing_Key": {
+                                                    "runAfter": {},
+                                                    "type": "Compose",
+                                                    "inputs": "@concat('ai-processed-', items('For_each_Alert_in_Incident')?['id'], '-', formatDateTime(utcnow(), 'yyyy-MM-dd'))"
+                                                },
+                                                "Check_Alert_Processing_Status": {
+                                                    "runAfter": {
+                                                        "Create_Alert_Processing_Key": [
+                                                            "Succeeded"
+                                                        ]
+                                                    },
+                                                    "type": "ApiConnection",
+                                                    "inputs": {
+                                                        "host": {
+                                                            "connection": {
+                                                                "name": "@parameters('$connections')['azuretables']['connectionId']"
+                                                            },
+                                                            "api": {
+                                                                "runtimeUrl": "https://logic-apis-eastus.azure-apim.net/apim/azuretables"
+                                                            }
+                                                        },
+                                                        "method": "get",
+                                                        "path": "/Tables/@{encodeURIComponent('aiProcessed')}/entities(PartitionKey='@{encodeURIComponent('alerts')}',RowKey='@{encodeURIComponent(items('For_each_Alert_in_Incident')?['id'])}')"
+                                                    }
+                                                },
+                                                "Process_Alert": {
+                                                    "runAfter": {
+                                                        "Check_Alert_Processing_Status": [
+                                                            "Succeeded",
+                                                            "Failed"
+                                                        ]
+                                                    },
+                                                    "type": "If",
+                                                    "expression": {
+                                                        "or": [
+                                                            {
+                                                                "equals": [
+                                                                    "@outputs('Check_Alert_Processing_Status')['statusCode']",
+                                                                    404
+                                                                ]
+                                                            },
+                                                            {
+                                                                "equals": [
+                                                                    "@body('Check_Alert_Processing_Status')",
+                                                                    null
+                                                                ]
+                                                            },
+                                                            {
+                                                                "greater": [
+                                                                    "@utcnow()",
+                                                                    "@addHours(body('Check_Alert_Processing_Status')?['lastProcessed'], 24)"
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "actions": {
+                                                        "Extract_AI_Analysis_Sections": {
+                                                            "runAfter": {},
+                                                            "type": "Compose",
+                                                            "inputs": {
+                                                                "fullAnalysis": "@{first(body('Generate_AI_Analysis')['choices'])['message']['content']}",
+                                                                "executiveSummary": "@{first(split(first(body('Generate_AI_Analysis')['choices'])['message']['content'], '### 2) Risk Level Assessment'))}",
+                                                                "riskAssessment": "@{first(split(last(split(first(body('Generate_AI_Analysis')['choices'])['message']['content'], '### 2) Risk Level Assessment')), '### 3) Recommended Immediate Actions'))}",
+                                                                "immediateActions": "@{first(split(last(split(first(body('Generate_AI_Analysis')['choices'])['message']['content'], '### 3) Recommended Immediate Actions')), '### 4) MITRE ATT&CK Mapping'))}",
+                                                                "mitreMapping": "@{last(split(first(body('Generate_AI_Analysis')['choices'])['message']['content'], '### 4) MITRE ATT&CK Mapping'))}"
+                                                            }
+                                                        },
+                                                        "Create_Comments_Array": {
+                                                            "runAfter": {
+                                                                "Extract_AI_Analysis_Sections": [
+                                                                    "Succeeded"
+                                                                ]
+                                                            },
+                                                            "type": "Compose",
+                                                            "inputs": [
+                                                                {
+                                                                    "prefix": "[[AI Executive Summary]",
+                                                                    "content": "@{outputs('Extract_AI_Analysis_Sections')['executiveSummary']}",
+                                                                    "order": 1
+                                                                },
+                                                                {
+                                                                    "prefix": "[[AI Risk Assessment]",
+                                                                    "content": "@{outputs('Extract_AI_Analysis_Sections')['riskAssessment']}",
+                                                                    "order": 2
+                                                                },
+                                                                {
+                                                                    "prefix": "[[AI Immediate Actions]",
+                                                                    "content": "@{outputs('Extract_AI_Analysis_Sections')['immediateActions']}",
+                                                                    "order": 3
+                                                                },
+                                                                {
+                                                                    "prefix": "[[AI MITRE ATT&CK]",
+                                                                    "content": "@{outputs('Extract_AI_Analysis_Sections')['mitreMapping']}",
+                                                                    "order": 4
+                                                                }
+                                                            ]
+                                                        },
+                                                        "Post_Each_AI_Analysis_Section": {
+                                                            "foreach": "@outputs('Create_Comments_Array')",
+                                                            "actions": {
+                                                                "Post_AI_Section_Comment": {
+                                                                    "runAfter": {},
+                                                                    "type": "Http",
+                                                                    "inputs": {
+                                                                        "uri": "https://graph.microsoft.com/v1.0/security/alerts_v2/@{items('For_each_Alert_in_Incident')?['id']}/comments",
+                                                                        "method": "POST",
+                                                                        "headers": {
+                                                                            "Content-Type": "application/json"
+                                                                        },
+                                                                        "body": {
+                                                                            "@@odata.type": "microsoft.graph.security.alertComment",
+                                                                            "comment": "@take(concat(item()['prefix'], ': ', item()['content']), 950)"
+                                                                        },
+                                                                        "authentication": {
+                                                                            "type": "ActiveDirectoryOAuth",
+                                                                            "authority": "https://login.microsoftonline.com",
+                                                                            "tenant": "@parameters('tenantId')",
+                                                                            "audience": "https://graph.microsoft.com",
+                                                                            "clientId": "@parameters('clientId')",
+                                                                            "secret": "@parameters('clientSecret')"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            "runAfter": {
+                                                                "Create_Comments_Array": [
+                                                                    "Succeeded"
+                                                                ]
+                                                            },
+                                                            "type": "Foreach"
+                                                        },
+                                                        "Record_Alert_Processing_Status": {
+                                                            "runAfter": {
+                                                                "Post_Each_AI_Analysis_Section": [
+                                                                    "Succeeded"
+                                                                ]
+                                                            },
+                                                            "type": "ApiConnection",
+                                                            "inputs": {
+                                                                "host": {
+                                                                    "connection": {
+                                                                        "name": "@parameters('$connections')['azuretables']['connectionId']"
+                                                                    },
+                                                                    "api": {
+                                                                        "runtimeUrl": "https://logic-apis-eastus.azure-apim.net/apim/azuretables"
+                                                                    }
+                                                                },
+                                                                "method": "post",
+                                                                "path": "/Tables/@{encodeURIComponent('aiProcessed')}/entities",
+                                                                "body": {
+                                                                    "PartitionKey": "alerts",
+                                                                    "RowKey": "@{items('For_each_Alert_in_Incident')?['id']}",
+                                                                    "lastProcessed": "@{utcNow()}",
+                                                                    "processingStatus": "completed",
+                                                                    "workflowRunId": "@{workflow().run.name}"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "else": {
+                                                        "actions": {
+                                                            "Skip_Already_Processed_Alert": {
+                                                                "runAfter": {},
+                                                                "type": "Compose",
+                                                                "inputs": "Alert skipped - processed within last 24 hours"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "runAfter": {
+                                                "Parse_Alerts_Response": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "type": "Foreach"
+                                        }
+                                    },
+                                    "runAfter": {},
+                                    "type": "Foreach"
+                                }
+                            },
+                            "else": {
+                                "actions": {
+                                    "No_Incidents_Found": {
+                                        "type": "Compose",
+                                        "inputs": "No active incidents found for processing at @{utcNow()}",
+                                        "runAfter": {}
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "azureopenai": {
+                                "connectionId": "[parameters('openAIConnectionId')]",
+                                "connectionName": "[variables('openAIConnectionName')]", 
+                                "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', parameters('location'), '/managedApis/azureopenai')]"
+                            },
+                            "azuretables": {
+                                "connectionId": "[parameters('tableConnectionId')]",
+                                "connectionName": "[variables('tableConnectionName')]",
+                                "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', parameters('location'), '/managedApis/azuretables')]"
+                            }
+                        }
+                    },
+                    "frequency": {
+                        "value": "[parameters('frequency')]"
+                    },
+                    "interval": {
+                        "value": "[parameters('interval')]"
+                    },
+                    "incidentFilter": {
+                        "value": "[parameters('incidentFilter')]"
+                    },
+                    "maxIncidentsPerRun": {
+                        "value": "[parameters('maxIncidentsPerRun')]"
+                    },
+                    "openAIDeploymentName": {
+                        "value": "[parameters('openAIDeploymentName')]"
+                    },
+                    "maxTokens": {
+                        "value": "[parameters('maxTokens')]"
+                    },
+                    "temperature": {
+                        "value": "[parameters('temperature')]"
+                    },
+                    "topP": {
+                        "value": "[parameters('topP')]"
+                    },
+                    "presencePenalty": {
+                        "value": "[parameters('presencePenalty')]"
+                    },
+                    "frequencyPenalty": {
+                        "value": "[parameters('frequencyPenalty')]"
+                    },
+                    "numberOfCompletions": {
+                        "value": "[parameters('numberOfCompletions')]"
+                    },
+                    "seedValue": {
+                        "value": "[parameters('seedValue')]"
+                    },
+                    "systemPrompt": {
+                        "value": "[parameters('systemPrompt')]"
+                    },
+                    "tenantId": {
+                        "value": "[parameters('tenantId')]"
+                    },
+                    "clientId": {
+                        "value": "[parameters('clientId')]"
+                    },
+                    "clientSecret": {
+                        "value": "[parameters('clientSecret')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "logicAppResourceId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Logic/workflows', parameters('logicAppName'))]"
+        },
+        "logicAppName": {
+            "type": "string",
+            "value": "[parameters('logicAppName')]"
+        }
+    }
+}

@@ -28,6 +28,7 @@ This repository maintains centralized style guides that MUST be followed for all
 
 - **[Markdown Style Guide](../Style Guides/markdown-style-guide.md)** - Comprehensive formatting, punctuation, and tone standards
 - **[PowerShell Style Guide](../Style Guides/powershell-style-guide.md)** - Visual and organizational patterns for PowerShell scripts
+- **[Parameters File Style Guide](../Style Guides/parameters-file-style-guide.md)** - Configuration standards for Azure parameters files
 
 ### 1.2 Systematic Review Requirements
 
@@ -141,10 +142,26 @@ All PowerShell content must follow the [PowerShell Style Guide](../Style Guides/
 **Pipeline-Specific Requirements:**
 
 - Use Write-Verbose with -Verbose for pipeline visibility.
-- Parameter-driven configuration from pipeline variables.
+- Parameter-driven configuration from pipeline variables loaded from `pipeline-variables.yml`.
 - Comprehensive try-catch blocks for pipeline stability.
 - REST API integration for enhanced control.
 - No interactive elements or user prompts.
+
+**Command-Line Parameters File Integration:**
+
+- Use `-UseParametersFile` parameter pattern for command-line deployment scripts following established IaC patterns.
+- Load configuration from centralized `main.parameters.json` files in each project's `infra/` directory.
+- Follow cumulative parameters approach - add new parameters for additional features without overwriting existing ones.
+- Enable cross-component integration through shared foundation parameters (environmentName, location, etc.).
+- **Note**: Pipeline-based projects use `pipeline-variables.yml` instead of parameters files.
+
+**REST API Integration Requirements:**
+
+- **Always prefer REST API calls via `az rest` commands** over direct Azure PowerShell cmdlets or standard Azure CLI commands when possible.
+- Use REST API calls for enhanced control, better error handling, and more precise resource management.
+- Follow the recommended method hierarchy: `az rest` (primary) → Azure CLI commands (secondary) → Azure PowerShell cmdlets (tertiary).
+- Include comprehensive error handling and API version specifications for REST API calls.
+- Use REST API integration for pipeline reliability and future-proofing with Azure's native interfaces.
 
 ### 3.2 Command Validation Requirements
 
@@ -343,6 +360,58 @@ Navigate to your newly created resource group.
 - Reference related templates and dependencies.
 - Maintain version information and last modified dates.
 
+**Parameters File Standards (main.parameters.json) - Command-Line Scripts Only:**
+
+All parameters file configuration must follow the [Parameters File Style Guide](../Style Guides/parameters-file-style-guide.md) requirements:
+
+**Consistent Parameters File Usage:**
+
+- **Always use `-UseParametersFile` parameter** in command-line PowerShell deployment scripts following established IaC patterns.
+- **Centralized configuration** through `main.parameters.json` files in each project's `infra/` directory.
+- **Cumulative parameters approach** - add new parameters for additional features without overwriting existing ones.
+- **Environment-specific values** configured in parameters file rather than hard-coded in scripts.
+- **Pipeline Distinction**: Pipeline-based projects use `pipeline-variables.yml` instead of parameters files.
+
+**Parameters File Structure Requirements:**
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentName": { "value": "descriptive-env-name" },
+    "location": { "value": "East US" },
+    "notificationEmail": { "value": "admin@domain.com" },
+    "feature1EnableFlag": { "value": false },
+    "feature2EnableFlag": { "value": false }
+  }
+}
+```
+
+**Script Integration Patterns:**
+
+```powershell
+# Standard parameters file loading pattern
+.\scripts\Deploy-ComponentName.ps1 -UseParametersFile
+.\scripts\Test-ComponentValidation.ps1 -UseParametersFile -DetailedReport
+.\scripts\Remove-ComponentName.ps1 -UseParametersFile -Force
+```
+
+**Parameters File Extension Guidelines:**
+
+- **Additive approach only** - never remove or modify existing parameters that other components depend on.
+- **Feature-specific grouping** - group related parameters together with descriptive naming.
+- **Boolean flags** - use `enable[FeatureName]` pattern for optional component deployment.
+- **Default values** - provide safe defaults that work in lab environments.
+- **Production overrides** - document which parameters typically need production-specific values.
+
+**Cross-Component Parameter Sharing:**
+
+- **Shared foundation parameters** - `environmentName`, `location`, `notificationEmail` used across all components.
+- **Resource group references** - use descriptive parameter names like `defenderResourceGroupName`, `aiResourceGroupName`.
+- **Cross-week dependencies** - Week 2 can reference Week 1 resource groups through parameters.
+- **Service integration** - OpenAI services, storage accounts, and other shared resources referenced through parameters.
+
 ---
 
 ## 6. 🤖 AI Response Guidelines
@@ -374,6 +443,16 @@ Navigate to your newly created resource group.
 - Research and verify modern approaches using primary sources.
 - Validate web resource links for currency and accuracy.
 - Use the style guides' AI compliance prompts for systematic reviews.
+- **Prefer REST API calls via `az rest` commands** over direct PowerShell cmdlets or standard Azure CLI commands when possible.
+- **Always wait for script completion** before attempting to execute additional commands.
+- **Use `isBackground=false`** for all PowerShell script executions to ensure proper completion tracking.
+- **Monitor script execution status** and exit codes before proceeding to next operations.
+- **Allow sufficient time** for Azure CLI operations and resource provisioning to complete.
+- **Check script completion** using `get_terminal_output` when scripts appear to hang or timeout.
+- **Never attempt parallel script execution** for deployment scripts that may have dependencies.
+- **Validate exit codes and errors** before considering script operations successful.
+- **When scripts are running or hanging**, provide clear guidance to the user about script status and ask them to confirm when execution is complete.
+- **After script completion confirmation**, immediately analyze terminal output using `get_terminal_output` to determine success/failure and next steps.
 
 **Template File Standards:**
 
@@ -394,6 +473,39 @@ Navigate to your newly created resource group.
 - Add periods to table cell descriptions (they are not lists).
 - Use outdated API versions in templates without verification.
 - Create templates without proper parameter descriptions and validation rules.
+- **Execute multiple scripts simultaneously** when they have potential resource dependencies.
+- **Cancel or interrupt scripts** without checking completion status first.
+- **Assume script success** without verifying exit codes and output.
+- **Start new operations** while previous scripts are still executing or hanging.
+- **Continue with follow-up actions** until the user confirms script completion and terminal output has been analyzed.
+
+### 6.3 Script Execution Monitoring Protocol
+
+**When a script is launched or appears to be running:**
+
+1. **Acknowledge script execution** and inform the user that the script is running
+2. **Explain expected behavior** (e.g., "This deployment script typically takes 3-5 minutes to complete")
+3. **Request user confirmation** when script execution is complete using this format:
+
+> **🔄 Script Execution Status**: The Deploy-LogicAppWorkflow.ps1 script is currently running. This script typically takes several minutes to complete as it validates prerequisites, creates Azure resources, and configures integrations.
+> 
+> **⏳ Please confirm when the script has finished executing** (either successfully or with an error) so I can analyze the terminal output and determine the next steps.
+> 
+> **Expected indicators of completion:**
+> - The PowerShell prompt returns (PS C:\...\>)
+> - You see a final success message or error message
+> - The script execution stops with an exit code
+
+4. **After user confirmation**, immediately use `get_terminal_output` to analyze results
+5. **Determine next steps** based on terminal output analysis (success, specific errors, or partial completion)
+
+**Script Hanging Protocol:**
+
+- If a script appears to hang for an extended period, inform the user and ask them to:
+  - Check if the script is waiting for input
+  - Verify if Azure CLI authentication is required
+  - Confirm if any Azure operations are still in progress
+  - Cancel the script if necessary and report what step it stopped at
 
 ### 6.3 Error Prevention Focus
 

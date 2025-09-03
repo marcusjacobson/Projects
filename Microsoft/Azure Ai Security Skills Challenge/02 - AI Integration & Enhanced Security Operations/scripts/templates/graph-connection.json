@@ -1,0 +1,34 @@
+{
+    "location": "{location}",
+    "properties": {
+        "displayName": "Microsoft Graph Security API",
+        "api": {
+            "id": "/subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/managedApis/microsoftgraphsecurity"
+        },
+        "parameterValues": {
+            "token:clientId": {
+                "type": "KeyVaultReference",
+                "value": {
+                    "secretName": "{clientIdSecretName}",
+                    "vaultName": "{keyVaultName}"
+                }
+            },
+            "token:clientSecret": {
+                "type": "KeyVaultReference", 
+                "value": {
+                    "secretName": "{clientSecretName}",
+                    "vaultName": "{keyVaultName}"
+                }
+            },
+            "token:TenantId": {
+                "type": "KeyVaultReference",
+                "value": {
+                    "secretName": "{tenantIdSecretName}", 
+                    "vaultName": "{keyVaultName}"
+                }
+            },
+            "token:resourceUri": "https://graph.microsoft.com/",
+            "token:grantType": "client_credentials"
+        }
+    }
+}

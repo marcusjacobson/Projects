@@ -22,6 +22,87 @@
     },
     "deployTextEmbedding": {
       "value": true
+    },
+    "notificationEmail": {
+      "value": "marcus.jacobson@gmail.com"
+    },
+    "defenderResourceGroupName": {
+      "value": "rg-aisec-defender-securitylab1"
+    },
+    "recurrenceInterval": {
+      "value": "4 hours"
+    },
+    "enableKeyVaultIntegration": {
+      "value": true
+    },
+    "enableAdvancedMonitoring": {
+      "value": true
+    },
+    "monthlyBudgetLimit": {
+      "value": 50
+    },
+    "maxTokens": {
+      "value": 500
+    },
+    "temperature": {
+      "value": "0.3"
+    },
+    "topP": {
+      "value": "0.95"
+    },
+    "presencePenalty": {
+      "value": "0"
+    },
+    "frequencyPenalty": {
+      "value": "0"
+    },
+    "numberOfCompletions": {
+      "value": 1
+    },
+    "seedValue": {
+      "value": 0
+    },
+    "systemPrompt": {
+      "value": "You are a cybersecurity analyst. Analyze security incidents and provide structured analysis with these exact headers: ### 1) Executive Summary, ### 2) Risk Level Assessment, ### 3) Recommended Immediate Actions, ### 4) MITRE ATT&CK Mapping. Keep responses concise and actionable."
+    },
+    "duplicatePreventionHours": {
+      "value": 24
+    },
+    "enableDefenderXDRIntegration": {
+      "value": false
+    },
+    "enableProcessingStorage": {
+      "value": false
+    },
+    "enableIntegrationMonitoring": {
+      "value": false
+    },
+    "openAIDeploymentName": {
+      "value": "gpt-4o-mini"
+    },
+    "maxIncidentsPerRun": {
+      "value": 50
+    },
+    "highSeverityOnly": {
+      "value": false
+    },
+    "aiResourceGroupName": {
+      "value": "rg-aisec-ai"
+    },
+    "appRegistrationClientIdSecret": {
+      "value": "DefenderXDR-App-ClientId"
+    },
+    "appRegistrationClientSecretName": {
+      "value": "DefenderXDR-App-ClientSecret"
+    },
+    "appRegistrationTenantIdSecret": {
+      "value": "DefenderXDR-App-TenantId"
+    },
+    "openAIConnectionName": {
+      "value": "azureopenai"
+    },
+    "azureTablesConnectionName": {
+      "value": "azuretables"
     }
   }
 }

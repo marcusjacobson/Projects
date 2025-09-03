@@ -1,0 +1,151 @@
+{
+  "Summary": {
+    "PassedChecks": 17,
+    "WarningChecks": 0,
+    "OverallStatus": "PASS",
+    "TotalChecks": 17,
+    "FailedChecks": 0
+  },
+  "SubscriptionId": "d7a6da45-0839-4879-aecd-d89fb8178472",
+  "Environment": "aisec",
+  "Results": [
+    {
+      "Component": "Configuration",
+      "Check": "Parameters File",
+      "Status": "Pass",
+      "Message": "Parameters loaded from main.parameters.json",
+      "Recommendation": "",
+      "Timestamp": "2025-09-02T18:32:28.4726839-07:00"
+    },
+    {
+      "Component": "Authentication",
+      "Check": "Azure CLI",
+      "Status": "Pass",
+      "Message": "Authenticated as marcus@marcusj-dev.cloud",
+      "Recommendation": "",
+      "Timestamp": "2025-09-02T18:32:33.3512866-07:00"
+    },
+    {
+      "Component": "Week 1 Foundation",
+      "Check": "Defender Resource Group",
+      "Status": "Pass",
+      "Message": "Resource group exists in eastus",
+      "Recommendation": "",
+      "Timestamp": "2025-09-02T18:32:39.0889564-07:00"
+    },
+    {
+      "Component": "Week 1 Foundation",
+      "Check": "Log Analytics Workspace",
+      "Status": "Pass",
+      "Message": "Workspace log-aisec-defender-securitylab-testlab001 is Succeeded",
+      "Recommendation": "",
+      "Timestamp": "2025-09-02T18:32:46.3870429-07:00"
+    },
+    {
+      "Component": "Week 1 Foundation",
+      "Check": "Key Vault Secrets",
+      "Status": "Pass",
+      "Message": "All required app registration secrets found",
+      "Recommendation": "",
+      "Timestamp": "2025-09-02T18:33:07.9966051-07:00"
+    },
+    {
+      "Component": "Week 2 AI Infrastructure",
+      "Check": "AI Resource Group",
+      "Status": "Pass",
+      "Message": "Resource group exists in eastus",
+      "Recommendation": "",
+      "Timestamp": "2025-09-02T18:33:12.7578966-07:00"
+    },
+    {
+      "Component": "Week 2 AI Infrastructure",
+      "Check": "OpenAI Model Deployments",
+      "Status": "Pass",
+      "Message": "2 model deployment(s) found",
+      "Recommendation": "",
+      "Timestamp": "2025-09-02T18:33:22.6254427-07:00"
+    },
+    {
+      "Component": "Week 2 AI Infrastructure",
+      "Check": "Azure OpenAI Service",
+      "Status": "Pass",
+      "Message": "Service openai-aisec-001 is Succeeded",
+      "Recommendation": "",
+      "Timestamp": "2025-09-02T18:33:22.625861-07:00"
+    },
+    {
+      "Component": "Week 2 AI Infrastructure",
+      "Check": "Storage Account Tables",
+      "Status": "Pass",
+      "Message": "Table service is available",
+      "Recommendation": "",
+      "Timestamp": "2025-09-02T18:33:33.4338484-07:00"
+    },
+    {
+      "Component": "Week 2 AI Infrastructure",
+      "Check": "Storage Account",
+      "Status": "Pass",
+      "Message": "Storage account staiaisecogq2dm is available",
+      "Recommendation": "",
+      "Timestamp": "2025-09-02T18:33:33.4342405-07:00"
+    },
+    {
+      "Component": "API Connections",
+      "Check": "azureopenai Connection",
+      "Status": "Pass",
+      "Message": "Connection is Connected",
+      "Recommendation": "",
+      "Timestamp": "2025-09-02T18:33:49.1188471-07:00"
+    },
+    {
+      "Component": "API Connections",
+      "Check": "azuretables Connection",
+      "Status": "Pass",
+      "Message": "Connection is Connected",
+      "Recommendation": "",
+      "Timestamp": "2025-09-02T18:33:54.2389454-07:00"
+    },
+    {
+      "Component": "API Connections",
+      "Check": "Required Connections",
+      "Status": "Pass",
+      "Message": "All expected connections present",
+      "Recommendation": "",
+      "Timestamp": "2025-09-02T18:33:54.2408221-07:00"
+    },
+    {
+      "Component": "Logic Apps",
+      "Check": "Logic App State",
+      "Status": "Pass",
+      "Message": "la-defender-xdr-ai-aisec is enabled",
+      "Recommendation": "",
+      "Timestamp": "2025-09-02T18:34:03.2188676-07:00"
+    },
+    {
+      "Component": "Logic Apps",
+      "Check": "Managed Identity",
+      "Status": "Pass",
+      "Message": "System-assigned managed identity enabled",
+      "Recommendation": "",
+      "Timestamp": "2025-09-02T18:34:03.2262161-07:00"
+    },
+    {
+      "Component": "Logic Apps",
+      "Check": "Workflow Definition",
+      "Status": "Pass",
+      "Message": "Workflow has 1 trigger(s) and 3 action(s)",
+      "Recommendation": "",
+      "Timestamp": "2025-09-02T18:34:03.2494264-07:00"
+    },
+    {
+      "Component": "Logic Apps",
+      "Check": "Logic App Discovery",
+      "Status": "Pass",
+      "Message": "Found 1 Logic App(s)",
+      "Recommendation": "",
+      "Timestamp": "2025-09-02T18:34:03.2502161-07:00"
+    }
+  ],
+  "Duration": 94.8037071,
+  "ValidationDate": "2025-09-02T18:32:28.463416-07:00"
+}

@@ -15,7 +15,7 @@ This week focuses on implementing cost-effective AI-driven capabilities within t
 
 ## 🎯 Objectives
 
-- Deploy Azure OpenAI with cost-effective models (GPT-o4-mini) and automated budget controls.
+- Deploy Azure OpenAI with cost-effective models (GPT-4o-mini) and automated budget controls.
 - Implement Azure OpenAI + Sentinel integration using Logic Apps for AI-driven alert analysis through Defender XDR unified portal.
 - Enable built-in AI features (UEBA, Fusion, Anomaly Detection) within existing deployments via unified security operations.
 - Configure comprehensive cost monitoring, alerts, and automated service shutdown capabilities.
@@ -26,7 +26,7 @@ This week focuses on implementing cost-effective AI-driven capabilities within t
 ## 📁 Deliverables
 
 - **AI Foundation Infrastructure**: Azure OpenAI service with budget controls + storage account for logic app data processing.
-- **Azure OpenAI + Defender XDR Integration**: Logic Apps-based automation for AI-driven alert analysis through Defender XDR unified portal.
+- **Azure OpenAI + Defender XDR Integration**: Logic Apps-based automation for AI-driven alert analysis through Defender XDR unified portal with comprehensive Infrastructure-as-Code automation including Key Vault secrets management, Entra ID App Registration, API connections, duplicate prevention, and enterprise-grade security controls.
 - **Built-in AI Features**: UEBA, Fusion, and Anomaly Detection enabled and validated within unified security operations.
 - **Cost Management System**: Comprehensive monitoring, alerts, and automated shutdown capabilities.
 - **AI Prompt Library**: Basic templates optimized for cost-effective token usage:
@@ -45,11 +45,11 @@ This week focuses on implementing cost-effective AI-driven capabilities within t
 - [x] **[Azure OpenAI Service Deployment](./02.03%20Azure%20OpenAI%20Service%20Deployment/deploy-azure-openai-service.md)** - Deploy cost-effective OpenAI service with enhanced automation and soft-delete handling:
   - [x] **[Azure Portal Guide](./02.03%20Azure%20OpenAI%20Service%20Deployment/Azure%20Portal/deploy-azure-openai-service-azure-portal.md)** - Step-by-step portal deployment (Recommended for learning)
   - [x] **[Infrastructure-as-Code Guide](./02.03%20Azure%20OpenAI%20Service%20Deployment/Infrastructure%20as%20Code/deploy-azure-openai-service-iac.md)** - Automated Bicep deployment (Recommended for quick deployment)
-- [x] **[OpenAI Model Customization](./02.04%20OpenAI%20Model%20Customization/customize-openai-model.md)** - Configure GPT-o4-mini with cybersecurity analyst persona, optimized parameters (Temperature 0.2, 450 tokens), and industry compliance frameworks (NIST AI RMF, OWASP LLM Top 10).
-- [x] **[AI Prompt Templates Creation](./02.05%20AI%20Prompt%20Templates%20Creation/ai-prompt-templates.md)** - Identified GPT-o4-mini optimized prompt templates for Defender for Cloud security scenarios with cost optimization and industry compliance.
+- [x] **[OpenAI Model Customization](./02.04%20OpenAI%20Model%20Customization/customize-openai-model.md)** - Configure GPT-4o-mini with cybersecurity analyst persona, optimized parameters (Temperature 0.2, 450 tokens), and industry compliance frameworks (NIST AI RMF, OWASP LLM Top 10).
+- [x] **[AI Prompt Templates Creation](./02.05%20AI%20Prompt%20Templates%20Creation/ai-prompt-templates.md)** - Identified GPT-4o-mini optimized prompt templates for Defender for Cloud security scenarios with cost optimization and industry compliance.
 - [X] **[Azure OpenAI + Defender XDR Integration](./02.06%20Azure%20OpenAI%20+%20Defender%20XDR%20Integration/deploy-openai-defender-xdr-integration.md)** - Implement Logic Apps-based AI automation for intelligent incident analysis through Defender XDR unified portal:
-  - [X] **[Azure Portal Guide](./02.06%20Azure%20OpenAI%20+%20Defender%20XDR%20Integration/Azure%20Portal/deploy-openai-defender-xdr-integration-azure-portal.md)** - Step-by-step Logic Apps designer configuration with unified portal integration (Recommended for learning)
-  - [ ] **[Infrastructure-as-Code Guide](./02.06%20Azure%20OpenAI%20+%20Defender%20XDR%20Integration/Infrastructure%20as%20Code/deploy-openai-defender-xdr-integration-iac.md)** - Automated PowerShell scripts and REST API deployment for unified operations (Recommended for production)
+  - [X] **[Azure Portal Guide](./02.06%20Azure%20OpenAI%20+%20Defender%20XDR%20Integration/Azure%20Portal/deploy-openai-defender-xdr-integration-azure-portal.md)** - Step-by-step Logic Apps designer configuration using manual secret assignment for simplicity and learning experience (Recommended for learning Azure AI security workflows)
+  - [X] **[Infrastructure-as-Code Guide](./02.06%20Azure%20OpenAI%20+%20Defender%20XDR%20Integration/Infrastructure%20as%20Code/deploy-openai-defender-xdr-integration-iac.md)** - Comprehensive PowerShell automation with Key Vault integration, App Registration management, and complete workflow orchestration including API connections, duplicate prevention, and enterprise-grade security controls (Recommended for production deployments and advanced automation scenarios)
 - [ ] **[Threat Scenario Simulation](./simulate-threat-scenarios.md)** - Execute benign threat scenarios with AI analysis.
 - [ ] **[Built-in AI Features Enablement](./deploy-builtin-ai-features.md)** - Enable UEBA, Fusion, and Anomaly Detection after data flows are established.
 - [ ] **[Azure Cost Management Setup](./deploy-ai-cost-management.md)** - Configure budget alerts and automated shutdown capabilities.
@@ -73,6 +73,14 @@ This week's project follows Week 1's proven structure with AI-focused enhancemen
 - **[AI Integration Scripts - READY](./scripts/)** - PowerShell scripts for AI service deployment, configuration, and automated management
   - **Deploy-StorageFoundation.ps1** - Fully functional with UPN auto-resolution and cost optimization
   - **Deploy-OpenAIService.ps1** - Enhanced with automated soft-delete detection and purge capabilities
+  - **Deploy-DefenderXDRIntegration.ps1** - Complete XDR integration orchestrator with Key Vault, App Registration, and Logic Apps deployment
+  - **Deploy-KeyVault.ps1** - Secure credential storage and OpenAI secrets management
+  - **Deploy-AppRegistration.ps1** - Entra ID app setup with Microsoft Graph Security API permissions  
+  - **Deploy-APIConnections.ps1** - API connections for OpenAI, Table Storage, and Microsoft Graph
+  - **Deploy-LogicAppWorkflow.ps1** - Complete Logic Apps workflow with ARM template deployment
+  - **Deploy-ProcessingStorage.ps1** - Table Storage for duplicate prevention and audit trails
+  - **Test-DefenderXDRIntegrationValidation.ps1** - Comprehensive validation with detailed reporting
+  - **Remove-DefenderXDRIntegration.ps1** - Complete decommission script with intelligent cleanup
   - **Remove-OpenAIInfrastructure.ps1** - Comprehensive decommission script with phase-based cleanup
   - **Test-StorageFoundation.ps1** - Comprehensive validation with 100% test coverage
   - **Remove-StorageResourceGroup.ps1** - Reliable cleanup with verification and wait logic
@@ -114,13 +122,26 @@ Week 2 follows the proven Week 1 structure optimized for AI services and cost ma
 │       ├── Deploy-StorageFoundation.ps1            # AI storage infrastructure
 │       ├── Deploy-CostManagement.ps1               # Budget alerts and automated controls
 │       ├── Deploy-OpenAIService.ps1                # Azure OpenAI service deployment
-│       ├── Deploy-SentinelIntegration.ps1          # Logic Apps + Sentinel automation via Defender XDR unified portal
+│       ├── Deploy-DefenderXDRIntegration.ps1       # Complete XDR integration orchestrator
+│       ├── Deploy-KeyVault.ps1                     # Secure credential storage and secrets management
+│       ├── Deploy-AppRegistration.ps1              # Entra ID app setup with Graph permissions
+│       ├── Deploy-APIConnections.ps1               # API connections deployment for Logic Apps
+│       ├── Deploy-LogicAppWorkflow.ps1             # Logic Apps workflow with ARM template deployment
+│       ├── Deploy-ProcessingStorage.ps1            # Table Storage for duplicate prevention
+│       ├── Test-DefenderXDRIntegrationValidation.ps1 # Comprehensive XDR integration validation
+│       ├── Remove-DefenderXDRIntegration.ps1       # Complete XDR integration cleanup
+│       ├── Deploy-SentinelIntegration.ps1          # Legacy - now consolidated in DefenderXDR scripts
 │       ├── Deploy-BuiltinAIFeatures.ps1            # Enable AI security features through unified operations
 │       ├── Test-AIIntegration.ps1                  # AI integration validation
 │       ├── Remove-AIInfrastructure.ps1             # AI service cleanup and cost control
 │       └── templates/                               # AI configuration templates
+│           ├── logic-app-arm-template.json          # Primary Logic App ARM template for XDR integration
+│           ├── logic-app-initial.json               # Initial Logic App configuration
+│           ├── openai-connection.json               # OpenAI API connection template
+│           ├── graph-connection.json                # Microsoft Graph API connection template
+│           ├── table-connection.json                # Table Storage API connection template
 │           ├── openai-deployment.json               # OpenAI model deployment configuration
-│           ├── logic-app-sentinel.json              # Sentinel integration workflow via unified portal
+│           ├── logic-app-sentinel.json              # Legacy - now uses comprehensive ARM templates
 │           └── cost-alert-rules.json                # Budget monitoring templates
 └── 🤖 AI Templates & Resources/
     ├── customize-openai-model.md                    # Security-focused model configuration guide
@@ -136,7 +157,7 @@ Week 2 follows the proven Week 1 structure optimized for AI services and cost ma
 
 - Deploy AI storage foundation with cost optimization
 - Configure comprehensive budget alerts and automated shutdown capabilities
-- Deploy Azure OpenAI service with cost-effective GPT-o4-mini model
+- Deploy Azure OpenAI service with cost-effective GPT-4o-mini model
 
 ### **Phase 2: AI Integration (Wednesday-Thursday)**
 
@@ -191,20 +212,20 @@ With storage foundation complete, proceed to AI service deployment:
 - **Time Investment**: 15-20 minutes (structured AI automation)
 - **Best For**: Production AI environments, learning AI automation, controlled AI deployments
 
-#### 🚀 Enhanced PowerShell Scripts - *Best for Advanced Automation*
+#### 🚀 XDR Integration IaC - *Best for Complete Security Automation*
 
-- **Target Audience**: Advanced users requiring sophisticated deployment automation
-- **Key Benefits**: Automated soft-delete detection and purge, smart wait periods, comprehensive validation
-- **Time Investment**: 5-10 minutes (fully automated deployment)
-- **Best For**: Rapid prototyping, advanced learning scenarios, professional development workflows
+- **Target Audience**: Security architects implementing comprehensive AI-driven security operations
+- **Key Benefits**: Complete automation (Key Vault, App Registration, Logic Apps, API connections), enterprise-grade security, comprehensive validation and cleanup
+- **Time Investment**: 20-30 minutes (fully automated end-to-end deployment)
+- **Best For**: Production security environments, learning advanced automation, enterprise security implementations
 
 ### 🤖 OpenAI Model Customization for Security Operations
 
-After deploying your Azure OpenAI service, the next critical step is customizing the GPT-o4-mini model for cybersecurity use cases. This bridges the infrastructure deployment and AI prompt template implementation.
+After deploying your Azure OpenAI service, the next critical step is customizing the GPT-4o-mini model for cybersecurity use cases. This bridges the infrastructure deployment and AI prompt template implementation.
 
 #### 🎯 Security-Focused Model Configuration
 
-**System Instructions & Role Definitions**: Configure your GPT-o4-mini model with comprehensive cybersecurity analyst persona, including threat detection expertise, incident response knowledge, and MITRE ATT&CK framework awareness for enterprise security operations.
+**System Instructions & Role Definitions**: Configure your GPT-4o-mini model with comprehensive cybersecurity analyst persona, including threat detection expertise, incident response knowledge, and MITRE ATT&CK framework awareness for enterprise security operations.
 
 **Azure AI Foundry Interface**: Utilize the modern consolidated system message interface with managed identity authentication for streamlined configuration and enhanced security.
 
@@ -222,7 +243,7 @@ After deploying your Azure OpenAI service, the next critical step is customizing
 #### 💰 Cost-Optimized Configuration
 
 - **Production Settings**: 450 token limit, Temperature 0.2, research-validated parameters for completeness vs. cost balance
-- **Cost Analysis**: $0.15 per 1M input tokens, $0.60 per 1M output tokens (Azure OpenAI GPT-o4-mini pricing, August 2025)
+- **Cost Analysis**: $0.15 per 1M input tokens, $0.60 per 1M output tokens (Azure OpenAI GPT-4o-mini pricing, August 2025)
 - **Performance Metrics**: ~250 system prompt tokens, ~380 average response tokens optimized for complete analysis within token limits
 
 ## 💰 Cost Management Priority
@@ -230,10 +251,11 @@ After deploying your Azure OpenAI service, the next critical step is customizing
 Week 2 implements comprehensive cost management as a core requirement:
 
 - **Budget Alerts**: Automated alerts at 50%, 75%, and 90% of $150 monthly budget
-- **Automated Shutdown**: Logic Apps to automatically disable expensive services when not in use
-- **Cost-Effective Models**: GPT-o4-mini preferred for optimal cost/performance ratio with research-validated parameter optimization
-- **Usage Monitoring**: Real-time cost tracking and usage analytics
-- **Resource Lifecycle**: Automated cleanup scripts and scheduled resource management
+- **Automated Shutdown**: Logic Apps to automatically disable expensive services when not in use  
+- **Cost-Effective Models**: GPT-4o-mini preferred for optimal cost/performance ratio with research-validated parameter optimization
+- **XDR Integration Costs**: Logic Apps (~$1-3/month), API connections (included), Key Vault (~$1-2/month), Table Storage (~$0.15/month)
+- **Usage Monitoring**: Real-time cost tracking and usage analytics through Azure Cost Management
+- **Resource Lifecycle**: Automated cleanup scripts and scheduled resource management with comprehensive decommission capabilities
 
 ---
 

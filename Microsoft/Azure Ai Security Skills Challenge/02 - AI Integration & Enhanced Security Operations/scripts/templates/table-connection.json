@@ -1,0 +1,17 @@
+{
+    "location": "{location}",
+    "properties": {
+        "displayName": "Azure Table Storage",
+        "api": {
+            "id": "/subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/managedApis/azuretables"
+        },
+        "authenticatedUser": {},
+        "parameterValueSet": {
+            "name": "managedIdentityAuth",
+            "values": {
+                "storageaccount": "{storageAccountName}",
+                "authType": "ManagedServiceIdentity"
+            }
+        }
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "properties": {
+        "workspaceId": "",
+        "logs": [
+            {
+                "category": "WorkflowRuntime",
+                "enabled": true
+            }
+        ],
+        "metrics": [
+            {
+                "category": "AllMetrics", 
+                "enabled": true
+            }
+        ]
+    }
+}

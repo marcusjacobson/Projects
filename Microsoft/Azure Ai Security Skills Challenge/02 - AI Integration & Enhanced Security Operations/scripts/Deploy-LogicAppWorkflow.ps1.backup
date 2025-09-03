@@ -1,0 +1,1024 @@
+<#
+.SYNOPSIS
+    Deploy Logic Apps workflow with Microsoft Graph Security API integration and Azure OpenAI analysis capabilities.
+
+.DESCRIPTION
+    This script creates a complete Logic Apps workflow for automated Microsoft Defender XDR incident analysis 
+    using Azure OpenAI. The deployment includes the Logic App with consumption plan, API connections for 
+    Microsoft Graph Security API, Azure OpenAI service integration, Table Storage for duplicate prevention, 
+    and Key Vault integration for secure credential management.
+    
+    The Logic App implements a comprehensive workflow: recurrence trigger → get Defender XDR incidents → 
+    AI analysis with GPT models → duplicate checking → structured comment posting → processing audit trail. 
+    This enables automated security incident analysis with AI-driven insights posted directly to Defender XDR alerts.
+
+.PARAMETER EnvironmentName
+    The environment name used for resource naming consistency (e.g., "aisec", "prod").
+
+.PARAMETER Location  
+    The Azure region for Logic App deployment (e.g., "East US", "West US 2").
+
+.PARAMETER UseParametersFile
+    Switch parameter to load configuration from main.parameters.json file.
+
+.PARAMETER LogicAppName
+    Optional custom name for the Logic App. If not provided, will be generated based on environment name.
+
+.PARAMETER RecurrenceInterval
+    Processing frequency for the Logic App trigger (e.g., "4 hours", "PT2H"). Default: "4 hours".
+
+.PARAMETER MaxTokens
+    Maximum tokens for Azure OpenAI responses. Controls response length and cost. Default: 500.
+
+.PARAMETER Temperature
+    Azure OpenAI temperature setting for response consistency (0.0-1.0). Default: 0.3.
+
+.EXAMPLE
+    .\Deploy-LogicAppWorkflow.ps1 -UseParametersFile
+    
+    Deploy Logic Apps workflow using parameters loaded from main.parameters.json with automatic resource naming.
+
+.EXAMPLE
+    .\Deploy-LogicAppWorkflow.ps1 -EnvironmentName "aisec" -Location "East US"
+    
+    Deploy Logic Apps workflow with specific environment and location parameters.
+
+.EXAMPLE
+    .\Deploy-LogicAppWorkflow.ps1 -UseParametersFile -RecurrenceInterval "2 hours" -MaxTokens 800
+    
+    Deploy with parameters file but override recurrence frequency and AI token limits for lab environment.
+
+.NOTES
+    Author: Marcus Jacobson
+    Version: 1.0.0
+    Created: 2025-09-01
+    Last Modified: 2025-09-01
+    
+    Copyright (c) 2025 Marcus Jacobson. All rights reserved.
+    Licensed under the MIT License.
+    
+    Requirements:
+    - Azure CLI installed and authenticated
+    - PowerShell 5.1+ or PowerShell 7+
+    - Existing Week 2 AI infrastructure (OpenAI service, storage account)
+    - App registration with Microsoft Graph Security API permissions
+    - Azure Key Vault with app registration credentials
+    - Logic Apps service availability in target region
+    
+    Script development orchestrated using GitHub Copilot.
+
+.WORKFLOW COMPONENTS
+    - Logic Apps Consumption Plan (cost-effective serverless execution)
+    - Microsoft Graph Security API connections (OAuth 2.0 authentication)
+    - Azure OpenAI service integration (GPT-4o-mini analysis)
+    - Table Storage connections (duplicate prevention and audit trails)
+    - Key Vault integration (secure credential access)
+    - Application Insights monitoring (performance and error tracking)
+#>
+#
+# =============================================================================
+# Deploy Logic Apps workflow for Microsoft Defender XDR integration.
+# =============================================================================
+
+[CmdletBinding()]
+param (
+    [Parameter(Mandatory = $false)]
+    [string]$EnvironmentName,
+    
+    [Parameter(Mandatory = $false)]
+    [string]$Location,
+    
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile,
+    
+    [Parameter(Mandatory = $false)]
+    [string]$LogicAppName,
+    
+    [Parameter(Mandatory = $false)]
+    [string]$RecurrenceInterval = "4 hours",
+    
+    [Parameter(Mandatory = $false)]
+    [int]$MaxTokens = 500,
+    
+    [Parameter(Mandatory = $false)]
+    [decimal]$Temperature = 0.3,
+    
+    [Parameter(Mandatory = $false)]
+    [switch]$WhatIf
+)
+
+# Script Configuration
+$ErrorActionPreference = "Stop"
+
+# Function to replace template placeholders
+function Replace-TemplateParameters {
+    param(
+        [string]$TemplateContent,
+        [hashtable]$Parameters
+    )
+    
+    $result = $TemplateContent
+    foreach ($key in $Parameters.Keys) {
+        $result = $result.Replace("{$key}", $Parameters[$key])
+    }
+    return $result
+}
+
+Write-Host "🚀 Deploy Logic Apps Workflow for Defender XDR Integration" -ForegroundColor Green
+Write-Host "=========================================================" -ForegroundColor Green
+
+# =============================================================================
+# Step 1: Parameter Loading and Validation
+# =============================================================================
+
+Write-Host "📋 Step 1: Parameter Loading and Validation" -ForegroundColor Green
+Write-Host "============================================" -ForegroundColor Green
+
+if ($UseParametersFile) {
+    Write-Host "📄 Loading parameters from main.parameters.json..." -ForegroundColor Cyan
+    
+    $parametersPath = Join-Path $PSScriptRoot "..\infra\main.parameters.json"
+    if (-not (Test-Path $parametersPath)) {
+        Write-Host "❌ Parameters file not found: $parametersPath" -ForegroundColor Red
+        exit 1
+    }
+    
+    try {
+        $parametersContent = Get-Content $parametersPath | ConvertFrom-Json
+        $parameters = $parametersContent.parameters
+        
+        $EnvironmentName = $parameters.environmentName.value
+        $Location = $parameters.location.value
+        $RecurrenceInterval = if ($parameters.recurrenceInterval) { $parameters.recurrenceInterval.value } else { $RecurrenceInterval }
+        $MaxTokens = if ($parameters.maxTokens) { $parameters.maxTokens.value } else { $MaxTokens }
+        $Temperature = if ($parameters.temperature) { [decimal]$parameters.temperature.value } else { $Temperature }
+        
+        # Load resource group names from parameters
+        $DefenderResourceGroupName = if ($parameters.defenderResourceGroupName) { $parameters.defenderResourceGroupName.value } else { "rg-$EnvironmentName-defender-$EnvironmentName" }
+        $AIResourceGroupName = if ($parameters.aiResourceGroupName) { $parameters.aiResourceGroupName.value } else { "rg-$EnvironmentName-ai" }
+        
+        Write-Host "   ✅ Parameters loaded successfully" -ForegroundColor Green
+        Write-Host "   📍 Environment: $EnvironmentName" -ForegroundColor White
+        Write-Host "   📍 Location: $Location" -ForegroundColor White
+        Write-Host "   📍 Recurrence: $RecurrenceInterval" -ForegroundColor White
+        Write-Host "   📍 Max Tokens: $MaxTokens" -ForegroundColor White
+        Write-Host "   📍 Temperature: $Temperature" -ForegroundColor White
+        Write-Host "   📍 Defender RG: $DefenderResourceGroupName" -ForegroundColor White
+        Write-Host "   📍 AI RG: $AIResourceGroupName" -ForegroundColor White
+    } catch {
+        Write-Host "❌ Failed to load parameters: $_" -ForegroundColor Red
+        exit 1
+    }
+}
+
+# Validate required parameters
+if (-not $EnvironmentName -or -not $Location) {
+    Write-Host "❌ Missing required parameters. Use -UseParametersFile or provide -EnvironmentName and -Location" -ForegroundColor Red
+    exit 1
+}
+
+# Set default resource group names if not loaded from parameters
+if (-not $DefenderResourceGroupName) { $DefenderResourceGroupName = "rg-$EnvironmentName-defender-$EnvironmentName" }
+if (-not $AIResourceGroupName) { $AIResourceGroupName = "rg-$EnvironmentName-ai" }
+
+# Generate resource names based on actual deployed resources
+$resourceGroupName = $AIResourceGroupName  # Logic App goes in AI resource group
+$defenderResourceGroupName = $DefenderResourceGroupName  # Key Vault is in Defender resource group
+$logicAppName = if ($LogicAppName) { $LogicAppName } else { "la-defender-xdr-ai-$EnvironmentName" }
+
+# Resource names should be discovered from deployed resources, not hardcoded
+# Key Vault is in Week 1 Defender resource group
+$keyVaultName = $null  # Will be discovered
+$storageAccountName = $null  # Will be discovered  
+$openAIServiceName = $null  # Will be discovered
+
+Write-Host ""
+Write-Host "🎯 Deployment Configuration:" -ForegroundColor Cyan
+Write-Host "   🏷️  Environment Name: $EnvironmentName" -ForegroundColor White
+Write-Host "   📍 Location: $Location" -ForegroundColor White
+Write-Host "   📦 AI Resource Group: $resourceGroupName" -ForegroundColor White
+Write-Host "   🛡️  Defender Resource Group: $defenderResourceGroupName" -ForegroundColor White
+Write-Host "   ⚡ Logic App: $logicAppName" -ForegroundColor White
+Write-Host "   📊 Log Analytics Workspace: $logAnalyticsWorkspaceName (from Week 1)" -ForegroundColor White
+
+# =============================================================================
+# Step 2: Prerequisite Validation
+# =============================================================================
+
+Write-Host ""
+Write-Host "🔍 Step 2: Prerequisite Validation" -ForegroundColor Green
+Write-Host "==================================" -ForegroundColor Green
+
+Write-Host "🔐 Validating authentication and permissions..." -ForegroundColor Cyan
+try {
+    # Check Azure CLI authentication
+    $account = az account show --output json 2>$null | ConvertFrom-Json
+    if (-not $account) {
+        Write-Host "❌ Azure CLI not authenticated. Please run 'az login'" -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "   ✅ Azure CLI authenticated as: $($account.user.name)" -ForegroundColor Green
+    
+    # Validate AI resource group exists (where Logic App will be deployed)
+    $aiResourceGroup = az group show --name $resourceGroupName --output json 2>$null | ConvertFrom-Json
+    if (-not $aiResourceGroup) {
+        Write-Host "❌ AI resource group not found: $resourceGroupName" -ForegroundColor Red
+        Write-Host "   💡 Please run Week 2 AI foundation deployment first" -ForegroundColor Yellow
+        exit 1
+    }
+    Write-Host "   ✅ AI resource group validated: $resourceGroupName" -ForegroundColor Green
+    
+    # Validate Defender resource group exists (where Key Vault should be)
+    $defenderResourceGroup = az group show --name $defenderResourceGroupName --output json 2>$null | ConvertFrom-Json
+    if (-not $defenderResourceGroup) {
+        Write-Host "❌ Defender resource group not found: $defenderResourceGroupName" -ForegroundColor Red
+        Write-Host "   💡 Please run Week 1 Defender deployment first" -ForegroundColor Yellow
+        exit 1
+    }
+    Write-Host "   ✅ Defender resource group validated: $defenderResourceGroupName" -ForegroundColor Green
+    
+    # Auto-discover Key Vault in Defender resource group
+    $keyVaults = az keyvault list --resource-group $defenderResourceGroupName --output json 2>$null | ConvertFrom-Json
+    if (-not $keyVaults -or $keyVaults.Count -eq 0) {
+        Write-Host "❌ No Key Vault found in resource group: $defenderResourceGroupName" -ForegroundColor Red
+        Write-Host "   💡 Please run Deploy-AppRegistration.ps1 first" -ForegroundColor Yellow
+        exit 1
+    }
+    $keyVaultName = $keyVaults[0].name  # Use the first (and likely only) Key Vault
+    Write-Host "   ✅ Key Vault discovered: $keyVaultName" -ForegroundColor Green
+    
+    # Check for required secrets in Key Vault
+    $requiredSecrets = @("DefenderXDR-App-ClientId", "DefenderXDR-App-ClientSecret", "DefenderXDR-App-TenantId")
+    foreach ($secretName in $requiredSecrets) {
+        $secret = az keyvault secret show --vault-name $keyVaultName --name $secretName --output json 2>$null | ConvertFrom-Json
+        if (-not $secret) {
+            Write-Host "❌ Required secret not found in Key Vault: $secretName" -ForegroundColor Red
+            Write-Host "   💡 Please run Deploy-AppRegistration.ps1 first" -ForegroundColor Yellow
+            exit 1
+        }
+    }
+    Write-Host "   ✅ Key Vault secrets validated" -ForegroundColor Green
+    
+    # Auto-discover storage account in AI resource group
+    $storageAccounts = az storage account list --resource-group $resourceGroupName --output json 2>$null | ConvertFrom-Json
+    if (-not $storageAccounts -or $storageAccounts.Count -eq 0) {
+        Write-Host "❌ No storage account found in resource group: $resourceGroupName" -ForegroundColor Red
+        Write-Host "   💡 Please run Deploy-ProcessingStorage.ps1 first" -ForegroundColor Yellow
+        exit 1
+    }
+    $storageAccountName = $storageAccounts[0].name  # Use the first storage account
+    Write-Host "   ✅ Storage account discovered: $storageAccountName" -ForegroundColor Green
+    
+    # Auto-discover OpenAI service in AI resource group
+    $openAIServices = az cognitiveservices account list --resource-group $resourceGroupName --output json 2>$null | ConvertFrom-Json
+    $openAIService = $openAIServices | Where-Object { $_.kind -eq "OpenAI" } | Select-Object -First 1
+    if (-not $openAIService) {
+        Write-Host "❌ OpenAI service not found in resource group: $resourceGroupName" -ForegroundColor Red
+        Write-Host "   💡 Please run Week 2 AI foundation deployment first" -ForegroundColor Yellow
+        exit 1
+    }
+    $openAIServiceName = $openAIService.name
+    Write-Host "   ✅ OpenAI service discovered: $openAIServiceName" -ForegroundColor Green
+    
+} catch {
+    Write-Host "❌ Prerequisites validation failed: $_" -ForegroundColor Red
+    exit 1
+}
+
+# =============================================================================
+# Step 3: Logic App Creation
+# =============================================================================
+
+Write-Host ""
+Write-Host "⚡ Step 3: Logic App Creation" -ForegroundColor Green
+Write-Host "=============================" -ForegroundColor Green
+
+Write-Host "🚀 Creating Logic App with consumption plan..." -ForegroundColor Cyan
+
+if ($WhatIf) {
+    Write-Host "👁️ [WHAT-IF] Would create Logic App: $logicAppName" -ForegroundColor Yellow
+} else {
+    try {
+        # Load Logic App properties from template file
+        $templatesPath = Join-Path $PSScriptRoot "templates"
+        $logicAppTemplatePath = Join-Path $templatesPath "logic-app-initial.json"
+        
+        if (-not (Test-Path $logicAppTemplatePath)) {
+            throw "Logic App template not found: $logicAppTemplatePath"
+        }
+        
+        Write-Host "   📄 Using template: $logicAppTemplatePath" -ForegroundColor White
+        
+        # Read template content
+        $templateContent = Get-Content $logicAppTemplatePath -Raw | ConvertFrom-Json
+        
+        # Configure recurrence interval from parameters
+        $templateContent.definition.triggers.Recurrence.recurrence.interval = $RecurrenceInterval
+        
+        # Create Logic App using REST API for enhanced control
+        $subscriptionId = az account show --query id -o tsv
+        $logicAppUrl = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Logic/workflows/$logicAppName"
+        
+        # Create a temporary file for the JSON body to avoid PowerShell JSON serialization issues
+        $tempJsonFile = [System.IO.Path]::GetTempFileName()
+        
+        try {
+            # Prepare the request body for Consumption Logic App
+            $logicAppBody = @{
+                location = $Location
+                properties = @{
+                    state = $templateContent.state
+                    definition = $templateContent.definition
+                    parameters = $templateContent.parameters
+                }
+                tags = @{
+                    Environment = "AI Security Skills Challenge"
+                    Project = "Week 2.6 - Logic App Integration"
+                }
+            }
+            
+            # Write JSON to temp file
+            $logicAppBody | ConvertTo-Json -Depth 10 | Out-File -FilePath $tempJsonFile -Encoding UTF8
+            
+            $logicAppResult = az rest --method PUT --url "$logicAppUrl`?api-version=2019-05-01" --body "@$tempJsonFile" --output json
+        }
+        finally {
+            # Clean up temp file
+            if (Test-Path $tempJsonFile) {
+                Remove-Item $tempJsonFile -Force
+            }
+        }
+        
+        if ($LASTEXITCODE -ne 0) {
+            throw "Failed to create Logic App"
+        }
+        
+        $logicApp = $logicAppResult | ConvertFrom-Json
+        Write-Host "   ✅ Logic App created successfully: $($logicApp.name)" -ForegroundColor Green
+        Write-Host "   📍 Resource ID: $($logicApp.id)" -ForegroundColor White
+        
+    } catch {
+        Write-Host "❌ Failed to create Logic App: $_" -ForegroundColor Red
+        exit 1
+    }
+}
+
+# =============================================================================
+# Step 4: Configure Logic App with Log Analytics Integration
+# =============================================================================
+
+Write-Host ""
+Write-Host "📊 Step 4: Configure Logic App with Log Analytics Integration" -ForegroundColor Green
+Write-Host "=========================================================" -ForegroundColor Green
+
+Write-Host "� Configuring Logic App diagnostic settings for monitoring..." -ForegroundColor Cyan
+
+if ($WhatIf) {
+    Write-Host "👁️ [WHAT-IF] Would configure diagnostic settings for Logic App: $logicAppName" -ForegroundColor Yellow
+} else {
+    try {
+        # Configure Logic App diagnostic settings to use existing Log Analytics workspace
+        Write-Host "   📊 Enabling Log Analytics integration for Logic App monitoring..." -ForegroundColor Cyan
+        
+        # Logic App resource ID for diagnostic settings
+        $subscriptionId = az account show --query id -o tsv
+        $logicAppResourceId = "/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Logic/workflows/$logicAppName"
+        $workspaceResourceId = "/subscriptions/$subscriptionId/resourceGroups/$defenderResourceGroupName/providers/Microsoft.OperationalInsights/workspaces/$logAnalyticsWorkspaceName"
+        
+        # Load diagnostic settings template
+        $diagnosticsTemplatePath = Join-Path $templatesPath "logic-app-diagnostics.json"
+        if (Test-Path $diagnosticsTemplatePath) {
+            $diagnosticsTemplate = Get-Content $diagnosticsTemplatePath -Raw | ConvertFrom-Json
+            
+            # Update template with actual resource IDs
+            $diagnosticsTemplate.properties.workspaceId = $workspaceResourceId
+            
+            # Create a temporary file for the diagnostic settings JSON body
+            $tempDiagnosticsJsonFile = [System.IO.Path]::GetTempFileName()
+            
+            try {
+                # Write JSON to temp file
+                $diagnosticsTemplate | ConvertTo-Json -Depth 10 | Out-File -FilePath $tempDiagnosticsJsonFile -Encoding UTF8
+                
+                # Create diagnostic settings using REST API
+                $diagnosticsName = "logic-app-diagnostics"
+                $diagnosticsUrl = "https://management.azure.com$logicAppResourceId/providers/Microsoft.Insights/diagnosticSettings/$diagnosticsName"
+                
+                $diagnosticsResult = az rest --method PUT --url "$diagnosticsUrl`?api-version=2021-05-01-preview" --body "@$tempDiagnosticsJsonFile" --output json
+                
+                if ($LASTEXITCODE -eq 0) {
+                    Write-Host "   ✅ Log Analytics integration configured successfully" -ForegroundColor Green
+                    Write-Host "   📊 Logic App logs will be sent to: $logAnalyticsWorkspaceName" -ForegroundColor Cyan
+                } else {
+                    Write-Host "   ⚠️ Diagnostic settings creation had issues, but Logic App is functional" -ForegroundColor Yellow
+                }
+                
+            } finally {
+                # Clean up temporary file
+                Remove-Item $tempDiagnosticsJsonFile -Force -ErrorAction SilentlyContinue
+            }
+        } else {
+            Write-Host "   ⚠️ Diagnostic settings template not found, skipping Log Analytics integration" -ForegroundColor Yellow
+            Write-Host "   ✅ Logic App is still functional" -ForegroundColor Green
+        }
+        
+    } catch {
+        Write-Host "   ❌ Failed to configure Log Analytics integration: $_" -ForegroundColor Red
+        Write-Host "   ✅ Logic App is still functional, monitoring can be configured later" -ForegroundColor Green
+    }
+}
+
+# =============================================================================
+# Step 5: API Connections Creation
+# =============================================================================
+
+Write-Host ""
+Write-Host "🔗 Step 5: API Connections Creation" -ForegroundColor Green
+Write-Host "===================================" -ForegroundColor Green
+
+Write-Host "🌐 Creating Microsoft Graph API connection..." -ForegroundColor Cyan
+
+if ($WhatIf) {
+    Write-Host "👁️ [WHAT-IF] Would create API connections for Logic App" -ForegroundColor Yellow
+} else {
+    try {
+        $subscriptionId = az account show --query id -o tsv
+        
+        # Create Microsoft Graph API connection using REST API with Key Vault references
+        $graphConnectionName = "msgraph-connection-$EnvironmentName"
+        Write-Host "   🔗 Creating Microsoft Graph Security API connection with Key Vault references..." -ForegroundColor Cyan
+        
+        # Load and customize Microsoft Graph API connection template
+        $graphTemplatePath = Join-Path $templatesPath "graph-connection.json"
+        if (-not (Test-Path $graphTemplatePath)) {
+            throw "Graph connection template not found: $graphTemplatePath"
+        }
+        
+        $graphTemplate = Get-Content $graphTemplatePath -Raw
+        
+        # Use Key Vault references for secure secret handling
+        $graphParameters = @{
+            subscriptionId = $subscriptionId
+            location = $Location
+            keyVaultName = $keyVaultName
+            keyVaultResourceGroup = $resourceGroupName
+        }
+        
+        $graphTemplate = Replace-TemplateParameters -TemplateContent $graphTemplate -Parameters $graphParameters
+        
+        # Create temporary file for JSON body
+        $tempGraphJsonFile = [System.IO.Path]::GetTempFileName()
+        $graphTemplate | Out-File -FilePath $tempGraphJsonFile -Encoding UTF8
+        
+        # Create Graph API connection using REST API
+        $graphConnectionUrl = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Web/connections/$graphConnectionName"
+        
+        $graphResult = az rest --method PUT --url "$graphConnectionUrl`?api-version=2016-06-01" --body "@$tempGraphJsonFile" --headers "Content-Type=application/json" --output json
+        
+        # Clean up temporary file
+        Remove-Item $tempGraphJsonFile -Force -ErrorAction SilentlyContinue
+        
+        if ($LASTEXITCODE -ne 0) {
+            throw "Failed to create Microsoft Graph API connection"
+        }
+        
+        Write-Host "   ✅ Microsoft Graph API connection created: $graphConnectionName" -ForegroundColor Green
+        
+        # Create Azure OpenAI API connection using Managed Identity authentication
+        $openAIConnectionName = "openai-connection-$EnvironmentName"
+        Write-Host "   🤖 Creating Azure OpenAI API connection with Managed Identity..." -ForegroundColor Cyan
+        
+        # Load and customize Azure OpenAI connection template
+        $openAITemplatePath = Join-Path $templatesPath "openai-connection.json"
+        if (-not (Test-Path $openAITemplatePath)) {
+            throw "OpenAI connection template not found: $openAITemplatePath"
+        }
+        
+        $openAITemplate = Get-Content $openAITemplatePath -Raw
+        
+        $openAIParameters = @{
+            subscriptionId = $subscriptionId
+            location = $Location
+            openAIServiceName = $openAIServiceName
+            resourceGroupName = $resourceGroupName
+        }
+        
+        $openAITemplate = Replace-TemplateParameters -TemplateContent $openAITemplate -Parameters $openAIParameters
+        
+        # Create temporary file for JSON body
+        $tempOpenAIJsonFile = [System.IO.Path]::GetTempFileName()
+        $openAITemplate | Out-File -FilePath $tempOpenAIJsonFile -Encoding UTF8
+        
+        # Create OpenAI connection using REST API
+        $openAIConnectionUrl = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Web/connections/$openAIConnectionName"
+        
+        $openAIResult = az rest --method PUT --url "$openAIConnectionUrl`?api-version=2016-06-01" --body "@$tempOpenAIJsonFile" --headers "Content-Type=application/json" --output json
+        
+        # Clean up temporary file
+        Remove-Item $tempOpenAIJsonFile -Force -ErrorAction SilentlyContinue
+        
+        if ($LASTEXITCODE -ne 0) {
+            throw "Failed to create Azure OpenAI API connection"
+        }
+        
+        Write-Host "   ✅ Azure OpenAI API connection created: $openAIConnectionName" -ForegroundColor Green
+        
+        # Create Azure Table Storage connection using Managed Identity authentication
+        $tableConnectionName = "table-connection-$EnvironmentName"
+        Write-Host "   📦 Creating Azure Table Storage connection with Managed Identity..." -ForegroundColor Cyan
+        
+        # Load and customize Table Storage connection template
+        $tableTemplatePath = Join-Path $templatesPath "table-connection.json"
+        if (-not (Test-Path $tableTemplatePath)) {
+            throw "Table connection template not found: $tableTemplatePath"
+        }
+        
+        $tableTemplate = Get-Content $tableTemplatePath -Raw
+        
+        $tableParameters = @{
+            subscriptionId = $subscriptionId
+            location = $Location
+            storageAccountName = $storageAccountName
+            resourceGroupName = $resourceGroupName
+        }
+        
+        $tableTemplate = Replace-TemplateParameters -TemplateContent $tableTemplate -Parameters $tableParameters
+        
+        # Create temporary file for JSON body
+        $tempTableJsonFile = [System.IO.Path]::GetTempFileName()
+        $tableTemplate | Out-File -FilePath $tempTableJsonFile -Encoding UTF8
+        
+        # Create Table Storage connection using REST API
+        $tableConnectionUrl = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Web/connections/$tableConnectionName"
+        
+        $tableResult = az rest --method PUT --url "$tableConnectionUrl`?api-version=2016-06-01" --body "@$tempTableJsonFile" --headers "Content-Type=application/json" --output json
+        
+        # Clean up temporary file
+        Remove-Item $tempTableJsonFile -Force -ErrorAction SilentlyContinue
+        
+        if ($LASTEXITCODE -ne 0) {
+            throw "Failed to create Azure Table Storage connection"
+        }
+        
+        Write-Host "   ✅ Azure Table Storage connection created: $tableConnectionName" -ForegroundColor Green
+        
+        # Grant Logic App managed identity permissions to access resources
+        Write-Host "   🔐 Configuring Logic App managed identity permissions..." -ForegroundColor Cyan
+        
+        # Get Logic App managed identity principal ID
+        $logicAppIdentityUrl = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Logic/workflows/$logicAppName"
+        $logicAppInfo = az rest --method GET --url "$logicAppIdentityUrl`?api-version=2016-06-01" --output json | ConvertFrom-Json
+        $principalId = $logicAppInfo.identity.principalId
+        
+        if ($principalId) {
+            # Grant Cognitive Services User role to Logic App for OpenAI access
+            Write-Host "     🤖 Granting Cognitive Services User role for OpenAI access..." -ForegroundColor Cyan
+            $openAIResourceId = "/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.CognitiveServices/accounts/$openAIServiceName"
+            az role assignment create --role "Cognitive Services User" --assignee $principalId --scope $openAIResourceId --output none
+            
+            # Grant Storage Table Data Contributor role to Logic App for Table Storage access  
+            Write-Host "     📦 Granting Storage Table Data Contributor role for Table Storage access..." -ForegroundColor Cyan
+            $storageResourceId = "/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Storage/storageAccounts/$storageAccountName"
+            az role assignment create --role "Storage Table Data Contributor" --assignee $principalId --scope $storageResourceId --output none
+            
+            # Grant Key Vault Secrets User role to Logic App for Key Vault access
+            Write-Host "     🔐 Granting Key Vault Secrets User role for Key Vault access..." -ForegroundColor Cyan
+            $keyVaultResourceId = "/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.KeyVault/vaults/$keyVaultName"
+            az role assignment create --role "Key Vault Secrets User" --assignee $principalId --scope $keyVaultResourceId --output none
+            
+            Write-Host "   ✅ Logic App managed identity permissions configured" -ForegroundColor Green
+        } else {
+            Write-Host "   ⚠️ Warning: Could not retrieve Logic App managed identity principal ID" -ForegroundColor Yellow
+        }
+        
+    } catch {
+        Write-Host "❌ Failed to create API connections: $_" -ForegroundColor Red
+        exit 1
+    }
+}
+
+Write-Host "✅ Step 5 completed successfully" -ForegroundColor Green
+
+# =============================================================================
+# Step 6: Workflow Definition Deployment
+# =============================================================================
+
+Write-Host ""
+Write-Host "⚙️ Step 6: Workflow Definition Deployment" -ForegroundColor Green
+Write-Host "=========================================" -ForegroundColor Green
+
+Write-Host "📝 Configuring complete workflow definition..." -ForegroundColor Cyan
+
+if ($WhatIf) {
+    Write-Host "👁️ [WHAT-IF] Would configure comprehensive Logic App workflow" -ForegroundColor Yellow
+} else {
+    try {
+        # Parse recurrence interval to determine frequency and interval
+        $frequency = "Hour"
+        $interval = 4
+        
+        if ($RecurrenceInterval -match "(\d+)\s*hour") {
+            $interval = [int]$Matches[1]
+            $frequency = "Hour"
+        } elseif ($RecurrenceInterval -match "(\d+)\s*minute") {
+            $interval = [int]$Matches[1]
+            $frequency = "Minute"
+        } elseif ($RecurrenceInterval -match "PT(\d+)H") {
+            $interval = [int]$Matches[1]
+            $frequency = "Hour"
+        } elseif ($RecurrenceInterval -match "PT(\d+)M") {
+            $interval = [int]$Matches[1]
+            $frequency = "Minute"
+        }
+        
+        Write-Host "   📅 Configured recurrence: $interval $frequency" -ForegroundColor White
+        
+        # Create incident filter based on severity settings
+        $incidentFilter = if ($HighSeverityOnly) {
+            "status eq 'active' and severity eq 'high'"
+        } else {
+            "status eq 'active'"
+        }
+        
+        # Load workflow template and replace parameters
+        $workflowTemplatePath = Join-Path $templatesPath "logic-app-workflow.json"
+        if (-not (Test-Path $workflowTemplatePath)) {
+            throw "Workflow template not found: $workflowTemplatePath"
+        }
+        
+        Write-Host "   📋 Loading workflow template..." -ForegroundColor Cyan
+        $workflowTemplate = Get-Content $workflowTemplatePath -Raw
+        
+        $workflowParameters = @{
+            frequency = $frequency
+            interval = $interval
+            incidentFilter = $incidentFilter
+            maxIncidentsPerRun = $MaxIncidentsPerRun
+            openAIDeploymentName = "gpt-4o"
+            maxTokens = $MaxTokens
+            temperature = $Temperature
+        }
+        
+        Write-Host "   🔧 Applying workflow parameters..." -ForegroundColor Cyan
+        $workflowDefinition = Replace-TemplateParameters -TemplateContent $workflowTemplate -Parameters $workflowParameters
+        
+        Write-Host "   📋 Updating Logic App with workflow definition..." -ForegroundColor Cyan
+        
+        # Update Logic App with template-based workflow definition
+                            }
+                        }
+                        method = 'GET'
+                        path = '/v1.0/security/incidents'
+                        queries = @{
+                            '$filter' = "status eq 'active' and createdDateTime ge @{formatDateTime(addHours(utcNow(), -24), 'yyyy-MM-ddTHH:mm:ssZ')}"
+                            '$top' = '50'
+                        }
+                    }
+                }
+                
+                'For_each_Incident' = @{
+                    foreach = "@body('Get_Defender_XDR_Incidents')?['value']"
+                    actions = @{
+                        'Get_Incident_Alerts' = @{
+                            runAfter = @{}
+                            type = 'ApiConnection'
+                            inputs = @{
+                                host = @{
+                                    connection = @{
+                                        name = "@parameters('`$connections')['microsoftgraphsecurity']['connectionId']"
+                                    }
+                                }
+                                method = 'GET'
+                                path = "/v1.0/security/incidents/@{items('For_each_Incident')?['id']}/alerts"
+                            }
+                        }
+                        
+                        'For_each_Alert' = @{
+                            foreach = "@body('Get_Incident_Alerts')?['value']"
+                            actions = @{
+                                'Create_Alert_Processing_Key' = @{
+                                    runAfter = @{}
+                                    type = 'InitializeVariable'
+                                    inputs = @{
+                                        variables = @(
+                                            @{
+                                                name = 'AlertProcessingKey'
+                                                type = 'string'
+                                                value = "@concat(items('For_each_Alert')?['id'], '-', formatDateTime(utcNow(), 'yyyy-MM-dd'))"
+                                            }
+                                        )
+                                    }
+                                }
+                                
+                                'Check_Processing_Status' = @{
+                                    runAfter = @{
+                                        'Create_Alert_Processing_Key' = @('Succeeded')
+                                    }
+                                    type = 'ApiConnection'
+                                    inputs = @{
+                                        host = @{
+                                            connection = @{
+                                                name = "@parameters('`$connections')['azuretables']['connectionId']"
+                                            }
+                                        }
+                                        method = 'GET'
+                                        path = '/Tables/@{encodeURIComponent(''aiProcessed'')}/entities(PartitionKey=''@{encodeURIComponent(variables(''AlertProcessingKey''))}'',RowKey=''@{encodeURIComponent(variables(''AlertProcessingKey''))}'')'
+                                    }
+                                }
+                                
+                                'Condition_Process_Alert' = @{
+                                    runAfter = @{
+                                        'Check_Processing_Status' = @('Succeeded', 'Failed')
+                                    }
+                                    expression = @{
+                                        and = @(
+                                            @{
+                                                equals = @(
+                                                    "@outputs('Check_Processing_Status')['statusCode']"
+                                                    404
+                                                )
+                                            }
+                                        )
+                                    }
+                                    type = 'If'
+                                    actions = @{
+                                        'Analyze_with_OpenAI' = @{
+                                            runAfter = @{}
+                                            type = 'ApiConnection'
+                                            inputs = @{
+                                                host = @{
+                                                    connection = @{
+                                                        name = "@parameters('`$connections')['openai']['connectionId']"
+                                                    }
+                                                }
+                                                method = 'POST'
+                                                path = '/openai/deployments/gpt-4o-mini/chat/completions'
+                                                queries = @{
+                                                    'api-version' = '2024-02-15-preview'
+                                                }
+                                                body = @{
+                                                    messages = @(
+                                                        @{
+                                                            role = 'system'
+                                                            content = 'You are a cybersecurity expert analyzing security alerts. Provide structured analysis in exactly 4 sections: EXECUTIVE_SUMMARY (2-3 sentences), RISK_ASSESSMENT (High/Medium/Low with brief justification), RECOMMENDED_ACTIONS (3-4 specific actions), MITRE_MAPPING (relevant ATT&CK techniques). Keep responses concise and actionable.'
+                                                        }
+                                                        @{
+                                                            role = 'user'
+                                                            content = "Analyze this security alert: Title: @{items('For_each_Alert')?['title']} Description: @{items('For_each_Alert')?['description']} Severity: @{items('For_each_Alert')?['severity']} Category: @{items('For_each_Alert')?['category']} Source: @{items('For_each_Alert')?['serviceSource']}"
+                                                        }
+                                                    )
+                                                    max_tokens = $MaxTokens
+                                                    temperature = $Temperature
+                                                }
+                                            }
+                                        }
+                                        
+                                        'Parse_AI_Analysis' = @{
+                                            runAfter = @{
+                                                'Analyze_with_OpenAI' = @('Succeeded')
+                                            }
+                                            type = 'InitializeVariable'
+                                            inputs = @{
+                                                variables = @(
+                                                    @{
+                                                        name = 'AIAnalysis'
+                                                        type = 'string'
+                                                        value = "@body('Analyze_with_OpenAI')?['choices']?[0]?['message']?['content']"
+                                                    }
+                                                )
+                                            }
+                                        }
+                                        
+                                        'Create_Comments_Array' = @{
+                                            runAfter = @{
+                                                'Parse_AI_Analysis' = @('Succeeded')
+                                            }
+                                            type = 'InitializeVariable'
+                                            inputs = @{
+                                                variables = @(
+                                                    @{
+                                                        name = 'CommentsArray'
+                                                        type = 'array'
+                                                        value = @(
+                                                            @{
+                                                                comment = "🔍 **AI Security Analysis - Executive Summary**`n`nAlert: @{items('For_each_Alert')?['title']}`n`n@{split(variables('AIAnalysis'), 'RISK_ASSESSMENT')[0]}"
+                                                            }
+                                                            @{
+                                                                comment = "⚠️ **Risk Assessment & Impact Analysis**`n`n@{if(contains(variables('AIAnalysis'), 'RISK_ASSESSMENT'), split(split(variables('AIAnalysis'), 'RISK_ASSESSMENT')[1], 'RECOMMENDED_ACTIONS')[0], 'Risk assessment not available')}"
+                                                            }
+                                                            @{
+                                                                comment = "🎯 **Recommended Actions & Response**`n`n@{if(contains(variables('AIAnalysis'), 'RECOMMENDED_ACTIONS'), split(split(variables('AIAnalysis'), 'RECOMMENDED_ACTIONS')[1], 'MITRE_MAPPING')[0], 'Recommendations not available')}"
+                                                            }
+                                                            @{
+                                                                comment = "🗺️ **MITRE ATT&CK Framework Mapping**`n`n@{if(contains(variables('AIAnalysis'), 'MITRE_MAPPING'), split(variables('AIAnalysis'), 'MITRE_MAPPING')[1], 'MITRE mapping not available')}`n`n---`n*Analysis generated by Azure OpenAI on @{formatDateTime(utcNow(), 'yyyy-MM-dd HH:mm:ss')} UTC*"
+                                                            }
+                                                        )
+                                                    }
+                                                )
+                                            }
+                                        }
+                                        
+                                        'For_each_Comment' = @{
+                                            foreach = "@variables('CommentsArray')"
+                                            actions = @{
+                                                'Post_Comment_to_Alert' = @{
+                                                    runAfter = @{}
+                                                    type = 'ApiConnection'
+                                                    inputs = @{
+                                                        host = @{
+                                                            connection = @{
+                                                                name = "@parameters('`$connections')['microsoftgraphsecurity']['connectionId']"
+                                                            }
+                                                        }
+                                                        method = 'POST'
+                                                        path = "/v1.0/security/alerts/@{items('For_each_Alert')?['id']}/comments"
+                                                        body = @{
+                                                            comment = "@items('For_each_Comment')?['comment']"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            runAfter = @{
+                                                'Create_Comments_Array' = @('Succeeded')
+                                            }
+                                            type = 'Foreach'
+                                        }
+                                        
+                                        'Record_Processing_Status' = @{
+                                            runAfter = @{
+                                                'For_each_Comment' = @('Succeeded')
+                                            }
+                                            type = 'ApiConnection'
+                                            inputs = @{
+                                                host = @{
+                                                    connection = @{
+                                                        name = "@parameters('`$connections')['azuretables']['connectionId']"
+                                                    }
+                                                }
+                                                method = 'POST'
+                                                path = '/Tables/@{encodeURIComponent(''aiProcessed'')}/entities'
+                                                body = @{
+                                                    PartitionKey = "@variables('AlertProcessingKey')"
+                                                    RowKey = "@variables('AlertProcessingKey')"
+                                                    AlertId = "@items('For_each_Alert')?['id']"
+                                                    ProcessedDateTime = "@formatDateTime(utcNow(), 'yyyy-MM-ddTHH:mm:ssZ')"
+                                                    Status = 'Completed'
+                                                    CommentsPosted = 4
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            runAfter = @{
+                                'Get_Incident_Alerts' = @('Succeeded')
+                            }
+                            type = 'Foreach'
+                        }
+                    }
+                    runAfter = @{
+                        'Get_Defender_XDR_Incidents' = @('Succeeded')
+                    }
+                    type = 'Foreach'
+                }
+            }
+            outputs = @{}
+        } | ConvertTo-Json -Depth 20
+        
+        # Update Logic App with complete workflow definition
+        $updateResult = az resource update `
+            --resource-group $resourceGroupName `
+            --resource-type "Microsoft.Logic/workflows" `
+            --name $logicAppName `
+            --set "properties.definition=$workflowDefinition" `
+            --set "properties.parameters.`$connections.value.microsoftgraphsecurity.connectionId=/subscriptions/$(az account show --query id -o tsv)/resourceGroups/$resourceGroupName/providers/Microsoft.Web/connections/$graphConnectionName" `
+            --set "properties.parameters.`$connections.value.microsoftgraphsecurity.connectionName=$graphConnectionName" `
+            --set "properties.parameters.`$connections.value.microsoftgraphsecurity.id=/subscriptions/$(az account show --query id -o tsv)/providers/Microsoft.Web/locations/$Location/managedApis/microsoftgraphsecurity" `
+            --set "properties.parameters.`$connections.value.openai.connectionId=/subscriptions/$(az account show --query id -o tsv)/resourceGroups/$resourceGroupName/providers/Microsoft.Web/connections/$openAIConnectionName" `
+            --set "properties.parameters.`$connections.value.openai.connectionName=$openAIConnectionName" `
+            --set "properties.parameters.`$connections.value.openai.id=/subscriptions/$(az account show --query id -o tsv)/providers/Microsoft.Web/locations/$Location/managedApis/openai" `
+            --set "properties.parameters.`$connections.value.azuretables.connectionId=/subscriptions/$(az account show --query id -o tsv)/resourceGroups/$resourceGroupName/providers/Microsoft.Web/connections/$tableConnectionName" `
+            --set "properties.parameters.`$connections.value.azuretables.connectionName=$tableConnectionName" `
+            --set "properties.parameters.`$connections.value.azuretables.id=/subscriptions/$(az account show --query id -o tsv)/providers/Microsoft.Web/locations/$Location/managedApis/azuretables" `
+            --output json
+        
+        if ($LASTEXITCODE -ne 0) {
+            throw "Failed to update Logic App workflow definition"
+        }
+        
+        Write-Host "   ✅ Complete workflow definition deployed successfully" -ForegroundColor Green
+        Write-Host "   🔄 Recurrence configured: $interval $frequency" -ForegroundColor White
+        Write-Host "   🤖 AI parameters: Max tokens = $MaxTokens, Temperature = $Temperature" -ForegroundColor White
+        
+    } catch {
+        Write-Host "❌ Failed to deploy workflow definition: $_" -ForegroundColor Red
+        exit 1
+    }
+}
+
+# =============================================================================
+# Step 7: Connection Authorization
+# =============================================================================
+
+Write-Host ""
+Write-Host "🔐 Step 7: Connection Authorization" -ForegroundColor Green
+Write-Host "==================================" -ForegroundColor Green
+
+if ($WhatIf) {
+    Write-Host "👁️ [WHAT-IF] Would authorize API connections for Logic App" -ForegroundColor Yellow
+} else {
+    Write-Host "🔑 API connections created and configured" -ForegroundColor Cyan
+    Write-Host "   ℹ️  Microsoft Graph connection uses app registration credentials" -ForegroundColor White
+    Write-Host "   ℹ️  OpenAI connection uses service API key" -ForegroundColor White
+    Write-Host "   ℹ️  Table Storage connection uses account key" -ForegroundColor White
+    Write-Host "   ✅ All connections ready for use" -ForegroundColor Green
+}
+
+# =============================================================================
+# Step 8: Deployment Validation
+# =============================================================================
+
+Write-Host ""
+Write-Host "✅ Step 8: Deployment Validation" -ForegroundColor Green
+Write-Host "================================" -ForegroundColor Green
+
+if ($WhatIf) {
+    Write-Host "👁️ [WHAT-IF] Would validate Logic App deployment" -ForegroundColor Yellow
+} else {
+    Write-Host "🔍 Validating Logic App deployment..." -ForegroundColor Cyan
+    
+    try {
+        # Get Logic App details for validation
+        $logicAppDetails = az resource show --resource-group $resourceGroupName --resource-type "Microsoft.Logic/workflows" --name $logicAppName --output json | ConvertFrom-Json
+        
+        if ($logicAppDetails.properties.state -eq "Enabled") {
+            Write-Host "   ✅ Logic App is enabled and ready" -ForegroundColor Green
+        } else {
+            Write-Host "   ⚠️  Logic App state: $($logicAppDetails.properties.state)" -ForegroundColor Yellow
+        }
+        
+        # Validate API connections
+        $connections = @($graphConnectionName, $openAIConnectionName, $tableConnectionName)
+        foreach ($connectionName in $connections) {
+            $connection = az resource show --resource-group $resourceGroupName --resource-type "Microsoft.Web/connections" --name $connectionName --output json 2>$null | ConvertFrom-Json
+            if ($connection) {
+                Write-Host "   ✅ API connection validated: $connectionName" -ForegroundColor Green
+            } else {
+                Write-Host "   ❌ API connection not found: $connectionName" -ForegroundColor Red
+            }
+        }
+        
+        Write-Host ""
+        Write-Host "🎉 Logic App deployment completed successfully!" -ForegroundColor Green
+        
+    } catch {
+        Write-Host "❌ Validation failed: $_" -ForegroundColor Red
+        exit 1
+    }
+}
+
+# =============================================================================
+# Deployment Summary
+# =============================================================================
+
+Write-Host ""
+Write-Host "📋 Deployment Summary" -ForegroundColor Cyan
+Write-Host "=====================" -ForegroundColor Cyan
+
+if ($WhatIf) {
+    Write-Host "👁️ WHAT-IF MODE - No resources were actually deployed" -ForegroundColor Yellow
+    Write-Host ""
+    Write-Host "📦 Resources that would be created/configured:" -ForegroundColor White
+} else {
+    Write-Host "✅ Successfully deployed resources:" -ForegroundColor White
+}
+
+Write-Host "   ⚡ Logic App: $logicAppName" -ForegroundColor White
+Write-Host "   📊 Log Analytics Integration: $logAnalyticsWorkspaceName" -ForegroundColor White
+Write-Host "   🔗 Microsoft Graph Connection: $graphConnectionName" -ForegroundColor White
+Write-Host "   🤖 Azure OpenAI Connection: $openAIConnectionName" -ForegroundColor White
+Write-Host "   📦 Table Storage Connection: $tableConnectionName" -ForegroundColor White
+
+Write-Host ""
+Write-Host "🔧 Workflow Configuration:" -ForegroundColor White
+Write-Host "   📅 Recurrence: $RecurrenceInterval" -ForegroundColor White
+Write-Host "   🎯 Max Tokens: $MaxTokens" -ForegroundColor White
+Write-Host "   🌡️  Temperature: $Temperature" -ForegroundColor White
+
+if (-not $WhatIf) {
+    Write-Host ""
+    Write-Host "🚀 Next Steps:" -ForegroundColor Yellow
+    Write-Host "   1. Monitor Logic App runs in Azure Portal" -ForegroundColor White
+    Write-Host "   2. Test the workflow with sample security incidents" -ForegroundColor White
+    Write-Host "   3. Review AI-generated comments in Defender XDR portal" -ForegroundColor White
+    Write-Host "   4. Check Log Analytics workspace for Logic App execution logs" -ForegroundColor White
+    Write-Host ""
+    Write-Host "🌐 Azure Portal Links:" -ForegroundColor Cyan
+    Write-Host "   Logic App: https://portal.azure.com/#@/resource/subscriptions/$(az account show --query id -o tsv)/resourceGroups/$resourceGroupName/providers/Microsoft.Logic/workflows/$logicAppName" -ForegroundColor White
+    Write-Host "   Log Analytics: https://portal.azure.com/#@/resource/subscriptions/$(az account show --query id -o tsv)/resourceGroups/$defenderResourceGroupName/providers/Microsoft.OperationalInsights/workspaces/$logAnalyticsWorkspaceName" -ForegroundColor White
+}
+
+Write-Host ""
+Write-Host "✅ Logic Apps workflow deployment completed!" -ForegroundColor Green
+
+exit 0

@@ -1,6 +1,6 @@
 # AI Skilling Roadmap – Marcus Jacobson
 
-Welcome to the AI Skilling Roadmap repository! This project outlines a **9-week journey** to build deep, hands-on expertise in secure AI deployment, Microsoft Security tools, and Copilot integration. It aligns with Microsoft's AI Transformation strategy and EAG Security's FY26 objectives, with a strong emphasis on practical delivery, governance, and reusable prompt engineering.
+Welcome to the AI Skilling Roadmap repository! This project outlines a **10-week journey** to build deep, hands-on expertise in secure AI deployment, Microsoft Security tools, and Copilot integration. It aligns with Microsoft's AI Transformation strategy and EAG Security's FY26 objectives, with a strong emphasis on practical delivery, governance, and reusable prompt engineering.
 
 ## 🌍 **Important: Regional Deployment Guidance**
 
@@ -24,30 +24,31 @@ Welcome to the AI Skilling Roadmap repository! This project outlines a **9-week 
 - Develop and publish reusable prompt libraries and deployment guides.
 - Share learnings and artifacts incrementally to support internal enablement and customer delivery.
 
-## 🎯 **9-Week Learning Path Structure**
+## 🎯 **10-Week Learning Path Structure**
 
 This roadmap has been optimized for working professionals with a logical progression through **4 distinct phases**:
 
-### **Phase 1: Security Infrastructure Foundations (Weeks 1-3)**
+### **Phase 1: Security Infrastructure Foundations (Weeks 1-4)**
 
 - **Week 1**: Master Defender for Cloud deployment mastery with modern unified security operations foundation
-- **Week 2**: Implement AI integration and enhanced security operations platform
-- **Week 3**: Deploy advanced XDR + Security Copilot integration
+- **Week 2**: Implement AI foundation and secure model deployment with cost optimization
+- **Week 3**: Deploy AI-driven security operations automation through Defender XDR integration
+- **Week 4**: Advanced XDR + Security Copilot integration with enterprise-grade security operations
 
-### **Phase 2: Data Governance & Analytics (Weeks 4-5)**
+### **Phase 2: Data Governance & Analytics (Weeks 5-6)**
 
-- **Week 4**: Microsoft Purview for comprehensive data governance
-- **Week 5**: Microsoft Priva and responsible AI governance frameworks
+- **Week 5**: Microsoft Purview for comprehensive data governance
+- **Week 6**: Microsoft Priva and responsible AI governance frameworks
 
-### **Phase 3: Advanced Analytics & AI Development (Weeks 6-7)**
+### **Phase 3: Advanced Analytics & AI Development (Weeks 7-8)**
 
-- **Week 6**: Microsoft Fabric for secure analytics and data pipelines
-- **Week 7**: Azure AI Foundry and secure AI workload deployment
+- **Week 7**: Microsoft Fabric for secure analytics and data pipelines
+- **Week 8**: Azure AI Foundry and secure AI workload deployment
 
-### **Phase 4: Applied AI & Enterprise Delivery (Weeks 8-9)**
+### **Phase 4: Applied AI & Enterprise Delivery (Weeks 9-10)**
 
-- **Week 8**: Copilot Studio for security agents and AI automation
-- **Week 9**: Secure Copilot deployment and comprehensive delivery practices
+- **Week 9**: Copilot Studio for security agents and AI automation
+- **Week 10**: Secure Copilot deployment and comprehensive delivery practices
 
 ## ⚡ **Key Benefits of This Structure**
 
@@ -75,14 +76,15 @@ As project weeks are completed, the **Completed** checkbox will be marked.
 |------|------------|--------|
 | 0 | [Project Setup & Admin](./00%20-%20Project%20Setup%20&%20Admin/README.md) | [x] |
 | 1 | [Defender for Cloud Deployment Mastery](./01%20-%20Defender%20for%20Cloud%20Deployment%20Mastery/README.md) | [x] |
-| 2 | [AI Integration & Enhanced Security Operations](./02%20-%20AI%20Integration%20&%20Enhanced%20Security%20Operations/README.md) | [🔄] |
-| 3 | [Defender XDR + Security Copilot Integration](./03%20-%20Defender%20XDR%20+%20Security%20Copilot%20Integration/README.md) | [ ] |
-| 4 | [Microsoft Purview for Data Governance](./04%20-%20Microsoft%20Purview%20for%20Data%20Governance/README.md) | [ ] |
-| 5 | [Microsoft Priva and Responsible AI](./05%20-%20Microsoft%20Priva%20and%20Responsible%20AI/README.md) | [ ] |
-| 6 | [Microsoft Fabric for Secure Analytics](./06%20-%20Microsoft%20Fabric%20for%20Secure%20Analytics/README.md) | [ ] |
-| 7 | [Azure AI Foundry & Secure AI Workloads](./07%20-%20Azure%20AI%20Foundry%20&%20Secure%20AI%20Workloads/README.md) | [ ] |
-| 8 | [Copilot Studio for Security Agents](./08%20-%20Copilot%20Studio%20for%20Security%20Agents/README.md) | [ ] |
-| 9 | [Secure Copilot Deployment & Delivery Practices](./09%20-%20Secure%20Copilot%20Deployment%20&%20Delivery%20Practices/README.md) | [ ] |
+| 2 | [AI Foundation & Secure Model Deployment](./02%20-%20AI%20Foundation%20&%20Secure%20Model%20Deployment/README.md) | [🔄] |
+| 3 | [AI-Driven Security Operations Automation](./03%20-%20AI-Driven%20Security%20Operations%20Automation/README.md) | [ ] |
+| 4 | [Advanced XDR + Security Copilot Integration](./04%20-%20Defender%20XDR%20+%20Security%20Copilot%20Integration/README.md) | [ ] |
+| 5 | [Microsoft Purview for Data Governance](./05%20-%20Microsoft%20Purview%20for%20Data%20Governance/README.md) | [ ] |
+| 6 | [Microsoft Priva and Responsible AI](./06%20-%20Microsoft%20Priva%20and%20Responsible%20AI/README.md) | [ ] |
+| 7 | [Microsoft Fabric for Secure Analytics](./07%20-%20Microsoft%20Fabric%20for%20Secure%20Analytics/README.md) | [ ] |
+| 8 | [Azure AI Foundry & Secure AI Workloads](./08%20-%20Azure%20AI%20Foundry%20&%20Secure%20AI%20Workloads/README.md) | [ ] |
+| 9 | [Copilot Studio for Security Agents](./09%20-%20Copilot%20Studio%20for%20Security%20Agents/README.md) | [ ] |
+| 10 | [Secure Copilot Deployment & Delivery Practices](./10%20-%20Secure%20Copilot%20Deployment%20&%20Delivery%20Practices/README.md) | [ ] |
 
 ## 🚀 Enhanced Setup and Validation Tools
 
@@ -159,7 +161,7 @@ The project includes comprehensive automation and validation tools to ensure rel
 - **[Parameters File Style Guide](../../Style%20Guides/parameters-file-style-guide.md)** standardization for Infrastructure-as-Code configuration
 - **Comprehensive AI-Assisted Content Attribution** - Transparency in AI tool usage for content generation
 
-This enhanced tooling ensures reliable setup, deployment success, and professional-grade automation throughout the 9-week learning journey.
+This enhanced tooling ensures reliable setup, deployment success, and professional-grade automation throughout the 10-week learning journey.
 
 ## 🎉 Recent Achievements and Updates
 

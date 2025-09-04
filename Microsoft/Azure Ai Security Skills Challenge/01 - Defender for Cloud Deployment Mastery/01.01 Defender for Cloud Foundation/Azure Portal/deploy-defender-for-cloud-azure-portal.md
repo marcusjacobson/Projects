@@ -1911,7 +1911,7 @@ After successful Defender for Cloud deployment via Azure Portal:
 - Document Defender for Cloud's response to simulated threats.
 - Capture screenshots and analysis for documentation.
 
-### Prepare for Week 2 - AI Integration & Enhanced Security Operations
+### Prepare for Week 2 - AI Foundation & Secure Model Deployment
 
 #### Defender XDR Foundation
 
@@ -1927,7 +1927,7 @@ After successful Defender for Cloud deployment via Azure Portal:
 
 ### Resources for Continuation
 
-- [Week 2: AI Integration & Enhanced Security Operations](../../../../02%20-%20AI%20Integration%20&%20Enhanced%20Security%20Operations/README.md)
+- [Week 2: AI Foundation & Secure Model Deployment](../../../../02%20-%20AI%20Foundation%20&%20Secure%20Model%20Deployment/README.md)
 - [Main Project Roadmap](../../../../README.md)
 - [Prompt Library Template](../../../../Prompt-Library/README.md)
 

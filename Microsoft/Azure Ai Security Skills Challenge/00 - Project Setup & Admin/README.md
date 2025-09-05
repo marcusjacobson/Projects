@@ -1,309 +1,152 @@
-# Week 00 – Project Setup & Lab Environment Preparation
+# Week 00 – Project Setup & Administration
 
-This foundational setup guide ensures you have all prerequisites configured for the **9-week Azure AI Security Skills Challenge**. Complete this comprehensive setup before starting Week 1 to ensure optimal deployment capabilities and learning outcomes throughout the entire program.
+This week establishes the foundation for the Azure AI Security Skills Challenge by setting up the development environment, validating prerequisites, and ensuring readiness for advanced security and AI service deployments in subsequent weeks.
 
-## 🎯 Setup Objectives
+## 🌍 Program Overview
 
-Upon completion of this setup guide, you will have:
+**9-Week Azure AI Security Skills Challenge**: Comprehensive learning journey combining Azure security services, AI integration, and enterprise automation patterns through hands-on deployment and configuration experience.
 
-- **Authenticated Azure development environment** with CLI and PowerShell integration.
-- **Visual Studio Code** optimized for Azure Infrastructure-as-Code development.
-- **Validated subscription permissions** for security service deployments across all weeks.
-- **Regional deployment readiness** for East US (mandatory for complete AI service availability).
-- **Infrastructure deployment validation** through comprehensive testing scripts.
+**Foundation Week Focus**: Environment preparation, tool installation, authentication setup, and readiness validation to ensure successful progression through advanced security and AI modules.
 
-## 🚨 Critical Prerequisites
+## 🎯 Objectives
 
-### Azure Subscription Requirements
+- Establish comprehensive Azure development environment with required tools and authentication.
+- Validate Azure subscription access, permissions, and regional requirements for East US deployments.
+- Configure development tools including Azure CLI, PowerShell, Visual Studio Code, and Bicep CLI.
+- Execute comprehensive environment validation and readiness testing procedures.
+- Document troubleshooting procedures and establish support resources for ongoing technical challenges.
+- Prepare foundation infrastructure for Week 1 Microsoft Defender for Cloud deployments.
 
-#### Before Beginning Any Week
+## 📁 Deliverables
 
-Verify your Azure subscription meets these mandatory requirements:
+- **Complete Development Environment**: Azure CLI, PowerShell modules, VS Code extensions, and Bicep tooling.
+- **Authenticated Azure Access**: Validated connectivity to Azure services with appropriate subscription permissions.
+- **Regional Compliance**: East US region access confirmed for optimal AI service availability in later weeks.
+- **Environment Validation**: Comprehensive testing results confirming readiness for advanced module deployments.
+- **Troubleshooting Resources**: Complete documentation and support escalation procedures.
+- **Cost Management Foundation**: Basic budget and monitoring setup for curriculum resource management.
 
-- **Active Azure Subscription** with sufficient credits/budget for 9-week learning path.
-- **Subscription-level permissions**: **Owner** or **Contributor** role (required for Microsoft Defender deployments, AI services, and security configurations).
-- **East US regional access**: Confirmed availability for unified security operations and complete AI service ecosystem.
-- **Service quotas**: Standard quotas for compute, storage, and Cognitive Services (validated through provided scripts).
+## ✅ Checklist
 
-> **💰 Cost Management**: Each individual week includes specific cost analysis, optimization strategies, and budget guidance tailored to that week's deployments.
+### Core Setup Modules
 
-### Development Environment Foundation
+- [ ] **[Prerequisites & Environment Validation](./00.01%20Prerequisites%20&%20Environment%20Validation/README.md)** - Verify Azure subscription access, permissions, and regional requirements.
+- [ ] **[Development Environment Setup](./00.02%20Development%20Environment%20Setup/README.md)** - Install and configure Azure CLI, PowerShell, Visual Studio Code, and essential extensions.
+- [ ] **[Azure Cost Fundamentals & Budget Setup](./00.03%20Azure%20Cost%20Fundamentals%20&%20Budget%20Setup/README.md)** - Configure budget controls, cost monitoring, and resource lifecycle management.
+- [ ] **[Troubleshooting & Resources](./00.04%20Troubleshooting%20&%20Resources/README.md)** - Access essential troubleshooting guidance and support resources for foundational setup.
+- [ ] **[Week 00 to Week 1 Bridge](./00.05%20Week%2000%20to%20Week%201%20Bridge/README.md)** - Validate environment readiness and prepare for Defender for Cloud deployment.
 
-## 🛠️ Installation Guide
+> **📋 Week 00 Complete**: After completing all modules and passing validation tests, proceed to Week 1 for Microsoft Defender for Cloud deployment mastery.
 
-### Step 1: Azure CLI Installation and Configuration
+## 📂 Project Organization
 
-**Install Azure CLI** (version 2.76.0 or later required for all project deployments):
+Week 00 follows the established modular structure for consistent learning experience:
 
-#### Windows Installation
-
-```powershell
-# Download and install Azure CLI
-Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi
-Start-Process msiexec.exe -ArgumentList '/I', 'AzureCLI.msi', '/quiet'
+```text
+00 - Project Setup & Admin/
+├── README.md                                          # Navigation and overview
+├── Scripts/
+│   ├── scripts-deployment/
+│   │   └── Install-DevelopmentEnvironment.ps1        # Automated installation script
+│   └── scripts-validation/
+│       ├── Test-AzureEnvironment.ps1                 # Azure environment validation
+│       └── Test-EnvironmentValidation.ps1            # Comprehensive validation script
+├── 00.01 Prerequisites & Environment Validation/
+│   └── README.md                                      # Azure subscription and service validation
+├── 00.02 Development Environment Setup/
+│   ├── README.md                                      # Tool installation and configuration
+│   └── development-environment-setup.md              # Manual installation guide
+├── 00.03 Azure Cost Fundamentals & Budget Setup/
+│   ├── README.md                                      # Cost management navigation
+│   └── azure-cost-management-setup-guide.md         # Comprehensive cost setup guide
+├── 00.04 Troubleshooting & Resources/
+│   └── README.md                                      # Essential troubleshooting and support resources
+└── 00.05 Week 00 to Week 1 Bridge/
+    └── README.md                                      # Environment readiness validation and Week 1 preparation
 ```
 
-#### Verify Installation
+## 🌟 Learning Path Integration
 
-```powershell
-az version
-az --help
-```
+### Week 00 Foundation Preparation
 
-#### Initial Authentication
+This setup week prepares the environment for:
 
-```powershell
-# Authenticate to Azure (opens browser for interactive login)
-az login
+**Week 01**: [Defender for Cloud Deployment Foundation](../01%20-%20Defender%20for%20Cloud%20Deployment%20Foundation/README.md)
 
-# Set default subscription (replace with your subscription ID)
-az account set --subscription "your-subscription-id"
+- Security infrastructure foundation
+- Baseline monitoring and logging
+- Resource group and networking prerequisites
 
-# Verify current context
-az account show --output table
-```
+**Week 02**: [AI Foundation & Secure Model Deployment](../02%20-%20AI%20Foundation%20&%20Secure%20Model%20Deployment/README.md)  
 
-### Step 2: PowerShell Module Configuration
+- Azure OpenAI service prerequisites
+- Storage account foundations for AI workloads
+- Cost management for AI services
 
-#### Install Azure PowerShell Module
+**Weeks 03-10**: Advanced AI security integration, automation, and enterprise deployment patterns building upon the foundation established in Week 00.
 
-```powershell
-# Install Az module (required for all PowerShell deployment scripts)
-Install-Module -Name Az -Repository PSGallery -Force -AllowClobber
+### Regional Requirements
 
-# Import the module
-Import-Module Az
+**⚠️ CRITICAL**: East US region is mandatory throughout the curriculum for:
 
-# Authenticate PowerShell to Azure
-Connect-AzAccount
+- Complete Azure OpenAI service availability (GPT models, pricing optimization)
+- Microsoft Sentinel advanced analytics features (UEBA, Fusion detection)
+- Security Copilot integration capabilities (later weeks)
+- Optimal cost management with consolidated regional deployment
 
-# Verify PowerShell authentication
-Get-AzContext
-Get-AzSubscription
-```
+## 🚀 Quick Start Guide
 
-### Step 3: Visual Studio Code Setup for Azure Development
+### Rapid Environment Setup
 
-**Install Visual Studio Code** with Azure-optimized extensions:
+For experienced Azure administrators seeking quick setup:
 
-#### Required Extensions for Infrastructure-as-Code
+1. **Module 00.01**: Validate subscription permissions and East US access
+2. **Module 00.02**: Run automated installation script: `.\Scripts\scripts-deployment\Install-DevelopmentEnvironment.ps1`
+3. **Module 00.05**: Execute bridge validation: Complete [Week 00 to Week 1 Bridge](./00.05%20Week%2000%20to%20Week%201%20Bridge/README.md)
+4. **Proceed to Week 1** upon successful validation
 
-- **Azure Resource Manager Tools** - ARM/Bicep template support.
-- **Bicep** - Azure Bicep language support and validation.
-- **Azure CLI Tools** - Integrated Azure CLI commands.
-- **PowerShell** - Enhanced PowerShell development experience.
-- **Azure Account** - Azure subscription management.
-- **GitLens** - Enhanced Git integration for repository management.
+### Comprehensive Learning Path
 
-#### Install Extensions via Command Line
+For thorough understanding and skill development:
 
-```powershell
-code --install-extension ms-vscode.azure-account
-code --install-extension ms-azuretools.vscode-azureresourcemanager
-code --install-extension ms-azuretools.vscode-bicep
-code --install-extension ms-vscode.azurecli
-code --install-extension ms-vscode.powershell
-code --install-extension eamodio.gitlens
-```
+1. **Complete each module sequentially** following the checklist
+2. **Review all documentation** for comprehensive understanding
+3. **Execute manual procedures** alongside automation for learning reinforcement
+4. **Document configuration** for troubleshooting reference
 
-#### Configure VS Code Settings for Azure Development
+## 🎯 Success Metrics
 
-Create or update VS Code settings (`Ctrl+,` → Open Settings JSON):
+### Environment Readiness Criteria
 
-```json
-{
-    "bicep.lint.rules": {
-        "no-unused-params": "off",
-        "secure-parameter-default": "off"
-    },
-    "powershell.codeFormatting.autoCorrectAliases": true,
-    "powershell.codeFormatting.useCorrectCasing": true,
-    "azure.resourceGroups.enableGroupBySubscription": true,
-    "azure.cloudEnvironment": "AzureCloud"
-}
-```
+**Technical Validation**:
 
-### Step 4: Git Configuration and Repository Setup
+- [ ] Azure CLI authenticated with East US default region
+- [ ] PowerShell Az modules imported with subscription context
+- [ ] Visual Studio Code configured with 6+ Azure extensions
+- [ ] Bicep CLI operational with template compilation capability
+- [ ] All required resource providers registered and active
+- [ ] Comprehensive validation script passes with 100% success rate
 
-#### Configure Git for Project Management
+**Learning Outcomes**:
 
-```powershell
-# Set global Git configuration
-git config --global user.name "Your Name"
-git config --global user.email "your.email@domain.com"
+- [ ] Understanding of Azure authentication patterns and multi-service integration
+- [ ] Proficiency with Infrastructure-as-Code tooling and development workflows
+- [ ] Familiarity with Azure security service prerequisites and dependencies
+- [ ] Competency in troubleshooting common development environment issues
 
-# Verify configuration
-git config --list
-```
+## 🔄 Next Steps
 
-## ✅ Environment Validation
+Upon successful completion of Week 00:
 
-### Automated PowerShell Scripts
-
-This setup guide includes comprehensive PowerShell scripts for automated installation and validation. All scripts follow the project's PowerShell style guide and provide detailed feedback and error handling.
-
-#### Available Scripts
-
-- **`Install-DevelopmentEnvironment.ps1`** - Automated installation of Azure CLI, PowerShell modules, and VS Code extensions.
-- **`Test-EnvironmentValidation.ps1`** - Comprehensive environment validation with detailed reporting.
-
-### Environment Validation
-
-#### Run the Comprehensive Validation Script
-
-```powershell
-# Navigate to the scripts directory
-cd "scripts"
-
-# Run complete environment validation
-.\Test-EnvironmentValidation.ps1 -DetailedOutput
-
-# Export validation results for documentation
-.\Test-EnvironmentValidation.ps1 -ExportResults
-```
-
-#### Automated Installation Option for New Environments
-
-For new environment setup, use the installation script:
-
-```powershell
-# Complete automated installation
-.\Install-DevelopmentEnvironment.ps1
-
-# Selective installation (skip components already installed)
-.\Install-DevelopmentEnvironment.ps1 -SkipAzureCLI -SkipAuthentication
-```
-
-> **📁 Script Documentation**: See [scripts/README.md](scripts/README.md) for detailed documentation, parameters, and troubleshooting guidance for all PowerShell automation scripts.
-
-## 🎯 Regional Configuration
-
-### East US Region Requirement
-
-#### East US Regional Requirements
-
-All weeks require East US region for:
-
-- **Complete AI service availability** (Azure OpenAI, Cognitive Services).
-- **Unified security operations** (Microsoft Defender for Cloud integration).
-- **Consistent networking and connectivity** across all deployment phases.
-
-#### Verify Regional Access
-
-```powershell
-# Check available regions for your subscription
-az account list-locations --output table
-
-# Verify East US specific services
-az provider show --namespace Microsoft.CognitiveServices --query "resourceTypes[?resourceType=='accounts'].locations" --output table
-```
-
-## 🚀 Quick Start Validation
-
-### Final Readiness Check
-
-#### Before Proceeding to Week 1
-
-Confirm the following requirements:
-
-- [ ] Azure CLI authenticated and latest version installed.
-- [ ] PowerShell Az module installed and authenticated.
-- [ ] Visual Studio Code with Azure extensions configured.
-- [ ] East US region access verified.
-- [ ] Subscription permissions validated (Owner/Contributor).
-- [ ] Resource providers registered.
-- [ ] Environment validation script passes all tests.
-
-### Next Steps
-
-#### Upon Successful Completion
-
-Upon successful completion of this setup:
-
-1. **Proceed to Week 1**: [Defender for Cloud Deployment Mastery](../01%20-%20Defender%20for%20Cloud%20Deployment%20Mastery/README.md).
-2. **Join Learning Community**: Engage with other participants for support and knowledge sharing.
-
-## 🔧 Troubleshooting Guide
-
-### Common Issues and Solutions
-
-#### Azure CLI Authentication Problems
-
-```powershell
-# Clear cached credentials
-az logout
-az cache purge
-
-# Re-authenticate
-az login --use-device-code
-```
-
-#### PowerShell Module Import Issues
-
-```powershell
-# Uninstall and reinstall Az module
-Uninstall-Module -Name Az -AllVersions -Force
-Install-Module -Name Az -Force -AllowClobber
-Import-Module Az -Force
-```
-
-#### Visual Studio Code Extension Problems
-
-```powershell
-# Reset VS Code extensions
-code --disable-extensions
-code --list-extensions | ForEach-Object { code --uninstall-extension $_ }
-
-# Reinstall Azure extensions
-code --install-extension ms-vscode.azure-account
-# ... (repeat for all required extensions)
-```
-
-#### Regional Access Issues
-
-If East US is not available in your subscription:
-
-1. Contact Azure support to request regional access.
-2. Verify subscription type supports required services.
-3. Check organizational policies that might restrict regions.
-
-#### Quota and Limits Issues
-
-```powershell
-# Check current quotas
-az vm list-usage --location "East US" --output table
-
-# Request quota increases if needed
-az support tickets create \
-    --ticket-name "Quota Increase Request" \
-    --description "Increase VM quota for AI Security Skills Challenge"
-```
-
-## 📚 Additional Resources
-
-### Microsoft Documentation
-
-- **Azure CLI**: [Installation and Configuration Guide](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
-- **Azure PowerShell**: [Installation Guide](https://docs.microsoft.com/en-us/powershell/azure/install-az-ps)
-- **Bicep**: [Installation and Setup](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/install)
-- **Visual Studio Code**: [Azure Extensions](https://marketplace.visualstudio.com/search?target=VSCode&category=Azure)
-
-### Cost Management Resources
-
-- **Azure Cost Management**: [Cost optimization best practices](https://docs.microsoft.com/en-us/azure/cost-management-billing/)
-- **Azure Pricing Calculator**: [Estimate costs for planned deployments](https://azure.microsoft.com/en-us/pricing/calculator/)
-- **Azure Advisor**: [Cost optimization recommendations](https://docs.microsoft.com/en-us/azure/advisor/)
-
-### Learning Path Integration
-
-- **Microsoft Learn**: [Azure AI fundamentals](https://learn.microsoft.com/en-us/training/paths/get-started-with-artificial-intelligence-on-azure/)
-- **Security Documentation**: [Microsoft Defender for Cloud](https://docs.microsoft.com/en-us/azure/defender-for-cloud/)
-- **AI Services**: [Azure Cognitive Services](https://docs.microsoft.com/en-us/azure/cognitive-services/)
+1. **Proceed to Week 1**: [Defender for Cloud Deployment Foundation](../01%20-%20Defender%20for%20Cloud%20Deployment%20Foundation/README.md)
+2. **Document Environment**: Save configuration details and validation results
+3. **Join Learning Community**: Connect with other participants for support and knowledge sharing
+4. **Bookmark Resources**: Save troubleshooting and reference materials for ongoing curriculum
 
 ---
 
 ## 🤖 AI-Assisted Content Generation
 
-This comprehensive project setup guide was created with the assistance of **GitHub Copilot** powered by advanced AI language models. The content was generated, structured, and refined through iterative collaboration between human expertise and AI assistance within **Visual Studio Code**, incorporating extensive analysis of the 9-week Azure AI Security Skills Challenge curriculum, Azure deployment best practices, and enterprise-grade environment setup procedures.
+This comprehensive project setup and administration guide was created with the assistance of **GitHub Copilot** powered by advanced AI language models. The content was generated, structured, and refined through iterative collaboration between human expertise and AI assistance within **Visual Studio Code**, incorporating modular learning architecture, Azure development environment best practices, and enterprise-grade preparation procedures for the Azure AI Security Skills Challenge curriculum.
 
-*AI tools were used to enhance productivity and ensure comprehensive coverage of Azure development environment setup while maintaining technical accuracy and reflecting industry best practices for cloud security learning paths.*
+*AI tools were used to enhance productivity and ensure comprehensive coverage of foundation setup requirements while maintaining technical accuracy and reflecting current Azure development standards and educational best practices.*

@@ -20,16 +20,16 @@ This folder contains a comprehensive suite of PowerShell scripts for deploying, 
 
 ### Complete AI Foundation Deployment
 
-For a full end-to-end AI foundation deployment:
+For a full end-to-end AI foundation deployment across Week 2 modules:
 
 ```powershell
 # Complete deployment with preview
 cd "scripts\scripts-orchestration"
-.\Deploy-DefenderXDRIntegration.ps1 -EnvironmentName "aisec" -NotificationEmail "admin@company.com" -WhatIf
+.\Deploy-Week2Complete.ps1 -EnvironmentName "aisec" -NotificationEmail "admin@company.com" -WhatIf
 
-# Execute complete AI foundation deployment
+# Execute complete Week 2 orchestration (modules 02.02 & 02.03)
 cd "scripts\scripts-orchestration"
-.\Deploy-DefenderXDRIntegration.ps1 -EnvironmentName "aisec" -NotificationEmail "admin@company.com"
+.\Deploy-Week2Complete.ps1 -EnvironmentName "aisec" -NotificationEmail "admin@company.com"
 ```
 
 ### Modular Component Deployment
@@ -52,15 +52,14 @@ cd "scripts\scripts-deployment"
 
 | Script | Purpose | Key Features |
 |--------|---------|--------------|
-| **Deploy-DefenderXDRIntegration.ps1** | Complete XDR integration orchestrator | Multi-phase execution, Key Vault management, API connections |
+| **Deploy-Week2Complete.ps1** | Complete Week 2 module orchestrator | Multi-phase execution across modules 02.02 & 02.03, storage + OpenAI deployment, validation |
 
 ### 🏗️ Foundation Deployment Scripts (scripts-deployment/)
 
 | Script | Purpose | Key Features |
 |--------|---------|--------------|
-| **Deploy-StorageFoundation.ps1** | Deploy AI storage accounts | Cost-optimized storage, containers, lifecycle policies |
-| **Deploy-AIFoundation.ps1** | Complete AI foundation deployment | OpenAI service, storage, and monitoring integration |
-| **Deploy-OpenAIService.ps1** | Deploy Azure OpenAI service | GPT-4o-mini, cost-effective models, capacity controls |
+| **Deploy-StorageFoundation.ps1** | Deploy AI storage accounts | Cost-optimized storage, containers, lifecycle policies (Module 02.02) |
+| **Deploy-OpenAIService.ps1** | Deploy Azure OpenAI service | GPT-4o-mini, cost-effective models, capacity controls (Module 02.03) |
 | **Deploy-KeyVault.ps1** | Secure credential storage | OpenAI secrets, app registration credentials |
 | **Deploy-AppRegistration.ps1** | Entra ID app registration | Microsoft Graph permissions, secure authentication |
 | **Deploy-APIConnections.ps1** | Logic Apps API connections | OpenAI, Table Storage, Microsoft Graph integration |

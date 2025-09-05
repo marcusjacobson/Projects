@@ -7,6 +7,9 @@
     including model endpoint validation, security prompt testing, and integration
     verification with Log Analytics workspace.
 
+.PARAMETER UseParametersFile
+    Load configuration from main.parameters.json file instead of using individual parameters.
+
 .PARAMETER EnvironmentName
     Name for the AI environment. Used for resource identification. Default: "aisec"
 
@@ -16,8 +19,10 @@
 .PARAMETER TestEmbeddings
     Test text embedding model functionality.
 
-.PARAMETER Verbose
-    Enable detailed output for troubleshooting.
+.EXAMPLE
+    .\Test-OpenAIEndpoints.ps1 -UseParametersFile
+    
+    Load all configuration from main.parameters.json and test OpenAI endpoints.
 
 .EXAMPLE
     .\Test-OpenAIEndpoints.ps1 -EnvironmentName "aisec" -TestSecurityPrompts
@@ -41,6 +46,9 @@
 #>
 
 param(
+    [Parameter(Mandatory=$false, HelpMessage="Load configuration from parameters file")]
+    [switch]$UseParametersFile,
+    
     [Parameter(Mandatory=$false, HelpMessage="Name for the AI environment")]
     [string]$EnvironmentName = "aisec",
     
@@ -48,14 +56,34 @@ param(
     [switch]$TestSecurityPrompts,
     
     [Parameter(Mandatory=$false, HelpMessage="Test embedding model functionality")]
-    [switch]$TestEmbeddings,
-    
-    [Parameter(Mandatory=$false, HelpMessage="Enable detailed output")]
-    [switch]$Verbose
+    [switch]$TestEmbeddings
 )
 
+# Parameters file loading
+if ($UseParametersFile) {
+    $ParametersPath = Join-Path (Split-Path $PSScriptRoot -Parent) "..\infra\main.parameters.json"
+    
+    Write-Host "📄 Loading parameters from: $ParametersPath" -ForegroundColor Cyan
+    
+    if (Test-Path $ParametersPath) {
+        try {
+            $ParametersContent = Get-Content $ParametersPath -Raw | ConvertFrom-Json
+            $EnvironmentName = $ParametersContent.parameters.environmentName.value
+            
+            Write-Host "   ✅ Parameters loaded successfully" -ForegroundColor Green
+            Write-Host "   Environment Name: $EnvironmentName" -ForegroundColor White
+        } catch {
+            Write-Warning "   ⚠️ Error loading parameters: $($_.Exception.Message)"
+            Write-Host "   Using default values..." -ForegroundColor Yellow
+        }
+    } else {
+        Write-Warning "   ⚠️ Parameters file not found: $ParametersPath"
+        Write-Host "   Using default values..." -ForegroundColor Yellow
+    }
+    Write-Host ""
+}
+
 $ErrorActionPreference = "Stop"
-if ($Verbose) { $VerbosePreference = "Continue" }
 
 Write-Host "🧪 Azure OpenAI Endpoint Testing" -ForegroundColor Green
 Write-Host "================================" -ForegroundColor Green
@@ -82,23 +110,50 @@ try {
     Write-Host "📋 Phase 1: Service Validation" -ForegroundColor Cyan
     
     # Check Azure connection
-    if (-not (Get-AzContext)) {
-        Write-Host "  📝 Please authenticate to Azure..." -ForegroundColor Yellow
-        Connect-AzAccount
+    Write-Host "  🔍 Checking Azure CLI authentication..." -ForegroundColor Green
+    try {
+        $accountInfo = az account show 2>$null | ConvertFrom-Json
+        if (-not $accountInfo) {
+            Write-Host "  📝 Please authenticate to Azure CLI..." -ForegroundColor Yellow
+            az login
+            $accountInfo = az account show | ConvertFrom-Json
+        }
+        Write-Host "  ✅ Azure CLI authenticated - Subscription: $($accountInfo.name)" -ForegroundColor Green
+    } catch {
+        Write-Host "  ❌ Azure CLI authentication failed: $_" -ForegroundColor Red
+        throw "Azure CLI authentication required"
     }
     
     # Validate OpenAI service exists
     Write-Host "  🔍 Checking Azure OpenAI service..." -ForegroundColor Green
-    $OpenAIService = Get-AzCognitiveServicesAccount -ResourceGroupName $ResourceGroupName -Name $OpenAIServiceName -ErrorAction SilentlyContinue
-    
-    if (-not $OpenAIService) {
+    try {
+        $OpenAIService = az cognitiveservices account show --name $OpenAIServiceName --resource-group $ResourceGroupName 2>$null | ConvertFrom-Json
+        
+        if (-not $OpenAIService) {
+            throw "Service not found"
+        }
+        
+        Write-Host "  ✅ OpenAI service found: $($OpenAIService.name)" -ForegroundColor Green
+        Write-Host "     Endpoint: $($OpenAIService.properties.endpoint)" -ForegroundColor Gray
+        Write-Host "     Location: $($OpenAIService.location)" -ForegroundColor Gray
+        Write-Host "     SKU: $($OpenAIService.sku.name)" -ForegroundColor Gray
+        
+    } catch {
+        # Additional debugging information
+        Write-Host "  ❌ Failed to find OpenAI service. Checking resource group contents..." -ForegroundColor Red
+        Write-Host "  🔍 Resources in ${ResourceGroupName}:" -ForegroundColor Yellow
+        
+        $resources = az resource list --resource-group $ResourceGroupName --query "[?type=='Microsoft.CognitiveServices/accounts'].{Name:name, Type:type, Kind:kind}" -o json 2>$null | ConvertFrom-Json
+        if ($resources) {
+            foreach ($resource in $resources) {
+                Write-Host "     - Name: $($resource.Name), Kind: $($resource.Kind)" -ForegroundColor Gray
+            }
+        } else {
+            Write-Host "     No Cognitive Services accounts found" -ForegroundColor Gray
+        }
+        
         throw "Azure OpenAI service '$OpenAIServiceName' not found in resource group '$ResourceGroupName'"
     }
-    
-    Write-Host "  ✅ OpenAI service found: $($OpenAIService.AccountName)" -ForegroundColor Green
-    Write-Host "     Endpoint: $($OpenAIService.Endpoint)" -ForegroundColor Gray
-    Write-Host "     Location: $($OpenAIService.Location)" -ForegroundColor Gray
-    Write-Host "     SKU: $($OpenAIService.Sku.Name)" -ForegroundColor Gray
     
     # =============================================================================
     # Model Deployment Testing
@@ -135,7 +190,7 @@ try {
         try {
             # Get API key for testing
             $ApiKey = az cognitiveservices account keys list --name $OpenAIServiceName --resource-group $ResourceGroupName --query "key1" -o tsv
-            $Endpoint = $OpenAIService.Endpoint
+            $Endpoint = $OpenAIService.properties.endpoint
             
             if ($ApiKey -and $Endpoint) {
                 Write-Host "  🔑 API credentials retrieved successfully" -ForegroundColor Green
@@ -208,16 +263,25 @@ try {
     # Check Log Analytics workspace integration
     Write-Host "  🔍 Checking Log Analytics integration..." -ForegroundColor Green
     $LogAnalyticsWorkspaceName = "log-${EnvironmentName}-001"  # Consistent with Week 1 naming
-    $LogAnalyticsWorkspace = Get-AzOperationalInsightsWorkspace -ResourceGroupName $ResourceGroupName -Name $LogAnalyticsWorkspaceName -ErrorAction SilentlyContinue
+    
+    try {
+        $LogAnalyticsWorkspace = az monitor log-analytics workspace show --resource-group $ResourceGroupName --workspace-name $LogAnalyticsWorkspaceName 2>$null | ConvertFrom-Json
+        
+        if ($LogAnalyticsWorkspace) {
+            Write-Host "  ✅ Log Analytics workspace found: $LogAnalyticsWorkspaceName" -ForegroundColor Green
+            Write-Host "     Status: $($LogAnalyticsWorkspace.provisioningState)" -ForegroundColor Gray
+            Write-Host "     SKU: $($LogAnalyticsWorkspace.sku.name)" -ForegroundColor Gray
+        } else {
+            Write-Warning "  ⚠️  Log Analytics workspace not found: $LogAnalyticsWorkspaceName"
+        }
+    } catch {
+        Write-Warning "  ⚠️  Could not check Log Analytics workspace: $LogAnalyticsWorkspaceName"
+    }
     
     if ($LogAnalyticsWorkspace) {
-        Write-Host "  ✅ Log Analytics workspace found: $LogAnalyticsWorkspaceName" -ForegroundColor Green
-        Write-Host "     Status: $($LogAnalyticsWorkspace.ProvisioningState)" -ForegroundColor Gray
-        Write-Host "     SKU: $($LogAnalyticsWorkspace.Sku)" -ForegroundColor Gray
-        
         # Check diagnostic settings
         Write-Host "  🔍 Checking diagnostic settings..." -ForegroundColor Green
-        $DiagnosticSettings = az monitor diagnostic-settings list --resource $OpenAIService.Id --output json | ConvertFrom-Json
+        $DiagnosticSettings = az monitor diagnostic-settings list --resource $($OpenAIService.id) --output json 2>$null | ConvertFrom-Json
         
         if ($DiagnosticSettings.value.Count -gt 0) {
             Write-Host "  ✅ Diagnostic settings configured" -ForegroundColor Green
@@ -242,8 +306,8 @@ try {
         OpenAIService = @{
             Name = $OpenAIServiceName
             Status = "Accessible"
-            Endpoint = $OpenAIService.Endpoint
-            Location = $OpenAIService.Location
+            Endpoint = $OpenAIService.properties.endpoint
+            Location = $OpenAIService.location
         }
         ModelDeployments = @()
         SecurityTesting = $TestSecurityPrompts

@@ -152,7 +152,7 @@ All scripts require:
 
 ## 📖 Additional Resources
 
-- [Main Deployment Guide](../01.01%20Defender%20for%20Cloud%20Foundation/Azure%20Portal/deploy-defender-for-cloud-azure-portal.md)
+- [Main Deployment Guide](../01.02%20Defender%20for%20Cloud%20Foundation/Azure%20Portal/deploy-defender-for-cloud-azure-portal.md)
 - [Microsoft Defender for Cloud Documentation](https://docs.microsoft.com/en-us/azure/defender-for-cloud/)
 - [Azure CLI Reference](https://docs.microsoft.com/en-us/cli/azure/)
 - [PowerShell Azure Module](https://docs.microsoft.com/en-us/powershell/azure/)
@@ -164,5 +164,3 @@ All scripts require:
 This PowerShell automation script collection for Microsoft Defender for Cloud was created with the assistance of **GitHub Copilot** powered by advanced AI language models. The scripts, validation logic, deployment workflows, and documentation were generated, structured, and refined through iterative collaboration between human expertise and AI assistance within **Visual Studio Code**.
 
 *AI tools were used to enhance productivity and ensure comprehensive coverage of automated Microsoft Defender for Cloud deployment procedures while maintaining technical accuracy and reflecting modern PowerShell automation best practices.*
-
----

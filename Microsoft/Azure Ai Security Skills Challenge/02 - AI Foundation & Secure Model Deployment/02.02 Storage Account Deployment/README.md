@@ -149,11 +149,14 @@ The deployment automatically configures these role assignments:
 Execute these validation scripts after deployment:
 
 ```powershell
+# Navigate to validation scripts directory
+cd "..\..\scripts\scripts-validation"
+
 # Comprehensive storage foundation validation
-.\scripts\scripts-validation\Test-StorageFoundation.ps1 -EnvironmentName "aisec"
+.\Test-StorageFoundation.ps1 -UseParametersFile
 
 # AI integration readiness testing
-.\scripts\scripts-validation\Test-AIFoundationReadiness.ps1 -EnvironmentName "aisec"
+.\Test-AIFoundationReadiness.ps1 -UseParametersFile
 ```
 
 ## 🎯 Learning Path Integration
@@ -187,16 +190,20 @@ After completing this module:
 ### Option 1: Complete Automated Deployment
 
 ```powershell
+# Navigate to deployment scripts directory
+cd "..\..\scripts\scripts-deployment"
+
 # Deploy complete storage foundation with default parameters
-cd "scripts\scripts-deployment"
 .\Deploy-StorageFoundation.ps1 -UseParametersFile
 ```
 
 ### Option 2: Custom Deployment
 
 ```powershell
+# Navigate to deployment scripts directory  
+cd "..\..\scripts\scripts-deployment"
+
 # Deploy with custom parameters
-cd "scripts\scripts-deployment"
 .\Deploy-StorageFoundation.ps1 -EnvironmentName "myenv" -NotificationEmail "admin@company.com" -BudgetLimit 200
 ```
 

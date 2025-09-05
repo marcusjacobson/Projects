@@ -93,7 +93,7 @@ Write-Host "=================================================" -ForegroundColor 
 # Load parameters from file if specified
 if ($UseParametersFile) {
     Write-Host "📋 Loading parameters from main.parameters.json..." -ForegroundColor Cyan
-    $parametersPath = Join-Path $PSScriptRoot "..\infra\main.parameters.json"
+    $parametersPath = Join-Path $PSScriptRoot "..\..\infra\main.parameters.json"
     
     if (Test-Path $parametersPath) {
         try {

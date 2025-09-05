@@ -84,17 +84,28 @@ All deployments use the centralized `main.parameters.json` file for consistent c
 
 ## 🚀 Deployment Methods
 
-### Option 1: Automated PowerShell Deployment
+### Option 1: Automated Orchestration Deployment
 
 **Recommended for production deployments**:
 
 ```powershell
-# Deploy complete AI foundation using automation scripts
-cd "../scripts/scripts-deployment"
-.\Deploy-AIFoundation.ps1 -UseParametersFile
+# Deploy complete Week 2 AI foundation using module orchestration scripts
+cd "../scripts/scripts-orchestration"
+.\Deploy-Week2Complete.ps1 -UseParametersFile
 ```
 
-### Option 2: Direct Bicep Deployment
+### Option 2: Individual Component Deployment
+
+**For modular deployments and testing**:
+
+```powershell
+# Deploy individual components using deployment scripts
+cd "../scripts/scripts-deployment"
+.\Deploy-StorageFoundation.ps1 -UseParametersFile
+.\Deploy-OpenAIService.ps1 -UseParametersFile
+```
+
+### Option 3: Direct Bicep Deployment
 
 **For advanced users and custom configurations**:
 

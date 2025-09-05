@@ -54,6 +54,19 @@ This week focuses on establishing a robust AI foundation within the Defender for
 - [ ] **[Azure Cost Management Setup](./02.07%20Azure%20Cost%20Management%20Setup/README.md)** - Configure advanced budget alerts, cost optimization strategies, and automated resource lifecycle management.
 - [ ] **[Week 2 to Week 3 Bridge](./02.08%20Week%202%20to%20Week%203%20Bridge/README.md)** - Integration readiness validation and transition preparation for Week 3 automation deployment.
 
+## ✅ Success Validation
+
+**Before proceeding to the Week 3 bridge, validate your AI foundation success:**
+
+- [ ] **AI Services Deployed**: Azure OpenAI service with GPT-4o-mini model deployed and responsive
+- [ ] **Storage Foundation**: AI storage accounts configured with cost optimization and security settings
+- [ ] **Model Customized**: GPT-4o-mini configured with security analyst persona and optimal parameters
+- [ ] **Prompt Templates**: Security analysis templates created and validated for consistent quality
+- [ ] **Cost Management**: Budget controls active and Week 2 spending within expected ranges
+- [ ] **Integration Ready**: All validation scripts pass and services prepared for automation workflows
+
+> **🎯 Success Criteria**: All validation points confirmed means your AI foundation is ready for Week 3 automation integration. Use validation scripts to verify deployment success before proceeding to bridge validation.
+
 > **✅ Infrastructure Status**: Storage accounts for AI workloads are now **COMPLETED** with full cost optimization. Both Azure Portal and Infrastructure-as-Code guides achieve 100% compliance with cost-optimized configurations (soft delete disabled, versioning disabled, Standard_LRS replication). Ready for next AI service deployments.
 
 ## 📂 Project Files
@@ -68,9 +81,9 @@ This week's project follows Week 1's proven structure with AI-focused enhancemen
 
 - **[AI Storage Foundation - COMPLETED](./infra/)** - Production-ready Bicep templates with full cost optimization compliance
 - **[AI Integration Scripts - READY](./scripts/)** - PowerShell scripts for AI service deployment, configuration, and automated management
-  - **scripts-deployment/Deploy-StorageFoundation.ps1** - Fully functional with UPN auto-resolution and cost optimization
-  - **scripts-deployment/Deploy-OpenAIService.ps1** - Enhanced with automated soft-delete detection and purge capabilities
-  - **scripts-deployment/Deploy-AIFoundation.ps1** - Complete AI foundation deployment orchestration
+  - **scripts-orchestration/Deploy-Week2Complete.ps1** - Complete Week 2 orchestration across modules 02.02 and 02.03
+  - **scripts-deployment/Deploy-StorageFoundation.ps1** - Fully functional with UPN auto-resolution and cost optimization (Module 02.02)
+  - **scripts-deployment/Deploy-OpenAIService.ps1** - Enhanced with automated soft-delete detection and purge capabilities (Module 02.03)
   - **scripts-validation/Test-StorageFoundation.ps1** - Comprehensive validation with 100% test coverage
   - **scripts-decommission/Remove-StorageResourceGroup.ps1** - Reliable cleanup with verification and wait logic
   - **scripts-decommission/Remove-OpenAIInfrastructure.ps1** - Comprehensive decommission script with phase-based cleanup
@@ -106,11 +119,12 @@ Week 2 establishes the proven Week 1 structure optimized for AI foundation servi
 ├── 📊 PowerShell Scripts/
 │   └── scripts/                                     # AI deployment and cost management automation
 │       ├── README.md                                # AI script usage documentation
+│       ├── scripts-orchestration/                  # Multi-module deployment orchestration
+│       │   └── Deploy-Week2Complete.ps1           # Complete Week 2 modules 02.02 & 02.03 orchestration
 │       ├── scripts-deployment/                     # Individual deployment scripts
-│       │   ├── Deploy-AIFoundation.ps1             # Complete AI foundation deployment
-│       │   ├── Deploy-StorageFoundation.ps1        # AI storage infrastructure
+│       │   ├── Deploy-StorageFoundation.ps1        # AI storage infrastructure (Module 02.02)
 │       │   ├── Deploy-CostManagement.ps1           # Budget alerts and automated controls
-│       │   └── Deploy-OpenAIService.ps1            # Azure OpenAI service deployment
+│       │   └── Deploy-OpenAIService.ps1            # Azure OpenAI service deployment (Module 02.03)
 │       ├── scripts-validation/                     # Testing and validation scripts
 │       │   ├── Test-AIFoundation.ps1               # AI foundation validation
 │       │   └── Test-StorageFoundation.ps1          # AI storage foundation validation
@@ -240,7 +254,7 @@ Week 2 establishes comprehensive cost management as the foundation for all AI op
 
 ## 🔗 Related Resources
 
-- [Week 1: Defender for Cloud Deployment Mastery](../01%20-%20Defender%20for%20Cloud%20Deployment%20Mastery/README.md)
+- [Week 1: Defender for Cloud Deployment Foundation](../01%20-%20Defender%20for%20Cloud%20Deployment%20Foundation/README.md)
 - [Week 3: AI-Driven Security Operations Automation](../03%20-%20AI-Driven%20Security%20Operations%20Automation/README.md)
 - [Project Root](../README.md)
 

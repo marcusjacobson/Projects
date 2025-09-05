@@ -150,7 +150,7 @@ The `Remove-DefenderInfrastructure.ps1` script provides a comprehensive, automat
 cd "c:\path\to\your\deployment\scripts"
 
 # Or if you're already in the project root:
-cd "01 - Defender for Cloud Deployment Mastery\scripts"
+cd "01 - Defender for Cloud Deployment Foundation\scripts"
 ```
 
 ### Step 2: Run Complete Decommissioning

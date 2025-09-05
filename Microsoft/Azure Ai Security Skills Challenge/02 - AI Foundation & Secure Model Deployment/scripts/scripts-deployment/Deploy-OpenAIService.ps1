@@ -216,7 +216,7 @@ try {
     
     if ($UseParametersFile) {
         # Load parameters from JSON file
-        $ParametersFile = "$PSScriptRoot\..\infra\main.parameters.json"
+        $ParametersFile = "$PSScriptRoot\..\..\infra\main.parameters.json"
         
         if (-not (Test-Path $ParametersFile)) {
             throw "Parameters file not found: $ParametersFile"

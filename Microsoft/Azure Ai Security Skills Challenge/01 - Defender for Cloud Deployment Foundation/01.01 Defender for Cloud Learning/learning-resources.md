@@ -1,15 +1,30 @@
-# Week 1 Learning Resources - Defender for Cloud Deployment Mastery
+# Week 1 Learning Resources - Defender for Cloud Deployment Foundation
 
-This document provides a comprehensive collection of learning resources and step-by-step guidance for mastering Microsoft Defender for Cloud deployment through multiple approaches.
+This document provides a comprehensive collection of learning resources and step-by-step guidance for mastering Microsoft Defender for Cloud deployment foundation through multiple approaches. It serves as the starting point for Week 1's structured learning path across three focused modules.
 
-## 🧭 Week 1 Overview
+## 🧭 Week 1 Overview & Module Structure
 
-Week 1 focuses on establishing a secure foundation for AI-infused workloads using Microsoft Azure. The key themes include:
+Week 1 focuses on establishing a secure foundation for AI-infused workloads using Microsoft Azure. The learning journey is organized into **three focused modules**:
 
-- Understanding AI security fundamentals
-- Exploring Azure AI services and Defender XDR
-- Setting up secure environments and governance
-- Integrating responsible AI practices
+### 📚 Module 01.01: Defender for Cloud Learning (This Module)
+
+- Understanding AI security fundamentals through curated learning resources.
+- Exploring Azure AI services and Defender XDR integration concepts.
+- Building foundational knowledge before hands-on deployment.
+
+### 🏗️ Module 01.02: Defender for Cloud Foundation (Deployment)
+
+- Hands-on deployment through Azure Portal, Infrastructure-as-Code, and Complete Automation approaches.
+- Practical implementation of security foundations.
+- Building deployable security infrastructure.
+
+### 🌉 Module 01.03: Week 1 to Week 2 Bridge (Validation)
+
+- Unified security operations readiness validation.
+- Preparation for Week 2 AI integration scenarios.
+- Ensuring proper foundation for advanced security operations.
+
+This modular approach ensures systematic progression from **learning** → **deploying** → **validating** for comprehensive mastery.
 
 ## 📚 Learning Resources by Weekly Task
 
@@ -119,9 +134,35 @@ Week 1 focuses on establishing a secure foundation for AI-infused workloads usin
 
 ---
 
+## � Next Steps: Module Progression
+
+After completing the learning resources in this module, proceed with the structured deployment journey:
+
+### 📍 Module 01.02: Defender for Cloud Foundation
+
+Choose your deployment approach based on learning goals and experience:
+
+- **[Azure Portal Deployment](../01.02%20Defender%20for%20Cloud%20Foundation/Azure%20Portal/deploy-defender-for-cloud-azure-portal.md)** - Best for learning and understanding each component.
+- **[Modular Infrastructure-as-Code](../01.02%20Defender%20for%20Cloud%20Foundation/Infrastructure%20as%20Code/deploy-defender-for-cloud-modular-iac.md)** - Best for controlled automation and production environments.
+- **[Complete Automation](../01.02%20Defender%20for%20Cloud%20Foundation/Automation/deploy-defender-for-cloud-complete-automation.md)** - Best for enterprise-ready deployment and CI/CD integration.
+
+### 📍 Module 01.03: Week 1 to Week 2 Bridge
+
+Complete your Week 1 foundation with bridge validation:
+
+- **[Week 1 to Week 2 Bridge Validation](../01.03%20Week%201%20to%20Week%202%20Bridge/week1-to-week2-bridge-validation.md)** - Essential validation ensuring readiness for Week 2 AI integration scenarios.
+
+### 🎯 Module Learning Flow
+
+The three-module structure ensures systematic progression:
+
+1. **Learn** (01.01) → 2. **Deploy** (01.02) → 3. **Validate** (01.03) → **Ready for Week 2**
+
+---
+
 ## 📝 Notes
 
-This learning resources document serves as a comprehensive guide for Week 1 of the Defender for Cloud Deployment Mastery challenge. It provides structured learning paths, practical implementation guidance, and continuous improvement opportunities.
+This learning resources document serves as Module 01.01 of the Week 1 Defender for Cloud Deployment Foundation challenge. It provides structured learning paths to build foundational knowledge before hands-on deployment and validation activities.
 
-**Last Updated:** July 18, 2025
+**Last Updated:** September 5, 2025
 **Version:** 1.0

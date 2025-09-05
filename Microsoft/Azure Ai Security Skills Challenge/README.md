@@ -30,7 +30,7 @@ This roadmap has been optimized for working professionals with a logical progres
 
 ### **Phase 1: Security Infrastructure Foundations (Weeks 1-4)**
 
-- **Week 1**: Master Defender for Cloud deployment mastery with modern unified security operations foundation
+- **Week 1**: Defender for Cloud deployment foundation with modern unified security operations foundation
 - **Week 2**: Implement AI foundation and secure model deployment with cost optimization
 - **Week 3**: Deploy AI-driven security operations automation through Defender XDR integration
 - **Week 4**: Advanced XDR + Security Copilot integration with enterprise-grade security operations
@@ -75,7 +75,7 @@ As project weeks are completed, the **Completed** checkbox will be marked.
 | Week | Focus Area | Completed |
 |------|------------|--------|
 | 0 | [Project Setup & Admin](./00%20-%20Project%20Setup%20&%20Admin/README.md) | [x] |
-| 1 | [Defender for Cloud Deployment Mastery](./01%20-%20Defender%20for%20Cloud%20Deployment%20Mastery/README.md) | [x] |
+| 1 | [Defender for Cloud Deployment Foundation](./01%20-%20Defender%20for%20Cloud%20Deployment%20Foundation/README.md) | [x] |
 | 2 | [AI Foundation & Secure Model Deployment](./02%20-%20AI%20Foundation%20&%20Secure%20Model%20Deployment/README.md) | [🔄] |
 | 3 | [AI-Driven Security Operations Automation](./03%20-%20AI-Driven%20Security%20Operations%20Automation/README.md) | [ ] |
 | 4 | [Advanced XDR + Security Copilot Integration](./04%20-%20Defender%20XDR%20+%20Security%20Copilot%20Integration/README.md) | [ ] |

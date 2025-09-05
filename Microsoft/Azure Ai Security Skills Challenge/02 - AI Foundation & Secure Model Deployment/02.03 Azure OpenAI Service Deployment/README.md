@@ -52,7 +52,7 @@ This module provides comprehensive deployment guides and automation for Azure Op
 | Script | Location | Purpose |
 |--------|----------|---------|
 | **Deploy-OpenAIService.ps1** | `../../scripts/scripts-deployment/` | Complete OpenAI service deployment |
-| **Deploy-AIFoundation.ps1** | `../../scripts/scripts-deployment/` | Integrated AI foundation with storage |
+| **Deploy-Week2Complete.ps1** | `../../scripts/scripts-orchestration/` | Complete Week 2 orchestration (modules 02.02 & 02.03) |
 | **Test-OpenAIEndpoints.ps1** | `../../scripts/scripts-validation/` | OpenAI service validation and testing |
 
 ## 🧠 Model Configuration
@@ -182,11 +182,14 @@ The deployment automatically configures these role assignments:
 ### Comprehensive Validation Scripts
 
 ```powershell
+# Navigate to validation scripts directory
+cd "..\..\scripts\scripts-validation"
+
 # OpenAI service endpoint testing
-.\scripts\scripts-validation\Test-OpenAIEndpoints.ps1 -EnvironmentName "aisec"
+.\Test-OpenAIEndpoints.ps1 -UseParametersFile
 
 # Complete AI foundation validation
-.\scripts\scripts-validation\Test-AIFoundationReadiness.ps1 -EnvironmentName "aisec"
+.\Test-AIFoundationReadiness.ps1 -UseParametersFile
 ```
 
 ## 🎯 Learning Path Integration
@@ -219,25 +222,29 @@ After completing this module:
 
 ## 🚀 Quick Start Deployment
 
-### Option 1: Complete Automated Deployment
-
 ```powershell
-# Deploy complete AI foundation including OpenAI service
-cd "scripts\scripts-deployment"
-.\Deploy-AIFoundation.ps1 -UseParametersFile
-```
+# Navigate to orchestration scripts directory
+cd "..\..\scripts\scripts-orchestration"
 
-### Option 2: OpenAI Service Only
-
-```powershell
-# Deploy OpenAI service with storage integration
-cd "scripts\scripts-deployment"
-.\Deploy-OpenAIService.ps1 -EnvironmentName "aisec" -NotificationEmail "admin@company.com"
+# Deploy complete Week 2 including OpenAI service (orchestrates modules 02.02 & 02.03)
+.\Deploy-Week2Complete.ps1 -UseParametersFile
 ```
 
 ### Option 3: Manual Azure Portal Deployment
 
 Follow the comprehensive guide in `azure-openai-azure-portal-deployment.md` for step-by-step deployment experience.
+
+## ✅ Success Validation
+
+**Before proceeding to Module 02.04, validate your OpenAI deployment:**
+
+- [ ] **Service Deployed**: Azure OpenAI service appears in Azure Portal with "Running" status
+- [ ] **Model Available**: GPT-4o-mini model deployed and shows "Succeeded" deployment status
+- [ ] **API Connectivity**: Test API endpoint responds successfully to authentication requests
+- [ ] **Budget Controls**: Cost management alerts configured and active for spending thresholds
+- [ ] **Integration Ready**: Service connections prepared for Logic Apps and security platform integration
+
+> **🎯 Success Criteria**: All validation points confirmed means your AI service is ready for model customization. Use validation scripts to verify deployment success before proceeding.
 
 ## 📈 Next Steps
 

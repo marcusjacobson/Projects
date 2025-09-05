@@ -210,9 +210,9 @@ After completing this module:
 ### Option 1: Complete Template Library
 
 ```powershell
-# Deploy all prompt templates to storage account
-cd "scripts\scripts-deployment"
-.\Deploy-AIFoundation.ps1 -UseParametersFile -IncludePromptTemplates
+# Deploy all prompt templates as part of Week 2 complete orchestration
+cd "scripts\scripts-orchestration"
+.\Deploy-Week2Complete.ps1 -UseParametersFile
 ```
 
 ### Option 2: Individual Template Testing
@@ -259,6 +259,18 @@ Use the template architecture guidelines in `ai-prompt-templates.md` to create c
 - **Advanced Analytics**: Develop templates for sophisticated threat intelligence and hunting.
 - **Multi-Language Support**: Extend templates for international security operations.
 - **Integration Expansion**: Create templates for additional security platforms and tools.
+
+## ✅ Success Validation
+
+**Before proceeding to Module 02.06, validate your prompt templates:**
+
+- [ ] **Template Library Complete**: All essential security templates created (incident classification, threat analysis, risk assessment, remediation guidance)
+- [ ] **Token Optimization**: Templates consistently produce <450 token responses while maintaining analysis quality
+- [ ] **Response Format**: Templates generate structured, JSON-compatible outputs for automated processing
+- [ ] **Testing Successful**: Template validation with customized GPT-4o-mini model shows consistent, quality results
+- [ ] **Integration Ready**: Templates prepared for Logic Apps and security automation workflow integration
+
+> **🎯 Success Criteria**: All validation points confirmed means your prompt templates are production-ready for automated security operations. Test templates with real security scenarios to verify effectiveness.
 
 ## 📋 Next Steps
 

@@ -91,7 +91,7 @@ Deploy using the parameters file with no user interaction:
 
 ```powershell
 # Navigate to the scripts directory
-cd "01 - Defender for Cloud Deployment Mastery\scripts"
+cd "01 - Defender for Cloud Deployment Foundation\scripts"
 
 # Deploy everything using parameters file (no prompts)
 .\Deploy-Complete.ps1 -UseParametersFile -Force
@@ -103,7 +103,7 @@ Deploy with user prompts and confirmations:
 
 ```powershell
 # Navigate to the scripts directory  
-cd "01 - Defender for Cloud Deployment Mastery\scripts"
+cd "01 - Defender for Cloud Deployment Foundation\scripts"
 
 # Deploy with interactive prompts using parameters file
 .\Deploy-Complete.ps1 -UseParametersFile

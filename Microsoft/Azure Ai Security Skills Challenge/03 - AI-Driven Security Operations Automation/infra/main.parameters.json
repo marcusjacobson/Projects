@@ -1,0 +1,75 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentName": {
+      "value": "aisec"
+    },
+    "location": {
+      "value": "East US"
+    },
+    "notificationEmail": {
+      "value": "marcus.jacobson@gmail.com"
+    },
+    "defenderResourceGroupName": {
+      "value": "rg-aisec-defender-securitylab1"
+    },
+    "aiResourceGroupName": {
+      "value": "rg-aisec-ai"
+    },
+    "enableKeyVaultIntegration": {
+      "value": true
+    },
+    "openAIConnectionName": {
+      "value": "azureopenai"
+    },
+    "azureTablesConnectionName": {
+      "value": "azuretables"
+    },
+    "recurrenceInterval": {
+      "value": "4 hours"
+    },
+    "maxTokens": {
+      "value": 500
+    },
+    "temperature": {
+      "value": "0.3"
+    },
+    "topP": {
+      "value": "0.95"
+    },
+    "presencePenalty": {
+      "value": "0"
+    },
+    "frequencyPenalty": {
+      "value": "0"
+    },
+    "numberOfCompletions": {
+      "value": 1
+    },
+    "seedValue": {
+      "value": 0
+    },
+    "systemPrompt": {
+      "value": "You are a cybersecurity analyst. Analyze security incidents and provide structured analysis with these exact headers: ### 1) Executive Summary, ### 2) Risk Level Assessment, ### 3) Recommended Immediate Actions, ### 4) MITRE ATT&CK Mapping. Keep responses concise and actionable."
+    },
+    "openAIDeploymentName": {
+      "value": "gpt-4o-mini"
+    },
+    "maxIncidentsPerRun": {
+      "value": 50
+    },
+    "highSeverityOnly": {
+      "value": false
+    },
+    "appRegistrationClientIdSecret": {
+      "value": "DefenderXDR-App-ClientId"
+    },
+    "appRegistrationClientSecretName": {
+      "value": "DefenderXDR-App-ClientSecret"
+    },
+    "appRegistrationTenantIdSecret": {
+      "value": "DefenderXDR-App-TenantId"
+    }
+  }
+}

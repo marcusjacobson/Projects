@@ -733,8 +733,9 @@ These existing scripts provide the AI foundation referenced by this integration:
 
 | Script | Location | Purpose |
 |--------|----------|---------|
-| `Deploy-AIFoundation.ps1` | Week 2/scripts | OpenAI service and storage foundation |
-| `Deploy-StorageFoundation.ps1` | Week 2/scripts | Storage account for AI processing |
+| `Deploy-Week2Complete.ps1` | Week 2/scripts-orchestration | Complete Week 2 orchestration (modules 02.02 & 02.03) |
+| `Deploy-StorageFoundation.ps1` | Week 2/scripts-deployment | Storage account for AI processing (Module 02.02) |
+| `Deploy-OpenAIService.ps1` | Week 2/scripts-deployment | Azure OpenAI service deployment (Module 02.03) |
 
 ### Infrastructure Templates for XDR Integration
 

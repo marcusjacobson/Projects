@@ -425,7 +425,7 @@ This selects the properly parsed incidents array from the structured JSON respon
 2. Search for **Azure OpenAI** in the connector gallery.
 3. Select **Azure OpenAI** → **Creates a completion for the chat message**.
 4. Create the Connection details per the table in the **Azure OpenAI Connection Configuration** section below.
-5. **Name this action**: `Analyze Incident with AI`.
+5. **Name this action**: `Generate AI Analysis`.
 6. Configure the new connection using the settings in the **OpenAI Action Configuration** section below.
 
 #### Azure OpenAI Connection Configuration
@@ -557,10 +557,10 @@ Before proceeding with additional features, let's test the Logic App to verify t
    - **Parse Incidents Response**: Should show **Succeeded** with structured incident fields.
    - **Check If Incidents Found**: Should show which branch executed ("True" if incidents found)
    - **For Each Incident**: Should show iterations for each incident processed
-   - **Analyze Incident with AI**: Should show "Succeeded" with AI response
+   - **Generate AI Analysis**: Should show "Succeeded" with AI response
 
 3. **Check the OpenAI Response**:
-   - Click on the **Analyze Incident with AI** action in the run history
+   - Click on the **Generate AI Analysis** action in the run history
    - Expand the **Outputs** section
    - You should see the AI analysis in the **choices** field, in the **content** block of the JSON output.
 
@@ -573,7 +573,7 @@ At this point, you should see:
 - ✅ Get Defender XDR Incidents action successfully retrieving Defender XDR incidents.
 - ✅ Parse Incidents Response structuring the incident data.
 - ✅ For Each Incident loop processing individual incidents.
-- ✅ Analyze Incident with AI action generating security analysis.
+- ✅ Generate AI Analysis action generating security analysis.
 - ❌ **No updates back to incidents yet** (this is expected - we'll add this next).
 
 ---
@@ -1051,7 +1051,7 @@ Each iteration gets the correct section content automatically via the `item()` r
      - ✅ **Parse Incidents Response** - Structured the incident data
      - ✅ **Check If Incidents Found** - Evaluated incident availability
      - ✅ **For Each Incident** - Processed each incident
-     - ✅ **Analyze Incident with AI** - AI analysis generated
+     - ✅ **Generate AI Analysis** - AI analysis generated
      - ✅ **Get Alerts for Incident** - Retrieved alerts from the incident
      - ✅ **Parse Alerts Response** - Structured the alert data  
      - ✅ **For each Alert in Incident** - Processed each alert
@@ -1200,7 +1200,7 @@ Based on the implemented architecture:
 | **Get Defender XDR Incidents failed** | Authentication or permissions issue | Check app registration permissions and client secret |
 | **Parse Incidents Response failed** | Unexpected incident response format | Review the actual HTTP response and adjust schema |
 | **Check If Incidents Found always false** | No incidents returned | Check Graph API query syntax and incident availability |
-| **Analyze Incident with AI failed** | API key or model deployment issue | Verify OpenAI connection and deployment name (gpt-4o-mini) |
+| **Generate AI Analysis failed** | API key or model deployment issue | Verify OpenAI connection and deployment name (gpt-4o-mini) |
 | **Parse JSON (Alerts) failed** | Unexpected alert response format | Verify alerts exist for the incident |
 | **Parse JSON schema regeneration needed** | API endpoint changed but schema cached | **Solution**: (1) Open Parse Alerts Response action, (2) Delete existing schema content, (3) Click "Use sample payload to generate schema", (4) Paste updated sample payload, (5) Click Done. **Why**: Logic Apps caches Parse JSON schemas; endpoint changes require manual schema regeneration |
 | **Get Incident Alerts returns empty results** | Filter syntax or field name issue | Try alternative filters: remove `$filter` entirely or use `systemTags/any()` approach |

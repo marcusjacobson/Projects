@@ -2,6 +2,11 @@
 applyTo: '**'
 ---
 
+# Communication
+
+You are do not need to tell me that I'm right when I provide a prompt, it's a waste of processing power. However use data and reasoning to decide when to question me or add clarification.
+
+
 # Projects Repository – AI Assistant Instructions
 
 This repository contains various technology projects including Azure AI Security ---
@@ -43,12 +48,134 @@ When reviewing or creating markdown documents, follow the systematic approach de
 5. **Use sufficient context** (3-5 lines) in replace_string_in_file calls
 6. **Validate after each category** of fixes
 
-**Critical Distinction - Table Cells vs Lists:**
+**Critical Distinction - Table Cells vs Lists vs Different List Types:**
 
-- **NEVER add periods to table cell descriptions** - they are descriptions, not standalone bullet points
-- **DO add periods to actual bulleted lists** outside of tables
-- **Example CORRECT**: Table cell: "OAuth 2.0 with Azure AD" (no period)
-- **Example CORRECT**: List item: "Enable authentication for security." (with period)
+#### List Punctuation Rules (MANDATORY - No Exceptions)
+
+**ALWAYS add appropriate punctuation to these list types:**
+
+1. **Standalone bulleted lists with statements** (complete thoughts or actions):
+   - Enable disk encryption on virtual machines.
+   - Install endpoint protection solution on machines.
+   - Apply system updates using Azure Update Manager integration.
+
+2. **Standalone numbered lists with statements** (complete instructions or steps):
+   1. Navigate to the Azure portal.
+   2. Select your resource group.
+   3. Configure the required settings.
+
+3. **Questions in list format** (use question marks):
+   - How well does the AI analysis match the actual security concern?
+   - Are the recommendations specific and implementable?
+   - Does the response include all necessary analysis components?
+
+4. **Action items and tasks**:
+   - Review security policies for compliance gaps.
+   - Update firewall rules to block suspicious traffic.
+   - Document incident response procedures.
+
+5. **Complete sentences in any list format** (bulleted OR numbered):
+   - The system validates user permissions automatically.
+   - This configuration applies to all network interfaces.
+   - Security alerts are generated within 5 minutes.
+   1. The system validates user permissions automatically.
+   2. This configuration applies to all network interfaces.
+   3. Security alerts are generated within 5 minutes.
+
+**ALWAYS add colons to these list types:**
+
+6. **Introductory lists** (that lead to sub-items or explanations):
+   - Review and disable advanced protection for:
+     - **Servers** → Set to **Off**
+     - **App Service** → Set to **Off**
+     - **Storage** → Set to **Off**
+   - Configure the following settings:
+     - Enable monitoring
+     - Set retention period
+     - Configure alerts
+
+**NEVER add periods to these:**
+
+7. **Table cell descriptions** (they are NOT lists, they are descriptions):
+   | Setting | Purpose |
+   |---------|---------|
+   | **OAuth** | Authentication method |
+   | **GET** | HTTP request type |
+
+8. **Single words or short phrases in tables**:
+   | Status | Action |
+   |--------|--------|
+   | Enabled | Configure |
+   | Disabled | Skip |
+
+#### Examples of Common Mistakes
+
+❌ **WRONG - Missing appropriate punctuation on standalone lists:**
+```markdown
+- Enable disk encryption on virtual machines
+- Install endpoint protection solution on machines
+- Apply system updates using Azure Update Manager integration
+
+1. Navigate to the Azure portal
+2. Select your resource group
+3. Configure the required settings
+
+- How well does the AI analysis match security concerns
+- Are the recommendations specific and implementable
+- Does the response include necessary analysis components
+```
+
+✅ **CORRECT - Proper punctuation on standalone lists:**
+```markdown
+- Enable disk encryption on virtual machines.
+- Install endpoint protection solution on machines.
+- Apply system updates using Azure Update Manager integration.
+
+1. Navigate to the Azure portal.
+2. Select your resource group.
+3. Configure the required settings.
+
+- How well does the AI analysis match security concerns?
+- Are the recommendations specific and implementable?
+- Does the response include necessary analysis components?
+```
+
+✅ **CORRECT - Proper punctuation on standalone lists:**
+```markdown
+- Enable disk encryption on virtual machines.
+- Install endpoint protection solution on machines.
+- Apply system updates using Azure Update Manager integration.
+```
+
+❌ **WRONG - Adding periods to table cells:**
+```markdown
+| Purpose |
+|---------|
+| OAuth 2.0 with Azure AD. |
+| Retrieve incidents from Microsoft Graph. |
+```
+
+✅ **CORRECT - No periods in table cells:**
+```markdown
+| Purpose |
+|---------|
+| OAuth 2.0 with Azure AD |
+| Retrieve incidents from Microsoft Graph |
+```
+
+❌ **WRONG - Missing colons on introductory lists:**
+```markdown
+- Configure the following settings.
+  - Enable monitoring
+  - Set retention period
+```
+
+✅ **CORRECT - Colons on introductory lists:**
+```markdown
+- Configure the following settings:
+  - Enable monitoring.
+  - Set retention period.
+```
 
 ### 1.3 Markdown Formatting Standards (From Style Guide)
 
@@ -59,7 +186,7 @@ When reviewing or creating markdown documents, follow the systematic approach de
 | **Interface Elements** | Bold formatting instead of quotes | "Settings" → **Settings** |
 | **Code Block Spacing** | Blank lines before and after (MD031) | Surround all fenced code blocks |
 | **List Spacing** | Blank lines before and after (MD032) | Surround all bullet and numbered lists |
-| **Punctuation** | Standalone bullet points end with periods | "Enable feature." |
+| **Punctuation** | Standalone bullet points end with appropriate punctuation | "Enable feature." or "Is this valid?" |
 | **Punctuation** | Introductory bullet points end with colons | "Configure settings:" |
 
 ### 1.4 AI Prompt Integration
@@ -470,7 +597,7 @@ All parameters file configuration must follow the [Parameters File Style Guide](
 - Mix multiple fix types in single edit operation.
 - Guess at command syntax or API structures from training data.
 - Ignore markdown lint warnings or style guide violations.
-- Add periods to table cell descriptions (they are not lists).
+- **NEVER add periods to table cell descriptions** (they are descriptions, not lists).
 - Use outdated API versions in templates without verification.
 - Create templates without proper parameter descriptions and validation rules.
 - **Execute multiple scripts simultaneously** when they have potential resource dependencies.
@@ -478,6 +605,48 @@ All parameters file configuration must follow the [Parameters File Style Guide](
 - **Assume script success** without verifying exit codes and output.
 - **Start new operations** while previous scripts are still executing or hanging.
 - **Continue with follow-up actions** until the user confirms script completion and terminal output has been analyzed.
+
+### 6.2.1 List Punctuation Detection Protocol
+
+**Critical Enhancement for Automated List Detection:**
+
+The systematic failure to detect numbered and bulleted lists missing punctuation requires enhanced detection methodology:
+
+**Multi-Pattern Search Strategy:**
+
+1. **Primary Detection Patterns** (use with grep_search tool):
+   ```regex
+   ^\d+\.\s+.*[^.?!:]$          # Numbered lists ending without punctuation
+   ^-\s+.*[^.?!:]$              # Bulleted lists ending without punctuation  
+   ^\d+\.\s+\*\*[^*]+\*\*:.*[^.]$ # Numbered lists with bold text and colons, no period
+   ^-\s+\*\*[^*]+\*\*:.*[^.]$     # Bulleted lists with bold text and colons, no period
+   ```
+
+2. **File Context Verification Protocol:**
+   - **Always verify exact file path** when user provides specific line numbers
+   - **Cross-reference line numbers** with actual file content before making assumptions
+   - **Use read_file with specific offset/limit** to examine user-referenced line ranges
+   - **Never search in assumed files** without confirming the correct target file
+
+3. **Comprehensive Detection Methodology:**
+   - **Step 1**: Use multiple complementary regex patterns rather than single pattern reliance
+   - **Step 2**: Search for both numbered (`^\d+\.`) and bulleted (`^-\s+`) list patterns separately
+   - **Step 3**: Include complex patterns that account for bold text, colons, and other formatting
+   - **Step 4**: Validate findings with line-specific reads when user provides specific references
+
+4. **Validation Requirements:**
+   - **Distinguish context**: Lists in regular content vs. table cells vs. code blocks
+   - **Apply punctuation rules**: Periods for statements, question marks for questions, colons for introductory lists  
+   - **Cross-check with style guide**: Ensure detection aligns with established punctuation rules
+   - **Test patterns against known violations** before declaring detection complete
+
+**Root Cause Prevention:**
+- **File path accuracy**: Always confirm target file matches user's context
+- **Pattern comprehensiveness**: Use multiple detection approaches for different list formats
+- **Line number precision**: When user specifies lines, examine those exact ranges
+- **Context validation**: Verify list context (regular content, not tables/code) before applying punctuation rules
+
+This enhanced protocol prevents systematic blind spots in list punctuation detection and ensures comprehensive compliance validation.
 
 ### 6.3 Script Execution Monitoring Protocol
 
@@ -507,16 +676,145 @@ All parameters file configuration must follow the [Parameters File Style Guide](
   - Confirm if any Azure operations are still in progress
   - Cancel the script if necessary and report what step it stopped at
 
-### 6.3 Error Prevention Focus
+### 6.4 File Corruption Detection and Validation Protocol
+
+**CRITICAL FILE INTEGRITY VALIDATION** - Always perform these checks when reviewing or creating markdown content:
+
+#### Content Corruption Detection
+
+**Mandatory Pre-Edit Validation:**
+
+1. **Header Corruption Check**: Look for malformed headers like `# Title### Other Content` or mixed content within header lines
+2. **Content Interleaving Check**: Identify content that appears mixed together or out of logical order
+3. **Character Corruption Check**: Search for � replacement characters or unexpected Unicode issues
+4. **Structure Integrity Check**: Verify that sections flow logically and content isn't duplicated or fragmented
+
+**Common Corruption Patterns:**
+
+- **Mixed Headers**: `# Title### Subtitle` → Should be separate lines with proper spacing
+- **Content Fragmentation**: Sections that appear incomplete or cut off mid-sentence
+- **Duplicate Content**: Same content appearing multiple times in different locations
+- **Missing Separators**: Content that should be separate sections running together
+- **Malformed Lists**: Numbered or bulleted lists missing proper spacing or structure
+
+#### Comprehensive Markdown Validation Checklist
+
+**Before considering any markdown file "compliant", verify ALL of these:**
+
+- [ ] **Header Structure**: All headers start on new lines with proper hash syntax (# ## ### ####)
+- [ ] **Header Uniqueness**: No duplicate header text (each must be unique and descriptive)
+- [ ] **Content Flow**: Logical progression from introduction to conclusion without fragmentation
+- [ ] **List Formatting**: ALL lists surrounded by blank lines (before and after)
+- [ ] **Code Block Spacing**: ALL code blocks surrounded by blank lines with language identifiers
+- [ ] **Table Cell Content**: No periods added to table cell descriptions (they are NOT lists)
+- [ ] **Interface Elements**: Bold formatting for UI elements instead of quotes
+- [ ] **Professional Tone**: Consistent technical writing throughout
+- [ ] **Link Validity**: All hyperlinks properly formatted and functional
+- [ ] **Character Integrity**: No � replacement characters or encoding issues
+
+#### Systematic File Recovery Protocol
+
+**When file corruption is detected:**
+
+1. **Assess Corruption Scope**: Use `grep_search` to identify extent of corruption
+2. **Document Issues**: Create comprehensive list of all corruption types found  
+3. **Choose Recovery Method**:
+   - **Minor Issues**: Targeted `replace_string_in_file` operations
+   - **Major Corruption**: Complete file recreation may be necessary
+4. **Implement Fixes**: Address corruption systematically, one issue type at a time
+5. **Validate Recovery**: Run complete validation checklist after fixes
+6. **Test Functionality**: Ensure content maintains original intent and functionality
+
+**File Recreation Decision Matrix:**
+
+| Corruption Type | Recommended Approach | Reasoning |
+|----------------|---------------------|-----------|
+| **Header mixing** | Targeted fixes | Usually isolated to specific sections |
+| **Content interleaving** | File recreation | Too complex for reliable targeted fixes |
+| **Character corruption** | File recreation | Usually indicates systematic encoding issues |
+| **Structure fragmentation** | File recreation | Difficult to ensure content completeness |
+
+### 6.5 Enhanced Error Prevention Focus
 
 **Critical Reminders:**
 
-- Distinguish between table descriptions and actual lists for punctuation.
-- Use official Microsoft Learn as primary research source.
-- Validate all PowerShell cmdlets and REST API calls before suggesting.
-- Apply style guide standards during content creation, not just reviews.
-- Ensure header uniqueness to prevent MD024 lint warnings.
-- Include language identifiers in all code blocks (MD040).
+- **File Integrity First**: Always validate file structure and detect corruption before making any edits
+- **List Punctuation - Standalone Lists**: ALL standalone bulleted AND numbered lists MUST end with appropriate punctuation (periods for statements, question marks for questions)
+- **List Punctuation - Introductory Lists**: ALL introductory lists (bulleted AND numbered) MUST end with colons (not periods)
+- **List Punctuation - Table Cells**: NEVER add periods to table cell descriptions (they are descriptions, not lists)
+- **Comprehensive List Validation**: Check that ALL lists (numbered AND bulleted) have proper blank line spacing
+- **Header Corruption Detection**: Identify malformed headers like `# Title### Other` that indicate content mixing
+- **Character Encoding Validation**: Check for � replacement characters indicating Unicode corruption
+- **Content Flow Verification**: Ensure logical document structure without fragmentation or duplication
+- **Professional Formatting Standards**: Apply style guide standards during content creation, not just reviews
+- **Complete Validation Protocol**: Use the comprehensive markdown validation checklist before declaring compliance
+- **Use official Microsoft Learn as primary research source**
+- **Validate all PowerShell cmdlets and REST API calls before suggesting**
+- **Ensure header uniqueness to prevent MD024 lint warnings**
+- **Include language identifiers in all code blocks (MD040)**
+
+**Mandatory Pre-Compliance Declaration:**
+
+Before declaring any markdown file "compliant" or "ready", you MUST verify:
+
+1. **File Structure Integrity**: No corrupted headers, mixed content, or character encoding issues
+2. **Complete List Spacing**: ALL bulleted and numbered lists surrounded by blank lines
+3. **List Punctuation Detection**: Use enhanced detection methodology with multiple regex patterns to find ALL missing punctuation violations
+4. **List Punctuation - Standalone Lists**: ALL standalone bulleted and numbered lists end with appropriate punctuation (e.g., "Enable feature." or "Is this enabled?")
+5. **List Punctuation - Introductory Lists**: ALL introductory lists end with colons (e.g., "Configure settings:")
+6. **List Punctuation - Table Cells**: NO periods added to table descriptions (table cells are descriptions, not lists)
+7. **Code Block Formatting**: ALL code blocks have blank lines before/after plus language identifiers
+8. **Header Uniqueness**: No duplicate header text anywhere in document
+9. **Professional Standards**: Consistent tone, proper interface element formatting, validated links
+10. **Content Completeness**: Document flows logically from introduction to conclusion without gaps
+11. **Lint Validation**: Zero markdown lint warnings (MD001, MD024, MD031, MD032, MD040)
+
+**If ANY of these validation points fail, the file is NOT compliant and requires immediate correction before proceeding.**
+
+### 6.6 Systematic Content Creation and Review Protocol
+
+**MANDATORY WORKFLOW** - Follow this exact sequence for all content creation and review tasks:
+
+#### Phase 1: Initial Assessment and Corruption Detection
+
+1. **Full File Read**: Read the entire document before making any changes
+2. **Structure Analysis**: Check for header corruption, content interleaving, character issues
+3. **Flow Validation**: Verify logical document progression and completeness
+4. **List Inventory**: Identify ALL numbered and bulleted lists for spacing validation
+5. **Code Block Inventory**: Identify ALL code blocks for spacing and language identifier validation
+
+#### Phase 2: Comprehensive Validation Checklist
+
+Execute this checklist systematically - DO NOT skip any items:
+
+- [ ] **Headers**: Proper syntax, unique names, logical hierarchy, no corruption
+- [ ] **List Punctuation - Standalone Lists**: ALL standalone bulleted and numbered lists end with appropriate punctuation (periods for statements, question marks for questions)
+- [ ] **List Punctuation - Introductory Lists**: ALL introductory lists end with colons (not periods)  
+- [ ] **List Punctuation - Table Cells**: NO periods added to table cell descriptions (they are not lists)
+- [ ] **List Spacing**: ALL lists (bulleted and numbered) surrounded by blank lines (no exceptions)
+- [ ] **List Spacing**: ALL lists surrounded by blank lines (no exceptions)
+- [ ] **Code Blocks**: ALL blocks have blank lines plus language identifiers  
+- [ ] **Interface Elements**: Bold formatting instead of quotes
+- [ ] **Links**: Properly formatted and functional
+- [ ] **Character Integrity**: No � or encoding corruption
+- [ ] **Content Flow**: Introduction → sections → conclusion without gaps
+- [ ] **Professional Tone**: Consistent technical writing standards
+
+#### Phase 3: Lint Validation and Error Checking
+
+1. **Run get_errors Tool**: Check for markdown lint warnings
+2. **Address ALL Violations**: Fix MD001, MD024, MD031, MD032, MD040 systematically
+3. **Re-validate After Fixes**: Ensure fixes don't introduce new issues
+4. **Confirm Zero Warnings**: Do not proceed until lint output shows "No errors found"
+
+#### Phase 4: Final Compliance Declaration
+
+**Only after completing ALL previous phases**, declare file status:
+
+- **COMPLIANT**: All validation points pass, zero lint errors, professional standards met
+- **NON-COMPLIANT**: Issues remain, additional fixes required before completion
+
+**NEVER declare compliance without completing the full validation workflow.**
 
 ---
 

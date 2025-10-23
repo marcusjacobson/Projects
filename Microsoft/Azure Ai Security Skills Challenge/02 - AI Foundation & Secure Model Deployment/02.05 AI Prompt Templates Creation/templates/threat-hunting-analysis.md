@@ -13,8 +13,8 @@ This template specializes your AI Foundry cybersecurity analyst for **advanced t
 **Testing Parameters**:
 
 - **Temperature**: 0.2 (analytical precision for threat hunting).
-- **Max Tokens**: 450 (comprehensive technical analysis).
-- **Expected Range**: 380-420 tokens per threat hunting analysis.
+- **Max Tokens**: 400 (optimized for character limit compliance in Microsoft Defender XDR alert comments).
+- **Expected Range**: 350-380 tokens per threat hunting analysis.
 
 ---
 
@@ -39,36 +39,24 @@ INVESTIGATION QUERIES:
 - Generate actionable KQL queries for Microsoft Sentinel/Defender investigation.
 - Focus on hunt queries that identify similar attack patterns across environment.
 - Include timeline reconstruction queries and attack chain correlation analysis.
-- Provide threat landscape correlation for campaign-level intelligence.
-
-THREAT INTELLIGENCE CORRELATION:
-- Correlate indicators with known APT campaigns and documented threat actor TTPs.
-- Assess campaign infrastructure patterns and attribution confidence levels.
-- Evaluate threat landscape context and provide intelligence-driven recommendations.
+- Embed threat intelligence context within KQL query comments for SOC analyst guidance.
 
 OUTPUT FORMAT:
 **THREAT ASSESSMENT:**
-Severity: [CRITICAL/HIGH/MEDIUM/LOW] | Confidence: [0-100%]
-Attack Pattern: [Detailed attack classification]
-MITRE ATT&CK: [Specific technique IDs with sub-techniques]
+High-level threat evaluation and attack sophistication assessment only. Do not include MITRE techniques here.
 
-**ATTACK ANALYSIS:**
-Attribution: [Threat actor correlation with confidence level]
-IOCs: [Comprehensive indicators for monitoring and detection]
-Timeline: [Attack progression and technique sequencing]
+**MITRE ATT&CK MAPPING:**
+List specific technique IDs with sub-techniques and brief descriptions. Format: T####.### - Brief description
 
-**HUNT QUERIES:**
-[3-4 actionable KQL queries for immediate Sentinel investigation]
+**IOC ANALYSIS:**
+Provide IOCs with operational context for SOC analysts. Format: IOC_TYPE: value (threat context, confidence level, monitoring priority). Include detection recommendations and blocking guidance.
 
-**IOC MONITORING:**
-[Specific indicators with continuous monitoring recommendations]
+**HUNTING QUERIES:**
+Provide KQL queries for investigation with embedded threat intelligence context in comments. Each query should be properly formatted with comments explaining purpose and including relevant threat actor TTPs, campaign attribution, and infrastructure patterns where applicable.
 
-**CONFIDENCE & EVIDENCE:**
-Confidence: [0.0-1.0 scale with evidence justification]
-Evidence: [Supporting indicators and technical artifacts]
-Investigation: [Additional investigation areas and recommendations]
+TOKEN LIMIT: 400 tokens maximum for threat hunting analysis optimized for Microsoft Defender XDR alert comments
 
-TOKEN LIMIT: 450 tokens maximum for comprehensive threat hunting analysis
+CHARACTER LIMIT: Each analysis must fit within ~1000 characters per alert comment. Use multi-comment approach if needed.
 
 INCIDENT DATA:
 [Logic Apps will append detailed incident information here]
@@ -95,11 +83,13 @@ INCIDENT DATA:
         "content": "@{concat(variables('threat-hunting-template'), '\n\nINCIDENT DATA:\n', body('Parse_incident_data'))}"
       }
     ],
-    "max_tokens": 450,
+    "max_tokens": 400,
     "temperature": 0.2
   }
 }
 ```
+
+> **💡 Logic Apps Configuration Tip**: Enable **JSON view** in Logic Apps designer for the HTTP action to see the complete `messages` array structure. Click the **<> JSON** button in the HTTP action to verify your template integration displays correctly with proper message role assignments and variable concatenation.
 
 ### **Comment Parsing for Conditional Logic Apps Actions**
 
@@ -132,17 +122,24 @@ The AI response enables sophisticated conditional workflows:
 
 **Token Usage & Pricing**:
 
-- **Expected Tokens**: 380-420 per analysis (1.8x stakeholder template).
+- **Expected Tokens**: 350-380 per analysis (optimized for alert comment character limits).
 - **Cost per Analysis**: ~$0.00038 (GPT-4o-mini pricing).
 - **Monthly SOC Budget**: ~$38 for 100,000 threat hunting analyses.
 - **ROI Analysis**: $50,000+ analyst time savings through automated technical investigation.
 
 **Volume-Based Pricing**:
 
-- **Small SOC** (500/month): ~$0.19.
-- **Medium SOC** (5,000/month): ~$1.90.
-- **Large SOC** (50,000/month): ~$19.00.
-- **Enterprise SOC** (200,000/month): ~$76.00.
+- **Small SOC** (500/month): ~$0.24.
+- **Medium SOC** (5,000/month): ~$2.40.
+- **Large SOC** (50,000/month): ~$24.00.
+- **Enterprise SOC** (200,000/month): ~$96.00.
+
+**400 Token Allocation Justification**:
+
+- **Character Limit Compliance**: Optimized for Microsoft Defender XDR alert comment ~1000 character limits.
+- **Multi-Comment Strategy**: Structured delivery enables comprehensive analysis across multiple alert comments.
+- **SOC Operational Focus**: Prioritizes immediate actionable insights for rapid incident triage.
+- **Cost Optimization**: Balanced token usage reduces operational costs while maintaining analytical quality.
 
 ---
 
@@ -164,27 +161,52 @@ Multiple failed login attempts detected from IP 185.220.101.45 targeting domain 
 **THREAT ASSESSMENT:**
 Severity: CRITICAL | Confidence: 90%
 Attack Pattern: Administrative account compromise with lateral movement
-MITRE ATT&CK: T1078.003 (Valid Accounts: Local), T1059.001 (PowerShell), T1027 (Obfuscation), T1021.001 (RDP)
+Attack sophistication: INTERMEDIATE - Uses common tools but demonstrates knowledge of enterprise authentication systems
 
-**ATTACK ANALYSIS:**
-Attribution: TTPs consistent with APT29/Cozy Bear techniques (medium confidence)
-IOCs: 185.220.101.45 (TOR exit node), Base64 encoded PowerShell, Off-hours timing pattern
-Timeline: Credential compromise → PowerShell execution → Lateral movement (15-minute window)
+**MITRE ATT&CK MAPPING:**
+- T1078.003 (Valid Accounts: Local) - Domain administrator account compromise
+- T1059.001 (PowerShell) - Encoded PowerShell execution for stealth
+- T1027 (Obfuscation) - Base64 encoded command execution
+- T1021.001 (RDP) - Remote desktop protocol for lateral movement
+Lateral movement potential: HIGH - Administrative credentials enable network traversal
 
-**HUNT QUERIES:**
-DeviceProcessEvents | where FileName =~ "powershell.exe" and ProcessCommandLine contains "bypass"
-SigninLogs | where ResultType != 0 | summarize FailedAttempts=count() by UserPrincipalName, IPAddress
-DeviceLogonEvents | where LogonType == 10 and TimeGenerated between (datetime(2024-01-01 02:00) .. datetime(2024-01-01 03:00))
+**IOC ANALYSIS:**
+IP Addresses: 185.220.101.45 (TOR exit node, external)
+User Accounts: DA-Admin (domain administrator - high-privilege target)
+Processes: powershell.exe with execution policy bypass
+Commands: Base64 encoded PowerShell payload (JABzAD0ATgBlAHcALQBPAGIA...)
+Timing: Off-hours activity (02:30 UTC) - suspicious operational window
 
-**IOC MONITORING:**
-Monitor 185.220.101.45 and associated TOR infrastructure for continued activity
-Track PowerShell executions with execution policy bypass parameters  
-Alert on off-hours administrative authentications from external IPs
+**HUNTING QUERIES:**
+// Hunt for similar PowerShell execution patterns
+// THREAT INTELLIGENCE: PowerShell bypass techniques commonly used by APT29/Cozy Bear
+// for administrative account compromise and lateral movement campaigns
+DeviceProcessEvents 
+| where FileName =~ "powershell.exe" 
+| where ProcessCommandLine contains "bypass"
+| where ProcessCommandLine contains "encodedcommand"
+| where TimeGenerated >= ago(30d)
+| project TimeGenerated, DeviceName, AccountName, ProcessCommandLine
 
-**CONFIDENCE & EVIDENCE:**
-Confidence: 0.90 - Strong correlation of TTPs, timing, and infrastructure indicators
-Evidence: Authentication logs, process execution telemetry, network indicators
-Investigation: Decode PowerShell payload, analyze file system artifacts, correlate with threat intelligence
+// Correlate authentication failures with administrative accounts  
+// THREAT INTELLIGENCE: Administrative account targeting pattern observed in
+// recent APT campaigns focusing on domain controller compromise
+SigninLogs 
+| where ResultType != 0 
+| where UserPrincipalName contains "admin"
+| where TimeGenerated >= ago(7d)
+| summarize FailedAttempts=count() by UserPrincipalName, IPAddress, bin(TimeGenerated, 1h)
+| where FailedAttempts >= 5
+
+// Timeline reconstruction for off-hours administrative access
+// THREAT INTELLIGENCE: Off-hours operations (02:00-04:00 UTC) indicate
+// APT operational security practices to avoid detection
+DeviceLogonEvents 
+| where LogonType == 10 
+| where TimeGenerated between (datetime(2024-01-01 02:00) .. datetime(2024-01-01 04:00))
+| where AccountName contains "admin"
+| project TimeGenerated, AccountName, RemoteIP, DeviceName
+| order by TimeGenerated asc
 ```
 
 #### **Test Scenario 2: Advanced Persistent Threat Campaign Analysis**
@@ -221,7 +243,7 @@ Sequential authentication events: User "CORP\jsmith" authenticated to DC01 (10:1
 
 ### **Performance & Quality Metrics**
 
-**Token Efficiency**: 380-420 tokens per comprehensive analysis
+**Token Efficiency**: 350-380 tokens per comprehensive analysis
 **Analysis Accuracy**: 85%+ for MITRE ATT&CK technique identification  
 **Response Time**: < 3 seconds via Azure OpenAI endpoint
 **Cost Efficiency**: ~$0.00038 per advanced threat hunting analysis
@@ -233,7 +255,7 @@ Sequential authentication events: User "CORP\jsmith" authenticated to DC01 (10:1
 - [ ] **IOC Specificity**: Indicators are actionable and technically accurate
 - [ ] **Attribution Confidence**: Claims supported by technical evidence
 - [ ] **Investigation Guidance**: Clear next steps for security analysts
-- [ ] **Token Optimization**: Maximum analytical value within 450-token limit
+- [ ] **Token Optimization**: Maximum analytical value within 400-token limit with character limit compliance
 
 ## Template Customization
 
@@ -280,12 +302,12 @@ Adapt this template for your specific environment by customizing threat intellig
 
 **Phase 1: AI Foundry Testing** (Complete before Logic Apps integration):
 
-- [ ] AI Foundry testing completed with 450-token advanced threat hunting analysis.
+- [ ] AI Foundry testing completed with 400-token threat hunting analysis optimized for alert comments.
 - [ ] MITRE ATT&CK technique mapping validated across diverse attack scenarios and threat levels.
-- [ ] KQL query generation tested for syntax accuracy and investigation effectiveness.
+- [ ] KQL query generation tested for syntax accuracy and investigation effectiveness within character limits.
 - [ ] System message produces sophisticated technical analysis with attribution confidence scoring.
 - [ ] User message format validated with complex multi-stage attack scenarios and APT-level campaigns.
-- [ ] Token usage optimized within 380-420 range while maintaining comprehensive analytical depth.
+- [ ] Token usage optimized within 350-380 range while maintaining comprehensive analytical depth and character limit compliance.
 
 **Phase 2: Logic Apps Integration** (Validate after Week 3 implementation):
 

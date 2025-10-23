@@ -26,29 +26,7 @@ After successful AI Foundry testing, this template enables Logic Apps automation
 3. **Test System Message**:
 
    ```text
-   You are a senior security engineer specializing in incident response and technical remediation with expertise in enterprise infrastructure recovery. Your specializations include:
-
-   REMEDIATION METHODOLOGY:
-   - Conduct rapid technical assessment using industry-standard incident response frameworks
-   - Evaluate system compromise scope, containment requirements, and recovery complexity
-   - Analyze technology stack vulnerabilities and implement hardening measures
-   - Design validation procedures to ensure complete remediation and prevent re-compromise
-
-   TECHNICAL SPECIALIZATION AREAS:
-   - Windows infrastructure: Domain controllers, Active Directory, Group Policy, PowerShell security
-   - Linux/Unix systems: Rootkit detection, privilege escalation mitigation, system integrity validation
-   - Network infrastructure: Segmentation, monitoring, intrusion detection, traffic analysis
-   - Cloud platforms: Azure security, identity management, resource isolation, compliance validation
-   - Database security: Access control restoration, data integrity validation, audit trail analysis
-
-   REMEDIATION FRAMEWORK:
-   - Immediate containment and evidence preservation procedures
-   - Step-by-step technical recovery with validation checkpoints
-   - System-specific hardening recommendations and security improvements
-   - Recovery timeline estimation with resource and expertise requirements
-   - Post-remediation monitoring and success criteria definition
-
-   Create actionable technical remediation plans that ensure thorough incident recovery while implementing preventive measures to strengthen security posture and reduce future risk.
+   You are a senior security engineer specializing in incident response and technical remediation with expertise in enterprise infrastructure recovery. Focus on immediate containment procedures, step-by-step technical recovery with validation checkpoints, system-specific hardening recommendations, and recovery timeline estimation with resource requirements. Create actionable technical remediation plans that ensure thorough incident recovery while implementing preventive measures to strengthen security posture. Optimize for Microsoft Defender XDR alert comments with ~1000 character limits per comment.
    ```
 
 ### 🎯 AI Foundry Testing Scenarios
@@ -141,11 +119,11 @@ Replace your existing **messages** array with this JSON configuration for easy c
 [
   {
     "role": "system",
-    "content": "You are a senior security engineer specializing in incident response and technical remediation with expertise in enterprise infrastructure recovery. Focus on immediate containment procedures, step-by-step technical recovery with validation checkpoints, system-specific hardening recommendations, recovery timeline estimation with resource requirements, and post-remediation monitoring. Create actionable technical remediation plans that ensure thorough incident recovery while implementing preventive measures to strengthen security posture."
+    "content": "You are a senior security engineer specializing in incident response and technical remediation with expertise in enterprise infrastructure recovery. Focus on immediate containment procedures, step-by-step technical recovery with validation checkpoints, system-specific hardening recommendations, and recovery timeline estimation with resource requirements. Create actionable technical remediation plans that ensure thorough incident recovery while implementing preventive measures to strengthen security posture. Optimize for Microsoft Defender XDR alert comments with ~1000 character limits per comment."
   },
   {
     "role": "user", 
-    "content": "Create comprehensive technical remediation plan for this Defender XDR incident: Title: [INCIDENT_TITLE], Description: [INCIDENT_DESCRIPTION], Severity: [INCIDENT_SEVERITY]. OUTPUT 5 SECTIONS: **IMMEDIATE CONTAINMENT:** Critical isolation procedures and evidence preservation steps **TECHNICAL RECOVERY:** Step-by-step remediation with validation checkpoints **SYSTEM HARDENING:** Security improvements and configuration changes **RECOVERY VALIDATION:** Testing procedures and success criteria **TIMELINE & RESOURCES:** Recovery phases with expertise and resource requirements. REQUIREMENTS: Technically accurate procedures, evidence preservation, realistic timelines, TOKEN LIMIT: 400 tokens maximum."
+    "content": "Create comprehensive technical remediation plan for this Defender XDR incident: Title: [INCIDENT_TITLE], Description: [INCIDENT_DESCRIPTION], Severity: [INCIDENT_SEVERITY]. OUTPUT 4 SECTIONS: **IMMEDIATE CONTAINMENT:** Critical isolation procedures and evidence preservation steps **TECHNICAL RECOVERY:** Step-by-step remediation with validation checkpoints **SYSTEM HARDENING:** Security improvements and configuration changes **TIMELINE & RESOURCES:** Recovery phases with expertise and resource requirements. REQUIREMENTS: Technically accurate procedures, evidence preservation, realistic timelines, TOKEN LIMIT: 400 tokens maximum, CHARACTER LIMIT: Each section must fit within ~1000 characters per alert comment."
   }
 ]
 ```
@@ -160,8 +138,6 @@ The AI will return structured output in this format:
 **TECHNICAL RECOVERY:** [Recovery procedures content]
 
 **SYSTEM HARDENING:** [Hardening recommendations content]
-
-**RECOVERY VALIDATION:** [Validation procedures content]
 
 **TIMELINE & RESOURCES:** [Timeline and resource content]
 ```
@@ -178,8 +154,7 @@ In your existing `Extract AI Analysis Sections` Compose action, **replace the cu
 {
   "immediateContainment": "@{first(split(first(body('Analyze Incident with AI')['choices'])['message']['content'], '**TECHNICAL RECOVERY:**'))}",
   "technicalRecovery": "@{first(split(last(split(first(body('Analyze Incident with AI')['choices'])['message']['content'], '**TECHNICAL RECOVERY:**')), '**SYSTEM HARDENING:**'))}",
-  "systemHardening": "@{first(split(last(split(first(body('Analyze Incident with AI')['choices'])['message']['content'], '**SYSTEM HARDENING:**')), '**RECOVERY VALIDATION:**'))}",
-  "recoveryValidation": "@{first(split(last(split(first(body('Analyze Incident with AI')['choices'])['message']['content'], '**RECOVERY VALIDATION:**')), '**TIMELINE & RESOURCES:**'))}",
+  "systemHardening": "@{first(split(last(split(first(body('Analyze Incident with AI')['choices'])['message']['content'], '**SYSTEM HARDENING:**')), '**TIMELINE & RESOURCES:**'))}",
   "timelineResources": "@{last(split(first(body('Analyze Incident with AI')['choices'])['message']['content'], '**TIMELINE & RESOURCES:**'))}"
 }
 ```
@@ -206,14 +181,9 @@ In your existing `Create Comments Array` Compose action, **replace the current J
     "order": 3
   },
   {
-    "prefix": "[Remediation - Validation]",
-    "content": "@{outputs('Extract AI Analysis Sections')['recoveryValidation']}",
-    "order": 4
-  },
-  {
     "prefix": "[Remediation - Timeline]",
     "content": "@{outputs('Extract AI Analysis Sections')['timelineResources']}",
-    "order": 5
+    "order": 4
   }
 ]
 ```
@@ -225,7 +195,7 @@ In your existing `Create Comments Array` Compose action, **replace the current J
 | **Cost per Incident** | ~$0.00018 | ~$0.00036 | **+$0.00018** (2x) |
 | **Token Usage** | 180-200 tokens | 380-400 tokens | **+200 tokens** |
 | **Execution Time** | 30-45 seconds | 90-150 seconds | **+60-105 seconds** |
-| **Comments Generated** | 4 analysis comments | 5 remediation plans | **+1 comment** |
+| **Comments Generated** | 4 analysis comments | 4 remediation plans | **Same count** |
 
 **Cost Justification**: The 2x cost increase provides comprehensive technical recovery guidance, potentially reducing incident resolution time by 40-60% and preventing costly re-compromises through improved hardening measures.
 

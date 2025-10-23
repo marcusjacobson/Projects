@@ -23,12 +23,15 @@ This style guide defines the formatting, punctuation, and tone standards for all
 
 ## 🎯 Punctuation Rules
 
-### Bullet Points
+### Bullet Points and Numbered Lists
 
-- **Standalone bullet points must end with periods.**
-- **Introductory bullet points that lead to sub-lists must end with colons.**
-- This applies to all list items, maintaining logical punctuation based on their function.
-- Use consistent bullet point formatting throughout the document.
+- **Standalone bullet points and numbered lists must end with appropriate punctuation:**
+  - **Periods** for statements and complete thoughts
+  - **Question marks** for questions
+  - **Colons** for introductory items that lead to sub-lists
+- **Introductory bullet points and numbered lists that lead to sub-lists must end with colons.**
+- This applies to all list items (both bulleted and numbered), maintaining logical punctuation based on their function.
+- Use consistent list formatting throughout the document.
 
 ### Table Cell Descriptions vs. Bullet Point Lists
 
@@ -44,13 +47,28 @@ Table cells contain descriptions, explanations, or values - they are NOT standal
 | **Method** | `GET` | Retrieve incidents from Microsoft Graph |
 | **Plan Type** | **Consumption** | Cost-effective pay-per-execution |
 
-#### Actual Bullet Point Lists (Periods Required)
+#### Actual Bullet Point Lists (Appropriate Punctuation Required)
 
-These are true bulleted lists that require periods:
+These are true bulleted lists that require appropriate punctuation:
+
+**Statements and Actions (Periods Required):**
 
 - Enable disk encryption on virtual machines.
 - Install endpoint protection solution on machines.
 - Apply system updates using Azure Update Manager integration.
+
+**Questions (Question Marks Required):**
+
+- How well does the AI analysis match the actual security concern?
+- Are the recommendations specific and implementable?
+- Does the response include all necessary analysis components?
+
+**Introductory Items (Colons Required):**
+
+- Review and disable advanced protection for:
+  - **Servers** → Set to **Off**
+  - **App Service** → Set to **Off**
+  - **Storage** → Set to **Off**
 
 #### Common Mistake to Avoid
 
@@ -72,9 +90,9 @@ These are true bulleted lists that require periods:
 | Retrieve incidents from Microsoft Graph |
 ```
 
-#### Standalone Bullet Points (End with Periods)
+#### Standalone Bullet Points (End with Appropriate Punctuation)
 
-Use periods when bullet points are complete, standalone actions or statements:
+Use appropriate punctuation when bullet points are complete, standalone statements:
 
 - Enable disk encryption on virtual machines.
 - Install endpoint protection solution on machines.
@@ -364,7 +382,7 @@ Text after code block.
 - **Ensure lists are surrounded by blank lines** to avoid MD032 lint warnings.
 - Use consistent list formatting throughout documents.
 - Maintain proper indentation for nested lists.
-- Follow punctuation rules for list items (periods for standalone, colons for introductory).
+- Follow punctuation rules for list items (appropriate punctuation for standalone, colons for introductory).
 - **For step-by-step instructions, use bullet points with paragraph breaks between logical groupings for enhanced readability.**
 
 #### Correct List Formatting
@@ -429,7 +447,7 @@ Navigate to your newly created resource group.
 
 ### Prerequisites Sections
 
-- List all requirements clearly with bullet points ending in periods.
+- List all requirements clearly with bullet points ending in appropriate punctuation.
 - Include access level requirements and technical prerequisites.
 - Specify knowledge level expectations for readers.
 - Provide links to foundational concepts when necessary.
@@ -495,7 +513,7 @@ When reviewing any markdown document, verify:
 
 ### Core Formatting Standards
 
-- [ ] **Punctuation - Lists**: Standalone bullet points end with periods, introductory ones with colons
+- [ ] **Punctuation - Lists**: Standalone bullet points end with appropriate punctuation (periods for statements, question marks for questions), introductory ones with colons
 - [ ] **Punctuation - Tables**: Table cell descriptions do NOT have periods added (they are descriptions, not lists)
 - [ ] **Headers**: Hash-based headers (####) instead of bold text, unique descriptive names
 - [ ] **Interface Elements**: Bold formatting instead of quotes for UI elements
@@ -688,9 +706,9 @@ Please review this markdown document for compliance with the Azure AI Security S
 2. **Issue Classification**: Categorize ALL findings into these specific types:
    
    **A. PUNCTUATION VIOLATIONS:**
-   - Standalone bullet points missing periods (should end with ".")
+   - Standalone bullet points missing appropriate punctuation (should end with "." for statements or "?" for questions)
    - Introductory bullet points missing colons (should end with ":")
-   - Lists within blockquotes missing periods
+   - Lists within blockquotes missing appropriate punctuation
    - NOTE: Table cell descriptions are NOT lists - do not add periods to table cells
    
    **B. HEADER FORMATTING VIOLATIONS:**
@@ -724,7 +742,7 @@ Please review this markdown document for compliance with the Azure AI Security S
 4. **Fix by Category, Not by Location**: Address all issues of ONE type across the entire document before moving to the next type:
    
    **Step A: Fix ALL punctuation violations**
-   - Find all standalone bullet point lists and add periods
+   - Find all standalone bullet point lists and add appropriate punctuation (periods for statements, question marks for questions)
    - Find all introductory bullet point lists and ensure colons
    - Fix lists within blockquotes
    - SKIP table cell descriptions completely
@@ -758,7 +776,7 @@ Please review this markdown document for compliance with the Azure AI Security S
    - Confirm the specific violation type is fully resolved
 
 7. **Final Quality Check**: Use the Quality Assurance Checklist:
-   - [ ] Standalone bullet points end with periods
+   - [ ] Standalone bullet points end with appropriate punctuation (periods for statements, question marks for questions)
    - [ ] Introductory bullet points end with colons  
    - [ ] Lists within blockquotes have proper punctuation
    - [ ] Table cell descriptions remain unchanged (no periods added)
@@ -788,15 +806,15 @@ Please review this markdown document for compliance with the Azure AI Security S
 
 ## SYSTEMATIC IMPLEMENTATION:
 
-1. Read entire document and create issue inventory by category
-2. Report comprehensive findings to user before making any edits
-3. Fix all punctuation issues across entire document
-4. Fix all header issues across entire document  
-5. Fix all interface element issues across entire document
-6. Fix all spacing issues across entire document
-7. Fix all structure issues across entire document
-8. Run final validation and quality assurance checklist
-9. Report completion with summary of all changes made
+1. Read entire document and create issue inventory by category.
+2. Report comprehensive findings to user before making any edits.
+3. Fix all punctuation issues across entire document.
+4. Fix all header issues across entire document.
+5. Fix all interface element issues across entire document.
+6. Fix all spacing issues across entire document.
+7. Fix all structure issues across entire document.
+8. Run final validation and quality assurance checklist.
+9. Report completion with summary of all changes made.
 
 This methodology ensures systematic, comprehensive compliance while preventing common mistakes like treating table descriptions as lists or making partial fixes that require multiple iterations.
 ```

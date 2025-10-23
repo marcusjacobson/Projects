@@ -48,7 +48,7 @@
       "value": 1
     },
     "seedValue": {
-      "value": 0
+      "value": 42
     },
     "systemPrompt": {
       "value": "You are a cybersecurity analyst. Analyze security incidents and provide structured analysis with these exact headers: ### 1) Executive Summary, ### 2) Risk Level Assessment, ### 3) Recommended Immediate Actions, ### 4) MITRE ATT&CK Mapping. Keep responses concise and actionable."

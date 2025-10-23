@@ -49,8 +49,7 @@ OUTPUT FORMAT:
 **INCIDENT CLASSIFICATION:**
 **BUSINESS IMPACT:**
 **RESPONSE PRIORITY:**
-**FALSE POSITIVE ANALYSIS:**
-**RECOMMENDATIONS:**
+**CONFIDENCE ASSESSMENT:**
 
 TOKEN LIMIT: 300 tokens maximum for rapid triage
 
@@ -88,7 +87,7 @@ Once your AI Foundry testing confirms optimal classification accuracy, integrate
       },
       {
         "role": "user",
-        "content": "@{concat('INCIDENT CLASSIFICATION REQUEST: Perform rapid incident triage and severity assessment for this security alert. Provide structured classification. CLASSIFICATION FRAMEWORK: Assign severity level (CRITICAL/HIGH/MEDIUM/LOW/INFORMATIONAL). Provide confidence score (0.0-1.0). Assess false positive likelihood with evidence. Evaluate business impact and resource criticality. TRIAGE ANALYSIS: Determine if immediate human intervention required. Identify escalation triggers and notifications. Assess containment urgency and response timeline. Evaluate automated response potential. RISK ASSESSMENT: Business continuity impact. Data exposure and compliance implications. Lateral movement and escalation potential. Recovery complexity and resource requirements. OUTPUT FORMAT: **INCIDENT CLASSIFICATION:** **BUSINESS IMPACT:** **RESPONSE PRIORITY:** **FALSE POSITIVE ANALYSIS:** **RECOMMENDATIONS:** TOKEN LIMIT: 300 tokens. INCIDENT DATA: ', variables('incident-details'))}"
+        "content": "@{concat('INCIDENT CLASSIFICATION REQUEST: Perform rapid incident triage and severity assessment for this security alert. Provide structured classification. CLASSIFICATION FRAMEWORK: Assign severity level (CRITICAL/HIGH/MEDIUM/LOW/INFORMATIONAL). Provide confidence score (0.0-1.0). Assess false positive likelihood with evidence. Evaluate business impact and resource criticality. TRIAGE ANALYSIS: Determine if immediate human intervention required. Identify escalation triggers and notifications. Assess containment urgency and response timeline. Evaluate automated response potential. RISK ASSESSMENT: Business continuity impact. Data exposure and compliance implications. Lateral movement and escalation potential. Recovery complexity and resource requirements. OUTPUT FORMAT: **INCIDENT CLASSIFICATION:** **BUSINESS IMPACT:** **RESPONSE PRIORITY:** **CONFIDENCE ASSESSMENT:** TOKEN LIMIT: 300 tokens. INCIDENT DATA: ', variables('incident-details'))}"
       }
     ],
     "max_tokens": 300,
@@ -103,7 +102,7 @@ Once your AI Foundry testing confirms optimal classification accuracy, integrate
 
 ### **Expected AI Response Structure**
 
-Your incident classification will generate structured comments that separate severity assessment, business impact, response priority, and false positive analysis:
+Your incident classification will generate structured comments that separate severity assessment, business impact, response priority, and confidence assessment:
 
 **Sample Expected Response:**
 
@@ -123,16 +122,11 @@ Human Review: YES - Critical severity requires senior analyst validation and coo
 Escalation: Executive notification required for domain-level security compromise
 Timeline: Containment actions must begin within 30 minutes to prevent lateral movement
 
-**FALSE POSITIVE ANALYSIS:**
-Likelihood: 15% - Multiple attack indicators significantly reduce false positive probability
+**CONFIDENCE ASSESSMENT:**
+Likelihood: HIGH (0.85/1.0) - Multiple attack indicators significantly reduce false positive probability
 Evidence: TOR network usage, off-hours timing, PowerShell obfuscation techniques
-Indicators: Legitimate administrative activity would not utilize anonymization networks or obfuscation
-
-**RECOMMENDATIONS:**
-1. ISOLATE affected domain controller immediately to prevent lateral movement
-2. RESET all privileged account passwords and revoke active sessions
-3. ACTIVATE incident response team for comprehensive threat assessment
-4. MONITOR for additional compromise indicators across enterprise infrastructure
+Assessment: Legitimate administrative activity would not utilize anonymization networks or obfuscation
+Recommendations: Immediate containment, password resets, incident response team activation
 ```
 
 ### **Comment Integration in Defender XDR**
@@ -295,10 +289,11 @@ Human Review: NO - Critical severity requires immediate automated response
 Escalation: C-level executive notification required
 Timeline: Containment actions must begin immediately
 
-**FALSE POSITIVE ANALYSIS:**
-Likelihood: 5% - Multiple high-confidence indicators present
+**CONFIDENCE ASSESSMENT:**
+Likelihood: HIGH (0.95/1.0) - Multiple high-confidence indicators present
 Evidence: TOR usage, privilege escalation, lateral movement patterns
-Indicators: No legitimate business scenario matches this activity pattern
+Assessment: No legitimate business scenario matches this activity pattern
+Recommendations: Immediate automated containment, C-level notification, incident response activation
 ```
 
 #### 3. False Positive Detection Validation
@@ -329,10 +324,11 @@ Human Review: NO - Clear benign pattern with high confidence
 Escalation: None required
 Timeline: Log for trend analysis, no immediate action
 
-**FALSE POSITIVE ANALYSIS:**
-Likelihood: 85% - Pattern consistent with scheduled service activity
+**CONFIDENCE ASSESSMENT:**
+Likelihood: LOW (0.15/1.0) - Pattern consistent with scheduled service activity
 Evidence: Service account name, scheduled timing, successful job execution
-Indicators: Failed attempts followed by job execution matches normal service behavior
+Assessment: Failed attempts followed by job execution matches normal service behavior
+Recommendations: Continue routine monitoring, no immediate action required
 ```
 
 #### 4. Edge Case Handling
@@ -363,10 +359,11 @@ Human Review: YES - Low confidence and sensitive data access
 Escalation: HR and Security team notification
 Timeline: Investigation must begin within 1 hour
 
-**FALSE POSITIVE ANALYSIS:**
-Likelihood: 50% - Legitimate access but unusual circumstances
+**CONFIDENCE ASSESSMENT:**
+Likelihood: MEDIUM (0.50/1.0) - Legitimate access but unusual circumstances
 Evidence: Valid user credentials, appropriate file permissions
-Indicators: Unusual timing and specific file pattern require investigation
+Assessment: Unusual timing and specific file pattern require investigation
+Recommendations: HR coordination, access pattern analysis, user interview
 ```
 
 ### Testing Validation Criteria

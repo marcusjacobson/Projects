@@ -18,7 +18,7 @@ After successful AI Foundry testing, this template enables Logic Apps automation
    ```json
    {
      "temperature": 0.2,
-     "max_tokens": 450,
+     "max_tokens": 400,
      "top_p": 0.95
    }
    ```
@@ -47,7 +47,7 @@ After successful AI Foundry testing, this template enables Logic Apps automation
    - Residual risk evaluation and risk acceptance criteria alignment
    - Strategic implications for enterprise risk management and board governance
 
-   Create actionable risk assessments that support data-driven decision-making for cybersecurity investments while aligning with organizational risk appetite and strategic business objectives.
+   Create actionable risk assessments that support data-driven decision-making for cybersecurity investments while aligning with organizational risk appetite and strategic business objectives. Focus on concise analysis optimized for Microsoft Defender XDR alert comments with ~1000 character limits per comment.
    ```
 
 ### 🎯 AI Foundry Testing Scenarios
@@ -68,7 +68,7 @@ REQUIREMENTS:
 - Control effectiveness: Current security posture evaluation and gaps.
 - Strategic implications: Long-term competitive and regulatory impact.
 
-TOKEN LIMIT: 450 tokens maximum
+TOKEN LIMIT: 400 tokens maximum
 ```
 
 #### Expected AI Foundry Output Quality
@@ -93,7 +93,7 @@ REQUIREMENTS:
 - Control effectiveness assessment for medical device security.
 - Mitigation strategies with cost-benefit analysis and ROI.
 
-TOKEN LIMIT: 450 tokens maximum
+TOKEN LIMIT: 400 tokens maximum
 ```
 
 #### Response Quality Metrics
@@ -103,7 +103,7 @@ Validate each AI Foundry test produces:
 - [ ] **Quantitative Accuracy**: Risk scores align with incident severity and business impact.
 - [ ] **Financial Precision**: Cost estimates reflect realistic industry benchmarks.
 - [ ] **Strategic Context**: Long-term business implications addressed comprehensively.
-- [ ] **Token Compliance**: Response within 420-450 token range.
+- [ ] **Token Compliance**: Response within 380-400 token range.
 - [ ] **Decision Support**: Analysis supports investment and resource allocation decisions.
 
 ## Template Enhancement Context
@@ -144,7 +144,7 @@ Replace your existing **messages** array with this JSON configuration for easy c
   },
   {
     "role": "user", 
-    "content": "Create comprehensive risk assessment for this Defender XDR incident: Title: [INCIDENT_TITLE], Description: [INCIDENT_DESCRIPTION], Severity: [INCIDENT_SEVERITY]. OUTPUT 5 SECTIONS: **RISK PROFILE:** Overall risk score with confidence intervals and risk categorization **BUSINESS IMPACT:** Financial impact ranges and operational disruption assessment **CONTROL ASSESSMENT:** Current security control effectiveness and investment priorities **MITIGATION ANALYSIS:** Risk reduction strategies with cost-benefit analysis and ROI **STRATEGIC IMPLICATIONS:** Long-term business effects and competitive positioning impact. REQUIREMENTS: Quantitative scoring, realistic financials, evidence-based assessments, TOKEN LIMIT: 450 tokens maximum."
+    "content": "Create comprehensive risk assessment for this Defender XDR incident: Title: [INCIDENT_TITLE], Description: [INCIDENT_DESCRIPTION], Severity: [INCIDENT_SEVERITY]. OUTPUT 4 SECTIONS: **RISK SCORE & METHODOLOGY:** Overall risk score with confidence intervals and risk categorization methodology **BUSINESS IMPACT ASSESSMENT:** Financial impact ranges and operational disruption assessment **STRATEGIC IMPLICATIONS:** Long-term business effects and competitive positioning impact **RISK MITIGATION PRIORITIES:** Risk reduction strategies with cost-benefit analysis and ROI. REQUIREMENTS: Quantitative scoring, realistic financials, evidence-based assessments, TOKEN LIMIT: 400 tokens maximum, CHARACTER LIMIT: Each section must fit within ~1000 characters per alert comment."
   }
 ]
 ```
@@ -154,15 +154,13 @@ Replace your existing **messages** array with this JSON configuration for easy c
 The AI will return structured output in this format:
 
 ```text
-**RISK PROFILE:** [Risk scoring and categorization content]
+**RISK SCORE & METHODOLOGY:** [Risk scoring and categorization content]
 
-**BUSINESS IMPACT:** [Financial and operational impact content]
-
-**CONTROL ASSESSMENT:** [Security control effectiveness content]
-
-**MITIGATION ANALYSIS:** [Risk reduction strategies content]
+**BUSINESS IMPACT ASSESSMENT:** [Financial and operational impact content]
 
 **STRATEGIC IMPLICATIONS:** [Long-term business impact content]
+
+**RISK MITIGATION PRIORITIES:** [Risk reduction strategies content]
 ```
 
 ### Comment Parsing Configuration
@@ -221,12 +219,12 @@ In your existing `Create Comments Array` Compose action, **replace the current J
 
 | Metric | Default Setup | Risk Assessment Template | Difference |
 |--------|----------------------|--------------------------|------------|
-| **Cost per Incident** | ~$0.00018 | ~$0.00041 | **+$0.00023** (2.3x) |
-| **Token Usage** | 180-200 tokens | 420-450 tokens | **+240 tokens** |
+| **Cost per Incident** | ~$0.00018 | ~$0.00036 | **+$0.00018** (2.0x) |
+| **Token Usage** | 180-200 tokens | 380-400 tokens | **+190 tokens** |
 | **Execution Time** | 30-45 seconds | 120-180 seconds | **+90-135 seconds** |
-| **Comments Generated** | 4 analysis comments | 5 risk assessments | **+1 comment** |
+| **Comments Generated** | 4 analysis comments | 4 risk assessments | **Same count** |
 
-**Cost Justification**: The 2.3x cost increase provides comprehensive risk quantification and strategic business impact analysis, potentially supporting risk-informed decisions worth millions in avoided losses and optimized security investments.
+**Cost Justification**: The 2.0x cost increase provides comprehensive risk quantification and strategic business impact analysis, potentially supporting risk-informed decisions worth millions in avoided losses and optimized security investments.
 
 ## Template Customization
 
@@ -273,11 +271,11 @@ Adapt this template for your risk management framework by customizing risk scori
 
 **Phase 1: AI Foundry Testing** (Complete before Logic Apps integration):
 
-- [ ] AI Foundry testing completed with 450-token quantitative responses.
+- [ ] AI Foundry testing completed with 400-token quantitative responses.
 - [ ] Risk scoring accuracy validated in chat interface for multiple incident types.
 - [ ] System message produces appropriate financial impact ranges and strategic context.
 - [ ] User message format tested with sample incident data.
-- [ ] Token usage remains within 420-450 range.
+- [ ] Token usage remains within 380-400 range.
 - [ ] Business impact analysis supports strategic decision-making requirements.
 
 **Phase 2: Logic Apps Integration** (Validate after Week 3 implementation):

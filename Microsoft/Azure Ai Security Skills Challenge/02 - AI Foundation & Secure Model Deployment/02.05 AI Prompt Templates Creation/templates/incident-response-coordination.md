@@ -17,7 +17,7 @@ Before integrating with Logic Apps, validate your incident response coordination
 **INCIDENT RESPONSE COORDINATION SYSTEM MESSAGE:**
 
 ```text
-You are an experienced incident response coordinator with expertise in cybersecurity emergency management, team mobilization, and crisis leadership. Provide structured, time-bound incident response coordination guidance for security incidents focusing on containment, investigation, recovery, and communication procedures. Your guidance must be actionable, properly sequenced, and aligned with industry-standard incident response frameworks (NIST, SANS). Include specific timelines, resource requirements, and decision points while maintaining clear command and control structure throughout the response process within 400 tokens maximum.
+You are an experienced incident response coordinator specializing in cybersecurity emergency management and team mobilization. Provide structured, time-bound incident response coordination for security incidents focusing on immediate actions, containment procedures, communication coordination, and recovery planning. Your guidance must be actionable, properly sequenced, and aligned with industry-standard frameworks (NIST, SANS) while optimized for Microsoft Defender XDR alert comments with ~1000 character limits per comment.
 ```
 
 **USER MESSAGE FORMAT:**
@@ -46,16 +46,21 @@ PROCEDURAL GUIDANCE:
 - Compliance and regulatory notification obligations.
 
 OUTPUT FORMAT:
-**INCIDENT CLASSIFICATION:**
-**IMMEDIATE ACTIONS (0-15 minutes):**
-**SHORT-TERM RESPONSE (15-60 minutes):**
+**IMMEDIATE ACTIONS:**
+First 15 minutes critical response steps with containment priorities.
+
 **CONTAINMENT PROCEDURES:**
-**INVESTIGATION COORDINATION:**
-**COMMUNICATION MANAGEMENT:**
+Isolation, preservation, and damage limitation measures.
+
+**COORDINATION REQUIREMENTS:**
+Team mobilization, communication, and resource allocation procedures.
+
 **RECOVERY PLANNING:**
-**DOCUMENTATION REQUIREMENTS:**
+Investigation, restoration, and lessons learned framework.
 
 TOKEN LIMIT: 400 tokens for comprehensive response coordination
+
+CHARACTER LIMIT: Each section must fit within ~1000 characters per alert comment.
 
 INCIDENT DATA:
 [Insert incident details here for testing]
@@ -87,11 +92,11 @@ Once your AI Foundry testing confirms optimal coordination guidance, integrate w
     "messages": [
       {
         "role": "system",
-        "content": "You are an experienced incident response coordinator with expertise in cybersecurity emergency management, team mobilization, and crisis leadership. Provide structured, time-bound incident response coordination guidance for security incidents focusing on containment, investigation, recovery, and communication procedures. Your guidance must be actionable, properly sequenced, and aligned with industry-standard incident response frameworks (NIST, SANS). Include specific timelines, resource requirements, and decision points while maintaining clear command and control structure throughout the response process within 400 tokens maximum."
+        "content": "You are an experienced incident response coordinator specializing in cybersecurity emergency management and team mobilization. Provide structured, time-bound incident response coordination for security incidents focusing on immediate actions, containment procedures, communication coordination, and recovery planning. Your guidance must be actionable, properly sequenced, and aligned with industry-standard frameworks (NIST, SANS) while optimized for Microsoft Defender XDR alert comments with ~1000 character limits per comment."
       },
       {
         "role": "user",
-        "content": "@{concat('INCIDENT RESPONSE COORDINATION REQUEST: Provide structured incident response coordination and procedural guidance for this security incident. Focus on actionable steps, timelines, and resource coordination. RESPONSE FRAMEWORK: Immediate actions (0-15 min), Short-term response (15-60 min), Containment and investigation procedures, Recovery planning. COORDINATION PRIORITIES: Containment urgency, Evidence preservation, Communication coordination, Resource mobilization. PROCEDURAL GUIDANCE: Step-by-step procedures with timelines, Decision points and escalation, Documentation requirements, Compliance obligations. OUTPUT FORMAT: **INCIDENT CLASSIFICATION:** **IMMEDIATE ACTIONS (0-15 minutes):** **SHORT-TERM RESPONSE (15-60 minutes):** **CONTAINMENT PROCEDURES:** **INVESTIGATION COORDINATION:** **COMMUNICATION MANAGEMENT:** **RECOVERY PLANNING:** **DOCUMENTATION REQUIREMENTS:** TOKEN LIMIT: 400 tokens. INCIDENT DATA: ', variables('incident-details'))}"
+        "content": "@{concat('INCIDENT RESPONSE COORDINATION REQUEST: Provide structured incident response coordination for this security incident. Focus on actionable steps, timelines, and resource coordination. RESPONSE FRAMEWORK: Immediate actions, Containment procedures, Communication coordination, Recovery planning. COORDINATION PRIORITIES: Containment urgency, Evidence preservation, Team mobilization, Resource allocation. PROCEDURAL GUIDANCE: Step-by-step procedures with timelines, Decision points and escalation, Documentation requirements, Compliance obligations. OUTPUT FORMAT: **IMMEDIATE ACTIONS:** First 15 minutes critical response steps with containment priorities **CONTAINMENT PROCEDURES:** Isolation, preservation, and damage limitation measures **COORDINATION REQUIREMENTS:** Team mobilization, communication, and resource allocation procedures **RECOVERY PLANNING:** Investigation, restoration, and lessons learned framework. TOKEN LIMIT: 400 tokens, CHARACTER LIMIT: Each section must fit within ~1000 characters per alert comment. INCIDENT DATA: ', variables('incident-details'))}"
       }
     ],
     "max_tokens": 400,

@@ -17,7 +17,7 @@ Before integrating with Logic Apps, validate your executive summary template in 
 **EXECUTIVE SUMMARY SYSTEM MESSAGE:**
 
 ```text
-You are a senior cybersecurity executive with expertise in translating technical security incidents into executive-level business communications for C-suite leadership and board governance. Transform complex cybersecurity events into clear business impact assessments focusing on operational risk, financial implications, regulatory compliance, and strategic decision support. Your communications must be professional, actionable, and appropriate for executive audiences with minimal technical jargon. Include specific decision points, resource requirements, timelines, and stakeholder communication strategies within 350 tokens maximum.
+You are a senior cybersecurity executive with expertise in translating technical security incidents into executive-level business communications for C-suite leadership and board governance. Transform complex cybersecurity events into clear business impact assessments focusing on operational risk, financial implications, regulatory compliance, and strategic decision support. Your communications must be professional, actionable, and appropriate for executive audiences with minimal technical jargon. Include specific decision points, resource requirements, timelines, and stakeholder communication strategies within 450 tokens maximum.
 ```
 
 **USER MESSAGE FORMAT:**
@@ -53,7 +53,7 @@ OUTPUT FORMAT:
 **RESOURCE REQUIREMENTS:**
 **SUCCESS METRICS:**
 
-TOKEN LIMIT: 350 tokens for comprehensive executive communication
+TOKEN LIMIT: 450 tokens for comprehensive executive communication
 
 INCIDENT DATA:
 [Insert incident details here for testing]
@@ -85,14 +85,14 @@ Once your AI Foundry testing confirms optimal executive communication, integrate
     "messages": [
       {
         "role": "system",
-        "content": "You are a senior cybersecurity executive with expertise in translating technical security incidents into executive-level business communications for C-suite leadership and board governance. Transform complex cybersecurity events into clear business impact assessments focusing on operational risk, financial implications, regulatory compliance, and strategic decision support. Your communications must be professional, actionable, and appropriate for executive audiences with minimal technical jargon. Include specific decision points, resource requirements, timelines, and stakeholder communication strategies within 350 tokens maximum."
+        "content": "You are a senior cybersecurity executive with expertise in translating technical security incidents into executive-level business communications for C-suite leadership and board governance. Transform complex cybersecurity events into clear business impact assessments focusing on operational risk, financial implications, regulatory compliance, and strategic decision support. Your communications must be professional, actionable, and appropriate for executive audiences with minimal technical jargon. Include specific decision points, resource requirements, timelines, and stakeholder communication strategies within 450 tokens maximum."
       },
       {
         "role": "user",
-        "content": "@{concat('EXECUTIVE SUMMARY REQUEST: Transform this technical security incident into an executive-level business communication. Focus on business impact, decision requirements, and strategic implications. COMMUNICATION FRAMEWORK: Use clear, jargon-free language for executive audiences. Emphasize business impact and operational consequences. Identify specific decisions required from leadership. Provide actionable timelines and resource requirements. BUSINESS TRANSLATION: Convert technical details into business risk language. Quantify impact on operations, revenue, reputation. Explain compliance and regulatory implications. Assess competitive and strategic consequences. DECISION SUPPORT: Identify budget and resource decisions. Highlight policy changes needed. Recommend stakeholder communication strategies. Define success criteria and KPIs. OUTPUT FORMAT: **BUSINESS IMPACT:** **INCIDENT SUMMARY:** **DECISIONS REQUIRED:** **STAKEHOLDER COMMUNICATION:** **RESOURCE REQUIREMENTS:** **SUCCESS METRICS:** TOKEN LIMIT: 350 tokens. INCIDENT DATA: ', variables('incident-details'))}"
+        "content": "@{concat('EXECUTIVE SUMMARY REQUEST: Transform this technical security incident into an executive-level business communication. Focus on business impact, decision requirements, and strategic implications. COMMUNICATION FRAMEWORK: Use clear, jargon-free language for executive audiences. Emphasize business impact and operational consequences. Identify specific decisions required from leadership. Provide actionable timelines and resource requirements. BUSINESS TRANSLATION: Convert technical details into business risk language. Quantify impact on operations, revenue, reputation. Explain compliance and regulatory implications. Assess competitive and strategic consequences. DECISION SUPPORT: Identify budget and resource decisions. Highlight policy changes needed. Recommend stakeholder communication strategies. Define success criteria and KPIs. OUTPUT FORMAT: **BUSINESS IMPACT:** **INCIDENT SUMMARY:** **DECISIONS REQUIRED:** **STAKEHOLDER COMMUNICATION:** **RESOURCE REQUIREMENTS:** **SUCCESS METRICS:** TOKEN LIMIT: 450 tokens. INCIDENT DATA: ', variables('incident-details'))}"
       }
     ],
-    "max_tokens": 350,
+    "max_tokens": 450,
     "temperature": 0.2
   }
 }
@@ -161,7 +161,7 @@ The executive summary appears as structured comments in Microsoft Defender XDR i
 **Expected Token Consumption:**
 
 - **Input Tokens**: ~230 tokens (system message + user template + incident data).
-- **Output Tokens**: ~320-350 tokens (comprehensive executive communication).
+- **Output Tokens**: ~380-430 tokens (comprehensive executive communication).
 - **Total Tokens per Summary**: ~550-580 tokens.
 
 **Cost Breakdown (GPT-4 Pricing):**

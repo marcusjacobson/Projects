@@ -41,12 +41,15 @@ By the end of this lab, you will be able to:
 
 **Navigate to Purview DLP Portal:**
 
-- Open browser and go to: https://purview.microsoft.com
+- Open browser and go to the **Microsoft Purview portal**: [https://purview.microsoft.com](https://purview.microsoft.com)
 - Sign in with your **admin account**
-- Select **Solutions** from the left navigation
-- Click **Data loss prevention**
-- Select **Policies** from the left menu
-- Click **+ Create policy**
+- Navigate to **Solutions** > **Data loss prevention**
+  - Select **Solutions** from the left navigation
+  - Click **Data loss prevention**
+- Select **Policies** from the left menu within Data loss prevention
+- Click **+ Create policy** to start policy creation
+
+> **💡 Portal Note**: The Microsoft Purview portal interface was redesigned in 2024. DLP policies are now accessed through Solutions > Data loss prevention > Policies. The steps below reflect the current portal as of October 2025.
 
 > **💡 Background**: DLP policies for on-premises repositories work differently than cloud DLP. The scanner acts as the enforcement agent, applying policies during scan operations.
 

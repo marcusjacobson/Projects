@@ -76,23 +76,26 @@ Get-Command -Module AzureInformationProtection
 
 Scanner authentication requires an Entra ID app registration with specific API permissions. This enables the scanner to run unattended with service principal credentials.
 
-**On your local machine (Azure Portal):**
+**On your local machine (Microsoft Entra Admin Center):**
 
 Navigate to Microsoft Entra ID to create the app registration.
 
-- Sign in to **Azure Portal**: https://portal.azure.com
-- Navigate to **Microsoft Entra ID**
-- Select **App registrations** from the left navigation menu
-- Click **+ New registration**
+- Sign in to the **Microsoft Entra admin center**: [https://entra.microsoft.com](https://entra.microsoft.com)
+  - Alternatively, you can access this through **Azure Portal** > **Microsoft Entra ID**
+- If you have access to multiple tenants, use the **Settings** icon in the top menu to switch to the correct tenant
+- Browse to **Entra ID** > **App registrations**
+- Select **New registration**
+
+> **💡 Portal Note**: As of October 2025, Microsoft recommends using the Entra admin center (entra.microsoft.com) for app registrations. The Azure Portal still supports this functionality as well.
 
 **Configure Application Registration:**
 
-- **Name**: `Purview-Scanner-App`
-- **Supported account types**: **Accounts in this organizational directory only (Single tenant)**
-- **Redirect URI**: 
+- **Name**: `Purview-Scanner-App` (users will see this name; can be changed later)
+- **Supported account types**: **Accounts in this organizational directory only** (Single tenant - recommended for most applications)
+- **Redirect URI** (optional for scanner): 
   - Type: **Web**
   - Value: `http://localhost`
-- Click **Register**
+- Click **Register** to complete the app registration
 
 **Save Application Details:**
 
@@ -168,19 +171,24 @@ Scanner clusters organize scanner nodes and manage scanning operations centrally
 
 **Navigate to Purview Portal:**
 
-- Open browser and go to: https://purview.microsoft.com
+- Open browser and go to the **Microsoft Purview portal**: [https://purview.microsoft.com](https://purview.microsoft.com)
 - Sign in with your **admin account** (not scanner-svc)
-- Click **Settings** (gear icon in the top right corner)
-- Select **Information protection** from the left navigation menu
-- Click **Information protection scanner**
+- Navigate to **Settings** > **Information protection** > **Information protection scanner**
+  - Click the **Settings** card (gear icon) or use the settings menu
+  - Select **Information protection** from the left navigation
+  - Then select **Information protection scanner**
+
+> **💡 Portal Note**: The Microsoft Purview portal interface was redesigned in 2024. The scanner configuration is now accessed through Settings > Information protection. The steps below reflect the current portal as of October 2025.
 
 **Create Scanner Cluster:**
 
-- Select the **Clusters** tab
-- Click **+ Add** to create a new cluster
+From the **Information protection scanner** page:
+
+- Select the **Clusters** tab at the top
+- Click **Add** button (or **+ Add** icon)
 - **Cluster name**: `Lab-Scanner-Cluster`
-- **Description**: `Weekend lab scanner for on-prem file shares and Azure Files`
-- Click **Save**
+- **Description** (optional): `Weekend lab scanner for on-prem file shares and Azure Files`
+- Click **Save** to create the cluster
 
 > **📚 Background**: Scanner clusters can contain multiple scanner nodes for distributed scanning in large environments. For this lab, we'll use a single node.
 

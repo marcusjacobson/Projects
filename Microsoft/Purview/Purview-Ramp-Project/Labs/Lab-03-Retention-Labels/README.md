@@ -54,14 +54,17 @@ By the end of this lab, you will be able to:
 
 **Navigate to Purview Records Management:**
 
-- Open browser and go to: https://purview.microsoft.com
+- Open browser and go to the **Microsoft Purview portal**: [https://purview.microsoft.com](https://purview.microsoft.com)
 - Sign in with your **admin account**
-- Select **Solutions** from the left navigation
-- Click **Records management** (or **Data lifecycle management**)
+- Navigate to **Solutions** > **Records management** (or **Data lifecycle management**)
+  - Select **Solutions** from the left navigation
+  - Click **Records management** or **Data lifecycle management**
 - Select **File plan** from the left menu
-- Click **+ Create a label**
+- Click **+ Create a label** to create a new retention label
 
-> **💡 Note**: Retention labels can be created in either Records management or Data lifecycle management sections. The functionality is the same.
+> **💡 Portal Note**: The Microsoft Purview portal interface was redesigned in 2024. Retention labels can be created in either Records management or Data lifecycle management sections - the functionality is the same. The steps below reflect the current portal as of October 2025.
+
+> **💡 Note**: Retention labels created in Records management or Data lifecycle management provide the same capabilities. Choose the section that aligns with your organizational structure.
 
 **Name and Description:**
 

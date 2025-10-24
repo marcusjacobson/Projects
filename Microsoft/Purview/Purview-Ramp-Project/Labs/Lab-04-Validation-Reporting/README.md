@@ -140,10 +140,11 @@ Activity Explorer provides comprehensive monitoring of DLP matches, label applic
 
 **Navigate to Activity Explorer:**
 
-- Open browser: https://purview.microsoft.com
-- Sign in with **admin account**
-- Select **Solutions** > **Data classification**
-- Click **Activity explorer** from left menu
+- Open browser and go to the **Microsoft Purview portal**: [https://purview.microsoft.com](https://purview.microsoft.com)
+- Sign in with your **admin account**
+- Navigate to **Solutions** > **Data classification** > **Activity explorer**
+
+> **💡 Portal Note**: The Microsoft Purview portal interface was redesigned in 2024. Activity Explorer is now accessed through Solutions > Data classification > Activity explorer. The steps below reflect the current portal as of October 2025.
 
 **Configure Filters for Comprehensive Analysis:**
 
@@ -207,9 +208,12 @@ Data Estate Insights provides high-level dashboards for data classification and 
 
 **Navigate to Data Classification Overview:**
 
-- Purview Portal: https://purview.microsoft.com
-- Select **Solutions** > **Data classification**
-- Click **Overview** from left menu
+- Microsoft Purview portal: [https://purview.microsoft.com](https://purview.microsoft.com)
+- Navigate to **Solutions** > **Data classification** > **Overview**
+  - Select **Solutions** > **Data classification**
+  - Click **Overview** from the left menu
+
+> **💡 Portal Note**: The Data Classification dashboard provides aggregated views of sensitive data discovery across your Microsoft 365 environment, including on-premises repositories scanned by the Information Protection Scanner.
 
 **Key Dashboards to Review:**
 
@@ -789,9 +793,9 @@ Or via **Azure Portal:**
 
 **Remove Scanner Cluster:**
 
-- Purview Portal: https://purview.microsoft.com
-- **Settings** > **Information protection** > **Information protection scanner**
-- **Clusters** tab
+- Open browser and go to the **Microsoft Purview portal**: [https://purview.microsoft.com](https://purview.microsoft.com)
+- Navigate to **Settings** > **Information protection** > **Information protection scanner**
+- Select the **Clusters** tab
 - Select **Lab-Scanner-Cluster**
 - Click **Delete**
 - Confirm deletion

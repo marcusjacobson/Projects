@@ -34,40 +34,57 @@
 
 ## 🚀 Lab Steps
 
-### Step 1: Activate Microsoft 365 E5 Compliance Trial
+### Step 1: Verify or Activate Required Microsoft 365 Licensing
 
-**If you already have E5 licensing, skip to Step 2.**
+**If you already have Microsoft 365 E5 (standard or developer), skip to Step 2.**
+
+> **💡 License Requirements for Purview Information Protection Scanner**: To complete these labs, you need a Microsoft 365 license that includes sensitivity labels and the Information Protection scanner. The following options provide these capabilities:
+>
+> - **Microsoft 365 E5** (standard subscription) - Includes all required Purview features
+> - **Microsoft 365 E5 Compliance** (add-on license) - Adds Purview capabilities to E3 subscriptions
+> - **Microsoft 365 E5 Developer** (developer trial) - Suitable alternative if available to you (not available to all users; requires Visual Studio subscription, Microsoft partner status, or Premier/Unified Support)
+>
+> For more information about licensing, see the [Microsoft 365 licensing guidance for security & compliance](https://learn.microsoft.com/en-us/office365/servicedescriptions/microsoft-365-service-descriptions/microsoft-365-tenantlevel-services-licensing-guidance/microsoft-365-security-compliance-licensing-guidance#microsoft-purview-information-protection-sensitivity-labeling).
 
 Navigate to Microsoft 365 Admin Center:
 
 - Open browser and go to [https://admin.microsoft.com](https://admin.microsoft.com)
 - Sign in with Global Admin credentials
-- In the left navigation, expand **Billing** and select **Purchase services**
+- The admin center may display in **Simplified view** or **Dashboard view**
+- If using **Simplified view**: Select **Billing**, then select **Add more products**
+- If using **Dashboard view**: Go to **Billing** > **Purchase services** (some tenants may see **Marketplace** instead)
 
-Search for E5 Compliance trial:
+> **💡 Navigation Note**: Microsoft has introduced a Simplified view option in the M365 Admin Center. The steps below work for both views.
 
-- In the search box, type **E5 Compliance**
-- Locate **Microsoft 365 E5 Compliance**
+Search for Microsoft 365 license options:
+
+- In the search box or product catalog, type **E5** or **Microsoft 365 E5**
+- You may see multiple options including:
+  - **Microsoft 365 E5** (full suite - recommended if available)
+  - **Microsoft 365 E5 Compliance** (add-on for organizations with existing E3 licenses)
+- If you see **Microsoft 365 E5**, select that option (it includes all Compliance features)
+- If you only see **Microsoft 365 E5 Compliance**, select that option (designed to add Purview capabilities to E3)
 - Click **Details** button
 
 Start the trial:
 
+- In the product details page, select the trial plan from the dropdown if available
 - Click **Start free trial** button
 - Review the trial terms (no credit card required, 25 licenses for 30 days)
-- Click **Try now**
+- Click **Try now** or **Start free trial**
 - Click **Continue** to confirm
 - Wait 10-15 minutes for license provisioning to complete
 
 Verify and assign licenses:
 
-- Navigate to **Billing** > **Licenses** in Admin Center
-- Confirm **Microsoft 365 E5 Compliance** appears with 25 available licenses
-- Click on the license name
-- Under **Users** tab, click **Assign licenses**
+- In the Admin Center, navigate to **Billing** > **Licenses** (or **Billing** > **Your products** depending on view)
+- Confirm your Microsoft 365 E5 license appears with available licenses (either **Microsoft 365 E5** or **Microsoft 365 E5 Compliance**)
+- Click on the license name to view details
+- Select **Assign licenses** or the **Assignments** tab
 - Add your admin account
-- Click **Assign**
+- Click **Save** or **Assign**
 
-> **💡 Tip**: Also assign a license to the scanner service account you'll create later
+> **💡 Tip**: Also assign a license to the scanner service account you'll create later. If you're using Microsoft 365 E5 Developer trial, you have 25 user licenses available for the development tenant.
 
 ### Step 2: Create Azure Resource Group
 
@@ -105,34 +122,45 @@ Create the resource group:
 
 Navigate to VM creation:
 
-- In Azure Portal search bar, type **Virtual machines**
-- Click **Virtual machines** in results
-- Click **+ Create** > **Azure virtual machine**
+- In Azure Portal, enter **virtual machines** in the search bar at the top
+- Under **Services**, select **Virtual machines**
+- On the Virtual machines page, select **Create** and then **Azure virtual machine**
+
+> **💡 Portal Note**: The Azure Portal interface may vary slightly based on your subscription type and region. The steps below reflect the current portal as of January 2025.
 
 Configure **Basics** tab:
 
 **Project details**:
-- **Subscription**: Your subscription
-- **Resource group**: `rg-purview-lab`
+
+- **Subscription**: Select your Azure subscription
+- **Resource group**: Select `rg-purview-lab` from dropdown
 
 **Instance details**:
+
 - **Virtual machine name**: `vm-purview-scanner`
-- **Region**: Same as resource group (East US)
+- **Region**: Same as resource group (East US or your chosen region)
 - **Availability options**: No infrastructure redundancy required
 - **Security type**: Standard
-- **Image**: Windows Server 2022 Datacenter - Gen2 (click **See all images** if not visible)
-- **Size**: Click **See all sizes**, search for `D2s_v3`, select **Standard_D2s_v3** (2 vcpus, 8 GiB memory)
+- **Image**: **Windows Server 2022 Datacenter: Azure Edition - x64 Gen2** (current recommended image)
+  - If not visible, click **See all images** to browse the marketplace
+- **Size**: **Standard_B2ms** (2 vcpus, 8 GiB memory)
+  - Click **See all sizes** if you need to search for this specific size
+  - Alternative budget option: **Standard_B2s** (2 vcpus, 4 GiB memory) meets SQL Server Express minimum requirements
+
+> **💡 VM Size Note**: The B-series VMs are burstable virtual machines ideal for workloads that don't need continuous full CPU performance, such as lab environments with SQL Server Express. Standard_B2ms provides 8 GiB memory (recommended for optimal performance), while Standard_B2s with 4 GiB memory is a more budget-friendly option that still exceeds SQL Server Express minimum requirements (1 GB recommended). Both sizes support Windows Server 2022 Datacenter: Azure Edition and offer excellent cost-effectiveness for lab scenarios.
 
 **Administrator account**:
+
 - **Username**: `labadmin`
-- **Password**: Create and document a secure password (min 12 characters, mixed case, numbers, symbols)
-- **Confirm password**: Re-enter password
+- **Password**: Create and document a secure password (minimum 12 characters with uppercase, lowercase, numbers, and symbols)
+- **Confirm password**: Re-enter the password
 
 **Inbound port rules**:
-- **Public inbound ports**: Allow selected ports
-- **Select inbound ports**: Check **RDP (3389)**
 
-> **🔒 Security Note**: In production, use Azure Bastion or VPN instead of public RDP
+- **Public inbound ports**: Select **Allow selected ports**
+- **Select inbound ports**: Choose **RDP (3389)** and optionally **HTTP (80)** if needed
+
+> **🔒 Security Note**: In production environments, use Azure Bastion, VPN, or private endpoints instead of exposing RDP publicly. For this learning lab environment, public RDP is acceptable.
 
 Configure **Disks** tab:
 
@@ -193,18 +221,22 @@ Configure **Advanced**, **Tags** tabs:
 
 Review and create:
 
-- Click **Review + create**
-- Review all settings carefully
-- Estimated cost should display (approx $0.10/hour for Standard_D2s_v3)
-- Click **Create**
-- Wait for deployment (typically 5-7 minutes)
+- Click **Review + create** button at the bottom of the page
+- Azure will run validation checks on your configuration
+- Review all settings carefully in the validation summary
+- Verify the estimated cost per hour (approximately $0.10/hour for Standard_D2s_v3)
+- After validation passes, click **Create** at the bottom
+- Wait for deployment to complete (typically 5-7 minutes)
+- You'll see deployment progress with status updates
 
-Download RDP file:
+Post-deployment:
 
-- Once deployment completes, click **Go to resource**
-- Click **Connect** dropdown > **RDP**
-- Click **Download RDP File**
-- Save file to your desktop
+- Once deployment completes, click **Go to resource** button
+- You're now on the VM overview page
+- Click the **Connect** dropdown in the top menu
+- Select **RDP** from the options
+- Click **Download RDP File** button
+- Save the RDP file to your desktop or downloads folder
 
 ### Step 4: Connect to VM and Initial Configuration
 
@@ -238,14 +270,18 @@ Set timezone:
 
 Download SQL Server Express:
 
-- Open **Microsoft Edge** browser
-- Navigate to: `https://www.microsoft.com/en-us/sql-server/sql-server-downloads`
-- Scroll to **Express** edition section
-- Click **Download now** button
-- Save `SQL2022-SSEI-Expr.exe` to Downloads folder
+- Open **Microsoft Edge** browser on the VM
+- Navigate to: [https://www.microsoft.com/en-us/sql-server/sql-server-downloads](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+- Scroll to the **SQL Server 2022 Express** section
+- Click the **Download now** button under Express edition
+- The file `SQL2022-SSEI-Expr.exe` will download to your Downloads folder
+- Wait for the download to complete
+
+> **💡 Download Page Note**: The SQL Server downloads page layout is updated periodically. Look for the "SQL Server 2022 Express" card or section with a "Download now" button. As of January 2025, it's typically in the "Get started with SQL Server on-premises or in the cloud" section.
 
 Install SQL Server:
 
+- Navigate to your Downloads folder
 - Run the downloaded `SQL2022-SSEI-Expr.exe` installer
 - Select **Basic** installation type
 - Click **Accept** to agree to license terms
@@ -645,7 +681,7 @@ Download and install Microsoft Office IFilter:
 - Wait for completion
 - Click **OK** when finished
 
-> **📝 Note**: Office IFilter enables scanner to inspect .zip files for sensitive information types
+> **� IFilter Purpose**: Microsoft Office IFilter is a required component for the Purview Information Protection scanner when installed on Windows Server. IFilters (Interface Filters) are document parsing components that extract text content and metadata from various file formats, enabling the scanner to inspect compressed files (.zip archives) for sensitive information types. Without the Office IFilter, the scanner cannot scan inside Office documents within zip files, which would create significant blind spots in your data discovery and classification efforts. This is particularly important for discovering sensitive data in compressed email attachments, archived documents, and backup files that users commonly create on file shares.
 
 Install Azure CLI:
 
@@ -660,11 +696,13 @@ Install Azure CLI:
 - Wait for installation
 - Click **Finish**
 
+> **💡 PowerShell Environment Refresh Required**: After installing Azure CLI, you must close any open PowerShell or PowerShell ISE windows and reopen them **as Administrator** before the `az` command will be recognized. This is because the Azure CLI installer adds the `az` command to the system PATH environment variable, but existing PowerShell sessions do not automatically reload the PATH. Opening a new administrative PowerShell session ensures that the updated PATH is loaded and the Azure CLI commands are available.
+
 Verify Azure CLI installation:
 
 ```powershell
-# Open new PowerShell window to refresh PATH
-# Close current PowerShell ISE and reopen as Administrator
+# Close current PowerShell ISE (if open)
+# Right-click PowerShell ISE > Run as Administrator
 
 # Verify Azure CLI installed
 az --version
@@ -674,10 +712,20 @@ az --version
 
 Install PowerShell 7 (optional but recommended):
 
-- Navigate to: `https://github.com/PowerShell/PowerShell/releases`
-- Download latest stable `.msi` for Windows x64
-- Run installer with default options
-- Click **Finish** when complete
+- Navigate to: `https://aka.ms/powershell-release?tag=stable`
+  - This redirects to the latest stable PowerShell release page
+- Under **Assets**, click **PowerShell-7.x.x-win-x64.msi** (replace x.x with current version)
+  - Example: `PowerShell-7.5.4-win-x64.msi`
+- Run the downloaded MSI installer
+- Click **Next** on welcome screen
+- Accept license agreement, click **Next**
+- Use default installation options, click **Next**
+- Click **Install**
+- Click **Yes** on UAC prompt
+- Wait for installation to complete
+- Click **Finish**
+
+> **💡 PowerShell 7 Benefits**: PowerShell 7 is the latest cross-platform version of PowerShell built on .NET Core, offering improved performance, new features, and better compatibility with modern Azure tools. It installs side-by-side with Windows PowerShell 5.1 without affecting existing scripts. While optional for this lab, PowerShell 7 is recommended for production Azure automation scenarios.
 
 ### Step 9: Create Entra ID Service Account for Scanner
 
@@ -702,23 +750,43 @@ Configure user:
 - **Password**: Create secure password (document it!)
 - **Force change password on first sign-in**: Unchecked (critical for service accounts)
 
-**Assignments** (optional for now, we'll assign licenses later):
+**Assignments** (optional for now, we'll configure usage location and licenses next):
 
 - Click **Review + create**
 - Click **Create**
 
-Assign compliance license to scanner account:
+Set usage location (required for license assignment):
 
-- In **Microsoft Entra ID** > **Users**, find the **scanner-svc** account
-- Click on it to open
-- In left menu, click **Licenses**
-- Click **+ Assignments**
-- Check **Microsoft 365 E5 Compliance**
+- In **Microsoft Entra ID** > **Users**, find the **scanner-svc** account you just created
+- Click on it to open the user details
+- In left menu, click **Properties**
+- Scroll to **Settings** section
+- Click **Edit** (pencil icon)
+- Under **Usage location**, select your country/region (e.g., **United States**)
 - Click **Save**
 
-Assign required roles:
+> **💡 Usage Location Note**: Microsoft 365 licenses cannot be assigned without a usage location. This determines which services are available based on regional licensing restrictions.
 
-- Still in the scanner-svc user page
+Assign compliance license to scanner account (via Microsoft 365 Admin Center):
+
+- Navigate to [https://admin.microsoft.com](https://admin.microsoft.com)
+- Sign in with Global Admin credentials
+- In the left navigation, go to **Users** > **Active users**
+- Find and click on **Purview Scanner Service Account** (scanner-svc)
+- In the user details flyout, click the **Licenses and apps** tab
+- Under **Licenses**, check the box for your available Microsoft 365 E5 license:
+  - **Microsoft 365 E5**, or
+  - **Microsoft 365 E5 Compliance**
+- Click **Save changes**
+- Wait for the "Licenses updated" confirmation message
+
+> **💡 License Assignment Note**: License assignment is now managed through the Microsoft 365 Admin Center. The Entra admin center displays license information but redirects to the M365 Admin Center for assignment changes.
+
+Assign required roles (via Entra ID):
+
+- Return to the **Microsoft Entra admin center** at [https://entra.microsoft.com](https://entra.microsoft.com)
+- Navigate to **Identity** > **Users** > **All users**
+- Find and click on **scanner-svc** account
 - In left menu, click **Assigned roles**
 - Click **+ Add assignments**
 - Search for and select:
@@ -729,7 +797,7 @@ Assign required roles:
 
 ### Step 10: Configure Windows Firewall on VM
 
-Enable File and Printer Sharing (if needed for external scanner scenarios):
+Return to the VM. Enable File and Printer Sharing (if needed for external scanner scenarios):
 
 ```powershell
 # Open PowerShell ISE as Administrator on VM
@@ -773,9 +841,9 @@ Before proceeding to Lab 01, verify all components:
 
 ### Entra ID Configuration
 
-- [ ] Microsoft 365 E5 Compliance trial activated (or existing license)
+- [ ] Microsoft 365 E5 (or E5 Compliance) license activated and assigned
 - [ ] Service account `scanner-svc@tenant.onmicrosoft.com` created
-- [ ] Scanner account has E5 Compliance license assigned
+- [ ] Scanner account has Microsoft 365 E5 (or E5 Compliance) license assigned
 - [ ] Scanner account has Compliance Data Administrator role
 - [ ] Password documented securely
 
@@ -898,17 +966,19 @@ Or use Azure Portal:
 4. Ensure no anti-malware removed files: Check Windows Defender exclusions if needed
 5. Recreate files manually if needed, ensuring credit card and SSN patterns are present
 
-### E5 Compliance trial not activating
+### Microsoft 365 license trial not activating
 
-**Symptoms**: Cannot start trial, or trial not showing licenses
+**Symptoms**: Cannot start trial, trial not showing licenses, or unable to find the right license option
 
 **Solutions**:
 1. Verify account has Global Admin role
-2. Check if trial already used: Each tenant can only use trial once
+2. Check if trial already used: Each tenant can only use the same trial type once
 3. Wait 15-30 minutes for license propagation after activation
 4. Try from different browser (clear cache)
 5. Verify tenant is eligible: Some tenant types may have restrictions
-6. Alternative: Use existing E5 license if available, or contact Microsoft support
+6. **License availability**: If you cannot find **Microsoft 365 E5 Compliance**, look for **Microsoft 365 E5** (standard) which includes all Compliance features
+7. **Developer trial option**: If you have access to the Microsoft 365 Developer Program (via Visual Studio subscription, partner status, or Premier/Unified Support), you can use the **Microsoft 365 E5 Developer** subscription as an alternative
+8. Alternative: Use existing E5 license if available, or contact Microsoft support
 
 ### Cost higher than expected
 

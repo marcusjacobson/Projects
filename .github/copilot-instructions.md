@@ -100,22 +100,43 @@ When asked to review markdown formatting, use the AI Assistant Compliance Prompt
 
 ### 2.3 Modern Instruction Standards
 
-**When creating step-by-step procedures:**
+**CRITICAL: Always Research Current UI/Workflows for Step-by-Step Instructions**
 
-- Research latest UI changes and portal layouts.
-- Verify current Logic App action configurations.
-- Check for new Azure resource deployment methods.
-- Validate PowerShell module versions and cmdlet syntax.
-- Confirm REST API authentication requirements.
+Portal interfaces, admin centers, and product UIs change frequently. **NEVER rely on training data** for step-by-step procedural instructions. Always research current workflows using official documentation.
+
+**Mandatory Research Before Creating/Updating Step-by-Step Instructions:**
+
+- **Azure Portal Navigation**: Use `fetch_webpage` to verify current menu locations, button names, and wizard workflows from [learn.microsoft.com/azure](https://learn.microsoft.com/en-us/azure/)
+- **M365 Admin Center**: Research current UI layout (Simplified view vs Dashboard view) from official Microsoft 365 documentation
+- **Product Installation Workflows**: Verify current download pages, installer UIs, and configuration wizards
+- **API/Service Configurations**: Check current authentication flows, permission requirements, and API endpoints
+- **Portal Terminology**: Confirm current button labels ("Create" vs "+ Add", "Purchase services" vs "Marketplace", etc.)
+
+**When Creating Step-by-Step Procedures:**
+
+- **Research first, write second**: Use `fetch_webpage` to gather current workflow information before documenting steps
+- **Include version indicators**: Add "As of [Month Year]" notes for time-sensitive UI instructions
+- **Document UI variations**: Note when interfaces differ (subscription types, regions, view modes)
+- **Verify navigation paths**: Confirm menu hierarchies, search terminology, and button sequences
+- **Test current terminology**: Use exact current button names, field labels, and menu items
+- **Add portal notes**: Include blockquotes explaining known UI variations or recent changes
+
+**Example Research Pattern for Step-by-Step Instructions:**
+
+```markdown
+> **💡 Portal Note**: The Azure Portal interface may vary slightly based on your 
+> subscription type and region. The steps below reflect the current portal as of 
+> [Month Year].
+```
 
 **Template Validation Requirements:**
 
-- Verify current Azure resource API versions for Bicep/ARM templates.
-- Validate JSON Schema compliance with current OpenAPI specifications.
-- Check KQL syntax against current Kusto documentation.
-- Confirm YAML structure follows Azure DevOps pipeline schema requirements.
-- Test template parameter types and validation rules.
-- Validate resource naming conventions against Azure best practices.
+- Verify current Azure resource API versions for Bicep/ARM templates using official documentation
+- Validate JSON Schema compliance with current OpenAPI specifications
+- Check KQL syntax against current Kusto documentation
+- Confirm YAML structure follows Azure DevOps pipeline schema requirements
+- Test template parameter types and validation rules
+- Validate resource naming conventions against Azure best practices
 
 ---
 
@@ -440,7 +461,8 @@ All parameters file configuration must follow the [Parameters File Style Guide](
 - Use replace_string_in_file with sufficient context (3-5 lines).
 - Address one formatting issue category at a time across entire document.
 - Apply proper markdown headers (#### Header Name) for ALL content structure from the start.
-- Research and verify modern approaches using primary sources.
+- **Research current UI/workflows using `fetch_webpage`** before writing step-by-step instructions.
+- **NEVER rely on training data** for portal navigation, admin center workflows, or product installation steps.
 - Validate web resource links for currency and accuracy.
 - Use the style guides' AI compliance prompts for systematic reviews.
 - **Prefer REST API calls via `az rest` commands** over direct PowerShell cmdlets or standard Azure CLI commands when possible.
@@ -468,6 +490,7 @@ All parameters file configuration must follow the [Parameters File Style Guide](
 - Skip sections or make arbitrary changes without understanding context.
 - Use bold text with colons as section headers (`**Section Name:**` is WRONG).
 - Mix multiple fix types in single edit operation.
+- **Rely on training data for UI navigation paths, button names, or portal workflows** - always research current interfaces.
 - Guess at command syntax or API structures from training data.
 - Ignore markdown lint warnings or style guide violations.
 - Add periods to table cell descriptions (they are not lists).
@@ -478,6 +501,7 @@ All parameters file configuration must follow the [Parameters File Style Guide](
 - **Assume script success** without verifying exit codes and output.
 - **Start new operations** while previous scripts are still executing or hanging.
 - **Continue with follow-up actions** until the user confirms script completion and terminal output has been analyzed.
+- **Write step-by-step instructions without researching current UI** from official documentation.
 
 ### 6.3 Script Execution Monitoring Protocol
 
@@ -513,6 +537,8 @@ All parameters file configuration must follow the [Parameters File Style Guide](
 
 - Distinguish between table descriptions and actual lists for punctuation.
 - Use official Microsoft Learn as primary research source.
+- **Always use `fetch_webpage` to research current UI before writing step-by-step instructions.**
+- **Portal interfaces change frequently** - verify current menu locations, button names, and workflows.
 - Validate all PowerShell cmdlets and REST API calls before suggesting.
 - Apply style guide standards during content creation, not just reviews.
 - Ensure header uniqueness to prevent MD024 lint warnings.

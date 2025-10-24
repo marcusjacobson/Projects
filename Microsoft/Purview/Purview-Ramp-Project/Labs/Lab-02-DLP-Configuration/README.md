@@ -46,8 +46,6 @@ By the end of this lab, you will be able to:
 - Open browser and go to the **Microsoft Purview portal**: [https://purview.microsoft.com](https://purview.microsoft.com)
 - Sign in with your **admin account**
 - Navigate to **Solutions** > **Data loss prevention**
-  - Select **Solutions** from the left navigation
-  - Click **Data loss prevention**
 - Select **Policies** from the left menu within Data loss prevention
 - Click **+ Create policy** to start policy creation
 
@@ -55,45 +53,74 @@ By the end of this lab, you will be able to:
 
 > **💡 Background**: DLP policies for on-premises repositories work differently than cloud DLP. The scanner acts as the enforcement agent, applying policies during scan operations.
 
-**Select Policy Template:**
+#### Choose What Type of Data to Protect
 
-- Template category: **Custom**
-- Template: **Custom policy** (allows full control over rules and conditions)
+The policy creation wizard starts by asking what type of data you want to protect.
+
+- Select: **Data stored in connected sources**
 - Click **Next**
 
-**Name Your Policy:**
+> **💡 Option Context**:
+> 
+> - **Data stored in connected sources** = On-premises repositories, devices, cloud apps
+> - **Data created, received or shared in Microsoft 365** = Exchange, SharePoint, OneDrive, Teams
+
+#### Select Policy Template:
+
+- Under **Categories**, select: **Custom**
+- Under **Regulations**, select: **Custom policy** (allows full control over rules and conditions)
+- Click **Next**
+
+> **💡 Template Options**: Microsoft provides pre-built templates for Financial, Medical/Health, and Privacy regulations. Custom policy gives you complete control over sensitive information types, conditions, and actions.
+
+#### Name Your Policy:
 
 - **Name**: `Lab-OnPrem-Sensitive-Data-Protection`
 - **Description**: `Protect PII and PCI data on on-premises file shares and Azure Files`
 - Click **Next**
 
-**Assign Admin Units:**
+#### Assign Admin Units:
 
-- Select **Full directory** (applies policy to all users and groups)
+- **Full directory** is selected by default (applies policy to all users and groups)
+- You can optionally click **Add or remove admin units** to scope the policy to specific organizational units
+- For this lab, keep the default **Full directory** selection
 - Click **Next**
 
-> **📚 Note**: Admin units allow scoping DLP policies to specific organizational units. For this lab, we use full directory for simplicity.
+> **📚 Note**: Admin units allow scoping DLP policies to specific organizational units within your Microsoft Entra ID (Azure AD) tenant. If you click **Add or remove admin units** and see no options available, this is expected behavior when admin units haven't been configured in your tenant. Full directory applies the policy across your entire organization, which is appropriate for lab scenarios.
 
----
-
-### Step 2: Choose Policy Locations
+#### Configure Locations:
 
 DLP policies can apply to multiple locations (Exchange, SharePoint, Teams, on-premises). For this lab, we focus exclusively on on-premises repositories.
 
-**Configure Locations:**
+By default, several locations are checked (enabled):
 
-- **Turn OFF all locations** by toggling them to OFF
-- **On-premises repositories**: Toggle to **ON**
-- Verify this is the ONLY location enabled
-- Click **Next**
+- ✅ **Exchange email** (checked by default)
+- ✅ **SharePoint sites** (checked by default)
+- ✅ **OneDrive accounts** (checked by default)
+- ✅ **Teams chat and channel messages** (checked by default)
+- ✅ **Instances** (checked by default)
+- ✅ **On-premises repositories** (checked by default)
 
-> **⚠️ Important**: On-premises repository DLP requires the Information Protection Scanner to be deployed and scanning the repositories. Without the scanner, DLP policies cannot be enforced on file shares.
+**Uncheck all locations EXCEPT On-premises repositories:**
 
----
+1. Click to **uncheck** the following locations (toggle them to OFF):
+   - **Exchange email** → Uncheck
+   - **SharePoint sites** → Uncheck
+   - **OneDrive accounts** → Uncheck
+   - **Teams chat and channel messages** → Uncheck
+   - **Instances** → Uncheck
 
-### Step 3: Define Policy Settings
+2. Keep **ONLY** this location checked:
+   - ✅ **On-premises repositories** → Keep checked (ON)
 
-**Select Rule Configuration Method:**
+3. Verify **On-premises repositories** is the ONLY location with a checkmark
+4. Click **Next**
+
+> **⚠️ Important**: On-premises repository DLP requires the Information Protection Scanner to be deployed and scanning the repositories. Without the scanner, DLP policies cannot be enforced on file shares. We performed this action in lab 01.
+
+> **💡 Lab Focus**: We're unchecking cloud locations (Exchange, SharePoint, OneDrive, Teams, Instances) to focus exclusively on on-premises file shares for this lab. In production environments, you would typically enable multiple locations to protect data across your entire organization.
+
+#### Select Rule Configuration Method:
 
 - **Create or customize advanced DLP rules**: Selected
 - This allows you to create multiple rules with different conditions and actions
@@ -101,11 +128,7 @@ DLP policies can apply to multiple locations (Exchange, SharePoint, Teams, on-pr
 
 You'll now create two DLP rules: one for Credit Card data (with blocking) and one for SSN data (with auditing).
 
----
-
-### Step 4: Create DLP Rule for Credit Card Data
-
-**Add First Rule:**
+#### Add First Rule:
 
 - Click **+ Create rule**
 - **Name**: `Block-Credit-Card-Access`
@@ -127,44 +150,106 @@ This condition triggers when the scanner detects at least one credit card number
 
 **Configure Actions:**
 
-Under **Actions**, configure enforcement for on-premises repositories:
+Under **Actions**, click **+ Add an action** and configure enforcement for on-premises repositories:
 
-- Expand **On-premises repositories**
-- Select: **Block people from accessing file**
-- Choose: **Block everyone** (most restrictive for lab demonstration)
+1. **Select action**: **Restrict access or remove on-premises files**
 
-> **💡 Production Consideration**: In production, you might use "Block people external to your organization" to allow internal users access while preventing external sharing.
+2. **Choose restriction method** - You have four options:
+
+   **Option 1: Block people from accessing file stored in on-premises scanner**
+   - **Block everyone**: Blocks all accounts except content owner, last modifier, repository owner, and admin
+   - **Block only people who have access to your on-premises network and users in your organization who weren't granted explicit access**: Removes "Everyone", "NT AUTHORITY\authenticated users", and "Domain Users" from file ACL
+
+   **Option 2: Set permissions on the file**
+   - Forces the file to inherit permissions from its parent folder
+   - Only applies if parent folder permissions are more restrictive than current file permissions
+   - Optional: Check **Inherit even if parent permissions are less restrictive** to force inheritance regardless
+
+   **Option 3: Remove the file from improper location**
+   - Moves original file to a quarantine folder
+   - Replaces original file with a `.txt` stub file
+   - Useful for isolating sensitive files from general access
+
+3. **For this lab**, select:
+   - **Block people from accessing file stored in on-premises repositories**
+   - Choose: **Block everyone** (most restrictive for lab demonstration)
+
+> **💡 Action Explanation**:
+>
+> - **Block everyone**: Removes all NTFS/SharePoint permissions except file owner, repository owner (from scan job settings), last modifier, admin, and scanner account
+> - **Block only people with network access**: Removes broad access groups (Everyone, Domain Users, Authenticated Users) but preserves explicit user/group permissions
+> - **Set permissions**: Makes file inherit parent folder permissions (useful for standardizing access)
+> - **Remove file**: Quarantines sensitive files completely - most restrictive option
+
+> **💡 Production Consideration**: In production, "Block only people who have access to your on-premises network" is often preferred as it removes broad access while preserving legitimate explicit permissions. "Block everyone" is more restrictive and may require additional permission management.
 
 **Configure User Notifications:**
 
-- **User notifications**: Toggle to **ON**
-- **Policy tips**: Keep default or customize:
-  - `This file contains credit card information and access has been restricted by your organization's DLP policy`
-- **Email notifications**: Toggle ON if you want email alerts
-- **Notify these people**: Select relevant stakeholders
+> **⚠️ On-Premises Limitation**: The **User notifications** option is grayed out (disabled) for on-premises repository DLP policies. Policy tips are NOT available when using the on-premises scanner location. This is a known limitation documented by Microsoft.
+>
+> User notifications and policy tips are only supported for cloud locations (Exchange, SharePoint, OneDrive, Teams). For on-premises repositories, DLP enforcement happens silently through the scanner without user-facing notifications.
 
-**User Overrides (Optional for Lab):**
+**Skip User Notifications section** - These settings are not available for on-premises repositories:
 
-- Leave **Allow overrides** as OFF for this lab
-- In production, you might allow business justifications
+- ~~User notifications~~ (grayed out)
+- ~~Policy tips~~ (not supported)
+- ~~Email notifications~~ (not available)
+- ~~Notify these people~~ (not available)
+
+**User Overrides:**
+
+- **Allow overrides** will also be grayed out (not available for on-premises repositories)
 
 **Incident Reports:**
 
-- **Send an alert to admins when a rule match occurs**: Toggle ON
-- **Send alert every time an activity matches the rule**: Selected
-- **Use email incident reports**: Configure notification email
+Configure alert settings for when this rule matches:
+
+- **Severity level**: Select **High** from the dropdown
+  - Options available: Low, Medium, High
+  - High severity ensures alerts are prioritized and visible in admin dashboards
+
+**Alert Triggering Options** - Choose one:
+
+**Option 1: Send alert every time an activity matches the rule** (Recommended for lab)
+
+- Select this radio button for immediate alerts on each credit card detection
+- Best for critical data and low-volume monitoring
+
+**Option 2: Send alert when the volume of matched activities reaches a threshold**:
+
+- Select this radio button for threshold-based alerting
+- Configure the following thresholds:
+  - ☐ **Number of matched activities**: Specify minimum count (e.g., 5 activities)
+  - ☐ **Number of MB**: Specify data volume threshold (e.g., 10 MB)
+  - **During the last X minutes**: Time window for threshold evaluation (e.g., 60 minutes)
+- Use for high-volume environments to reduce alert noise
+
+**For this lab**: Select **"Send alert every time an activity matches the rule"**
+
+**Email Notifications:**
+
+- **Use email incident reports**: Toggle ON to send email notifications
+  - **Send notification emails to these people**: Add admin email addresses
+
+> **💡 Severity Level Guidance**:
+>
+> - **High**: Use for critical sensitive data (credit cards, SSNs) that require immediate attention
+> - **Medium**: Use for moderately sensitive data that needs review but isn't urgent
+> - **Low**: Use for general monitoring and audit purposes
+>
+> For this lab, we use **High** severity to ensure credit card detections are immediately visible in the DLP alerts dashboard.
+
+> **💡 Threshold vs Immediate Alerting**:
+>
+> - **Every time** (immediate): Alert on each individual match - ideal for critical data like credit cards
+> - **Threshold-based**: Alert only when volume exceeds limits - reduces noise in high-activity environments
+> - You can combine multiple threshold conditions (activities AND/OR data size within time window)
 
 **Review and Save:**
 
 - Click **Save** to create the rule
 
----
-
-### Step 5: Create DLP Rule for SSN Data (Audit Mode)
-
-Now create a second rule for SSN data that audits but doesn't block access.
-
-**Add Second Rule:**
+#### Add Second Rule for SSN Data (Audit Mode)
 
 - Click **+ Create rule**
 - **Name**: `Audit-SSN-Access`
@@ -172,6 +257,9 @@ Now create a second rule for SSN data that audits but doesn't block access.
 
 **Configure Conditions:**
 
+Under **Conditions**, click **+ Add condition**:
+
+- Select: **Content contains**
 - **Content contains**: Click **Add** > **Sensitive info types**
 - Search for and select: **U.S. Social Security Number (SSN)**
 - Click **Add**
@@ -179,65 +267,202 @@ Now create a second rule for SSN data that audits but doesn't block access.
   - From: `1`
   - To: `Any`
 
+This condition triggers when the scanner detects at least one Social Security Number in a file.
+
 **Configure Actions (Audit Only):**
 
-- Expand **On-premises repositories**
-- Select: **Audit or restrict activities**
-- Choose: **Audit only** (no blocking, just logging)
+For audit-only monitoring, **do NOT add any actions**:
 
-> **💡 Testing Strategy**: Using audit-only for SSN allows you to test DLP without disrupting access, which is ideal for initial deployments.
+- Under **Actions**, you will see **+ Add an action** option
+- **Do not click** this for the SSN audit rule
+- Leave the Actions section empty (no actions configured)
 
-**Configure Notifications:**
+> **💡 Audit vs Enforcement**: 
+>
+> - **Audit-only rule** (SSN): No actions configured → Scanner detects and logs SSN files but doesn't modify permissions or block access
+> - **Enforcement rule** (Credit Card): Actions configured → Scanner detects files AND applies restrictive actions (block, quarantine, etc.)
+>
+> Leaving Actions empty creates a monitoring/discovery rule that logs activity in Activity Explorer without disrupting user access.
 
-- **User notifications**: Toggle to **ON** (optional for audit mode)
-- **Policy tips**: 
-  - `This file contains sensitive information (Social Security Numbers). Access is being audited for compliance purposes.`
+> **💡 Testing Strategy**: Using audit-only for SSN allows you to test DLP without disrupting access, which is ideal for initial deployments and monitoring data usage patterns before implementing restrictive actions.
+
+**Configure User Notifications:**
+
+> **⚠️ On-Premises Limitation**: The **User notifications** option is grayed out (disabled) for on-premises repository DLP policies. Policy tips are NOT available when using the on-premises scanner location.
+
+**Skip User Notifications section** - These settings are not available for on-premises repositories:
+
+- ~~User notifications~~ (grayed out)
+- ~~Policy tips~~ (not supported)
+- ~~Email notifications~~ (not available)
+
+**User Overrides:**
+
+- **Allow overrides** will also be grayed out (not available for on-premises repositories)
 
 **Incident Reports:**
 
-- **Send an alert to admins**: Toggle ON
-- Configure alert recipients
+Configure alert settings for when this rule matches:
+
+- **Severity level**: Select **Medium** from the dropdown
+  - High: Reserved for critical data (credit cards)
+  - **Medium**: Appropriate for SSN monitoring and audit scenarios
+  - Low: General monitoring
+
+**Alert Triggering Options** - Choose one:
+
+**Option 1: Send alert every time an activity matches the rule** (Recommended for lab)
+
+- Select this radio button for immediate alerts on each SSN detection
+- Best for low-volume monitoring and testing scenarios
+
+**Option 2: Send alert when the volume of matched activities reaches a threshold**:
+
+- Select this radio button for threshold-based alerting
+- Configure the following thresholds:
+  - ☐ **Number of matched activities**: Specify minimum count (e.g., 5 activities)
+  - ☐ **Number of MB**: Specify data volume threshold (e.g., 10 MB)
+  - **During the last X minutes**: Time window for threshold evaluation (e.g., 60 minutes)
+- Use for high-volume environments to reduce alert noise
+
+**For this lab**: Select **"Send alert every time an activity matches the rule"**
+
+**Email Notifications:**
+
+- **Use email incident reports**: Toggle ON to send email notifications
+  - **Send notification emails to these people**: Add admin email addresses
+
+> **💡 Audit Rule Alerting**: Even though this rule uses audit-only enforcement (no blocking), incident reports still generate alerts when SSNs are detected. This allows you to monitor SSN data usage and identify potential risks before implementing blocking actions.
+
+> **💡 Threshold vs Immediate Alerting**: 
+> 
+> - **Every time** (immediate): Alert on each individual match - ideal for critical data or testing
+> - **Threshold-based**: Alert only when volume exceeds limits - reduces noise in high-activity environments
+> - You can combine multiple threshold conditions (activities AND/OR data size within time window)
 
 **Review and Save:**
 
 - Click **Save** to create the rule
+- Click **Next** to advance to Policy mode
+
+##### Policy Mode Options
+
+The wizard presents three deployment options:
+
+**Option 1: Run the policy in simulation mode**:
+
+- Policy runs as if enforced but **no actual enforcement occurs**
+- All matched items and alerts are reported in simulation dashboard
+- Use to assess policy impact before full enforcement
+- Optional: **Show policy tips while in simulation mode** (not available for on-premises repositories)
+- Optional: **Turn the policy on if it's not edited within fifteen days of the simulation** (auto-activation)
+
+**Option 2: Turn the policy on immediately**:
+
+- Policy enforces immediately with full actions applied
+- Credit card blocking and SSN audit logging active immediately
+- Recommended only after testing in simulation mode
+
+**Option 3: Keep it off**:
+
+- Policy created but inactive
+- No enforcement, no simulation, no alerts
+- Use when policy configuration is incomplete or requires approval
+
+**For this lab**, select one of the following:
+
+- **Recommended**: **Run the policy in simulation mode** (safer for initial testing)
+  - Allows you to see what would be blocked/audited without actual enforcement
+  - Review simulation results before enabling full enforcement
+  - Change to "Turn it on right away" later after validation
+
+- **Alternative**: **Turn the policy on immediately** (if you want immediate enforcement)
+  - Credit card files will be blocked immediately on next scan
+  - SSN files will be audited (logged) but not blocked
+
+**For this lab, we recommend**: Select **Turn it on right away** to demonstrate active DLP enforcement
+
+- Click **Next** to advance to Review and finish
+
+> **✅ Best Practice**: In production environments, always start with **Run the policy in simulation mode** to assess impact, identify false positives, and educate users before full enforcement. For this lab, we use immediate enforcement to demonstrate DLP actions during the enforcement scan.
+
+#### Review and Finish:
+
+The final screen displays a comprehensive summary of your policy configuration. Review each section carefully before creating the policy.
+
+**Page Header:** "Create the policy if these details look fine. Otherwise, adjust the settings to better meet your needs."
+
+**Summary Sections Displayed:**
+
+**1. The information to protect**:
+
+- **Type**: Custom policy
+- Click **Edit** to modify policy template selection
+
+**2. Name**:
+
+- **Name**: Lab-OnPrem-Sensitive-Data-Protection
+- Click **Edit** to change policy name
+
+**3. Description**:
+
+- **Description**: Protect PII and PCI data on on-premises file shares and Azure Files
+- Click **Edit** to modify description
+
+**4. Locations**:
+
+- **Selected location**: On-premises repositories
+- Teams suggestion banner may appear: "Consider adding Teams as a location to protect the accidental sharing of sensitive info in Teams messages"
+  - You can ignore this for the lab (focused on on-premises only)
+- Click **Edit** to modify location selection
+
+**5. Policy settings**:
+
+- **Rules configured**:
+  - Block-Credit-Card-Access
+  - Audit-SSN-Access
+- Click **Edit** to modify rules
+
+**6. Turn policy on after it's created?**
+
+- **Status**: Yes (if you selected "Turn it on right away")
+- **Status**: No (if you selected "Run the policy in simulation mode" or "Keep it off")
+- Click **Edit** to change policy mode
+
+**Verify all settings are correct** - Each section has an **Edit** link to return to that configuration step if changes are needed.
+
+**Submit Policy:**
+
+- Click **Submit** to create the policy
+- Wait for confirmation message: "Your policy was created"
+- Click **Done**
+
+**Policy Created:**
+
+- Policy appears in the **Policies** list
+- **Status column** shows:
+  - **On** (if turned on immediately)
+  - **In simulation** (if simulation mode selected)
+  - **Off** (if kept off)
+- **Name**: Lab-OnPrem-Sensitive-Data-Protection
+- **Locations**: On-premises repositories
+- **Policy settings**: The configured policy names
+
+> **IMPORTANT: 🔄 DLP Policy Sync Timing**: You will likely see a "Sync in progress" message on the policy screen after creation. This is normal behavior as the DLP policy is being distributed to the on-premises scanner infrastructure.
+>
+> **Expected sync time**: While Microsoft doesn't provide specific SLAs for on-premises scanner DLP policy sync, based on similar Purview services (Endpoint DLP), policy synchronization typically takes **30 minutes to 1 hour** to complete across the service.
+>
+> **⏳ Wait for sync to complete**: Do NOT restart the scanner service or run scans while the policy shows "Sync in progress". Restarting the scanner before sync completes does not speed up the process and may interfere with policy distribution. Simply wait for the sync status to clear.
+>
+> **How to verify sync completion**:
+>
+> - Refresh the **Policies** page in Purview portal (or check the **Policy sync status** tab in policy details)
+> - The "Sync in progress" message should disappear once sync completes (typically within 30-60 minutes)
+> - **Only after sync completes**, proceed to Step 2 to enable DLP in the scanner and run enforcement scans
 
 ---
 
-### Step 6: Review and Create Policy
-
-**Policy Summary Review:**
-
-- **Locations**: Verify **On-premises repositories** is the only location enabled
-- **Rules**: Verify both rules appear:
-  - Block-Credit-Card-Access (Enforcement)
-  - Audit-SSN-Access (Audit only)
-- Click **Next**
-
-**Policy Mode:**
-
-You have three options for deploying the policy:
-
-1. **Turn it on immediately**: Policy enforces immediately
-2. **Test it out first**: Simulation mode with policy tips but no enforcement
-3. **Keep it off**: Policy created but not active
-
-For this lab:
-
-- Select **Test it out first** (recommended) OR **Turn it on immediately** if you want immediate enforcement
-- Click **Next**
-
-**Create Policy:**
-
-- Review all settings
-- Click **Submit**
-- Policy creation completes and appears in the policy list
-
-> **✅ Best Practice**: Always test DLP policies in simulation mode first to understand impact before full enforcement, especially in production.
-
----
-
-### Step 7: Enable DLP in Scanner Content Scan Job
+### Step 2: Enable DLP in Scanner Content Scan Job
 
 Now configure the scanner to enforce DLP policies during scans.
 
@@ -252,11 +477,21 @@ Now configure the scanner to enforce DLP policies during scans.
 
 **Enable DLP Policy:**
 
-- Scroll to **DLP policy** setting
+- Scroll to **Enable DLP policy rules** setting
 - Toggle to **On**
 - **Enable DLP rules**: Toggle to **On**
 
 > **💡 Technical Detail**: When DLP is enabled in the scan job, the scanner downloads DLP policies from the service and applies them during file scanning.
+
+**Enable Enforcement Mode (CRITICAL):**
+
+> **⚠️ REQUIRED for DLP Enforcement**: You MUST set the **Enforce** setting to **On** for DLP policies to actually enforce actions. Without this, the scanner runs in "Test" mode and only logs matches without applying blocking or restriction actions.
+
+- Scroll to **Sensitivity policy** section
+- Find **Enforce sensitivity labeling policy** setting
+- Toggle to **On**
+
+This enables enforcement mode for both sensitivity labels AND DLP policies. Without enforcement mode enabled, DLP runs in test/simulation mode only.
 
 **Save Configuration:**
 
@@ -265,20 +500,39 @@ Now configure the scanner to enforce DLP policies during scans.
 
 ---
 
-### Step 8: Run Enforcement Scan
+### Step 3: Run Enforcement Scan
 
 With DLP enabled, run a new scan to apply DLP policies to files.
 
-**On VM in PowerShell (as Administrator):**
+> **⚠️ Important - Full Rescan Required**: After enabling DLP policies, you must run a **full rescan** using the `-Reset` parameter. By default, the scanner only scans new or changed files. Previously scanned files will show as "Already scanned" and won't have DLP policies applied unless you force a full rescan.
+
+**Restart Scanner Service (Recommended):**
+
+Restart the scanner service to ensure it picks up the new DLP policy configuration:
 
 ```powershell
-# Start enforcement scan with DLP policies
-Start-Scan
+# Restart scanner service to refresh DLP policies
+Restart-Service -Name "MIPScanner" -Force
+
+# Verify service is running
+Get-Service -Name "MIPScanner"
+
+# Expected Status: Running
+```
+
+**Run Full Enforcement Scan:**
+
+```powershell
+# Start FULL enforcement scan with DLP policies using -Reset parameter
+# This forces the scanner to rescan ALL files, not just new/changed files
+Start-Scan -Reset
 
 # Expected output:
 # The scanner service is starting...
 # Scan started successfully
 ```
+
+> **💡 Why -Reset is Required**: The scanner performs incremental scans by default, only scanning new or changed files. When you add or modify DLP policies, you need to run `Start-Scan -Reset` to apply those policies to all files, including previously scanned ones.
 
 **Monitor Scan Progress:**
 
@@ -312,21 +566,48 @@ while ($true) {
 
 **Check Scanner Reports for DLP Actions:**
 
+Scanner logs and reports are generated in the **scanner service account's profile**, not the admin account profile:
+
 ```powershell
-# Navigate to scanner reports
-Set-Location "$env:LOCALAPPDATA\Microsoft\MSIP\Scanner\Reports"
+# Navigate to scanner reports directory (under scanner-svc account profile)
+Set-Location "C:\Users\scanner-svc\AppData\Local\Microsoft\MSIP\Scanner\Reports"
 
-# List reports sorted by date
-Get-ChildItem -Filter "*.csv" | Sort-Object LastWriteTime -Descending | Select-Object Name, LastWriteTime
+# List all report files
+Get-ChildItem -File | Sort-Object LastWriteTime -Descending
 
-# View latest detailed report
-$latestReport = Get-ChildItem -Filter "DetailedReport*.csv" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-Invoke-Item $latestReport.FullName
+# View the latest detailed CSV report
+$latestReport = Get-ChildItem -Filter "DetailedReport*.csv" -ErrorAction SilentlyContinue | 
+                Sort-Object LastWriteTime -Descending | 
+                Select-Object -First 1
+
+if ($latestReport) {
+    Write-Host "Opening latest detailed report: $($latestReport.Name)" -ForegroundColor Green
+    Invoke-Item $latestReport.FullName
+} else {
+    Write-Host "No DetailedReport CSV found. Checking for other report formats..." -ForegroundColor Yellow
+    
+    # Check for summary report
+    $summaryReport = Get-ChildItem -Filter "Summary*.txt" | 
+                     Sort-Object LastWriteTime -Descending | 
+                     Select-Object -First 1
+    
+    if ($summaryReport) {
+        Write-Host "Opening summary report: $($summaryReport.Name)" -ForegroundColor Green
+        Invoke-Item $summaryReport.FullName
+    }
+    
+    # List all available reports
+    Write-Host "`nAvailable reports:" -ForegroundColor Cyan
+    Get-ChildItem -File | Select-Object Name, Length, LastWriteTime
+}
 ```
+
+> **💡 Report Location Note**: Scanner reports are created under the **scanner service account's profile** (`C:\Users\scanner-svc\AppData\Local\...`), not under your admin account (`C:\Users\labadmin\AppData\Local\...`). This is because the scanner service runs as the `scanner-svc` account.
 
 **Interpret DLP Actions in Reports:**
 
 Scanner CSV reports now include DLP-related columns:
+
 - **DLP Policy Matched**: Which policy matched the file
 - **DLP Rule Matched**: Specific rule that triggered
 - **DLP Action**: Action taken (Block, Audit, etc.)
@@ -334,7 +615,7 @@ Scanner CSV reports now include DLP-related columns:
 
 ---
 
-### Step 9: View Activity in Activity Explorer
+### Step 4: View Activity in Activity Explorer
 
 Activity Explorer provides comprehensive DLP activity monitoring and reporting.
 
@@ -376,15 +657,24 @@ Activity Explorer shows:
 
 ---
 
-### Step 10: Test DLP Enforcement (Optional)
+### Step 5: Test DLP Enforcement (Optional)
 
 Validate that DLP policies are actively enforcing by attempting to access blocked files.
 
 **On VM, Test File Access:**
 
+> **💡 Important - Computer Name**: Replace `vm-purview-scanner` with **YOUR actual computer name**.
+>
+> **To find your actual computer name**, run:
+> ```powershell
+> $env:COMPUTERNAME
+> ```
+> Or use `\\localhost\Finance\CustomerPayments.txt` which always works for local shares.
+
 ```powershell
 # Attempt to open a file with credit card data
 # This should be blocked if DLP enforcement is active
+# Replace "vm-purview-scanner" with your actual computer name from $env:COMPUTERNAME
 $testFile = "\\vm-purview-scanner\Finance\CustomerPayments.txt"
 
 # Try to read the file
@@ -542,6 +832,7 @@ Get-ChildItem "$env:LOCALAPPDATA\Microsoft\MSIP\Scanner\Logs" -Recurse | Sort-Ob
 Test-NetConnection -ComputerName purview.microsoft.com -Port 443
 
 # Re-authenticate scanner
+# Replace "scanner-svc@yourtenant.onmicrosoft.com" with your actual UPN
 Set-Authentication `
     -AppId "YOUR-APP-ID" `
     -AppSecret "YOUR-SECRET" `
@@ -574,7 +865,167 @@ Get-Content "C:\PurviewScanner\Finance\CustomerPayments.txt"
 
 ---
 
-## 📊 Expected Results
+## � Troubleshooting Common Issues
+
+### Issue: "Already scanned" Files Not Being Processed
+
+**Symptom:**
+Scan output shows `Skipped due to - Already scanned: 3` and no DLP actions are applied.
+
+**Root Cause:**
+After the first scan, the scanner performs **incremental scans** by default, only scanning new or changed files. Previously scanned files are skipped even if you've added new DLP policies.
+
+**Solution:**
+Run a full rescan using the `-Reset` parameter:
+
+```powershell
+# Force full rescan of all files
+Start-Scan -Reset
+
+# The -Reset parameter forces the scanner to:
+# - Rescan ALL files, even previously scanned ones
+# - Apply newly added or modified DLP policies
+# - Update all DLP actions and classifications
+```
+
+### Issue: Azure File Share Not Accessible
+
+**Symptom:**
+Scan output shows `The following repositories are not accessible: \\stpurviewlab829456.file.core.windows.net\nasuni-simulation`
+
+**Root Cause:**
+Scanner service account doesn't have authentication tokens cached for Azure File Share access, or credentials expired.
+
+**Solution 1 - Re-authenticate Using OnBehalfOf:**
+
+```powershell
+# Create credentials for scanner service account
+$scannerAccount = "contoso\scanner-svc"
+$scannerPassword = ConvertTo-SecureString "YourPassword" -AsPlainText -Force
+$scannerCreds = New-Object System.Management.Automation.PSCredential($scannerAccount, $scannerPassword)
+
+# Re-authenticate using OnBehalfOf parameter
+# This caches tokens in the scanner service account's profile
+Set-Authentication -OnBehalfOf $scannerCreds
+
+# Restart scanner service
+Restart-Service -Name "MIPScanner" -Force
+
+# Run diagnostics to verify
+Start-ScannerDiagnostics -OnBehalfOf $scannerCreds
+```
+
+**Solution 2 - Verify Storage Account Permissions:**
+
+```powershell
+# Verify scanner account has Storage Blob Data Contributor role
+# Azure Portal > Storage Account > Access Control (IAM)
+# Add role assignment:
+# - Role: Storage Blob Data Contributor
+# - Assign access to: User, group, or service principal
+# - Members: scanner-svc@yourdomain.com or CONTOSO\scanner-svc
+```
+
+**Solution 3 - Test Azure File Share Connectivity:**
+
+```powershell
+# Test if you can access the share manually
+$sharePath = "\\stpurviewlab829456.file.core.windows.net\nasuni-simulation"
+Test-Path $sharePath
+
+# If authentication is required, mount the share with credentials
+# Get storage account key from Azure Portal
+$storageAccountName = "stpurviewlab829456"
+$storageAccountKey = "YOUR_STORAGE_ACCOUNT_KEY"
+
+# Mount Azure File Share
+$acctKey = ConvertTo-SecureString -String $storageAccountKey -AsPlainText -Force
+$credential = New-Object System.Management.Automation.PSCredential("Azure\$storageAccountName", $acctKey)
+New-PSDrive -Name "Z" -PSProvider FileSystem -Root $sharePath -Credential $credential -Persist
+```
+
+### Issue: Scanner Service Won't Start After DLP Configuration
+
+**Symptom:**
+Scanner service fails to start or immediately stops after enabling DLP.
+
+**Solution:**
+
+```powershell
+# Check scanner service status
+Get-Service -Name "MIPScanner"
+
+# View recent scanner errors in Event Viewer
+Get-EventLog -LogName Application -Source "MSIP.Scanner" -Newest 10 | Format-List
+
+# Check scanner configuration
+Get-ScannerConfiguration
+
+# Restart scanner service with verbose logging
+Stop-Service -Name "MIPScanner" -Force
+Start-Sleep -Seconds 5
+Start-Service -Name "MIPScanner"
+
+# Monitor service startup
+Get-Service -Name "MIPScanner" | Select-Object Status, StartType
+```
+
+### Issue: No DLP Matches Showing in Scanner Reports
+
+**Symptom:**
+Scanner completes successfully but no DLP matches appear in CSV reports, or CSV shows `DLP Mode: Test` and `DLP Status: Skipped`.
+
+> **⚠️ Most Common Cause**: Scanner is running in **Test mode** instead of **Enforce mode**. This happens when the **Enforce sensitivity labeling policy** setting in the content scan job is set to **Off**. See Step 2 above for the required enforcement mode configuration.
+
+**Checklist:**
+
+- [ ] **Enforce mode** (MOST COMMON): Scanner **Enforce sensitivity labeling policy** is **On** in content scan job → Sensitivity policy section
+- [ ] **DLP policy status**: Verify policy is **On** (not in simulation or off)
+- [ ] **Policy location**: Ensure **On-premises repositories** is selected
+- [ ] **Scanner DLP enabled**: Content scan job has **DLP policy** toggle **On**
+- [ ] **Full rescan**: Run `Start-Scan -Reset` to force reprocessing of all files
+- [ ] **Sync completion**: Wait for DLP policy sync to complete (check policy screen for "Sync in progress")
+- [ ] **Test files exist**: Verify test files with sensitive data are in scanned repositories
+- [ ] **SIT validation**: Test files actually contain valid sensitive information types
+
+```powershell
+# Verify DLP policy sync status in Purview portal
+# Navigate to: Policies > Lab-OnPrem-Sensitive-Data-Protection
+# Check for "Sync in progress" or "Last synced" timestamp
+
+# Force scanner to refresh policies
+Restart-Service -Name "MIPScanner" -Force
+Start-Sleep -Seconds 10
+
+# Run full rescan
+Start-Scan -Reset
+```
+
+### Issue: Activity Explorer Shows No Data
+
+**Symptom:**
+Activity Explorer doesn't show on-premises DLP activity even after successful scan.
+
+**Root Cause:**
+Activity data can take **15-30 minutes** to appear in Activity Explorer after scanning.
+
+**Solution:**
+
+```powershell
+# Wait 15-30 minutes after scan completion
+
+# Verify scan actually detected DLP matches in local reports first
+Set-Location "C:\Users\scanner-svc\AppData\Local\Microsoft\MSIP\Scanner\Reports"
+$latestReport = Get-ChildItem -Filter "DetailedReport*.csv" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+Import-Csv $latestReport.FullName | Where-Object {$_."DLP Policy Matched" -ne ""} | Select-Object "File Path", "DLP Policy Matched", "DLP Rule Matched"
+
+# If CSV shows DLP matches, wait for Activity Explorer sync
+# Activity Explorer may take up to 24 hours for full data availability
+```
+
+---
+
+## �📊 Expected Results
 
 After completing this lab successfully, you should observe:
 

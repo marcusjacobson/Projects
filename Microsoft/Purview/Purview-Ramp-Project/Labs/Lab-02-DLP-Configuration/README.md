@@ -7,6 +7,7 @@
 **Objective**: Configure Data Loss Prevention (DLP) policies to protect sensitive information on on-premises file repositories, enable enforcement through the Purview scanner, and monitor DLP actions.
 
 **What You'll Learn:**
+
 - Create custom DLP policies for on-premises repositories
 - Configure DLP rules with conditions and enforcement actions
 - Enable DLP enforcement in scanner content scan jobs
@@ -14,6 +15,7 @@
 - Monitor DLP activity through Activity Explorer
 
 **Prerequisites from Lab 01:**
+
 - ✅ Information Protection Scanner deployed and operational
 - ✅ Discovery scan completed successfully showing sensitive data
 - ✅ Scanner service running and authenticated

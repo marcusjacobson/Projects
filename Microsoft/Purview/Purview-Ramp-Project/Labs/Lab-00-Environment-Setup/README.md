@@ -7,7 +7,7 @@
 - Create SMB file shares with sample sensitive data
 - Set up Azure Files as Nasuni-like storage
 - Implement cost controls and auto-shutdown
-- Create Entra ID service account for scanner
+- Create Entra ID service account with proper licensing
 
 ## ⏱️ Estimated Duration
 
@@ -86,7 +86,49 @@ Verify and assign licenses:
 
 > **💡 Tip**: Also assign a license to the scanner service account you'll create later. If you're using Microsoft 365 E5 Developer trial, you have 25 user licenses available for the development tenant.
 
-### Step 2: Create Azure Resource Group
+---
+
+### Step 2: Enable Microsoft 365 Auditing
+
+**Purpose**: Enable audit logging for Activity Explorer and DLP activity tracking used in later labs.
+
+> **⚠️ Important - Enable Early**: Auditing should be enabled at the beginning of the lab series because:
+>
+> - Audit data is only collected from the point auditing is enabled forward
+> - Auditing activation can take 2-24 hours to fully activate
+> - Enabling it now prevents workflow disruption in Lab 02 (DLP) and Lab 04 (Reporting)
+> - Historical activity before auditing is enabled will NOT be available in Activity Explorer
+
+**Verify Auditing Status:**
+
+Navigate to Microsoft Purview portal:
+
+- Open browser and go to [https://purview.microsoft.com](https://purview.microsoft.com)
+- Sign in with your Global Admin or Compliance Admin credentials
+- Navigate to **Data loss prevention** (in left navigation)
+- Select **Explorers** (in left submenu)
+- Click **Activity explorer**
+
+Check for auditing banner:
+
+- If you see a banner stating: *"To use this feature, turn on auditing so we can start recording user and admin activity in your organization"*, proceed to enable auditing
+- If you do NOT see the banner, auditing is already enabled - skip to Step 3
+
+**Enable Auditing (If Required):**
+
+1. In Activity Explorer, click **Turn on auditing** on the banner
+2. This launches an activation wizard
+3. After activation, you'll see: *"We're preparing the audit log. It can take up to 24 hours to fully record user and admin activity, but you might start seeing activity appear in a few hours."*
+4. Auditing activation is now in progress - continue with remaining lab setup steps
+5. By the time you reach Lab 02 (DLP validation) and Lab 04 (Reporting), auditing should be fully activated
+
+> **💡 Timing Strategy**: Enabling auditing early in Lab 00 ensures the audit system is ready by the time you need it in Lab 02. The 2-24 hour activation window runs in the background while you complete VM setup, scanner installation, and other foundational tasks.
+>
+> **✅ Validation**: You can verify auditing status anytime by returning to Activity Explorer. The banner will disappear once auditing is fully activated.
+
+---
+
+### Step 3: Create Azure Resource Group
 
 Using Azure Portal:
 
@@ -118,7 +160,11 @@ Create the resource group:
 - Click **Create**
 - Wait for "Resource group created" notification
 
-### Step 3: Deploy Windows Server 2022 VM
+---
+
+## 🔧 VM Setup and Configuration
+
+### Step 4: Deploy Windows Server 2022 VM
 
 Navigate to VM creation:
 
@@ -238,7 +284,12 @@ Post-deployment:
 - Click **Download RDP File** button
 - Save the RDP file to your desktop or downloads folder
 
-### Step 4: Connect to VM and Initial Configuration
+- Verify VM is accessible and properly configured
+- All services are running
+- File shares contain sample data
+- Azure Files storage account is operational
+
+### Step 5: Connect to VM and Initial Configuration
 
 Connect via RDP:
 
@@ -266,7 +317,11 @@ Set timezone:
 - Verify timezone is correct for your location
 - Close Settings
 
-### Step 5: Install SQL Server Express
+- Create desktop shortcuts for key tools
+- Configure PowerShell environment
+- Verify system readiness
+
+### Step 6: Install SQL Server Express
 
 Download SQL Server Express:
 
@@ -318,7 +373,11 @@ Restart SQL Server service:
 
 Close SQL Server Configuration Manager.
 
-### Step 6: Create Local File Shares and Sample Data
+- Service is running
+- SQL Server Express successfully installed
+- Ready for Purview scanner configuration
+
+### Step 7: Create Local File Shares and Sample Data
 
 Create folder structure:
 
@@ -522,7 +581,11 @@ Get-SmbShare | Where-Object {$_.Name -in @("Finance", "HR", "Projects")} |
 
 > **🔒 Security Note**: Using "Everyone" with Full Access is for LAB ONLY. Production environments require proper NTFS and share permissions.
 
-### Step 7: Create Azure Files Storage Account (Nasuni Simulation)
+---
+
+## 🌐 Azure Files Setup
+
+### Step 8: Create Azure Files Storage Account (Nasuni Simulation)
 
 Return to Azure Portal on your local machine (not in VM):
 
@@ -665,7 +728,11 @@ Write-Host "  File: Z:\CloudMigration.txt" -ForegroundColor Yellow
 Get-ChildItem Z:\ | Format-Table Name, Length, LastWriteTime
 ```
 
-### Step 8: Install Scanner Prerequisites
+---
+
+## 🔌 Scanner Prerequisites Installation
+
+### Step 9: Install Scanner Prerequisites
 
 Download and install Microsoft Office IFilter:
 
@@ -727,7 +794,11 @@ Install PowerShell 7 (optional but recommended):
 
 > **💡 PowerShell 7 Benefits**: PowerShell 7 is the latest cross-platform version of PowerShell built on .NET Core, offering improved performance, new features, and better compatibility with modern Azure tools. It installs side-by-side with Windows PowerShell 5.1 without affecting existing scripts. While optional for this lab, PowerShell 7 is recommended for production Azure automation scenarios.
 
-### Step 9: Create Entra ID Service Account for Scanner
+---
+
+## 🔐 Service Account Setup
+
+### Step 10: Create Entra ID Service Account for Scanner
 
 > **Important**: Scanner requires a synchronized Entra ID account. In this lab, we'll create a cloud-only account since we don't have on-premises AD.
 
@@ -795,7 +866,11 @@ Assign required roles (via Entra ID):
 
 > **📝 Note**: In production with hybrid AD, you'd use an on-premises service account synced to Entra ID.
 
-### Step 10: Configure Windows Firewall on VM
+---
+
+## 🔥 Network Configuration
+
+### Step 11: Configure Windows Firewall on VM
 
 Return to the VM. Enable File and Printer Sharing (if needed for external scanner scenarios):
 

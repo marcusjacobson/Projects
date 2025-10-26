@@ -34,7 +34,7 @@ By the end of Lab 02 - Part 1, you will be able to:
 5. Understand DLP policy sync timing and requirements
 6. Verify DLP policy creation and readiness for enforcement
 
-> **⏳ Important**: This lab ends with a mandatory 30-60 minute wait for DLP policy synchronization. Do NOT proceed to Lab 02 - Part 2 until the policy sync completes.
+> **⏳ Important**: This lab ends with a mandatory 1-2 hour wait for DLP policy synchronization. Do NOT proceed to Lab 02 - Part 2 until the policy sync completes.
 
 ---
 
@@ -451,21 +451,21 @@ The final screen displays a comprehensive summary of your policy configuration. 
 
 > **🔄 DLP Policy Sync Timing**: You will likely see a "Sync in progress" message on the policy screen after creation. This is normal behavior as the DLP policy is being distributed to the on-premises scanner infrastructure.
 >
-> **Expected sync time**: While Microsoft doesn't provide specific SLAs for on-premises scanner DLP policy sync, based on similar Purview services (Endpoint DLP), policy synchronization typically takes **30 minutes to 1 hour** to complete across the service.
+> **Expected sync time**: While Microsoft doesn't provide specific SLAs for on-premises scanner DLP policy sync, based on similar Purview services (Endpoint DLP) and real-world testing, policy synchronization typically takes **1-2 hours** to complete across the service.
 >
 > **⏳ Wait for sync to complete**: Do NOT restart the scanner service or run scans while the policy shows "Sync in progress". Restarting the scanner before sync completes does not speed up the process and may interfere with policy distribution. Simply wait for the sync status to clear.
 >
 > **How to verify sync completion**:
 >
 > - Refresh the **Policies** page in Purview portal (or check the **Policy sync status** tab in policy details)
-> - The "Sync in progress" message should disappear once sync completes (typically within 30-60 minutes)
+> - The "Sync in progress" message should disappear once sync completes (typically within 1-2 hours)
 > - **Only after sync completes**, proceed to Lab 02 - Part 2 for DLP enforcement configuration
 
 ---
 
 ## 🛑 STOP - Policy Sync Wait Required
 
-**⏳ MANDATORY WAIT PERIOD**: DLP policy synchronization typically takes **30-60 minutes** to complete after policy creation.
+**⏳ MANDATORY WAIT PERIOD**: DLP policy synchronization typically takes **1-2 hours** to complete after policy creation.
 
 ### What Happens During Sync
 
@@ -481,7 +481,7 @@ The DLP policy is being distributed from the Purview portal to the on-premises s
 **✅ DO:**
 
 - Take a break - grab coffee, lunch, or work on other tasks
-- Set a timer for 30 minutes to check sync status
+- Set a timer for 1 hour to check sync status
 - Verify the "Sync in progress" message clears in the Purview portal
 - Review the DLP policy configuration you just created
 - Read ahead in Lab 02 - Part 2 to understand enforcement steps
@@ -515,13 +515,13 @@ The DLP policy is being distributed from the Purview portal to the on-premises s
 
 - **Policy created**: Current time
 - **Initial sync starts**: Within 1-5 minutes
-- **Typical completion**: 30-60 minutes after creation
-- **Maximum expected**: 90 minutes for complex policies
-- **If exceeds 90 minutes**: Check troubleshooting section below
+- **Typical completion**: 1-2 hours after creation
+- **Maximum expected**: 2-3 hours for complex policies
+- **If exceeds 2-3 hours**: Check troubleshooting section below
 
 ### Troubleshooting Extended Sync Times
 
-If sync is still in progress after 90 minutes:
+If sync is still in progress after 2-3 hours:
 
 **Check Policy Status:**
 
@@ -582,7 +582,7 @@ Before proceeding to Lab 02 - Part 2, verify:
 
 - [ ] **"Sync in progress" message has cleared** (CRITICAL - DO NOT SKIP)
 - [ ] Policy sync status shows "Synced" in Policy sync status tab
-- [ ] At least 30 minutes have elapsed since policy creation
+- [ ] At least 1-2 hours have elapsed since policy creation
 - [ ] Purview portal page refreshed (Ctrl+F5) to verify current status
 
 ---
@@ -591,7 +591,7 @@ Before proceeding to Lab 02 - Part 2, verify:
 
 ### Immediate Next Step
 
-**⏳ WAIT for DLP policy sync to complete** (30-60 minutes)
+**⏳ WAIT for DLP policy sync to complete** (1-2 hours)
 
 Monitor sync status using the verification methods above. Do not proceed until sync completes.
 
@@ -601,15 +601,15 @@ Monitor sync status using the verification methods above. Do not proceed until s
 
 In Part 2, you will:
 
-- Enable DLP enforcement in scanner content scan job
-- Configure enforcement mode for active DLP policy application
-- Run full enforcement scans with DLP policies applied
-- View DLP actions in scanner CSV reports
+- Enable DLP in scanner content scan job
+- Run full scans with DLP policy application
+- View DLP detection results in scanner CSV reports
 - Monitor DLP activity in Activity Explorer
-- Test DLP enforcement on sensitive files
-- Troubleshoot common DLP enforcement issues
+- Understand Test vs Enforce modes for DLP
+- Validate DLP sensitive information type detection
+- Troubleshoot common DLP scanning issues
 
-**Location**: `Labs/Lab-02-Part-2-DLP-Enforcement/README.md`
+**Location**: `Labs/Lab-02-DLP-Configuration/Lab-02-Part-2-DLP-Enforcement/README.md`
 
 **Duration**: 1-2 hours (after sync completes)
 

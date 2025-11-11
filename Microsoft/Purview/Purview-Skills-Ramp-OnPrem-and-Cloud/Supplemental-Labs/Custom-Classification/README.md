@@ -1,6 +1,6 @@
 # Supplemental Lab: Trainable Classifiers for Financial Reports
 
-> **⚠️ UNDER DEVELOPMENT**: This lab is currently in development and testing. The 24-hour ML training phase is in progress (initiated November 10, 2025). Lab will be validated and finalized after training completion and accuracy testing (~November 12, 2025).
+> **⚠️ UNDER DEVELOPMENT**: This lab is currently in development and testing. Lab will be validated and finalized after training completion and accuracy testing.
 
 Create machine learning-based classifiers to automatically identify financial reports in Microsoft Purview.
 
@@ -18,10 +18,10 @@ Create machine learning-based classifiers to automatically identify financial re
 
 ## 🎯 What You'll Learn
 
-✅ Create SharePoint training libraries (positive/negative samples)  
+✅ Create SharePoint training folders in Documents library (positive/negative samples)  
 ✅ Generate 100 financial reports + 200 non-financial documents  
 ✅ Train trainable classifier (24-hour automated ML workflow)  
-✅ Review test results (precision, recall, F1 score)  
+✅ Review automated test results  
 ✅ Publish classifier and apply to DLP policy  
 ✅ Validate detection in Content Explorer  
 
@@ -51,26 +51,27 @@ Create machine learning-based classifiers to automatically identify financial re
 
 ## 🤔 When to Use Trainable Classifiers
 
+**Use trainable classifiers when**:
+
+- Documents have variable formats/structures.
+- Pattern-based detection (regex) won't work.
+- You have 50-500 representative positive samples available.
+- Content is in English.
+- You can provide 150-1,500 diverse negative samples.
+
 | Scenario | Trainable Classifier | Custom SIT (Regex) |
 |----------|---------------------|-------------------|
 | **Content Type** | Unstructured documents | Structured patterns |
 | **Examples** | Financial reports, contracts | Employee IDs, project codes |
 | **Training Required** | Yes (24 hours) | No (immediate) |
 | **Samples Needed** | 50-500 positive + 150-1,500 negative | Regex pattern only |
-| **Accuracy** | 70-95% | High (exact match) |
-| **Language** | English only | All languages |
+| **Accuracy** | 70-95% (probabilistic) | High (exact match) |
+| **Language Support** | English only | All languages |
 | **Best For** | Variable document formats | Fixed data patterns |
-
-**Use trainable classifiers when**:
-
-- Documents have variable formats/structures.
-- Pattern-based detection won't work.
-- You have representative samples available.
-- Content is in English.
 
 ---
 
-## Phase 1: Training Sample Preparation
+## 📂 Phase 1: Training Sample Preparation
 
 ### Step 1: Run Complete Training Data Setup
 
@@ -88,14 +89,15 @@ cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Clo
   - If not found, guides through registration process (automatic, manual Azure Portal, or use existing Client ID).
   - Saves Client ID to environment variable for future runs.
 - Prompts for authentication method (Interactive Browser or Device Code).
-- Creates **Classifier_Training** library in SharePoint.
-- Creates two folders within the library:
+- Creates two folders in the root **Documents** library:
   - **FinancialReports_Positive** (for positive training samples).
   - **BusinessDocs_Negative** (for negative training samples).
 - Generates and uploads 100 financial report documents to FinancialReports_Positive folder.
 - Generates and uploads 200 business documents to BusinessDocs_Negative folder.
 
-> 💡 **All-in-One Solution**: This single script performs complete setup - creates library structure and generates all 300 training documents automatically.
+> 💡 **All-in-One Solution**: This single script performs complete setup - creates folder structure in the root Documents library and generates all 300 training documents automatically.
+>
+> **⚠️ Critical Requirement**: The training data folders **MUST be in the root Documents library** of your SharePoint site for Purview's trainable classifier to recognize them. Creating a custom library or nested folder structure will prevent the folders from appearing in the Purview folder picker.
 
 **Financial reports include**: Quarterly earnings, annual reports, budget forecasts, cash flow statements, balance sheets, and income statements
 
@@ -106,54 +108,48 @@ cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Clo
 ### Step 2: Wait for SharePoint and Purview Indexing
 
 > ⏱️ **Required Wait Time**: **Minimum 1 hour, recommended 2-3 hours** before creating classifier
-
-**Microsoft's Official Guidance**: "If you create a new SharePoint site and folder for your seed data, allow at least an hour for that location to be indexed before creating the trainable classifier that uses that seed data." (Source: [Microsoft Learn - Trainable Classifiers](https://learn.microsoft.com/en-us/purview/trainable-classifiers-learn-about))
+>
+> **Microsoft's Official Guidance**: "If you create a new SharePoint site and folder for your seed data, allow at least an hour for that location to be indexed before creating the trainable classifier that uses that seed data." (Source: [Microsoft Learn - Trainable Classifiers](https://learn.microsoft.com/en-us/purview/trainable-classifiers-learn-about))
 
 **Two indexing systems must complete**:
 
-1. **SharePoint Search Indexing** (1+ hours) - Makes content searchable
-2. **Purview Compliance Crawler** (1-2+ hours) - Makes folders visible in classifier picker
-
-**Verify indexing complete** (REQUIRED before creating classifier):
-
-1. Navigate to **Classifier_Training** library
-2. Open **FinancialReports_Positive** folder - verify 100 items
-3. Open **BusinessDocs_Negative** folder - verify 200 items
-4. Use SharePoint search to test indexing:
-   - Search for "revenue" (should find financial documents)
-   - Search for "employee" (should find business documents)
+1. **SharePoint Search Indexing** (1+ hours) - Makes content searchable.
+2. **Purview Compliance Crawler** (1-2+ hours) - Makes folders visible in classifier picker.
 
 > **⚠️ Critical**: If you attempt to create the classifier before indexing completes, the folders **will not appear** in the Purview folder picker. Wait the full recommended time (2-3 hours from script completion) to ensure both SharePoint search and Purview's compliance crawler have indexed the folders.
 
-**How to confirm indexing for trainable classifiers**:
+**Verify indexing complete** (REQUIRED before creating classifier):
 
-- SharePoint search returns results from both folders.
-- Documents appear when searching for content-specific terms (e.g., "revenue", "balance sheet").
-- Folder item counts match expected totals (100 in FinancialReports_Positive, 200 in BusinessDocs_Negative).
-- **Most important**: Enough time has elapsed (2-3 hours minimum) for Purview's compliance crawler to discover the folders.
-
-> 💡 **Why the Wait?**: Microsoft Purview's compliance crawler runs independently from SharePoint search indexing. Even if SharePoint search finds your files within 1 hour, Purview's classifier picker may need additional time (up to 2-3 hours total) to discover and make folders available for selection.
+1. Navigate to your SharePoint site's **Documents** library.
+2. Open **FinancialReports_Positive** folder - verify 100 items.
+3. Open **BusinessDocs_Negative** folder - verify 200 items.
+4. Use SharePoint search to test indexing:
+   - Search for "revenue" (should find financial documents).
+   - Search for "employee" (should find business documents).
+5. Confirm folder item counts match expected totals.
+6. Most important: Ensure 2-3 hours have elapsed since script completion.
 
 ---
 
-## 📝 Phase 2: Classifier Creation and Training
+## 🤖 Phase 2: Classifier Creation and Training
 
 ### Step 3: Create Trainable Classifier
 
 > **⚠️ Critical Prerequisites**:
-> 
+>
 > 1. **Indexing**: Wait minimum 1 hour (2-3 hours recommended) since script completion
 > 2. **Permissions**: **The account you use to sign into Purview MUST have SharePoint access to the folders** (Microsoft requirement)
 >
 > **Verify SharePoint Access First**:
-> - Navigate directly to your SharePoint site in a browser
-> - Can you see the **Classifier_Training** library and both folders?
-> - If NO: Grant your Purview admin account permissions to the SharePoint site (Site Settings → Site permissions → Add user with Read access)
-> - If YES: Proceed to create classifier
+>
+> - Navigate directly to your SharePoint site in a browser.
+> - Can you see the **Documents** library with the **FinancialReports_Positive** and **BusinessDocs_Negative** folders?
+> - If NO: Grant your Purview admin account permissions to the SharePoint site (Site Settings → Site permissions → Add user with Read access).
+> - If YES: Proceed to create classifier.
 
 Navigate to [purview.microsoft.com](https://purview.microsoft.com)
 
-**Sign in with the SAME account that has SharePoint site access**
+**Sign in with the SAME account that has SharePoint site access**:
 
 1. Navigate to **Data loss prevention** (left navigation)
 2. Click **Classifiers**
@@ -169,33 +165,18 @@ Navigate to [purview.microsoft.com](https://purview.microsoft.com)
 1. **Name**: `Financial Reports Classifier`.
 2. **Description**: `Identifies financial reports including quarterly earnings, annual reports, and financial statements`.
 3. **Choose site**: Select your SharePoint site (e.g., PurviewLab-RetentionTesting).
-4. **Choose library**: Select **Classifier_Training**.
-5. **Select folder**: Choose **FinancialReports_Positive**.
-   - After selecting the library, a folder picker should appear.
-   - Select the FinancialReports_Positive folder containing your 100 training documents.
-6. Click **Next**.
+4. **Select folder**: Choose **FinancialReports_Positive**.
+   - After selecting the Documents library, a folder picker should appear.
+   - Select the **FinancialReports_Positive** folder containing your 100 training documents.
+5. Click **Next**.
 
 > 💡 These 100 reports teach the classifier what financial reports look like
-
-> **⚠️ Folder Picker Troubleshooting**: If the folder picker is empty after selecting your library:
-> 
-> **Workaround - Proceed with Site-Level Selection**:
-> - If the folder picker doesn't populate after waiting 2-3 hours, you can proceed by selecting only the SharePoint site without selecting specific folders
-> - The Purview wizard allows continuing without folder selection and will crawl all folders within the selected site
-> - This approach has been validated to work successfully for trainable classifier creation
-> 
-> **Standard Troubleshooting** (if picker should work):
-> - **Account Permissions**: Verify Purview account has Read access to SharePoint site/library/folders
-> - **Insufficient Wait Time**: Purview compliance crawler needs 1-2+ hours minimum (sometimes up to 48-72 hours)
-> - **SharePoint Indexing**: Test by searching for "revenue" in library - if no results, indexing incomplete
-> - **Account Consistency**: Use same account for PowerShell script authentication AND Purview portal login
 
 **Add negative examples**:
 
 1. **Choose site**: Same SharePoint site.
-2. **Choose library**: **Classifier_Training**.
-3. **Select folder**: Choose **BusinessDocs_Negative**.
-4. Click **Next**.
+2. **Select folder**: Choose **BusinessDocs_Negative**.
+3. Click **Next**.
 
 > 💡 These 200 documents teach what financial reports are NOT
 
@@ -261,7 +242,7 @@ The system automatically tested the classifier and provides accuracy metrics:
 
 ---
 
-## � Phase 3: DLP Policy Integration
+## 🚀 Phase 3: DLP Policy Integration
 
 ### Step 7: Create DLP Policy
 
@@ -342,7 +323,7 @@ Upload test document to SharePoint:
 
 ---
 
-## � Phase 4: Validation and Reporting
+## 📊 Phase 4: Validation and Reporting
 
 ### Step 10: Content Explorer Validation
 
@@ -354,8 +335,8 @@ Navigate to **Data classification** → **Content explorer**
 
 **Expected**:
 
-- Files from Financial_Reports_Positive library.
-- Other SharePoint files matching pattern.
+- Files from FinancialReports_Positive folder in Documents library.
+- Other SharePoint files matching the financial reports pattern.
 
 > ⏱️ Wait: 1-24 hours for sync
 
@@ -398,60 +379,28 @@ Navigate to **Data classification** → **Activity explorer**
 
 ### Step 12: Executive Summary Report
 
-### Step 15: Activity Explorer Monitoring
-
-Navigate to **Data classification** → **Activity explorer**
-
-**Apply Filters**:
-
-- **Activities**: DLP policy matched.
-- **Classifiers**: Financial Reports Classifier.
-- **Date range**: Last 7 days.
-
-**Expected Activities**:
-
-- File uploads with classifier detection.
-- Blocked share attempts.
-- User notifications.
-
-**Use Cases**:
-
-- Compliance audits.
-- User behavior analysis.
-- Policy tuning (false positives).
-
----
-
-### Step 16: Executive Summary Report
-
 Export Activity Explorer data:
 
 1. Navigate to **Activity explorer**.
 2. Apply filters (DLP matched + classifier + 30 days).
-3. Click **Export**.
+3. Click **Export** and save the CSV file.
 
-**Analyze with PowerShell**:
+**Analyze Activity Explorer data**:
+
+Navigate to the Custom-Classification scripts directory and run the analysis script:
 
 ```powershell
-$activities = Import-Csv "C:\Path\To\Export.csv"
-
-# Total detections
-Write-Host "Total: $($activities.Count)"
-
-# Unique users
-$users = ($activities | Select-Object -Unique User).Count
-Write-Host "Users: $users"
-
-# Blocked shares
-$blocked = ($activities | Where-Object {$_.Action -eq "Blocked"}).Count
-Write-Host "Blocked: $blocked"
-
-# Top locations
-$activities | Group-Object Location | 
-    Sort-Object Count -Descending | 
-    Select-Object -First 5 | 
-    Format-Table -AutoSize
+cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\Supplemental-Labs\Custom-Classification"
+.\Analyze-ClassifierActivity.ps1
 ```
+
+**What the script provides**:
+
+- Total trainable classifier detections.
+- Unique users triggering DLP policies.
+- Blocked sharing attempts.
+- Top 5 locations by activity volume.
+- Activity timeline (last 7 days).
 
 ---
 
@@ -459,62 +408,98 @@ $activities | Group-Object Location |
 
 Confirm completion:
 
-- [ ] Created Financial_Reports_Positive and Financial_Reports_Negative libraries.
+- [ ] Ran Setup-TrainableClassifierData.ps1 script (Step 1).
+- [ ] Created FinancialReports_Positive and BusinessDocs_Negative folders in Documents library.
 - [ ] Generated 100 positive samples (financial reports).
 - [ ] Generated 200 negative samples (business documents).
-- [ ] Waited 1 hour for SharePoint indexing.
-- [ ] Created trainable classifier.
-- [ ] Waited 24 hours for ML training.
-- [ ] Reviewed test results (>70% accuracy).
-- [ ] Published classifier (Ready to use).
-- [ ] Created DLP policy with classifier.
-- [ ] Tested DLP protection (sharing blocked).
-- [ ] Validated in Content Explorer.
-- [ ] Monitored in Activity Explorer.
-- [ ] Exported data for executive report.
+- [ ] Waited 2-3 hours for SharePoint and Purview indexing (Step 2).
+- [ ] Verified folders appear in SharePoint search.
+- [ ] Created trainable classifier in Purview portal (Step 3).
+- [ ] Configured classifier with positive and negative samples (Step 4).
+- [ ] Waited 24 hours for automated ML training (Step 5).
+- [ ] Reviewed automated test results (Step 6).
+- [ ] Published classifier to "Ready to use" status (Step 6).
+- [ ] Created DLP policy named "Protect Financial Reports" (Step 7).
+- [ ] Configured DLP rule with trainable classifier condition (Step 8).
+- [ ] Set DLP action to "Block everyone" (Step 8).
+- [ ] Enabled policy tip for users (Step 8).
+- [ ] Set policy mode to "Turn it on right away" (Step 8).
+- [ ] Tested DLP protection (sharing blocked) (Step 9).
+- [ ] Validated detections in Content Explorer (Step 10).
+- [ ] Monitored activity in Activity Explorer (Step 11).
+- [ ] Exported Activity Explorer data (Step 12).
+- [ ] Ran Analyze-ClassifierActivity.ps1 for executive summary (Step 12).
 
 ---
 
 ## 📅 Complete Timeline
 
-**Day 1**:
+**Day 1 - Setup and Configuration**:
 
-- Hour 0-1: Create libraries + generate samples.
-- Hour 1: Wait for indexing.
-- Hour 2: Create classifier + start training.
+- **Hour 0-1**: Run Setup-TrainableClassifierData.ps1 (Step 1).
+  - Creates folders in Documents library.
+  - Generates 100 positive samples (financial reports).
+  - Generates 200 negative samples (business documents).
+- **Hour 1-3**: Wait for SharePoint search and Purview compliance indexing (Step 2).
+  - Required: Minimum 1 hour, recommended 2-3 hours.
+  - Verify folders appear in SharePoint search.
+- **Hour 3-4**: Create and configure trainable classifier (Steps 3-4).
+  - Create classifier in Purview portal.
+  - Select Documents library and folders.
+  - Configure positive samples (FinancialReports_Positive).
+  - Configure negative samples (BusinessDocs_Negative).
+  - Submit for automated ML training (Step 5 begins).
 
-**Day 2**:
+**Day 2 - Training Completion and DLP Deployment**:
 
-- Hour 24: Training complete.
-- Hour 25: Review results + publish.
-- Hour 26: Create DLP policy.
-- Hour 27: Test policy.
+- **Hour 24-25**: ML training completes automatically (Step 5 ends).
+  - Review automated test results (Step 6).
+  - Publish classifier to "Ready to use" status (Step 6).
+- **Hour 25-26**: Create DLP policy (Steps 7-8).
+  - Create "Protect Financial Reports" policy.
+  - Configure rule with trainable classifier condition.
+  - Set action to "Block everyone".
+  - Enable policy tip for users.
+  - Set policy mode to "Turn it on right away".
+- **Hour 26-27**: Test DLP protection (Step 9).
+  - Upload test financial document.
+  - Attempt external sharing (should be blocked).
+  - Verify policy tip appears.
 
-**Day 3** (if needed):
+**Day 3+ - Validation and Reporting**:
 
-- Hour 48-72: Content Explorer sync.
-- Export + create reports.
+- **Hour 48-72**: Content Explorer and Activity Explorer sync (Steps 10-11).
+  - Validate detections in Content Explorer (Step 10).
+  - Monitor activity in Activity Explorer (Step 11).
+  - Wait time: 1-24 hours for full sync.
+- **Hour 72+**: Executive reporting (Step 12).
+  - Export Activity Explorer data.
+  - Run Analyze-ClassifierActivity.ps1.
+  - Generate executive summary with metrics.
 
-**Total**: 3-4 hours active + 24hr training + 1-24hr sync
+**Total Active Time**: 3-4 hours (spread across 3+ days)  
+**Total Elapsed Time**: 72+ hours (includes 24-hour training + 48-hour sync)
 
 ---
 
 ## 🔧 Troubleshooting
 
-### Low Accuracy (<70%)
+### Low Classifier Accuracy or Poor Detection Rates
 
 **Causes**:
 
-- Inconsistent positive samples.
-- Negative too similar to positive.
-- Insufficient quantity.
+- Inconsistent positive samples (too much variation in format/content).
+- Negative samples too similar to positive samples.
+- Insufficient sample quantity (below recommended minimums).
+- Training data quality issues.
 
 **Solutions**:
 
-- Delete and recreate.
-- Ensure positive all financial reports.
-- Increase diversity in negatives.
-- Increase count (200 positive, 400 negative).
+- Delete classifier and recreate with improved samples.
+- Ensure all positive samples are genuine financial reports.
+- Increase diversity in negative samples (different document types).
+- Increase sample count: 200-500 positive, 400-1,500 negative (recommended).
+- Review Step 6 automated test results before publishing.
 
 ---
 
@@ -568,26 +553,37 @@ Confirm completion:
 
 **Technical Skills**:
 
-- ✅ Create SharePoint training libraries.
-- ✅ Generate training samples with PowerShell.
-- ✅ Train custom ML classifiers.
-- ✅ Interpret ML metrics (precision, recall, F1).
+- ✅ Run PowerShell scripts to automate training data setup.
+- ✅ Create folders in SharePoint Documents library.
+- ✅ Generate training samples with PowerShell (300 documents).
+- ✅ Understand SharePoint search and Purview compliance indexing.
+- ✅ Create custom trainable classifiers in Purview portal.
+- ✅ Configure positive and negative training samples.
+- ✅ Monitor automated ML training (24-hour process).
+- ✅ Review and interpret automated test results.
 - ✅ Apply classifiers to DLP policies.
-- ✅ Validate with Content/Activity Explorer.
+- ✅ Configure DLP rules with trainable classifier conditions.
+- ✅ Test DLP protection and policy tips.
+- ✅ Validate detections with Content Explorer.
+- ✅ Monitor activity with Activity Explorer.
+- ✅ Export and analyze Activity Explorer data.
+- ✅ Generate executive summary reports with PowerShell.
 
 **Business Skills**:
 
 - ✅ Decide when to use trainable classifiers vs. custom SITs.
-- ✅ Assess accuracy for production deployment.
-- ✅ Create executive summary reports.
-- ✅ Identify retraining needs from false positives.
+- ✅ Assess automated test results for production deployment.
+- ✅ Create executive summary reports from Activity Explorer data.
+- ✅ Identify retraining needs from detection patterns.
+- ✅ Balance sample quality vs. quantity for optimal accuracy.
 
 **Production Readiness**:
 
-- ✅ Deploy with modern 24-hour training.
-- ✅ Monitor performance metrics.
-- ✅ Document accuracy for audits.
-- ✅ Troubleshoot common issues.
+- ✅ Deploy with modern automated 24-hour ML training workflow.
+- ✅ Monitor performance metrics via Content/Activity Explorer.
+- ✅ Document classifier configuration for audits.
+- ✅ Troubleshoot common classifier and DLP issues.
+- ✅ Understand indexing requirements (2-3 hours for Purview).
 
 ---
 

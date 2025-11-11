@@ -4,11 +4,10 @@
 
 .DESCRIPTION
     This script performs the complete setup for custom trainable classifier training:
-    1. Creates Classifier_Training library in SharePoint
-    2. Creates two folders: FinancialReports_Positive and BusinessDocs_Negative
-    3. Generates 100 positive samples (financial reports)
-    4. Generates 200 negative samples (non-financial business documents)
-    5. Uploads all training documents to appropriate folders
+    1. Creates two folders in the root Documents library: FinancialReports_Positive and BusinessDocs_Negative
+    2. Generates 100 positive samples (financial reports)
+    3. Generates 200 negative samples (non-financial business documents)
+    4. Uploads all training documents to appropriate folders in the Documents library
 
 .PARAMETER UseParametersFile
     Not applicable for this script - prompts for SharePoint site URL interactively.
@@ -17,13 +16,13 @@
     .\Setup-TrainableClassifierData.ps1
     
     Prompts for SharePoint site URL, guides through Entra ID app registration if needed,
-    creates library structure, and generates all 300 training documents.
+    creates folder structure in Documents library, and generates all 300 training documents.
 
 .NOTES
     Author: Marcus Jacobson
-    Version: 1.0.0
+    Version: 1.1.0
     Created: 2025-11-09
-    Last Modified: 2025-11-09
+    Last Modified: 2025-11-10
     
     Copyright (c) 2025 Marcus Jacobson. All rights reserved.
     Licensed under the MIT License.
@@ -36,9 +35,12 @@
     Script development orchestrated using GitHub Copilot.
 
 .TRAINING STRUCTURE
-    Library: Classifier_Training
+    Library: Documents (root SharePoint library)
     - Folder: FinancialReports_Positive (100 financial report documents)
     - Folder: BusinessDocs_Negative (200 business document samples)
+    
+    CRITICAL: Folders MUST be in the root Documents library for Purview trainable 
+    classifiers to recognize them. Custom libraries or nested structures will not work.
 #>
 
 # =============================================================================
@@ -180,40 +182,57 @@ try {
 }
 
 # =============================================================================
-# Step 4: Create Library and Folder Structure
+# Step 4: Create Folder Structure in Documents Library
 # =============================================================================
 
-Write-Host "`n📋 Step 4: Creating Library Structure" -ForegroundColor Green
-Write-Host "====================================" -ForegroundColor Green
+Write-Host "`n📋 Step 4: Creating Folder Structure in Documents Library" -ForegroundColor Green
+Write-Host "========================================================" -ForegroundColor Green
 
-# Check if library already exists
-$existingLib = Get-PnPList -Identity "Classifier_Training" -ErrorAction SilentlyContinue
+Write-Host "⚠️  CRITICAL: Training data folders MUST be in the root Documents library" -ForegroundColor Yellow
+Write-Host "   Creating folders in a custom library will prevent Purview from recognizing them" -ForegroundColor Gray
+Write-Host ""
 
-if ($existingLib) {
-    Write-Host "⚠️  Classifier_Training library already exists" -ForegroundColor Yellow
-    $overwrite = Read-Host "Delete and recreate? (y/n)"
+# Check if Documents library exists (it should on all SharePoint sites)
+$documentsLib = Get-PnPList -Identity "Documents" -ErrorAction SilentlyContinue
+
+if (-not $documentsLib) {
+    Write-Host "❌ Documents library not found on this site" -ForegroundColor Red
+    Write-Host "   This is unexpected - all SharePoint sites should have a Documents library" -ForegroundColor Yellow
+    exit 1
+}
+
+Write-Host "✅ Found Documents library" -ForegroundColor Green
+
+# Check if folders already exist
+$existingPositive = Get-PnPFolder -Url "Documents/FinancialReports_Positive" -ErrorAction SilentlyContinue
+$existingNegative = Get-PnPFolder -Url "Documents/BusinessDocs_Negative" -ErrorAction SilentlyContinue
+
+if ($existingPositive -or $existingNegative) {
+    Write-Host "⚠️  Training data folders already exist in Documents library" -ForegroundColor Yellow
+    $overwrite = Read-Host "Delete and recreate folders? (y/n)"
     if ($overwrite -eq 'y') {
-        Remove-PnPList -Identity "Classifier_Training" -Force
-        Write-Host "✅ Deleted existing library" -ForegroundColor Green
+        if ($existingPositive) {
+            Remove-PnPFolder -Name "FinancialReports_Positive" -Folder "Documents" -Force
+            Write-Host "✅ Deleted existing FinancialReports_Positive folder" -ForegroundColor Green
+        }
+        if ($existingNegative) {
+            Remove-PnPFolder -Name "BusinessDocs_Negative" -Folder "Documents" -Force
+            Write-Host "✅ Deleted existing BusinessDocs_Negative folder" -ForegroundColor Green
+        }
     } else {
-        Write-Host "❌ Cannot proceed with existing library - exiting" -ForegroundColor Red
+        Write-Host "❌ Cannot proceed with existing folders - exiting" -ForegroundColor Red
         exit 1
     }
 }
 
-# Create library
-Write-Host "🔄 Creating Classifier_Training library..." -ForegroundColor Cyan
-New-PnPList -Title "Classifier_Training" -Template DocumentLibrary | Out-Null
-Write-Host "✅ Library created" -ForegroundColor Green
+# Create folders in Documents library
+Write-Host "🔄 Creating FinancialReports_Positive folder in Documents library..." -ForegroundColor Cyan
+Add-PnPFolder -Name "FinancialReports_Positive" -Folder "Documents" | Out-Null
+Write-Host "✅ Positive samples folder created in Documents" -ForegroundColor Green
 
-# Create folders
-Write-Host "🔄 Creating FinancialReports_Positive folder..." -ForegroundColor Cyan
-Add-PnPFolder -Name "FinancialReports_Positive" -Folder "Classifier_Training" | Out-Null
-Write-Host "✅ Positive samples folder created" -ForegroundColor Green
-
-Write-Host "🔄 Creating BusinessDocs_Negative folder..." -ForegroundColor Cyan
-Add-PnPFolder -Name "BusinessDocs_Negative" -Folder "Classifier_Training" | Out-Null
-Write-Host "✅ Negative samples folder created" -ForegroundColor Green
+Write-Host "🔄 Creating BusinessDocs_Negative folder in Documents library..." -ForegroundColor Cyan
+Add-PnPFolder -Name "BusinessDocs_Negative" -Folder "Documents" | Out-Null
+Write-Host "✅ Negative samples folder created in Documents" -ForegroundColor Green
 
 # =============================================================================
 # Step 5: Generate Positive Training Samples (Financial Reports)
@@ -286,7 +305,7 @@ END OF REPORT
     $tempPath = "$env:TEMP\$fileName"
     $content | Out-File -FilePath $tempPath -Encoding UTF8
     
-    Add-PnPFile -Path $tempPath -Folder "Classifier_Training/FinancialReports_Positive" | Out-Null
+    Add-PnPFile -Path $tempPath -Folder "Documents/FinancialReports_Positive" | Out-Null
     Remove-Item -Path $tempPath -Force
     
     if ($reportNumber % 10 -eq 0) {
@@ -355,7 +374,7 @@ $documentTypes = @(
     $tempPath = "$env:TEMP\$fileName"
     $content | Out-File -FilePath $tempPath -Encoding UTF8
     
-    Add-PnPFile -Path $tempPath -Folder "Classifier_Training/BusinessDocs_Negative" | Out-Null
+    Add-PnPFile -Path $tempPath -Folder "Documents/BusinessDocs_Negative" | Out-Null
     Remove-Item -Path $tempPath -Force
     
     if ($docNumber % 20 -eq 0) {
@@ -373,16 +392,20 @@ Write-Host "`n🎉 Setup Complete!" -ForegroundColor Green
 Write-Host "=================" -ForegroundColor Green
 Write-Host ""
 Write-Host "📊 Training Data Summary:" -ForegroundColor Cyan
-Write-Host "   Library: Classifier_Training" -ForegroundColor White
+Write-Host "   Library: Documents (root SharePoint library)" -ForegroundColor White
 Write-Host "   - FinancialReports_Positive: 100 financial report documents" -ForegroundColor White
 Write-Host "   - BusinessDocs_Negative: 200 business document samples" -ForegroundColor White
+Write-Host ""
+Write-Host "⚠️  CRITICAL: Folders are in the root Documents library (required for Purview)" -ForegroundColor Yellow
 Write-Host ""
 Write-Host "⏱️  Next Steps:" -ForegroundColor Cyan
 Write-Host "   1. Wait 1 hour for SharePoint to index the documents" -ForegroundColor White
 Write-Host "   2. Verify indexing by searching for 'revenue' in SharePoint search" -ForegroundColor White
 Write-Host "   3. Create trainable classifier in Microsoft Purview portal" -ForegroundColor White
-Write-Host "   4. Select FinancialReports_Positive folder for positive samples" -ForegroundColor White
-Write-Host "   5. Select BusinessDocs_Negative folder for negative samples" -ForegroundColor White
+Write-Host "   4. Select your SharePoint site → Documents library" -ForegroundColor White
+Write-Host "   5. Select FinancialReports_Positive folder for positive samples" -ForegroundColor White
+Write-Host "   6. Select BusinessDocs_Negative folder for negative samples" -ForegroundColor White
 Write-Host ""
 Write-Host "🔗 SharePoint Site: $siteUrl" -ForegroundColor Cyan
+Write-Host "🔗 Direct Link: $siteUrl/Documents/Forms/AllItems.aspx" -ForegroundColor Cyan
 Write-Host ""

@@ -1,0 +1,173 @@
+# Load remediation plan from Step 1
+$remediationPlan = Import-Csv "C:\PurviewLab\RemediationPlan.csv"
+
+# Filter for auto-delete actions
+$autoDeleteFiles = $remediationPlan | Where-Object {
+    $_.Action -eq 'AUTO_DELETE' -or $_.Action -eq 'AUTO_DELETE_WITH_AUDIT'
+}
+
+# ========== PRE-DELETION ANALYSIS ==========
+Write-Host "`n========== REMEDIATION PLAN ANALYSIS ==========" -ForegroundColor Cyan
+Write-Host "Total files in remediation plan: $($remediationPlan.Count)" -ForegroundColor White
+Write-Host "Files marked for AUTO_DELETE: $($autoDeleteFiles.Count)" -ForegroundColor Yellow
+Write-Host ""
+
+# Analyze current state of files
+Write-Host "Analyzing current state of files..." -ForegroundColor Gray
+$analysisResults = @{
+    FilesStillExist = 0
+    FilesAlreadyDeleted = 0
+    ExistingTombstones = 0
+}
+
+foreach ($file in $autoDeleteFiles) {
+    $filePath = $file.FilePath
+    
+    # Check if file still exists in original location
+    if (Test-Path $filePath) {
+        $analysisResults.FilesStillExist++
+    } else {
+        $analysisResults.FilesAlreadyDeleted++
+    }
+    
+    # Check for existing tombstone file
+    $tombstonePattern = "$filePath.DELETED_*.txt"
+    if (Test-Path $tombstonePattern) {
+        $analysisResults.ExistingTombstones++
+    }
+}
+
+Write-Host ""
+Write-Host "========== CURRENT STATE ==========" -ForegroundColor Cyan
+Write-Host "Files still in original location: $($analysisResults.FilesStillExist)" -ForegroundColor Green
+Write-Host "Files already deleted (not found): $($analysisResults.FilesAlreadyDeleted)" -ForegroundColor Gray
+Write-Host "Existing tombstones found: $($analysisResults.ExistingTombstones)" -ForegroundColor Gray
+Write-Host ""
+
+# Early exit if nothing to do
+if ($analysisResults.FilesStillExist -eq 0) {
+    Write-Host "[!] No files remaining to delete. All marked files have already been processed." -ForegroundColor Yellow
+    Write-Host "    Existing tombstones: $($analysisResults.ExistingTombstones)" -ForegroundColor Gray
+    Write-Host "    Files in plan: $($autoDeleteFiles.Count)" -ForegroundColor Gray
+    Write-Host ""
+    Write-Host "If you need to re-run deletions, restore files from backup first." -ForegroundColor Cyan
+    return
+}
+
+Write-Host "Files remaining to delete: $($analysisResults.FilesStillExist)" -ForegroundColor Yellow
+
+# Confirm deletion
+$confirm = Read-Host "`nProceed with deletion? (yes/no)"
+
+if ($confirm -ne 'yes') {
+    Write-Host "Deletion cancelled." -ForegroundColor Yellow
+    return
+}
+
+# Create tombstones and delete files
+foreach ($file in $autoDeleteFiles) {
+    $filePath = $file.FilePath
+    
+    try {
+        # Verify file exists
+        if (-not (Test-Path $filePath)) {
+            Write-Warning "File not found: $filePath"
+            continue
+        }
+        
+        # Get file info for tombstone
+        $fileInfo = Get-Item $filePath
+        
+        # Create tombstone BEFORE deletion
+        $tombstonePath = "$filePath.DELETED_$(Get-Date -Format 'yyyyMMdd_HHmmss').txt"
+        
+        $tombstoneContent = @"
+============================================================
+FILE DELETION RECORD
+============================================================
+Original File: $filePath
+Deleted On: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
+Deleted By: $env:USERNAME
+Computer: $env:COMPUTERNAME
+
+FILE DETAILS:
+Size: $([math]::Round($fileInfo.Length / 1MB, 2)) MB
+Last Modified: $($fileInfo.LastWriteTime)
+Last Accessed: $($fileInfo.LastAccessTime)
+Created: $($fileInfo.CreationTime)
+
+REMEDIATION DETAILS:
+Severity: $($file.Severity)
+Sensitive Info Types: $($file.SITs)
+Age: $($file.AgeYears) years
+Remediation Action: $($file.Action)
+
+RESTORATION INFORMATION:
+This file was deleted as part of data remediation project.
+Contact IT Service Desk for restoration from backup.
+
+Backup System: Rubrik / JCI Backup Service
+Retention: Check backup retention policy
+Project Reference: Purview Remediation - $(Get-Date -Format 'yyyy-MM')
+
+Approved By: [Compliance Officer Name]
+Legal Hold Check: None Active
+============================================================
+"@
+        
+        # Write tombstone
+        $tombstoneContent | Out-File -FilePath $tombstonePath -Encoding UTF8 -Force
+        
+        # Delete original file
+        Remove-Item -Path $filePath -Force -ErrorAction Stop
+        
+        Write-Host "✅ Deleted: $($fileInfo.Name)" -ForegroundColor Green
+        Write-Host "   Tombstone: $tombstonePath" -ForegroundColor Gray
+        
+    } catch {
+        Write-Error "Failed to delete ${filePath}: $($_.Exception.Message)"
+    }
+}
+
+Write-Host "`n✅ Remediation complete." -ForegroundColor Green
+Write-Host "Tombstones created for audit trail and backup restoration reference.`n" -ForegroundColor Cyan
+
+# Verification Step: Confirm files are deleted
+Write-Host "========== DELETION VERIFICATION ==========" -ForegroundColor Magenta
+Write-Host "Verifying files have been deleted...`n" -ForegroundColor Cyan
+
+$deletionResults = @{
+    Deleted = 0
+    StillExists = 0
+    TombstonesCreated = 0
+}
+
+foreach ($file in $autoDeleteFiles) {
+    $filePath = $file.FilePath
+    
+    # Check if original file still exists
+    if (Test-Path $filePath) {
+        Write-Host "⚠️  File still exists: $filePath" -ForegroundColor Yellow
+        $deletionResults.StillExists++
+    } else {
+        Write-Host "✅ Confirmed deleted: $($file.FilePath.Split('\')[-1])" -ForegroundColor Green
+        $deletionResults.Deleted++
+    }
+    
+    # Check for tombstone file
+    $tombstonePattern = "$filePath.DELETED_*.txt"
+    if (Test-Path $tombstonePattern) {
+        $deletionResults.TombstonesCreated++
+    }
+}
+
+Write-Host "`n========== VERIFICATION SUMMARY ==========" -ForegroundColor Cyan
+Write-Host "Files Successfully Deleted: $($deletionResults.Deleted)" -ForegroundColor Green
+Write-Host "Files Still Exist: $($deletionResults.StillExists)" -ForegroundColor $(if ($deletionResults.StillExists -gt 0) { 'Yellow' } else { 'Green' })
+Write-Host "Tombstone Files Created: $($deletionResults.TombstonesCreated)" -ForegroundColor Cyan
+
+if ($deletionResults.StillExists -eq 0) {
+    Write-Host "`n✅ All files deleted successfully!" -ForegroundColor Green
+} else {
+    Write-Host "`n⚠️  Some files were not deleted. Review errors above." -ForegroundColor Yellow
+}

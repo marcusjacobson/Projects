@@ -108,7 +108,7 @@ Before proceeding to Section 2 (On-Prem Scanning) or Section 3 (Cloud Scanning),
 
 - Complete Section 2 first (on-prem scanning).
 - Then complete Section 3 (cloud scanning).
-- Then complete Section 4 (validation & reporting).
+- Then complete Supplemental Labs.
 
 ---
 

@@ -14,6 +14,133 @@ This hands-on lab series provides comprehensive practical experience with Micros
 - **Production-Ready Patterns**: Real-world remediation automation for enterprise deployments.
 - **Consultancy Project Alignment**: Addresses hybrid data governance with flexible learning paths.
 
+---
+
+## 🚀 Getting Started - Accessing This Project
+
+### Option 1: Fork and Clone (Recommended for Version Control)
+
+**Fork the repository** to your GitHub account, then clone it locally:
+
+```powershell
+# Clone your forked repository to the recommended location
+git clone https://github.com/YOUR-USERNAME/Projects.git "c:\REPO\GitHub\Projects"
+
+# Navigate to the Purview project
+cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud"
+```
+
+**Benefits**: Version control, ability to track your changes, easy sync with updates.
+
+### Option 2: Direct Download (Quick Start)
+
+**Download the repository** as a ZIP file:
+
+1. Visit the [Projects repository](https://github.com/marcusjacobson/Projects).
+2. Click **Code** → **Download ZIP**.
+3. Extract to `c:\REPO\GitHub\` (creates `c:\REPO\GitHub\Projects\`).
+4. Navigate to: `c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\`.
+
+**Benefits**: Faster setup, no Git required, simpler for one-time use.
+
+### Recommended Folder Structure for Lab Scripts
+
+**All labs in this project use absolute paths with this recommended structure:**
+
+```text
+c:\REPO\GitHub\Projects\                          ← Repository root
+└── Microsoft\
+    └── Purview\
+        └── Purview-Skills-Ramp-OnPrem-and-Cloud\ ← Project root
+            ├── 01-Setup\
+            │   ├── Setup-01-Licensing-and-Auditing\
+            │   ├── Setup-02-Azure-Infrastructure\
+            │   └── Setup-03-Service-Account-Creation\
+            ├── 02-OnPrem-Scanning\
+            │   ├── OnPrem-01-Scanner-Deployment\
+            │   ├── OnPrem-02-Discovery-Scans\
+            │   ├── OnPrem-03-DLP-Policy-Configuration\
+            │   └── OnPrem-04-DLP-Enforcement-Validation\
+            ├── 03-Cloud-Scanning\
+            │   └── [Cloud labs with retention and eDiscovery]
+            └── Supplemental-Labs\
+                └── [Advanced automation labs]
+```
+
+**Example script paths used throughout the labs:**
+
+```powershell
+# Navigate to specific lab directories
+cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\01-Setup\Setup-02-Azure-Infrastructure"
+cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\02-OnPrem-Scanning\OnPrem-02-Discovery-Scans"
+cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\Supplemental-Labs\Custom-Classification"
+```
+
+> **📁 Lab Data Files**: Some labs generate CSV exports and data files. The default storage location is `C:\PurviewLab\` (examples: `ActivityExplorer_Export.csv`, `SITAnalysisReport_*.csv`). Create this directory before starting the labs:
+>
+> ```powershell
+> # Create lab data directory
+> New-Item -Path "C:\PurviewLab" -ItemType Directory -Force
+> ```
+
+### Using a Custom Path Without Affecting the Root Project
+
+**If you download or clone to a different location** (e.g., `D:\MyLabs\Purview\`), you can update paths in your local copy while keeping your fork clean:
+
+**Option A: Global Find and Replace (Recommended for Forks)**:
+
+Use PowerShell to update all lab README files in your local repository:
+
+```powershell
+# Navigate to your project root
+cd "D:\MyLabs\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud"
+
+# Find and replace paths in all README files
+Get-ChildItem -Path . -Filter "README.md" -Recurse | ForEach-Object {
+    $content = Get-Content $_.FullName -Raw
+    $updatedContent = $content -replace 'c:\\REPO\\GitHub\\Projects\\Microsoft\\Purview\\Purview-Skills-Ramp-OnPrem-and-Cloud', 'D:\MyLabs\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud'
+    Set-Content -Path $_.FullName -Value $updatedContent -NoNewline
+}
+
+Write-Host "✅ All README files updated with your custom path" -ForegroundColor Green
+```
+
+**Option B: Git Branch for Path Customization (Keeps Main Branch Clean)**:
+
+```powershell
+# Create a local branch for your path customizations
+git checkout -b custom-paths
+
+# Run the find-and-replace script from Option A
+# Commit your path changes to this branch only
+git add .
+git commit -m "Update paths for local environment"
+
+# Your custom-paths branch now has your modifications
+# The main branch remains unchanged and can sync with upstream
+```
+
+**Option C: Manual Per-Lab Updates (Quick but Repetitive)**:
+
+Update the `cd` command at the start of each lab as you work through them:
+
+```powershell
+# Original path in lab README
+cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\01-Setup\Setup-01-Licensing-and-Auditing"
+
+# Your custom path (update before running)
+cd "D:\MyLabs\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\01-Setup\Setup-01-Licensing-and-Auditing"
+```
+
+> **🔀 Git Best Practice**: If you forked the repository and want to keep syncing updates from the original project:
+>
+> - Use **Option B** (Git Branch) to isolate your path customizations
+> - Keep your `main` branch clean for pulling upstream changes
+> - Work from your `custom-paths` branch for all lab activities
+> - Merge upstream updates into `main`, then rebase `custom-paths` as needed
+
+---
+
 ## ⚠️ Critical Time & Cost Considerations
 
 **Before starting this project, understand these key constraints:**

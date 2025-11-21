@@ -1,0 +1,26 @@
+MARCUSJ-DEV - Human Resources Department
+Direct Deposit Authorization - Rivera
+
+Employee Information:
+--------------------
+Employee ID: EMP-10068
+Name: Deborah Rivera
+Social Security Number: 079-87-4639
+Department: HR
+Hire Date: 2021-12-16
+
+Document Details:
+----------------
+Document Type: DirectDeposit
+Generated: 2025-11-16 18:25:41
+Company: MARCUSJ-DEV
+
+SSN Verification Section:
+------------------------
+Employee SSN: 079-87-4639
+Employee SSN: 079-87-4639
+
+---
+This is a simulated document for Purview Data Governance testing.
+Confidential - Contains Personally Identifiable Information (PII)
+MARCUSJ-DEV - Generated: 2025-11-16

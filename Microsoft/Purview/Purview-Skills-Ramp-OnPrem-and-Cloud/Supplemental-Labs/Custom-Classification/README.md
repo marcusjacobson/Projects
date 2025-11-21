@@ -259,9 +259,18 @@ Click classifier name to view details
 
 The system automatically tested the classifier and provides accuracy metrics:
 
-- **Tested**: Number of items automatically tested.
-- **Accuracy indicators**: System evaluation of classifier performance.
+- **Tested**: Number of items automatically tested from your training set.
+- **Accuracy percentage**: Overall model performance (e.g., "96% accuracy").
+- **Test results list**: Shows false negatives (items that should have matched but didn't) and false positives (items that matched incorrectly).
 - **Status**: Ready for publication if accuracy is acceptable.
+
+> 📊 **What You Should See After Training**:
+>
+> - **96% accuracy example**: The test results will show approximately 4 false negatives (the 4% that failed). This is **EXPECTED** and represents documents the classifier couldn't reliably identify.
+> - **Content Explorer will be EMPTY**: This is **NORMAL** at this stage. The classifier hasn't been applied to your content yet - it's only been tested.
+> - **No DLP matches yet**: You won't see any matches until you create a DLP policy in Phase 3.
+>
+> **Important**: The false negatives in test results are the documents that didn't meet the confidence threshold. With 300/500 training samples, expect 70-90%+ accuracy with some false negatives.
 
 > 📊 Microsoft's automated testing validates the classifier is working correctly. **With enhanced dataset (300/500), expect 70-90%+ accuracy**.
 
@@ -269,7 +278,7 @@ The system automatically tested the classifier and provides accuracy metrics:
 
 | Test Accuracy | Action | Recommendation |
 |--------------|--------|----------------|
-| **70-95%** | ✅ Publish immediately | Production-ready classifier |
+| **70-95%** | ✅ Publish immediately | Production-ready classifier with expected false negatives |
 | **50-70%** | ⚠️ Review false positives/negatives | Consider increasing to 400/800 samples |
 | **Below 50%** | ❌ Delete and recreate | Improve sample quality, increase to 500/1,500 |
 
@@ -309,9 +318,18 @@ After training completes and you've reviewed the automated test results:
 
 > 💡 **Important**: Once published, the classifier cannot be unpublished. If accuracy is insufficient, you must delete the classifier and create a new one with improved training samples.
 
+> ⚠️ **Expected State After Publication (Before Creating DLP Policy)**:
+>
+> - **Content Explorer**: Will remain EMPTY until you create a DLP policy or apply the classifier to content
+> - **Test Results**: False negatives from training remain visible (this is your 4% failure rate from the 96% accuracy)
+> - **No Matches Yet**: The classifier is ready to use but hasn't been applied to scan your SharePoint content yet
+> - **This is Normal**: You won't see any content matches until Phase 3 when you create a DLP policy that triggers content scanning
+
 ---
 
 ## 🚀 Phase 3: DLP Policy Integration
+
+> 📋 **What Changes in Phase 3**: Creating a DLP policy will trigger Purview to scan your SharePoint content with the published classifier. After the DLP policy is created, expect 1-24 hours for Content Explorer to populate with matches from your training data folders and any other matching content.
 
 ### Step 8: Create DLP Policy
 
@@ -325,7 +343,7 @@ Navigate to **Data loss prevention** → **Policies**
 
 **Choose what type of data to protect**:
 
-1. Select **Data stored in connected sources** (default for SharePoint, OneDrive, Exchange, Teams).
+1. Select **Enterprise applications & devices** (default for SharePoint, OneDrive, Exchange, Teams).
 2. Click **Next**.
 
 **Choose a template**:
@@ -690,6 +708,78 @@ Confirm completion:
 - ✅ Maximize negative sample diversity (HR, marketing, technical, legal, operations documents).
 - ✅ Review automated test results carefully - **70%+ accuracy required for production**.
 - ✅ If still failing with 300/500, consider maximum: 500 positive / 1,500 negative samples.
+
+---
+
+### Classifier Not Appearing in Content Explorer
+
+**Symptoms**: Classifier shows "Ready to use" status, but when browsing **Content explorer** → **Trainable classifiers**, your custom classifier doesn't appear in the list (only built-in classifiers visible).
+
+**Root Cause**: Content Explorer indexing bug - the classifier published successfully but wasn't registered in Content Explorer's index.
+
+**Solutions**:
+
+✅ **Option A: Force Re-indexing (Recommended)**
+
+1. Delete your DLP policy ("Protect Financial Reports")
+2. Wait several hours (empirically 2-4 hours, up to 24 hours) for Purview indexing to reset
+3. **Check Content Explorer** → **Trainable classifiers** - verify your classifier appears in the list (even if showing 0 items)
+4. If classifier is now visible, recreate the DLP policy with identical settings
+5. Wait up to **7 days** for content scanning to complete and classification results to populate
+
+> ⏱️ **Microsoft Learn Validated Timing**: Content Explorer updates within **7 days** for classification results/counts ([Source](https://learn.microsoft.com/en-us/purview/on-demand-classification#additional-considerations)). The timing for classifiers to appear in the browsable list is not officially documented but typically occurs within 24 hours.
+
+✅ **Option B: Recreate Classifier (If Option A Fails)**
+
+If the classifier still doesn't appear in Content Explorer after 48 hours:
+
+1. Delete the classifier completely from **Classifiers** → **Trainable classifiers**
+2. Wait 2 hours
+3. Recreate the classifier using your existing training folders (still in SharePoint)
+4. Wait for 24-hour training to complete
+5. Review test results and publish
+6. **Wait 24 hours after publishing** before creating DLP policy
+7. Verify classifier appears in Content Explorer before creating DLP policy
+8. Create DLP policy
+
+> **💡 Pro Tip**: Always verify your custom classifier appears in Content Explorer's trainable classifiers list (even if showing 0 items) before creating a DLP policy. If it's not visible there, the DLP policy won't be able to use it.
+
+---
+
+### Simulation Mode Shows 0 Matches Despite Successful Training
+
+**Symptoms**: Classifier appears in Content Explorer, trained with 70-95% accuracy, published to "Ready to use", DLP policy created, but simulation shows 0 matches after scanning completes.
+
+**Root Cause**: This is **NOT a classifier failure** - it's a timing issue. After creating the DLP policy, Purview needs 24-48 hours to scan existing content with your trainable classifier. Simulation results **update automatically** as classification completes.
+
+**Solutions**:
+
+✅ **Keep policy in simulation mode** - no changes needed. Results update automatically over time.
+
+✅ **Wait 24-48 hours** after publishing classifier before expecting matches.
+
+✅ **Monitor progress**: Check **Data loss prevention** → **Policies** → Your policy → **Simulation tab** daily. "Total matches found" will increase as content gets classified.
+
+✅ **Verify in Content Explorer**: **Data classification** → **Content explorer** → **Trainable classifiers** → Your classifier name should show detected items within 24-48 hours.
+
+✅ **Optional - Test with new uploads**: Upload 5-10 financial reports to a different SharePoint folder (not training folders). New content should be detected within 1-24 hours.
+
+✅ **Restart simulation only if**:
+
+- After 48 hours, still showing 0 matches.
+- You made changes to the policy conditions/rules.
+- You want to reset the 30-day simulation data retention window.
+- Otherwise, let simulation continue running - it updates automatically.
+
+**Expected Timeline**:
+
+| Time | Expected Behavior |
+|------|-------------------|
+| **0-12 hours** | Simulation still shows 0-few matches |
+| **12-24 hours** | Simulation starts showing matches |
+| **24-48 hours** | Majority of content classified, accurate match count |
+
+> **💡 Pro Tip**: High training accuracy (70%+) means your classifier works correctly. The "0 matches" is a timing/indexing issue - simulation results populate automatically as background classification completes. Be patient for 24-48 hours.
 
 ---
 

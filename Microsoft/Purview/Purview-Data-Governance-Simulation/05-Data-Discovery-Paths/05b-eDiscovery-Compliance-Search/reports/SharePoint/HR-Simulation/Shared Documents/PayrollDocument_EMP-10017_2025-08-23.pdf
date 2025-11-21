@@ -1,0 +1,32 @@
+MARCUSJ-DEV - Human Resources Department
+Payroll Information - Gomez
+
+Employee Information:
+--------------------
+Employee ID: EMP-10017
+Name: Emily Gomez
+Social Security Number: 032-93-9801
+Department: Marketing
+Hire Date: 2024-07-23
+
+Document Details:
+----------------
+Document Type: PayrollDocument
+Generated: 2025-11-16 18:25:39
+Company: MARCUSJ-DEV
+
+SSN Verification Section:
+------------------------
+SSN: 032-93-9801
+Taxpayer Identification: 032-93-9801
+SSN: 032-93-9801
+Tax ID: 032-93-9801
+Taxpayer Identification: 032-93-9801
+SSN: 032-93-9801
+Taxpayer Identification: 032-93-9801
+Tax ID: 032-93-9801
+
+---
+This is a simulated document for Purview Data Governance testing.
+Confidential - Contains Personally Identifiable Information (PII)
+MARCUSJ-DEV - Generated: 2025-11-16

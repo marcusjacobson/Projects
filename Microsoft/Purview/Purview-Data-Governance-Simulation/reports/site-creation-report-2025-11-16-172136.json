@@ -1,0 +1,19 @@
+{
+  "SitesCreated": 5,
+  "Organization": "Marcusj-Dev",
+  "Timestamp": "2025-11-16 17:21:36",
+  "CreatedSites": [
+    "HR-Simulation",
+    "Finance-Simulation",
+    "Legal-Simulation",
+    "Marketing-Simulation",
+    "IT-Simulation"
+  ],
+  "TenantUrl": "https://marcusjcloud.sharepoint.com/",
+  "SitesSkipped": 0,
+  "SkippedSites": [],
+  "SitesConfigured": 5,
+  "SitesFailed": 0,
+  "FailedSites": [],
+  "Duration": "00:01:55.2301474"
+}

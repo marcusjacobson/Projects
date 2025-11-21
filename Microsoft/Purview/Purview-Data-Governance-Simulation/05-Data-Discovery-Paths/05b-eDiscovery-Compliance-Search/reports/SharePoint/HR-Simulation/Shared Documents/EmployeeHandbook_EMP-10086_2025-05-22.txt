@@ -1,0 +1,27 @@
+MARCUSJ-DEV - Human Resources Department
+Employee Handbook - Section White
+
+Employee Information:
+--------------------
+Employee ID: EMP-10086
+Name: Nancy White
+Social Security Number: 404-43-1467
+Department: IT
+Hire Date: 2021-06-09
+
+Document Details:
+----------------
+Document Type: EmployeeHandbook
+Generated: 2025-11-16 18:25:42
+Company: MARCUSJ-DEV
+
+SSN Verification Section:
+------------------------
+SSN: 404-43-1467
+SSN: 404-43-1467
+SSN: 404-43-1467
+
+---
+This is a simulated document for Purview Data Governance testing.
+Confidential - Contains Personally Identifiable Information (PII)
+MARCUSJ-DEV - Generated: 2025-11-16

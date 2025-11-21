@@ -1,0 +1,30 @@
+MARCUSJ-DEV - Human Resources Department
+Personnel Record - Green
+
+Employee Information:
+--------------------
+Employee ID: EMP-10015
+Name: Kevin Green
+Social Security Number: 781-90-8312
+Department: Marketing
+Hire Date: 2023-07-16
+
+Document Details:
+----------------
+Document Type: PersonnelRecord
+Generated: 2025-11-16 18:25:26
+Company: MARCUSJ-DEV
+
+SSN Verification Section:
+------------------------
+SSN: 781-90-8312
+Employee SSN: 781-90-8312
+Tax ID: 781-90-8312
+Taxpayer Identification: 781-90-8312
+Social Security Number: 781-90-8312
+Tax ID: 781-90-8312
+
+---
+This is a simulated document for Purview Data Governance testing.
+Confidential - Contains Personally Identifiable Information (PII)
+MARCUSJ-DEV - Generated: 2025-11-16

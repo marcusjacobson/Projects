@@ -1,0 +1,11 @@
+{
+  "TotalDocuments": 1400,
+  "CreditCardCount": 5328,
+  "GenerationDuration": "00:00:32",
+  "RoutingNumberCount": 3268,
+  "Timestamp": "2025-11-16 18:26:16",
+  "OutputPath": ".\\generated-documents\\Finance",
+  "DocumentType": "Financial",
+  "BankAccountCount": 4056,
+  "IBANCount": 728
+}

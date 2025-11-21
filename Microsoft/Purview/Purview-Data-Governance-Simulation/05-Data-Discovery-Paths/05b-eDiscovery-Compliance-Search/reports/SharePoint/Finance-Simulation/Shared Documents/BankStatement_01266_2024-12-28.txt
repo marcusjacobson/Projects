@@ -1,0 +1,30 @@
+MARCUSJ-DEV - Finance Department
+Bank Statement - 2024-12-28
+
+Document Information:
+--------------------
+Document Type: BankStatement
+Document ID: FIN-11266
+Generated: 2025-11-16 18:26:13
+Company: MARCUSJ-DEV
+
+Financial Details:
+-----------------
+Bank Account: 37188913
+Bank Account: 0280751373
+Bank Account: 2608779186
+Bank Account: 0248621378720194
+Bank Account: 887348304259
+Bank Account: 821069968631044
+ABA Routing Number: 063100277
+ABA Routing Number: 091000019
+
+Transaction Summary:
+-------------------
+Amount: $151.13
+Date: 2024-12-28
+Status: Processed
+
+---
+Confidential Financial Information
+MARCUSJ-DEV - Generated: 2025-11-16

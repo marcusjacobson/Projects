@@ -1,0 +1,32 @@
+MARCUSJ-DEV - Human Resources Department
+Payroll Information - Brown
+
+Employee Information:
+--------------------
+Employee ID: EMP-10085
+Name: Brian Brown
+Social Security Number: 210-33-1930
+Department: Finance
+Hire Date: 2025-05-03
+
+Document Details:
+----------------
+Document Type: PayrollDocument
+Generated: 2025-11-16 18:25:31
+Company: MARCUSJ-DEV
+
+SSN Verification Section:
+------------------------
+Employee SSN: 210-33-1930
+Social Security Number: 210-33-1930
+Social Security Number: 210-33-1930
+Employee SSN: 210-33-1930
+Tax ID: 210-33-1930
+Employee SSN: 210-33-1930
+Social Security Number: 210-33-1930
+SSN: 210-33-1930
+
+---
+This is a simulated document for Purview Data Governance testing.
+Confidential - Contains Personally Identifiable Information (PII)
+MARCUSJ-DEV - Generated: 2025-11-16

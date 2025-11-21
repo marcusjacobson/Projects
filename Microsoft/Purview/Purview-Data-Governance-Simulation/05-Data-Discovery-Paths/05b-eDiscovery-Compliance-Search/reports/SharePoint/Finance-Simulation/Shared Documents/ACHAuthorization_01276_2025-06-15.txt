@@ -1,0 +1,32 @@
+MARCUSJ-DEV - Finance Department
+ACH Payment Auth - 2025-06-15
+
+Document Information:
+--------------------
+Document Type: ACHAuthorization
+Document ID: FIN-11276
+Generated: 2025-11-16 18:26:13
+Company: MARCUSJ-DEV
+
+Financial Details:
+-----------------
+Bank Account: 040137873964112
+Bank Account: 916344183729202
+Bank Account: 4403238076
+Bank Account: 6106726233897
+Bank Account: 3758309719
+ABA Routing Number: 063100277
+ABA Routing Number: 121000248
+ABA Routing Number: 121000248
+ABA Routing Number: 122000247
+ABA Routing Number: 091000019
+
+Transaction Summary:
+-------------------
+Amount: $190.28
+Date: 2025-06-15
+Status: Processed
+
+---
+Confidential Financial Information
+MARCUSJ-DEV - Generated: 2025-11-16

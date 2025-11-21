@@ -1,0 +1,33 @@
+MARCUSJ-DEV - Cross-Departmental Document
+Contract - 2025-06-09
+
+Document Information:
+--------------------
+Document Type: Contract (Mixed PII Content)
+Document ID: MIX-31048
+PII Density: High
+Generated: 2025-11-16 18:26:57
+
+Content Summary:
+---------------
+This document contains mixed PII content from various departments
+and includes multiple types of sensitive information patterns.
+
+Sensitive Information:
+---------------------
+Passport Number: 840226805
+Credit Card: 4749-8282-3682-0309
+Credit Card: 6611-6738-1464-2603
+Passport Number: B2406736
+Social Security Number: 338-78-4287
+Social Security Number: 100-77-2672
+
+Document Classification:
+-----------------------
+Sensitivity: High PII Density
+Review Required: Yes
+Retention Period: 7 years
+
+---
+Confidential - Mixed Sensitive Information
+MARCUSJ-DEV - Generated: 2025-11-16

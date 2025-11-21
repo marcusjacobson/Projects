@@ -1,0 +1,26 @@
+MARCUSJ-DEV - Human Resources Department
+Direct Deposit Authorization - Young
+
+Employee Information:
+--------------------
+Employee ID: EMP-10027
+Name: Donald Young
+Social Security Number: 405-48-7849
+Department: IT
+Hire Date: 2023-03-26
+
+Document Details:
+----------------
+Document Type: DirectDeposit
+Generated: 2025-11-16 18:25:40
+Company: MARCUSJ-DEV
+
+SSN Verification Section:
+------------------------
+Employee SSN: 405-48-7849
+SSN: 405-48-7849
+
+---
+This is a simulated document for Purview Data Governance testing.
+Confidential - Contains Personally Identifiable Information (PII)
+MARCUSJ-DEV - Generated: 2025-11-16

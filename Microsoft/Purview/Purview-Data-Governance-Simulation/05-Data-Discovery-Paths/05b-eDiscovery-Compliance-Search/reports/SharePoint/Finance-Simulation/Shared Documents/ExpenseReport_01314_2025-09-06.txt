@@ -1,0 +1,30 @@
+MARCUSJ-DEV - Finance Department
+Expense Report - 2025-09-06
+
+Document Information:
+--------------------
+Document Type: ExpenseReport
+Document ID: FIN-11314
+Generated: 2025-11-16 18:26:14
+Company: MARCUSJ-DEV
+
+Financial Details:
+-----------------
+Credit Card (Discover): 6471-9347-9274-2006
+Credit Card (Discover): 6427-5004-7092-6503
+Credit Card (Mastercard): 5719-2338-7380-2959
+Credit Card (Amex): 3930-110516-87114
+Credit Card (Visa): 4903-2363-8906-7009
+Credit Card (Mastercard): 5058-8955-1080-7789
+Credit Card (Amex): 3752-224984-58479
+Credit Card (Discover): 6861-3260-1604-5833
+
+Transaction Summary:
+-------------------
+Amount: $286.28
+Date: 2025-09-06
+Status: Processed
+
+---
+Confidential Financial Information
+MARCUSJ-DEV - Generated: 2025-11-16

@@ -14,7 +14,7 @@
 - Analyze DLP policy effectiveness using Activity Explorer and PowerShell reporting.
 - Use Content Explorer (Classic) for comprehensive SIT detection reporting and analysis.
 - Build advanced PowerShell scripts for SIT distribution analysis and compliance reporting.
-- Compare detection timing: Activity Explorer (15-30 min) vs Content Explorer (24-48 hours).
+- Understand Activity Explorer and Content Explorer data aggregation timing (both require 24-48 hours).
 - Export and analyze SIT detection data for stakeholder reporting.
 - Understand when to use Activity Explorer vs Content Explorer for SIT detection and compliance reporting.
 
@@ -28,7 +28,7 @@ This lab uses the **correct tools for SIT detection**: Activity Explorer and Con
 |--------|------------------|--------------------------|
 | **Primary Purpose** | Real-time DLP event monitoring | Comprehensive SIT inventory reporting |
 | **Data Type** | DLP policy matches (events) | SIT detections (files) |
-| **Population Speed** | 15-30 minutes | 24-48 hours |
+| **Population Speed** | 24-48 hours | 24-48 hours |
 | **Use Case** | Security monitoring, incident response | Compliance reporting, remediation planning |
 | **Export Format** | CSV (event timeline) | CSV (file inventory with SIT details) |
 | **Cost** | Included with DLP | Included with DLP |
@@ -92,7 +92,7 @@ This lab uses the **correct tools for SIT detection**: Activity Explorer and Con
 
 > **🔍 Key Learning**: This lab demonstrates the correct tools for SIT detection and analysis (see "Understanding Detection Tools and Methods" in Overview for detailed comparison):
 >
-> - **DLP Policies + Activity Explorer (Steps 1-2)**: Real-time protection with events appearing within 15-30 minutes
+> - **DLP Policies + Activity Explorer (Steps 1-2)**: DLP protection with events appearing within 24-48 hours
 > - **Content Explorer (Classic) (Steps 3-4)**: Comprehensive SIT reporting with data populated within 24-48 hours
 > - **PowerShell Analysis (Step 4)**: Automated reporting and compliance analysis for stakeholder communication
 
@@ -463,7 +463,7 @@ Click **Save**.
 
 After creating the DLP policy, verify it's actively detecting sensitive data and generating "DLP policy match" events in Activity Explorer.
 
-> **📊 Data Availability**: Activity Explorer requires **15-30 minutes** after DLP policy creation for initial events to appear. If you see no events immediately, wait 30 minutes and refresh.
+> **📊 Data Availability**: Activity Explorer requires **24-48 hours** after DLP policy creation for initial events to appear. If you see no events immediately, wait 24-48 hours and refresh.
 
 **Navigate to Activity Explorer:**
 
@@ -586,7 +586,7 @@ This script provides comprehensive DLP policy analysis including:
 - [ ] Policy name matches "SharePoint Sensitive Data Protection - Lab".
 - [ ] Export CSV successfully downloaded for further analysis.
 
-> **💡 DLP vs Classification Timing**: DLP policy matches appear in Activity Explorer within **15-30 minutes** (real-time protection). Content Explorer provides comprehensive SIT analysis within **24-48 hours** of policy deployment. This demonstrates why DLP is deployed for immediate security, while Content Explorer provides comprehensive periodic analysis.
+> **💡 DLP vs Classification Timing**: DLP policy matches appear in Activity Explorer within **24-48 hours** (background aggregation). Content Explorer provides comprehensive SIT analysis within **24-48 hours** of policy deployment. Both tools provide comprehensive periodic analysis with similar timing.
 
 ---
 
@@ -699,7 +699,7 @@ For stakeholder reporting and remediation planning:
 >
 > | Method | Detection Time | Purpose | Cost |
 > |--------|---------------|---------|------|
-> | **Activity Explorer** | 15-30 minutes | Real-time DLP event monitoring | Included with DLP |
+> | **Activity Explorer** | 24-48 hours | DLP event aggregation and monitoring | Included with DLP |
 > | **Content Explorer** | 24-48 hours | Comprehensive SIT inventory reporting | Included with DLP |
 >
 > For SIT detection and reporting, **Activity Explorer + Content Explorer** provide the fastest, most cost-effective solution.
@@ -1224,7 +1224,7 @@ Before proceeding, verify you have completed all core objectives:
 | Goal | Correct Tool | Why |
 |------|--------------|-----|
 | **Find files with credit cards, SSNs, passport numbers** | **Content Explorer (Classic)** + Activity Explorer | Uses DLP detection engine for pattern matching |
-| **Monitor real-time DLP policy matches** | **Activity Explorer** | Shows live DLP events within 15-30 minutes |
+| **Monitor DLP policy matches** | **Activity Explorer** | Shows DLP events within 24-48 hours |
 | **Generate compliance report of SIT detections** | **Content Explorer (Classic) export** | Provides file inventory with SIT details |
 | **Categorize documents by type (Resumes, Financial Statements)** | **On-Demand Classification** (Supplemental Lab 03) | Uses ML models for document type classification |
 | **Create custom detection patterns** | **Custom SITs** (Supplemental Lab 03 Part A) | Regex-based pattern definitions |
@@ -1243,7 +1243,7 @@ After completing this lab, you have demonstrated the following production-level 
 **Technical Skills:**
 
 - ✅ **DLP Policy Deployment**: Deploy and configure SharePoint DLP policies for real-time SIT protection.
-- ✅ **Activity Explorer Analysis**: Monitor and analyze DLP policy events in real-time (15-30 minutes).
+- ✅ **Activity Explorer Analysis**: Monitor and analyze DLP policy events (24-48 hours).
 - ✅ **Content Explorer Mastery**: Use Content Explorer (Classic) for comprehensive SIT inventory reporting (24-48 hours).
 - ✅ **PowerShell Automation**: Build advanced PowerShell scripts for SIT distribution analysis and stakeholder reporting.
 - ✅ **Tool Selection**: Understand when to use Activity Explorer vs Content Explorer vs On-Demand Classification.
@@ -1253,7 +1253,7 @@ After completing this lab, you have demonstrated the following production-level 
 - ✅ **Compliance Reporting**: Generate executive summaries and stakeholder compliance reports.
 - ✅ **Risk Assessment**: Identify high-risk files based on SIT instances, confidence scores, and business context.
 - ✅ **Cost Optimization**: Leverage free DLP+Content Explorer tools instead of paid on-demand classification for SITs.
-- ✅ **Detection Timing**: Plan security strategies based on detection speed (Activity: 15-30 min, Content: 24-48 hours).
+- ✅ **Detection Timing**: Plan security strategies based on detection speed (Activity: 24-48 hours, Content: 24-48 hours).
 
 **Production Readiness:**
 
@@ -1283,13 +1283,13 @@ Before moving to the next lab or cleanup, verify:
 
 **Skills Acquired:**
 
-✅ **SIT Detection with DLP**: Real-time protection and Activity Explorer event monitoring (15-30 minutes).
+✅ **SIT Detection with DLP**: DLP protection and Activity Explorer event monitoring (24-48 hours).
 ✅ **Content Explorer Reporting**: Comprehensive SIT inventory analysis and export (24-48 hours).
 ✅ **PowerShell Automation**: Advanced SIT distribution analysis and stakeholder reporting scripts.
 ✅ **Tool Selection Mastery**: Distinguish between SITs (DLP+Content Explorer) vs Trainable Classifiers (On-Demand Classification).
 ✅ **Cost-Effective Approach**: Leverage free DLP+Content Explorer tools for SIT analysis vs paid on-demand classification.
 ✅ **Compliance Reporting**: Generate executive summaries and audit-ready SIT detection reports.
-✅ **Detection Timing Understanding**: Plan security strategies based on Activity Explorer (real-time) vs Content Explorer (24-48 hours).
+✅ **Detection Timing Understanding**: Plan security strategies based on Activity Explorer (24-48 hours) and Content Explorer (24-48 hours) data aggregation timing.
 
 **What This Lab Covered (SIT Detection):**
 

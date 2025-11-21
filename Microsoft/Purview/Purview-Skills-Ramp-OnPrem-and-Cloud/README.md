@@ -151,7 +151,7 @@ cd "D:\MyLabs\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\01-Setup\Setup-01-Lic
 | **⏱️ DLP Policy Sync** | **1-2 hours** before enforcement works | Create policies, wait, then run scans |
 | **⏱️ Retention Simulation** | **1-2 days** for results (email notification) | Plan multi-day timeline for Cloud labs |
 | **⏱️ Retention Activation** | **Up to 7 days** for production label application | Required for full Cloud lab completion |
-| **⏱️ Activity Explorer** | **15-30 min** (basic) → **24 hrs** (trending) | Wait 24 hours for complete dashboard data |
+| **⏱️ Activity Explorer** | **24-48 hours** for data population | Wait 24-48 hours for complete dashboard data |
 | **⏱️ Audit Log Aggregation** | **Up to 24-48 hours** for complete visibility | Scanner activity may take time to appear |
 | **🧹 Cleanup Re-Commission** | **4-6 hours** to rebuild full environment | Plan carefully before deleting Azure resources |
 
@@ -246,7 +246,7 @@ This project is organized into **3 main sections plus optional supplemental labs
 |-----|----------|----------------|
 | **Advanced-Cross-Platform-SIT-Analysis** | 45-60 min | Activity Explorer cross-platform analysis, Data Classification dashboards, Capstone integration, Executive reporting |
 | **Advanced-Remediation** | 4-6 hours | Multi-tier severity matrix, Dual-source deduplication, PnP PowerShell, Tombstones, Progress tracking dashboards |
-| **Advanced-SharePoint-SIT-Analysis** | 3-4 hours | DLP deployment for real-time protection, Activity Explorer validation (15-30 min), Content Explorer reporting (24-48 hrs), PowerShell SIT distribution analysis |
+| **Advanced-SharePoint-SIT-Analysis** | 3-4 hours | DLP deployment for SIT protection, Activity Explorer validation (24-48 hrs), Content Explorer reporting (24-48 hrs), PowerShell SIT distribution analysis |
 | **Custom-Classification** | 3-4 hours | Custom SITs (Boost.RegEx 5.1.3), Trainable Classifiers (ML), **24-hour ML training**, Sample curation (300 documents) |
 
 **Prerequisites**: Sections 1-3 completed (Advanced-Cross-Platform-SIT-Analysis requires OnPrem-04 from Section 2 and Advanced-SharePoint-SIT-Analysis Step 2)  

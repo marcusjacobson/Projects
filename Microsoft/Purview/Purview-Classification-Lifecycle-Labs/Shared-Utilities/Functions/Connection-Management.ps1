@@ -68,7 +68,9 @@ function Connect-PurviewServices {
         [string]$Tenant
     )
     
-    Write-PurviewLog "Connecting to Purview services: $($Services -join ', ')" -Level "INFO"
+    if ($Script:LogInitialized) {
+        Write-PurviewLog "Connecting to Purview services: $($Services -join ', ')" -Level "INFO"
+    }
     
     foreach ($service in $Services) {
         try {
@@ -79,27 +81,40 @@ function Connect-PurviewServices {
                             throw "TenantUrl parameter is required for SharePoint connection"
                         }
                         Connect-PnPOnline -Url $TenantUrl -Interactive -ErrorAction Stop
-                        Write-PurviewLog "✅ Connected to SharePoint Online (Interactive)" -Level "INFO"
+                        if ($Script:LogInitialized) {
+                            Write-PurviewLog "✅ Connected to SharePoint Online (Interactive)" -Level "INFO"
+                        }
                     } else {
                         if (-not ($TenantUrl -and $ClientId -and $Thumbprint -and $Tenant)) {
                             throw "TenantUrl, ClientId, Thumbprint, and Tenant parameters required for certificate auth"
                         }
                         Connect-PnPOnline -Url $TenantUrl -ClientId $ClientId -Thumbprint $Thumbprint -Tenant $Tenant -ErrorAction Stop
-                        Write-PurviewLog "✅ Connected to SharePoint Online (Certificate)" -Level "INFO"
+                        if ($Script:LogInitialized) {
+                            Write-PurviewLog "✅ Connected to SharePoint Online (Certificate)" -Level "INFO"
+                        }
                     }
                     $Script:ConnectedServices["SharePoint"] = $true
                 }
                 
                 "Exchange" {
+                    # Import module first to ensure cmdlets are available
+                    Import-Module ExchangeOnlineManagement -ErrorAction Stop
+                    
                     if ($Interactive) {
+                        # Use Connect-IPPSSession directly without any special parameters
+                        # This works around the WAM/MSAL runtime DLL issues
                         Connect-IPPSSession -ErrorAction Stop
-                        Write-PurviewLog "✅ Connected to Exchange Online (Interactive)" -Level "INFO"
+                        if ($Script:LogInitialized) {
+                            Write-PurviewLog "✅ Connected to Exchange Online (Interactive)" -Level "INFO"
+                        }
                     } else {
                         if (-not ($ClientId -and $Thumbprint -and $Tenant)) {
                             throw "ClientId, Thumbprint, and Tenant parameters required for certificate auth"
                         }
                         Connect-IPPSSession -AppId $ClientId -CertificateThumbprint $Thumbprint -Organization $Tenant -ErrorAction Stop
-                        Write-PurviewLog "✅ Connected to Exchange Online (Certificate)" -Level "INFO"
+                        if ($Script:LogInitialized) {
+                            Write-PurviewLog "✅ Connected to Exchange Online (Certificate)" -Level "INFO"
+                        }
                     }
                     $Script:ConnectedServices["Exchange"] = $true
                 }
@@ -107,12 +122,19 @@ function Connect-PurviewServices {
                 "ComplianceCenter" {
                     # Same as Exchange connection
                     if (-not $Script:ConnectedServices["Exchange"]) {
+                        # Import module first
+                        Import-Module ExchangeOnlineManagement -ErrorAction Stop
+                        
                         if ($Interactive) {
                             Connect-IPPSSession -ErrorAction Stop
-                            Write-PurviewLog "✅ Connected to Compliance Center (Interactive)" -Level "INFO"
+                            if ($Script:LogInitialized) {
+                                Write-PurviewLog "✅ Connected to Compliance Center (Interactive)" -Level "INFO"
+                            }
                         } else {
                             Connect-IPPSSession -AppId $ClientId -CertificateThumbprint $Thumbprint -Organization $Tenant -ErrorAction Stop
-                            Write-PurviewLog "✅ Connected to Compliance Center (Certificate)" -Level "INFO"
+                            if ($Script:LogInitialized) {
+                                Write-PurviewLog "✅ Connected to Compliance Center (Certificate)" -Level "INFO"
+                            }
                         }
                         $Script:ConnectedServices["Exchange"] = $true
                     }
@@ -120,7 +142,9 @@ function Connect-PurviewServices {
                 }
             }
         } catch {
-            Write-PurviewError "Failed to connect to $service`: $_"
+            if ($Script:LogInitialized) {
+                Write-PurviewError "Failed to connect to $service`: $_"
+            }
             throw
         }
     }
@@ -145,16 +169,22 @@ function Disconnect-PurviewServices {
     [CmdletBinding()]
     param ()
     
-    Write-PurviewLog "Disconnecting from Purview services" -Level "INFO"
+    if ($Script:LogInitialized) {
+        Write-PurviewLog "Disconnecting from Purview services" -Level "INFO"
+    }
     
     # Disconnect SharePoint
     if ($Script:ConnectedServices["SharePoint"]) {
         try {
             Disconnect-PnPOnline -ErrorAction SilentlyContinue
-            Write-PurviewLog "✅ Disconnected from SharePoint Online" -Level "INFO"
+            if ($Script:LogInitialized) {
+                Write-PurviewLog "✅ Disconnected from SharePoint Online" -Level "INFO"
+            }
             $Script:ConnectedServices["SharePoint"] = $false
         } catch {
-            Write-PurviewError "Failed to disconnect from SharePoint: $_"
+            if ($Script:LogInitialized) {
+                Write-PurviewError "Failed to disconnect from SharePoint: $_"
+            }
         }
     }
     
@@ -162,11 +192,15 @@ function Disconnect-PurviewServices {
     if ($Script:ConnectedServices["Exchange"] -or $Script:ConnectedServices["ComplianceCenter"]) {
         try {
             Disconnect-ExchangeOnline -Confirm:$false -ErrorAction SilentlyContinue
-            Write-PurviewLog "✅ Disconnected from Exchange Online" -Level "INFO"
+            if ($Script:LogInitialized) {
+                Write-PurviewLog "✅ Disconnected from Exchange Online" -Level "INFO"
+            }
             $Script:ConnectedServices["Exchange"] = $false
             $Script:ConnectedServices["ComplianceCenter"] = $false
         } catch {
-            Write-PurviewError "Failed to disconnect from Exchange: $_"
+            if ($Script:LogInitialized) {
+                Write-PurviewError "Failed to disconnect from Exchange: $_"
+            }
         }
     }
 }

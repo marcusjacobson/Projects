@@ -1,0 +1,6 @@
+EdmUploadAgent Information: 0 : 11/14/2025 10:14:56 PM: dev\dlp\src\edm\client\edmconnector\Program.cs:79 Start: Calling from entry point: Main function.
+EdmUploadAgent Information: 0 : 11/14/2025 10:14:56 PM: dev\dlp\src\edm\client\edmconnector\CommandHelper\CommandHandlerFactory.cs:34 GetCommandHandler: Getting handler for command: UploadData.
+EdmUploadAgent Error: 0 : 11/14/2025 10:14:56 PM: dev\dlp\src\edm\client\edmconnector\CommandHelper\CommandHandlerFactory.cs:149 GetOAuthTokenProvider: Error: TenantId is not set in the configuration. Run Authorize command to register the agent.
+EdmUploadAgent Error: 0 : 11/14/2025 10:14:56 PM: dev\dlp\src\edm\client\edmconnector\CommandHelper\CommandUtil.cs:87 ProcessCommand: Exception Type: System.Exception, Error Code: 0x80131500, Message: TenantId is not set in the configuration. Run Authorize command to register the agent., Stack Trace:    at Microsoft.DataClassification.Edm.Client.EdmConnector.CommandHelper.CommandHandlerFactory.GetOAuthTokenProvider(Boolean isInteractive)
+   at Microsoft.DataClassification.Edm.Client.EdmConnector.CommandHelper.CommandHandlerFactory.GetCommandHandler(String strCommand, IEdmServiceClient edmServiceClient, SecureString secureString)
+   at Microsoft.DataClassification.Edm.Client.EdmConnector.CommandHelper.CommandUtil.ProcessCommand(String[] args, SecureString securePassword)

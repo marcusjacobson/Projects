@@ -1,0 +1,27 @@
+MARCUSJ-DEV - Human Resources Department
+Employee Handbook - Section Hall
+
+Employee Information:
+--------------------
+Employee ID: EMP-10091
+Name: Michelle Hall
+Social Security Number: 202-48-8735
+Department: Legal
+Hire Date: 2025-01-06
+
+Document Details:
+----------------
+Document Type: EmployeeHandbook
+Generated: 2025-11-16 18:25:41
+Company: MARCUSJ-DEV
+
+SSN Verification Section:
+------------------------
+Social Security Number: 202-48-8735
+SSN: 202-48-8735
+Taxpayer Identification: 202-48-8735
+
+---
+This is a simulated document for Purview Data Governance testing.
+Confidential - Contains Personally Identifiable Information (PII)
+MARCUSJ-DEV - Generated: 2025-11-16

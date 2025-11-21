@@ -1,0 +1,30 @@
+MARCUSJ-DEV - Human Resources Department
+Personnel Record - Green
+
+Employee Information:
+--------------------
+Employee ID: EMP-10049
+Name: Timothy Green
+Social Security Number: 152-28-0821
+Department: HR
+Hire Date: 2023-10-29
+
+Document Details:
+----------------
+Document Type: PersonnelRecord
+Generated: 2025-11-16 18:25:41
+Company: MARCUSJ-DEV
+
+SSN Verification Section:
+------------------------
+SSN: 152-28-0821
+Social Security Number: 152-28-0821
+Employee SSN: 152-28-0821
+Social Security Number: 152-28-0821
+Tax ID: 152-28-0821
+Taxpayer Identification: 152-28-0821
+
+---
+This is a simulated document for Purview Data Governance testing.
+Confidential - Contains Personally Identifiable Information (PII)
+MARCUSJ-DEV - Generated: 2025-11-16

@@ -1,0 +1,32 @@
+MARCUSJ-DEV - Cross-Departmental Document
+Analysis - 2025-06-26
+
+Document Information:
+--------------------
+Document Type: Analysis (Mixed PII Content)
+Document ID: MIX-31100
+PII Density: Medium
+Generated: 2025-11-16 18:26:58
+
+Content Summary:
+---------------
+This document contains mixed PII content from various departments
+and includes multiple types of sensitive information patterns.
+
+Sensitive Information:
+---------------------
+Bank Account: 3628008965085
+Social Security Number: 697-40-2900
+Passport Number: 167731342
+Bank Account: 11092456039565
+Social Security Number: 681-31-3589
+
+Document Classification:
+-----------------------
+Sensitivity: Medium PII Density
+Review Required: Yes
+Retention Period: 7 years
+
+---
+Confidential - Mixed Sensitive Information
+MARCUSJ-DEV - Generated: 2025-11-16

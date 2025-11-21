@@ -1,0 +1,32 @@
+MARCUSJ-DEV - Human Resources Department
+Payroll Information - Green
+
+Employee Information:
+--------------------
+Employee ID: EMP-10100
+Name: Charles Green
+Social Security Number: 112-86-2848
+Department: IT
+Hire Date: 2018-10-03
+
+Document Details:
+----------------
+Document Type: PayrollDocument
+Generated: 2025-11-16 18:25:24
+Company: MARCUSJ-DEV
+
+SSN Verification Section:
+------------------------
+Taxpayer Identification: 112-86-2848
+Tax ID: 112-86-2848
+Taxpayer Identification: 112-86-2848
+SSN: 112-86-2848
+SSN: 112-86-2848
+SSN: 112-86-2848
+Employee SSN: 112-86-2848
+Social Security Number: 112-86-2848
+
+---
+This is a simulated document for Purview Data Governance testing.
+Confidential - Contains Personally Identifiable Information (PII)
+MARCUSJ-DEV - Generated: 2025-11-16

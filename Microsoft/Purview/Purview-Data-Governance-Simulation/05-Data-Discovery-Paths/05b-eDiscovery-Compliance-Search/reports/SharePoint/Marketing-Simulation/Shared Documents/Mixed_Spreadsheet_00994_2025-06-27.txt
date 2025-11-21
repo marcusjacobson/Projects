@@ -1,0 +1,33 @@
+MARCUSJ-DEV - Cross-Departmental Document
+Spreadsheet - 2025-06-27
+
+Document Information:
+--------------------
+Document Type: Spreadsheet (Mixed PII Content)
+Document ID: MIX-30994
+PII Density: High
+Generated: 2025-11-16 18:26:56
+
+Content Summary:
+---------------
+This document contains mixed PII content from various departments
+and includes multiple types of sensitive information patterns.
+
+Sensitive Information:
+---------------------
+Passport Number: E2461944
+Credit Card: 6238-8873-8381-6521
+Social Security Number: 504-24-9882
+Passport Number: 846906453
+Passport Number: C8929063
+Bank Account: 730807254501
+
+Document Classification:
+-----------------------
+Sensitivity: High PII Density
+Review Required: Yes
+Retention Period: 7 years
+
+---
+Confidential - Mixed Sensitive Information
+MARCUSJ-DEV - Generated: 2025-11-16

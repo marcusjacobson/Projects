@@ -1,0 +1,29 @@
+MARCUSJ-DEV - Finance Department
+Invoice Payment - 2025-04-14
+
+Document Information:
+--------------------
+Document Type: InvoicePayment
+Document ID: FIN-11292
+Generated: 2025-11-16 18:26:13
+Company: MARCUSJ-DEV
+
+Financial Details:
+-----------------
+Credit Card (Amex): 3160-593412-63282
+Bank Account: 63177599
+Bank Account: 41480778402
+Bank Account: 01592179610956080
+ABA Routing Number: 073000228
+ABA Routing Number: 021000021
+ABA Routing Number: 073000228
+
+Transaction Summary:
+-------------------
+Amount: $156.72
+Date: 2025-04-14
+Status: Processed
+
+---
+Confidential Financial Information
+MARCUSJ-DEV - Generated: 2025-11-16

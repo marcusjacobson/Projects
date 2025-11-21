@@ -1,0 +1,37 @@
+MARCUSJ-DEV - Finance Department
+CC Transaction Log - 2025-06-14
+
+Document Information:
+--------------------
+Document Type: CreditCardTransaction
+Document ID: FIN-11264
+Generated: 2025-11-16 18:26:13
+Company: MARCUSJ-DEV
+
+Financial Details:
+-----------------
+Credit Card (Visa): 4549-8551-3463-9670
+Credit Card (Amex): 3720-094006-06546
+Credit Card (Discover): 6736-7644-5616-0531
+Credit Card (Visa): 4300-9175-6735-6978
+Credit Card (Visa): 4376-2085-8067-1542
+Credit Card (Amex): 3885-134984-90591
+Credit Card (Mastercard): 5848-5534-3319-7670
+Credit Card (Visa): 4814-4269-2212-9363
+Credit Card (Discover): 6815-8203-8583-2776
+Credit Card (Mastercard): 5644-4508-4540-1963
+Credit Card (Visa): 4831-4677-2885-9333
+Credit Card (Visa): 4872-8930-6352-9800
+Credit Card (Mastercard): 5285-7941-0140-1865
+Credit Card (Visa): 4066-8192-0041-8643
+Credit Card (Discover): 6542-5534-9072-6800
+
+Transaction Summary:
+-------------------
+Amount: $48.03
+Date: 2025-06-14
+Status: Processed
+
+---
+Confidential Financial Information
+MARCUSJ-DEV - Generated: 2025-11-16

@@ -1,0 +1,30 @@
+MARCUSJ-DEV - Finance Department
+Wire Transfer - 2025-03-13
+
+Document Information:
+--------------------
+Document Type: WireTransfer
+Document ID: FIN-11341
+Generated: 2025-11-16 18:26:14
+Company: MARCUSJ-DEV
+
+Financial Details:
+-----------------
+Bank Account: 5601280297634349
+Bank Account: 1313478243872
+ABA Routing Number: 121000248
+ABA Routing Number: 063100277
+IBAN: IT54ADWV55243022169797
+IBAN: FR42STHR12959924148663
+IBAN: GB76XTBK82165553093871
+IBAN: DE25QGAU73471192276837
+
+Transaction Summary:
+-------------------
+Amount: $229.03
+Date: 2025-03-13
+Status: Processed
+
+---
+Confidential Financial Information
+MARCUSJ-DEV - Generated: 2025-11-16

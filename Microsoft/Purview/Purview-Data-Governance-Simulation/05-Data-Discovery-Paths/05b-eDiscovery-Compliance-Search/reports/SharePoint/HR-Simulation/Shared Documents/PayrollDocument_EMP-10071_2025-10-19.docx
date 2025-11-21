@@ -1,0 +1,32 @@
+MARCUSJ-DEV - Human Resources Department
+Payroll Information - Smith
+
+Employee Information:
+--------------------
+Employee ID: EMP-10071
+Name: Brian Smith
+Social Security Number: 009-76-3243
+Department: Marketing
+Hire Date: 2022-06-06
+
+Document Details:
+----------------
+Document Type: PayrollDocument
+Generated: 2025-11-16 18:25:19
+Company: MARCUSJ-DEV
+
+SSN Verification Section:
+------------------------
+Tax ID: 009-76-3243
+Taxpayer Identification: 009-76-3243
+Tax ID: 009-76-3243
+Employee SSN: 009-76-3243
+Taxpayer Identification: 009-76-3243
+Taxpayer Identification: 009-76-3243
+SSN: 009-76-3243
+Employee SSN: 009-76-3243
+
+---
+This is a simulated document for Purview Data Governance testing.
+Confidential - Contains Personally Identifiable Information (PII)
+MARCUSJ-DEV - Generated: 2025-11-16

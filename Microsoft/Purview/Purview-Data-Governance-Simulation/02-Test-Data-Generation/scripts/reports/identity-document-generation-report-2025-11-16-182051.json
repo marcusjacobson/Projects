@@ -1,0 +1,9 @@
+{
+  "Timestamp": "2025-11-16 18:20:51",
+  "TotalDocuments": 950,
+  "DocumentType": "Identity",
+  "DriverLicenseCount": 1487,
+  "ITINCount": 946,
+  "OutputPath": ".\\generated-documents\\Identity",
+  "PassportCount": 969
+}

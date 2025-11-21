@@ -1,0 +1,32 @@
+MARCUSJ-DEV - Human Resources Department
+Payroll Information - Rivera
+
+Employee Information:
+--------------------
+Employee ID: EMP-10013
+Name: Daniel Rivera
+Social Security Number: 089-49-1491
+Department: Marketing
+Hire Date: 2025-05-30
+
+Document Details:
+----------------
+Document Type: PayrollDocument
+Generated: 2025-11-16 18:25:23
+Company: MARCUSJ-DEV
+
+SSN Verification Section:
+------------------------
+Tax ID: 089-49-1491
+Tax ID: 089-49-1491
+Taxpayer Identification: 089-49-1491
+Social Security Number: 089-49-1491
+Employee SSN: 089-49-1491
+Employee SSN: 089-49-1491
+Employee SSN: 089-49-1491
+Tax ID: 089-49-1491
+
+---
+This is a simulated document for Purview Data Governance testing.
+Confidential - Contains Personally Identifiable Information (PII)
+MARCUSJ-DEV - Generated: 2025-11-16

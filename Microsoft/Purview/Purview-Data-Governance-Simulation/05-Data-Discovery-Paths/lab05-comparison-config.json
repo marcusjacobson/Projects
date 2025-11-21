@@ -1,0 +1,165 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Configuration for Lab 05 cross-lab discovery method comparison analysis",
+  "version": "1.0.0",
+  "lastModified": "2025-11-18",
+  
+  "comparisonSettings": {
+    "enabledLabs": {
+      "lab05a": true,
+      "lab05b": true,
+      "lab05c": false,
+      "lab05d": false
+    },
+    "minimumLabsRequired": 2,
+    "autoDetectReports": true,
+    "generateHtmlReport": false,
+    "generateDetailedCsvReport": true,
+    "description": "Enable or disable specific labs for comparison analysis"
+  },
+  
+  "reportPaths": {
+    "lab05a": {
+      "enabled": true,
+      "searchPattern": "PnP-Discovery-*.csv",
+      "defaultPath": ".\\05a-PnP-Direct-File-Access\\reports\\",
+      "useLatestReport": true,
+      "explicitPath": null
+    },
+    "lab05b": {
+      "enabled": true,
+      "searchPattern": "Results.csv",
+      "defaultPath": ".\\05b-eDiscovery-Compliance-Search\\reports\\Lab05b-Export\\",
+      "useLatestReport": false,
+      "explicitPath": null
+    },
+    "lab05c": {
+      "enabled": true,
+      "searchPattern": "Graph-Discovery-*.csv",
+      "defaultPath": ".\\05c-Graph-API-Discovery\\reports\\",
+      "useLatestReport": true,
+      "explicitPath": null
+    },
+    "lab05d": {
+      "enabled": true,
+      "searchPattern": "SharePoint-Discovery-*.csv",
+      "defaultPath": ".\\05d-SharePoint-Search-Discovery\\reports\\",
+      "useLatestReport": true,
+      "explicitPath": null
+    }
+  },
+  
+  "analysisOptions": {
+    "calculateAccuracyMetrics": true,
+    "identifyFalsePositives": true,
+    "identifyFalseNegatives": true,
+    "analyzeOverlap": true,
+    "analyzeSitDistribution": true,
+    "compareDetectionTiming": true,
+    "generateRecommendations": true
+  },
+  
+  "filterOptions": {
+    "sitTypeFilter": {
+      "enabled": true,
+      "includedTypes": [
+        "U.S. Social Security Number (SSN)",
+        "Credit Card Number",
+        "U.S. Bank Account Number",
+        "U.S. / U.K. Passport Number",
+        "U.S. Driver's License Number",
+        "U.S. Individual Taxpayer Identification Number (ITIN)",
+        "ABA Routing Number",
+        "International Banking Account Number (IBAN)"
+      ]
+    },
+    "locationFilter": {
+      "enabled": false,
+      "includedSites": [
+        "HR-Simulation",
+        "Finance-Simulation"
+      ]
+    },
+    "dateRangeFilter": {
+      "enabled": false,
+      "startDate": null,
+      "endDate": null
+    },
+    "confidenceThreshold": {
+      "enabled": false,
+      "minimumConfidence": 75
+    }
+  },
+  
+  "outputSettings": {
+    "outputDirectory": ".\\reports",
+    "reportPrefix": "Cross-Lab-Analysis",
+    "timestampFormat": "yyyy-MM-dd-HHmmss",
+    "csvDelimiter": ",",
+    "includeRawData": false,
+    "compressOldReports": false
+  },
+  
+  "comparisonThresholds": {
+    "accuracyWarningThreshold": 60,
+    "accuracyTargetThreshold": 80,
+    "overlapMinimumPercentage": 70,
+    "falsePositiveAlertThreshold": 20
+  },
+  
+  "visualizationSettings": {
+    "htmlReport": {
+      "enabled": false,
+      "includeCharts": true,
+      "includeDetailedTables": true,
+      "theme": "light"
+    },
+    "powerBiExport": {
+      "enabled": false,
+      "exportPath": ".\\reports\\powerbi-data.json"
+    }
+  },
+  
+  "notificationSettings": {
+    "enabled": false,
+    "emailRecipients": [],
+    "webhookUrl": null,
+    "alertOnLowAccuracy": true,
+    "alertOnHighFalsePositives": true
+  },
+  
+  "advancedOptions": {
+    "parallelProcessing": false,
+    "cacheResults": false,
+    "verboseLogging": true,
+    "debugMode": false,
+    "maxMemoryUsageMb": 1024
+  },
+  
+  "schemaMapping": {
+    "lab05a": {
+      "fileNameField": "FileName",
+      "sitTypeField": "SITType",
+      "locationField": "SiteUrl",
+      "confidenceField": "Confidence"
+    },
+    "lab05b": {
+      "fileNameField": "Subject/Title",
+      "sitTypeField": "Sensitive Information Types",
+      "locationField": "Location",
+      "confidenceField": null
+    },
+    "lab05c": {
+      "fileNameField": "FileName",
+      "sitTypeField": "SITType",
+      "locationField": "Location",
+      "confidenceField": "Confidence"
+    },
+    "lab05d": {
+      "fileNameField": "FileName",
+      "sitTypeField": "SITType",
+      "locationField": "Location",
+      "confidenceField": "Confidence"
+    }
+  }
+}

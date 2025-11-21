@@ -1,0 +1,29 @@
+MARCUSJ-DEV - Finance Department
+Invoice Payment - 2025-06-06
+
+Document Information:
+--------------------
+Document Type: InvoicePayment
+Document ID: FIN-11368
+Generated: 2025-11-16 18:26:15
+Company: MARCUSJ-DEV
+
+Financial Details:
+-----------------
+Credit Card (Discover): 6661-2514-2288-5335
+Bank Account: 37481613926312800
+Bank Account: 602864658531033
+Bank Account: 45055323
+ABA Routing Number: 026009593
+ABA Routing Number: 063100277
+ABA Routing Number: 122000247
+
+Transaction Summary:
+-------------------
+Amount: $109.57
+Date: 2025-06-06
+Status: Processed
+
+---
+Confidential Financial Information
+MARCUSJ-DEV - Generated: 2025-11-16

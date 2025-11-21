@@ -1,0 +1,32 @@
+MARCUSJ-DEV - Finance Department
+Payment Voucher - 2025-04-04
+
+Document Information:
+--------------------
+Document Type: PaymentVoucher
+Document ID: FIN-11377
+Generated: 2025-11-16 18:26:15
+Company: MARCUSJ-DEV
+
+Financial Details:
+-----------------
+Credit Card (Mastercard): 5372-8422-0234-7204
+Credit Card (Mastercard): 5806-3629-7079-8001
+Bank Account: 96711181
+Bank Account: 0850253859804
+Bank Account: 662856420163
+Bank Account: 58259121
+ABA Routing Number: 011401533
+ABA Routing Number: 026009593
+ABA Routing Number: 026009593
+ABA Routing Number: 111000025
+
+Transaction Summary:
+-------------------
+Amount: $87.14
+Date: 2025-04-04
+Status: Processed
+
+---
+Confidential Financial Information
+MARCUSJ-DEV - Generated: 2025-11-16

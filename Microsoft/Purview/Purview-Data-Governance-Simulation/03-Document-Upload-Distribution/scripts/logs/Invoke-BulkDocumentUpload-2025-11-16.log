@@ -1,0 +1,32 @@
+[2025-11-16 19:49:14] [Error] [Invoke-BulkDocumentUpload] Phase 1 (HR upload) failed: SharePoint connection failed. Ensure you have SharePoint Administrator permissions and valid browser authentication.
+[2025-11-16 19:49:14] [Error] [Invoke-BulkDocumentUpload] Phase 2 (Financial upload) failed: Cannot bind argument to parameter 'Documents' because it is null.
+[2025-11-16 19:49:14] [Error] [Invoke-BulkDocumentUpload] Phase 3 (Identity upload) failed: SharePoint connection failed. Ensure you have SharePoint Administrator permissions and valid browser authentication.
+[2025-11-16 19:49:15] [Error] [Invoke-BulkDocumentUpload] Phase 4 (Mixed distribution) failed: SharePoint connection failed. Ensure you have SharePoint Administrator permissions and valid browser authentication.
+[2025-11-16 19:49:15] [Warning] [Invoke-BulkDocumentUpload] Failed to save upload report: Could not find a part of the path 'C:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Data-Governance-Simulation\03-Document-Upload-Distribution\scripts\reports\document-upload-2025-11-16-194915.json'.
+[2025-11-16 19:49:15] [Warning] [Invoke-BulkDocumentUpload] Bulk document upload completed with errors:  failures out of 
+[2025-11-16 19:56:49] [Error] [Invoke-BulkDocumentUpload] Phase 1 (HR upload) failed: Specified method is not supported.
+[2025-11-16 19:56:49] [Error] [Invoke-BulkDocumentUpload] Phase 2 (Financial upload) failed: Cannot bind argument to parameter 'Documents' because it is null.
+[2025-11-16 19:56:49] [Error] [Invoke-BulkDocumentUpload] Phase 3 (Identity upload) failed: Specified method is not supported.
+[2025-11-16 19:56:50] [Error] [Invoke-BulkDocumentUpload] Phase 4 (Mixed distribution) failed: Specified method is not supported.
+[2025-11-16 19:56:50] [Warning] [Invoke-BulkDocumentUpload] Failed to save upload report: Could not find a part of the path 'C:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Data-Governance-Simulation\03-Document-Upload-Distribution\scripts\reports\document-upload-2025-11-16-195650.json'.
+[2025-11-16 19:56:50] [Warning] [Invoke-BulkDocumentUpload] Bulk document upload completed with errors:  failures out of 
+[2025-11-16 20:04:47] [Error] [Invoke-BulkDocumentUpload] Phase 1 (HR upload) failed: SharePoint connection failed. Ensure you have SharePoint Administrator permissions and valid browser authentication.
+[2025-11-16 20:04:48] [Error] [Invoke-BulkDocumentUpload] Phase 2 (Financial upload) failed: Cannot bind argument to parameter 'Documents' because it is null.
+[2025-11-16 20:04:48] [Error] [Invoke-BulkDocumentUpload] Phase 3 (Identity upload) failed: SharePoint connection failed. Ensure you have SharePoint Administrator permissions and valid browser authentication.
+[2025-11-16 20:04:48] [Error] [Invoke-BulkDocumentUpload] Phase 4 (Mixed distribution) failed: SharePoint connection failed. Ensure you have SharePoint Administrator permissions and valid browser authentication.
+[2025-11-16 20:04:48] [Warning] [Invoke-BulkDocumentUpload] Bulk document upload completed with errors:  failures out of 
+[2025-11-16 20:12:19] [Error] [Invoke-BulkDocumentUpload] Phase 1 (HR upload) failed: SharePoint connection failed. Ensure you have SharePoint Administrator permissions and valid browser authentication.
+[2025-11-16 20:12:19] [Error] [Invoke-BulkDocumentUpload] Phase 2 (Financial upload) failed: Cannot bind argument to parameter 'Documents' because it is null.
+[2025-11-16 20:12:19] [Error] [Invoke-BulkDocumentUpload] Phase 3 (Identity upload) failed: SharePoint connection failed. Ensure you have SharePoint Administrator permissions and valid browser authentication.
+[2025-11-16 20:12:19] [Error] [Invoke-BulkDocumentUpload] Phase 4 (Mixed distribution) failed: SharePoint connection failed. Ensure you have SharePoint Administrator permissions and valid browser authentication.
+[2025-11-16 20:12:19] [Warning] [Invoke-BulkDocumentUpload] Bulk document upload completed with errors:  failures out of 
+[2025-11-16 20:13:37] [Error] [Invoke-BulkDocumentUpload] Phase 1 (HR upload) failed: SharePoint connection failed. Ensure you have SharePoint Administrator permissions and valid browser authentication.
+[2025-11-16 20:13:37] [Error] [Invoke-BulkDocumentUpload] Phase 2 (Financial upload) failed: Cannot bind argument to parameter 'Documents' because it is null.
+[2025-11-16 20:13:37] [Error] [Invoke-BulkDocumentUpload] Phase 3 (Identity upload) failed: SharePoint connection failed. Ensure you have SharePoint Administrator permissions and valid browser authentication.
+[2025-11-16 20:13:37] [Error] [Invoke-BulkDocumentUpload] Phase 4 (Mixed distribution) failed: SharePoint connection failed. Ensure you have SharePoint Administrator permissions and valid browser authentication.
+[2025-11-16 20:13:37] [Warning] [Invoke-BulkDocumentUpload] Bulk document upload completed with errors:  failures out of 
+[2025-11-16 20:15:47] [Error] [Invoke-BulkDocumentUpload] Phase 1 (HR upload) failed: SharePoint connection failed. Ensure you have SharePoint Administrator permissions and valid browser authentication.
+[2025-11-16 20:15:47] [Error] [Invoke-BulkDocumentUpload] Phase 2 (Financial upload) failed: Cannot bind argument to parameter 'Documents' because it is null.
+[2025-11-16 20:15:47] [Error] [Invoke-BulkDocumentUpload] Phase 3 (Identity upload) failed: SharePoint connection failed. Ensure you have SharePoint Administrator permissions and valid browser authentication.
+[2025-11-16 20:15:48] [Error] [Invoke-BulkDocumentUpload] Phase 4 (Mixed distribution) failed: SharePoint connection failed. Ensure you have SharePoint Administrator permissions and valid browser authentication.
+[2025-11-16 20:15:48] [Warning] [Invoke-BulkDocumentUpload] Bulk document upload completed with errors:  failures out of 

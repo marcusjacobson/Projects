@@ -1,0 +1,28 @@
+MARCUSJ-DEV - Human Resources Department
+Benefits Enrollment Form - Carter
+
+Employee Information:
+--------------------
+Employee ID: EMP-10003
+Name: Daniel Carter
+Social Security Number: 377-28-6656
+Department: HR
+Hire Date: 2023-09-11
+
+Document Details:
+----------------
+Document Type: BenefitsEnrollment
+Generated: 2025-11-16 18:25:40
+Company: MARCUSJ-DEV
+
+SSN Verification Section:
+------------------------
+Taxpayer Identification: 377-28-6656
+Taxpayer Identification: 377-28-6656
+Tax ID: 377-28-6656
+SSN: 377-28-6656
+
+---
+This is a simulated document for Purview Data Governance testing.
+Confidential - Contains Personally Identifiable Information (PII)
+MARCUSJ-DEV - Generated: 2025-11-16

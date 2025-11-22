@@ -62,7 +62,6 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
 | **filterOptions** | Filter by SIT type, location, date | Targeted analysis scenarios |
 | **outputSettings** | Control report generation | Custom output directories |
 | **comparisonThresholds** | Set accuracy/alert thresholds | Custom success criteria |
-| **visualizationSettings** | HTML and Power BI options | Dashboard integration |
 | **schemaMapping** | CSV field name mappings | Custom report formats |
 
 ---
@@ -483,16 +482,16 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
 
 ```json
 {
-  "visualizationSettings": {
+  "outputSettings": {
+    "csvOutput": {
+      "enabled": true,
+      "outputPath": ".\\reports\\cross-lab-comparison.csv"
+    },
     "htmlReport": {
       "enabled": false,
       "includeCharts": true,
       "includeDetailedTables": true,
       "theme": "light"
-    },
-    "powerBiExport": {
-      "enabled": false,
-      "exportPath": ".\\reports\\powerbi-data.json"
     }
   }
 }
@@ -504,11 +503,6 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
 - `includeCharts`: Include visualization charts (requires HTML enabled)
 - `includeDetailedTables`: Include detailed comparison tables
 - `theme`: Visual theme (`"light"` or `"dark"`)
-
-**Power BI Export**:
-
-- `enabled`: Export data in Power BI-compatible JSON format
-- `exportPath`: Output location for Power BI data file
 
 ---
 
@@ -718,7 +712,7 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
 - Unique files per lab
 - Report generation date
 
-**Use**: Import into Excel or Power BI for further analysis
+**Use**: Import into Excel for further analysis
 
 ---
 
@@ -737,31 +731,6 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
 
 ---
 
-## 🔗 Integration with Lab 06 (Power BI Visualization)
-
-The cross-lab analysis orchestrator can export data in Power BI-compatible format for Lab 06 visualization:
-
-**Configuration**:
-
-```json
-{
-  "visualizationSettings": {
-    "powerBiExport": {
-      "enabled": true,
-      "exportPath": ".\\reports\\powerbi-data.json"
-    }
-  }
-}
-```
-
-**Lab 06 Integration**:
-1. Enable Power BI export in configuration
-2. Run cross-lab analysis: `.\scripts\Invoke-CrossLabAnalysis.ps1 -UseConfig`
-3. Import `powerbi-data.json` into Power BI Desktop
-4. Use Lab 06 templates to create visualizations
-
----
-
 ## 🎓 Next Steps
 
 1. **Quick Test**: Run orchestrator without configuration to see auto-detection in action
@@ -770,7 +739,6 @@ The cross-lab analysis orchestrator can export data in Power BI-compatible forma
 4. **Run Comparison**: Execute `.\scripts\Invoke-CrossLabAnalysis.ps1 -UseConfig`
 5. **Analyze Results**: Review console output, CSV report, and optional HTML visualization
 6. **Refine**: Adjust filters and settings based on initial findings
-7. **Lab 06**: Export to Power BI format for advanced visualization
 
 ---
 

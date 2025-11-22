@@ -62,15 +62,8 @@
 - ⏳ **Test-DLPPolicyEffectiveness.ps1** - Tests policies
 - ⏳ **Get-DLPIncidentReport.ps1** - Retrieves incidents
 
-### Lab 06: Monitoring Reporting (5 files)
-- ⏳ **README.md** - Lab documentation
-- ⏳ **Get-ClassificationMetrics.ps1** - Classification stats
-- ⏳ **Get-DLPIncidentSummary.ps1** - DLP summaries
-- ⏳ **Measure-CoverageAcrossSites.ps1** - Site-by-site analysis
-- ⏳ **Export-SimulationDashboard.ps1** - Executive dashboard
-
-### Lab 07: Cleanup Reset (5 files)
-- ⏳ **README.md** - Lab documentation
+### Lab 06: Cleanup and Reset (5 files)
+- ✅ **README.md** - Lab documentation (completed)
 - ⏳ **Remove-TargetedSimulationResources.ps1** - Targeted cleanup
 - ⏳ **Reset-CompleteSimulationEnvironment.ps1** - Full reset
 - ⏳ **Verify-CleanupCompletion.ps1** - Validates cleanup
@@ -138,8 +131,8 @@ Site creation, document generation, and upload form the foundation of the simula
 ### Priority 4: Labs 04-05 (Classification & DLP)
 The core value proposition - demonstrating Purview capabilities.
 
-### Priority 5: Labs 06-07 (Monitoring & Cleanup)
-Reporting and cleanup for professional demonstrations.
+### Priority 5: Lab 06 (Cleanup and Reset)
+Environment cleanup for professional demonstrations.
 
 ## 📝 Script Template for Remaining Files
 

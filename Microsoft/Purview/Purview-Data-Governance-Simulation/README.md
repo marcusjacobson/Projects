@@ -27,25 +27,27 @@ This comprehensive lab environment demonstrates Microsoft Purview Information Pr
 |---------------|--------|----------|
 | **⏱️ Document Generation** | 5-10 min (Small) to 1-2 hours (Large) | Start Small for testing, scale up for demos |
 | **⏱️ Document Upload** | 20-40 min (Small) to 3-5 hours (Large) | Plan upload during low-network activity |
-| **⏱️ Classification Time** | 15-30 min (Small) to 4-6 hours (Large) | On-Demand Classification is async background process |
+| **⏱️ Classification Time** | Up to 7 days (all scales) | On-Demand Classification async process; Content Explorer updates within 7 days |
 | **💾 Storage Impact** | 100 MB - 1 GB (Small) to 10-15 GB (Large) | Monitor SharePoint storage quotas |
 | **🔄 Throttling** | PnP PowerShell: 600 req/min, 2500 req/hour | Scripts include automatic retry logic |
 
-> **⏱️ Recommended Timeline**: **1-2 days total**
+> **⏱️ Recommended Timeline**: **7-14 days for complete workflow with classification**
 >
 > - **Day 1**: Complete Labs 00-03 (Setup, Sites, Generation, Upload: ~2-4 hours hands-on)
-> - **Between Days**: Classification processing (15 min - 6 hours depending on scale)
-> - **Day 2**: Complete Labs 04-06 (Validation, DLP, Monitoring: ~1.5-2.5 hours)
-> - **Cleanup**: Lab 07 Reset (15-30 minutes)
+> - **Days 2-7**: On-Demand Classification processing (up to 7 days async, Content Explorer updates within 7 days)
+> - **Day 2+ (Parallel)**: Lab 05a immediate regex discovery (88-95% accuracy, no classification wait)
+> - **Day 3+ (24hr wait)**: Lab 05b eDiscovery search (100% Purview SITs after SharePoint Search indexing)
+> - **Days 7-14**: Lab 04 Content Explorer validation + Lab 05c Graph API discovery (after Microsoft Search indexing)
+> - **Cleanup**: Lab 06 anytime (15-30 minutes)
 >
-> **💡 Accelerated Option**: Complete Small-scale simulation in **4-6 hours** for quick POCs and demos.
+> **💡 Accelerated Option**: Complete Labs 00-03 + 05a in **4-6 hours** for immediate regex-based discovery (88-95% accuracy) without waiting for classification or indexing.
 
 **Resource Management**:
 
 1. **Start Small**: Begin with Small scale (1,000 documents) for testing
 2. **Monitor Storage**: Check SharePoint storage consumption before Large scale
 3. **Throttling Awareness**: Scripts handle throttling automatically with retry logic
-4. **Cleanup Critical**: Always run Lab 07 cleanup to remove simulation data
+4. **Cleanup Critical**: Always run Lab 06 cleanup to remove simulation data
 
 ---
 
@@ -118,7 +120,7 @@ This comprehensive lab environment demonstrates Microsoft Purview Information Pr
 - Built-in SITs embedded: SSN, Credit Cards, Passports, Driver's Licenses, ITIN, Bank Accounts, Routing Numbers.
 - Scale-appropriate document counts (500-1,000 Small | 5,000 Medium | 20,000 Large).
 
-**Prerequisites**: Lab 00 completed (directory structure initialized), Lab 01 optional (sites not needed for generation)
+**Prerequisites**: Lab 00 completed (environment validated, directory structure initialized), Lab 01 **optional** (sites not required for local document generation - only needed later for Lab 03 upload)
 
 ---
 
@@ -172,7 +174,13 @@ This comprehensive lab environment demonstrates Microsoft Purview Information Pr
 
 **Prerequisites**: Lab 03 completed (documents uploaded to SharePoint), `BuiltInSITs` configured in `global-config.json`
 
-**Timing Note**: ⏱️ **Classification runs asynchronously** over up to 7 days. Process includes estimation phase (quick), then classification phase (up to 7 days), with Content Explorer updates appearing within 7 days of scan completion. Portal at purview.microsoft.com provides progress tracking.
+**Timing Note**: ⏱️ **Classification runs asynchronously** over up to 7 days. Process includes estimation phase (minutes), then classification phase (up to 7 days), with Content Explorer updates appearing within 7 days of scan completion. Portal at purview.microsoft.com provides progress tracking.
+
+> **💡 Parallel Execution**: While Lab 04 classification runs asynchronously over 7 days, you can proceed with discovery labs:
+>
+> - **Lab 05a**: Immediate regex-based discovery (88-95% accuracy, no classification required)
+> - **Lab 05b**: 24-hour eDiscovery search (100% Purview SITs, no classification required)
+> - **Lab 05c**: 7-14 day Graph API discovery (100% Purview SITs, optional: wait for Lab 04 for Content Explorer validation)
 
 ---
 
@@ -215,32 +223,7 @@ This comprehensive lab environment demonstrates Microsoft Purview Information Pr
 
 ---
 
-### [Lab 06: Power BI Visualization](./06-Power-BI-Visualization/)
-
-**Duration**: 2-3 hours  
-**Objective**: Create interactive Power BI dashboards from Lab 05 discovery reports
-
-**What You'll Learn**:
-
-- Install Power BI Desktop (free Microsoft tool).
-- Import CSV discovery reports from Lab 05 into Power BI datasets.
-- Create calculated measures using DAX (Data Analysis Expressions).
-- Build four dashboard types: Discovery Overview, Compliance Posture, Trend Analysis, Executive Summary.
-- Apply dashboard design best practices (color schemes, accessibility, performance).
-- Export dashboards as PDF/PowerPoint for stakeholder presentations.
-
-**Key Deliverables**:
-
-- Discovery Overview Dashboard: SIT distribution charts, confidence analysis, coverage tables.
-- Compliance Posture Dashboard: Risk heat maps, remediation priorities, compliance scores.
-- Executive Summary Dashboard: High-level KPIs suitable for leadership presentations.
-- Exportable reports in PDF and PowerPoint formats.
-
-**Prerequisites**: Lab 05 completed (any path: 05a, 05b, 05c, or 05d with CSV reports generated)
-
----
-
-### [Lab 07: Cleanup Reset](./07-Cleanup-Reset/)
+### [Lab 06: Cleanup and Reset](./06-Cleanup-Reset/)
 
 **Duration**: 15-30 minutes  
 **Objective**: Remove simulation resources and restore environment to clean state
@@ -335,7 +318,7 @@ This project provides **hands-on practical experience with core Microsoft Purvie
 | **Throttling Management** | ✅ COMPREHENSIVE | Lab 03 (automatic retry logic, rate limiting) |
 | **Indexing Status Validation** | ✅ COMPREHENSIVE | Lab 05b (real SharePoint scanning, readiness checks) |
 | **Discovery Automation** | ✅ EXTENSIVE | Labs 05c/05d (scheduled scans, JSON/CSV reports) |
-| **Environment Cleanup** | ✅ COMPREHENSIVE | Lab 07 (complete resource removal, reset operations) |
+| **Environment Cleanup** | ✅ COMPREHENSIVE | Lab 06 (complete resource removal, reset operations) |
 
 #### ✅ Configuration Management & Portability (100% Core Features)
 
@@ -345,7 +328,7 @@ This project provides **hands-on practical experience with core Microsoft Purvie
 | **Environment Portability** | ✅ COMPREHENSIVE | Documentation (Dev/Test/Prod migration) |
 | **Multi-Tenant Support** | ✅ EXTENSIVE | Configuration (consultant-friendly patterns) |
 | **Scalable Simulations** | ✅ COMPREHENSIVE | Configuration (Small/Medium/Large scale levels) |
-| **Template-Based Reset** | ✅ COMPREHENSIVE | Lab 07 (pristine configuration restoration) |
+| **Template-Based Reset** | ✅ COMPREHENSIVE | Lab 06 (pristine configuration restoration) |
 
 ### What This Project Does NOT Cover
 
@@ -500,10 +483,10 @@ This project complements official Microsoft Learn paths:
 # Lab 05c/05d: Graph API / SharePoint Search (wait 7-14 days after Lab 03 for unified index)
 # See Lab 05 overview for decision guide on which path to use
 
-# Lab 06: Generate reports (after Lab 04 classification completes)
-.\06-Monitoring-Reporting\Export-ClassificationMetrics.ps1
+# Lab 05: Discover sensitive data across sites (multiple paths available)
+# Choose one or more discovery methods based on timing needs
 
-# Lab 07: Cleanup (when ready to remove all simulation resources)
+# Lab 06: Cleanup (when ready to remove all simulation resources)
 .\07-Cleanup-Reset\Reset-Environment.ps1 -FullReset -Confirm:$false
 ```
 
@@ -680,6 +663,8 @@ Built-in SITs are immediately available in any M365 E5 tenant. For custom SIT cr
 **Related Projects**: [Classification-Lifecycle-Labs](../Purview-Classification-Lifecycle-Labs/) (custom SITs, retention labels) • [Skills-Ramp-OnPrem-and-Cloud](../Purview-Skills-Ramp-OnPrem-and-Cloud/) (hybrid scanning)
 
 **Repository Style Guides**: [PowerShell](../../Style%20Guides/powershell-style-guide.md) • [Markdown](../../Style%20Guides/markdown-style-guide.md) • [Parameters](../../Style%20Guides/parameters-file-style-guide.md)
+
+**Advanced Scenarios**: [Future Enhancements & Integrations](FUTURE-ENHANCEMENTS.md) - Enterprise integrations (SIEM, ITSM, AI/ML), operational automation, compliance extensions, and advanced analytics beyond core simulation capabilities
 
 ---
 

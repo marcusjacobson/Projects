@@ -7,7 +7,7 @@ This lab demonstrates **official Purview-based sensitive data discovery** using 
 **What You'll Accomplish**:
 
 - Validate SharePoint Search indexing status for Lab 03 uploaded content
-- Create eDiscovery Compliance Search with 8 targeted SIT types
+- Create eDiscovery Compliance Search with 7 targeted SIT types
 - Execute search across all 5 simulation SharePoint sites
 - Analyze official Purview SIT detection results (100% accurate)
 - Compare eDiscovery findings with Lab 05a regex results for accuracy validation
@@ -72,7 +72,7 @@ By completing this lab, you will:
 
 - ✅ **24+ hours after Lab 03 completion** (allows SharePoint Search indexing)
 - ✅ **While Lab 04 is running** (parallel discovery - Lab 04 takes 7 days)
-- ⚠️ **Before Labs 05c/05d** (those require 7-14 days for Microsoft Search indexing)
+- ⚠️ **Before Lab 05c** (requires 7-14 days for Microsoft Search indexing)
 
 ---
 
@@ -85,7 +85,6 @@ By completing this lab, you will:
 | **Lab 05a: PnP Direct** | None (immediate) | 60-90 min | 70-90% (regex) | ✅ Scripted |
 | **Lab 05b: eDiscovery** | **24 hours** | **10-15 min** | **100% (Purview SITs)** | ❌ Portal-based |
 | **Lab 05c: Graph API** | 7-14 days | 5-10 min | 100% (Purview SITs) | ✅ Scripted |
-| **Lab 05d: SharePoint Search** | 7-14 days | 5-10 min | 100% (Purview SITs) | ✅ Scripted |
 
 > **💡 Key Insight**: eDiscovery uses SharePoint's **search index** (24-hour indexing) rather than the full **Microsoft Search unified index** (7-14 days). This provides official Purview SIT accuracy much faster than waiting for Content Explorer results while maintaining 100% detection quality.
 
@@ -117,7 +116,7 @@ By completing this lab, you will:
 └─────────────────────────────────────────────────────────────┘
 ```
 
-This lab searches for the same 8 SITs used in the Purview Data Governance Simulation project:
+This lab searches for 7 core SITs used in the Purview Data Governance Simulation project:
 
 1. **U.S. Social Security Number (SSN)**
 2. **Credit Card Number**
@@ -126,7 +125,6 @@ This lab searches for the same 8 SITs used in the Purview Data Governance Simula
 5. **U.S. Driver's License Number**
 6. **U.S. Individual Taxpayer Identification Number (ITIN)**
 7. **ABA Routing Number**
-8. **International Bank Account Number (IBAN)**
 
 ---
 
@@ -305,11 +303,11 @@ IT-Simulation                 0           0
 
 ---
 
-### Step 3: Create eDiscovery Search for Targeted SIT Detection
+### Step 2: Create eDiscovery Search for Targeted SIT Detection
 
 Use the modern eDiscovery experience to create a search for sensitive information types.
 
-**Step 3a: Navigate to eDiscovery**:
+**Step 2a: Navigate to eDiscovery**:
 
 1. In the Microsoft Purview portal, select the **eDiscovery** solution card
 2. In the left navigation, select **Cases (preview)**
@@ -317,7 +315,7 @@ Use the modern eDiscovery experience to create a search for sensitive informatio
 
 > **💡 Tip**: The "Content Search" case provides a convenient location for standalone searches without creating a formal eDiscovery case. For lab purposes, you can use this default case or create a dedicated case named "Lab-05b-SIT-Discovery".
 
-**Step 3b: Create New Search**:
+**Step 2b: Create New Search**:
 
 1. Select the **Content Search** case (or your custom case)
 2. On the **Searches** tab, click **Create a search**
@@ -326,7 +324,7 @@ Use the modern eDiscovery experience to create a search for sensitive informatio
    - **Search description**: "Targeted SIT detection across 5 simulation sites - Lab 05b eDiscovery method"
 4. Click **Create** to proceed to search configuration
 
-**Step 3c: Add Data Sources (SharePoint Sites)**:
+**Step 2c: Add Data Sources (SharePoint Sites)**:
 
 1. On the **Query** tab, in the **Data sources** section, click the **+** icon (Search and add), then select **Add data sources**
 2. In the **Add data sources** flyout, you'll see a list of users and groups by default
@@ -364,18 +362,18 @@ Use the Condition Builder to specify Sensitive Information Types (SITs):
 7. Click **Add** to add the SIT condition to your query
 8. **Critical Step**: In the condition that was added, change the operator from **Equal** to **Equal any of** (this ensures OR logic instead of AND logic)
 
-**Step 3e: Select Target Sensitive Information Types**:
+**Step 2e: Select Target Sensitive Information Types**:
 
-Configure the 8 specific SITs for detection with instance count and confidence levels:
+Configure the 7 specific SITs for detection with instance count and confidence levels:
 
 1. After adding the **Sensitive Type** condition and changing the operator to **Equal any of**, click in the **Value** field
 2. **Important - Query Logic Structure**: The query must maintain this structure:
    - **Keywords** (blank) **AND** (connects to first condition)
-   - **Sensitive information type (SIT) Equal any of** [all 8 SITs with OR logic between them]
+   - **Sensitive information type (SIT) Equal any of** [all 7 SITs with OR logic between them]
    - The top-level connection between Keywords and the SIT condition should remain **AND**
-   - Within the SIT condition itself, all 8 types are connected with **OR** logic (achieved by using "Equal any of" operator)
-   - This structure finds documents matching any of the 8 SITs (not requiring all SITs simultaneously)
-3. In the SIT selection interface, you'll configure each SIT with its parameters. Add all 8 SITs one at a time by clicking **+ Add value** after each:
+   - Within the SIT condition itself, all 7 types are connected with **OR** logic (achieved by using "Equal any of" operator)
+   - This structure finds documents matching any of the 7 SITs (not requiring all SITs simultaneously)
+3. In the SIT selection interface, you'll configure each SIT with its parameters. Add all 7 SITs one at a time by clicking **+ Add value** after each:
    - **U.S. Social Security Number (SSN)** - Min: `1`, Max: `500`, Confidence: **High**
    - **Credit Card Number** - Min: `1`, Max: `500`, Confidence: **High**
    - **U.S. Bank Account Number** - Min: `1`, Max: `500`, Confidence: **High**
@@ -383,16 +381,15 @@ Configure the 8 specific SITs for detection with instance count and confidence l
    - **U.S. Driver's License Number** - Min: `1`, Max: `500`, Confidence: **Medium**
    - **U.S. Individual Taxpayer Identification Number (ITIN)** - Min: `1`, Max: `500`, Confidence: **High**
    - **ABA Routing Number** - Min: `1`, Max: `500`, Confidence: **High**
-   - **International Banking Account Number (IBAN)** - Min: `1`, Max: `500`, Confidence: **High**
-4. After adding all 8 SITs, your condition will show: **Sensitive information type (SIT) Equal any of** with all 8 SIT types listed
-5. This creates the correct OR logic: documents containing **any one or more** of these 8 SITs will match
+4. After adding all 7 SITs, your condition will show: **Sensitive information type (SIT) Equal any of** with all 7 SIT types listed
+5. This creates the correct OR logic: documents containing **any one or more** of these 7 SITs will match
 
 > **💡 Configuration Recommendations**:
 >
 > - **Min count**: Set to `1` to detect documents with at least one instance of the SIT
 > - **Max count**: Use `500` (the maximum supported value) for broadest detection. While Microsoft documentation references "Any" as a valid value, the Condition Builder UI requires a numeric value. Setting a specific lower number (e.g., `5`) helps identify high-risk documents with many instances
 > - **Confidence levels**:
->   - **High (85-100%)**: Fewest false positives, recommended for most SITs (SSN, Credit Card, Bank Account, Passport, ITIN, ABA Routing, IBAN)
+>   - **High (85-100%)**: Fewest false positives, recommended for most SITs (SSN, Credit Card, Bank Account, Passport, ITIN, ABA Routing)
 >   - **Medium (66-84%)**: Balanced detection, useful for Driver's License numbers which have more format variations
 >   - **Low (≤65%)**: Most permissive, higher false positive rate
 >
@@ -400,23 +397,23 @@ Configure the 8 specific SITs for detection with instance count and confidence l
 >
 > **⚠️ Critical - Operator Selection**: You **must** use the **Equal any of** operator (not **Equal**) when adding multiple SITs. Using the default **Equal** operator and adding multiple separate SIT conditions creates AND logic, which requires documents to contain ALL SITs simultaneously (resulting in zero matches). The **Equal any of** operator creates the correct OR logic where documents matching ANY of the selected SITs will be found.
 
-**Step 3f: Save Search Configuration**:
+**Step 2f: Save Search Configuration**:
 
 1. Review your search configuration:
    - **Data sources**: 5 SharePoint simulation sites
    - **Keywords**: (empty - searching by SITs only)
-   - **Conditions**: Sensitive information type (SIT) - Equal any of [8 SITs listed]
+   - **Conditions**: Sensitive information type (SIT) - Equal any of [7 SITs listed]
 2. Click **Save as draft** to save the search without running it yet
 
-> **✅ Configuration Complete**: Your search is now configured to scan 5 SharePoint sites for 8 specific types of sensitive information using OR logic (documents matching any of the 8 SITs will be found). The search is saved and ready to execute.
+> **✅ Configuration Complete**: Your search is now configured to scan 5 SharePoint sites for 7 specific types of sensitive information using OR logic (documents matching any of the 7 SITs will be found). The search is saved and ready to execute.
 
 ---
 
-### Step 4: Run the eDiscovery Search
+### Step 3: Run the eDiscovery Search
 
 Execute the search to detect sensitive information across your SharePoint sites.
 
-**Step 4a: Initiate Search Execution**:
+**Step 3a: Initiate Search Execution**:
 
 1. In your case, on the **Searches** tab, select `Lab05b-SIT-Discovery-Search`
 2. On the search details page, click **Run query**
@@ -432,7 +429,7 @@ Execute the search to detect sensitive information across your SharePoint sites.
 >
 > This warning appears because your query uses modern eDiscovery features (SIT conditions). It's simply alerting you that this type of query should not be used for data deletion operations. **For discovery and export purposes (this lab's objective), this warning can be safely ignored.**
 
-**Step 4b: Monitor Search Progress**:
+**Step 3b: Monitor Search Progress**:
 
 The search executes and processes content from all 5 SharePoint sites:
 
@@ -457,7 +454,7 @@ The search executes and processes content from all 5 SharePoint sites:
 >
 > **⚠️ Troubleshooting**: If the search remains in "Running" status for more than 30 minutes, check the **Errors** category in Statistics view for indexing issues or permission problems with specific sites.
 
-**Step 4c: Troubleshooting Zero Results**:
+**Step 3c: Troubleshooting Zero Results**:
 
 If your search returns no results, verify your query syntax:
 
@@ -475,11 +472,11 @@ If your search returns no results, verify your query syntax:
 
 ---
 
-### Step 5: Review Search Results and Statistics
+### Step 4: Review Search Results and Statistics
 
 Analyze the search findings using the modern eDiscovery statistics and sample views.
 
-**Step 5a: Access Statistics Summary**:
+**Step 4a: Access Statistics Summary**:
 
 After search completion, the **Statistics** tab displays comprehensive results:
 
@@ -495,7 +492,7 @@ After search completion, the **Statistics** tab displays comprehensive results:
    - **Top communication participants**: Senders or recipients for emails, Teams chats, and calendar invites (not applicable for SharePoint-only searches)
    - **Top location type**: Hit count by location type (mailbox vs site)
 
-**Step 5b: Review Top Data Sources**:
+**Step 4b: Review Top Data Sources**:
 
 In the **Search hit trends** section, view the **Top data sources** chart:
 
@@ -511,7 +508,7 @@ In the **Search hit trends** section, view the **Top data sources** chart:
    - **IT-Simulation**: 0 items (technical documentation, no sensitive data)
 4. Click **View top 100** to see the complete list of data sources
 
-**Step 5c: Review Top Sensitive Information Types (SITs)**:
+**Step 4c: Review Top Sensitive Information Types (SITs)**:
 
 In the **Search hit trends** section, view the **Top sensitive information types (SITs)** chart:
 
@@ -529,7 +526,7 @@ In the **Search hit trends** section, view the **Top sensitive information types
 
 > **💡 Note**: The results may include SITs beyond your 8 targeted types. Microsoft Purview's search engine detects all sensitive information types present in the content, not just those specified in your query conditions. The query filters which **documents** to return (those containing your 8 targeted SITs), but the statistics show **all SITs detected** within those documents.
 
-**Step 5d: Review Additional Statistics**:
+**Step 4d: Review Additional Statistics**:
 
 1. **Top Item Classes**: Shows the item types (e.g., "IPM.File" for all file types)
    - Expected: All 4423 items will show as "IPM.File" for SharePoint documents
@@ -538,11 +535,11 @@ In the **Search hit trends** section, view the **Top sensitive information types
 3. **Top location type**: Shows mailbox vs site distribution
    - Expected: All items show as "Site" (4423 items)
 
-**Step 5e: View Sample Results (Optional)**:
+**Step 4e: View Sample Results (Optional)**:
 
 To view detailed file-level information with actual document samples, you need to generate sample results:
 
-> **⚠️ Sample Tab Behavior**: The **Sample** tab shows **no data** by default because you initially ran the query with "Statistics" view (Step 4a). Sample results are only generated when you explicitly run the query with "Sample" view selected.
+> **⚠️ Sample Tab Behavior**: The **Sample** tab shows **no data** by default because you initially ran the query with "Statistics" view (Step 3a). Sample results are only generated when you explicitly run the query with "Sample" view selected.
 
 **To Generate Sample Results**:
 
@@ -579,9 +576,9 @@ After sample generation completes, the Sample tab shows:
 
 ---
 
-### Step 6: Export Search Results for Analysis
+### Step 5: Export Search Results for Analysis
 
-**Step 6a: Initiate Export**:
+**Step 5a: Initiate Export**:
 
 1. From the search details page (while viewing any tab - Statistics, Sample, or Query), locate the **Export** button at the top of the page
 2. Click **Export** to begin the export process
@@ -606,7 +603,7 @@ After sample generation completes, the Sample tab shows:
 
 > **💡 Export Process**: The export process copies search results from SharePoint to a Microsoft-provided Azure Storage location. This preparation typically takes 20-35 minutes depending on the number of items (4000-5000 items for Medium scale).
 
-**Step 6b: Monitor Export Status**:
+**Step 5b: Monitor Export Status**:
 
 1. From the search details page, click **Process manager** in the left navigation
    - Alternatively, select **Process manager** from the **Searches** area to see all search-related processes
@@ -639,7 +636,7 @@ After sample generation completes, the Sample tab shows:
 >
 > **💡 Process Manager Benefits**: Unlike the legacy Exports tab, Process manager provides real-time progress tracking with percentage complete, estimated time remaining, and detailed status information for active exports.
 
-**Step 6c: Download Export Packages**:
+**Step 5c: Download Export Packages**:
 
 > **💡 Portal Note**: As of November 2025, Microsoft Purview uses a modernized export download process that does NOT require an export key or the legacy eDiscovery Export Tool. Export packages download directly from the browser using pre-authorized links.
 
@@ -671,7 +668,7 @@ After sample generation completes, the Sample tab shows:
 > - **Download location**: Set your preferred download folder or allow browser to prompt for location
 > - **Network access**: Ensure your organization allows downloads from Microsoft Purview endpoints
 
-**Step 6d: Monitor Package Downloads**:
+**Step 5d: Monitor Package Downloads**:
 
 1. The packages will download directly from your browser (no export tool required)
 2. **Download timing** (when downloading packages one at a time):
@@ -681,7 +678,7 @@ After sample generation completes, the Sample tab shows:
 4. **Recommended**: Move the downloaded .zip files to the project reports folder for organization:
    - Destination: `C:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Data-Governance-Simulation\05-Data-Discovery-Paths\05b-eDiscovery-Compliance-Search\reports\`
 
-#### Step 6e: Extract Reports Package
+#### Step 5e: Extract Reports Package
 
 Extract the Reports package to access Results.csv for analysis:
 
@@ -714,7 +711,7 @@ After extraction, verify you have the key files in the `reports\` folder:
 
 > **💡 File Naming**: All Reports package files include timestamps (YYYY-MM-DD_HH-MM-SS) matching your export execution time. The Items_0 file is the primary analysis input containing all detection results.
 
-#### Step 6f: Extract Items Package (Optional)
+#### Step 5f: Extract Items Package (Optional)
 
 If you downloaded the Items package and want to review actual file content:
 
@@ -752,7 +749,7 @@ After extraction, verify the Items package contents:
 > - Temporarily disable antivirus scanning if download speeds are slow
 > - Enable parallel downloading in your browser settings for faster large file downloads
 
-#### Step 6g: Verify Extraction Completion
+#### Step 5g: Verify Extraction Completion
 
 Confirm all export files are successfully extracted and ready for analysis:
 
@@ -781,11 +778,9 @@ You should see site folders: **Finance-Simulation**, **HR-Simulation**, **Legal-
 
 ---
 
-### Step 7: Run Detection Analysis Script
+### Step 6: Run Detection Analysis Script
 
 After confirming all export files are extracted and in place, run the analysis script to review eDiscovery detection patterns.
-
-#### Step 7a: Basic Detection Analysis
 
 Run the analysis script with the Items_0 CSV file:
 
@@ -799,9 +794,62 @@ cd "C:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Data-Governance-Simulation
 
 > **💡 Automatic File Discovery**: The script automatically finds the most recent Items_0 CSV file in the reports folder based on the timestamp in the filename, eliminating the need to manually specify the file path.
 
-#### Step 7b: Cross-Method Comparison with Lab 05a (Recommended)
+#### IMPORTANT: Unmapped SIT GUIDs in Lab 05b Results
 
-**Option 1: Use Centralized Cross-Lab Analysis (Recommended)**:
+If your Lab 05b analysis shows **"Custom"** or unmapped GUID values in the SIT type results, you can manually add them to the centralized mapping file.
+
+**eDiscovery Export Behavior**: eDiscovery exports contain only GUIDs in the "Sensitive type" column (e.g., `cb353f78-2b72-4c3c-8827-92ebe4f69fdf`), not friendly names. The analysis scripts use a mapping file to convert these to readable SIT names.
+
+**To Add Missing SIT Mappings**:
+
+1. **Locate the GUID** in your Lab 05b export file (`Items_0_YYYY-MM-DD_HH-MM-SS.csv`, "Sensitive type" column)
+2. **Identify the SIT name** by cross-referencing with the eDiscovery portal statistics or by checking file content
+3. **Edit the mapping file**: `05-Data-Discovery-Paths\Purview-SIT-GUID-Mapping.json`
+4. **Add the mapping** in the `sitMappings` section:
+5. **Re-run the analysis script** to apply the new mappings:
+
+The updated mappings will now be used across all Lab 05 discovery methods (05a, 05b, 05c) for consistent cross-method comparison.
+
+> **💡 Common Scenario**: If you see deprecated SIT GUIDs (e.g., older versions of "U.S. Bank Account Number" or "U.S./U.K. Passport Number"), these represent legacy SIT definitions that were restructured by Microsoft but still appear in historical scan results.
+
+---
+
+## 📊 Expected Results
+
+### Lab 05b eDiscovery Analysis Output
+
+Based on Lab 02's document generation (Medium scale), you should see approximately:
+
+**Overall Statistics**:
+
+- **Total files with SIT detections**: 4,400-4,500 files
+- **Total SIT detection records**: 10,000-10,500 records (multiple SITs per file)
+- **Total size**: 2-5 MB
+- **Locations with hits**: 4 sites out of 5 simulation sites (IT-Simulation has no sensitive data)
+- **Date range**: Last 7-30 days (depending on Lab 03 execution date)
+
+**SIT Type Distribution** (detection record counts):
+
+| SIT Type | Detection Records | Notes |
+|----------|-------------------|-------|
+| U.S. Social Security Number (SSN) | 2,200-2,300 | Highest volume SIT |
+| U.S. / U.K. Passport Number | 2,000-2,100 | High detection in Legal/HR sites |
+| U.S. Individual Taxpayer Identification Number (ITIN) | 2,000-2,100 | Common in Background Checks |
+| U.S. Driver's License Number | 1,200-1,300 | Background check documents |
+| U.S. Bank Account Number | 1,300-1,400 | Finance/HR documents |
+| ABA Routing Number | 1,000-1,100 | ACH authorizations |
+| Credit Card Number | 300-350 | Lowest volume from targeted list |
+
+**Top Sites by Detection Record Count**:
+
+1. **HR-Simulation**: 4,300+ records (Benefits enrollments, employee data)
+2. **Finance-Simulation**: 3,000+ records (ACH authorizations, financial documents)
+3. **Marketing-Simulation**: 1,700+ records (Customer data, mixed analysis)
+4. **Legal-Simulation**: 1,200+ records (Background checks, contracts)
+
+---
+
+### Step 7: Cross-Method Comparison with Lab 05a (Optional/Recommended)
 
 The Lab 05 directory includes a centralized comparison orchestrator that automatically compares results across all completed discovery methods with comprehensive accuracy metrics:
 
@@ -813,8 +861,7 @@ The Lab 05 directory includes a centralized comparison orchestrator that automat
     "enabledLabs": {
       "lab05a": true,
       "lab05b": true,
-      "lab05c": false,
-      "lab05d": false
+      "lab05c": false
     }
   }
 }
@@ -843,145 +890,6 @@ cd "C:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Data-Governance-Simulation
 
 ---
 
-**Option 2: Use Lab 05b Analysis Script (Quick Comparison)**:
-
-For a quick file-level comparison without advanced metrics:
-
-```powershell
-# Navigate to reports folder
-cd "C:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Data-Governance-Simulation\05-Data-Discovery-Paths\05b-eDiscovery-Compliance-Search\reports"
-
-# Find most recent Items_0 CSV and Lab 05a results, then compare
-$items0Csv = Get-ChildItem -Filter "Items_0*.csv" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-$lab05aPath = "..\..\05a-PnP-Direct-File-Access\reports"
-$lab05aCsv = Get-ChildItem -Path $lab05aPath -Filter "PnP-Discovery*.csv" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-
-.\..\scripts\Invoke-eDiscoveryResultsAnalysis.ps1 `
-    -ResultsCsvPath $items0Csv.FullName `
-    -Lab05aResultsPath $lab05aCsv.FullName
-```
-
-This provides basic comparison metrics integrated with the Lab 05b analysis output.
-
----
-
-**Comparison Output Examples**:
-
-Both approaches provide accuracy validation between regex-based (Lab 05a) and official Purview SIT (Lab 05b) detection methods:
-
-- **Precision**: Percentage of Lab 05a detections confirmed by eDiscovery (measures false positive rate)
-- **Recall**: Percentage of eDiscovery detections captured by Lab 05a (measures false negative rate)
-- **Overlapping files**: Files detected by both methods (true positives)
-- **False positives**: Files detected by Lab 05a but not eDiscovery (regex over-detection)
-- **False negatives**: Files detected by eDiscovery but missed by Lab 05a (regex gaps)
-
-> **💡 Comprehensive Analysis**: For comparing eDiscovery results with other Lab 05 discovery methods (Graph API, SharePoint Search), use the centralized `Invoke-CrossLabAnalysis.ps1` script with appropriate configuration. See the main **[Lab 05 README](../README.md)** for complete cross-method analysis workflows.
-
----
-
-### Step 8: Understanding SIT GUID Exports and Mapping
-
-**Important**: eDiscovery exports contain **only GUIDs** in the "Sensitive type" column, not friendly SIT names. Some GUIDs may represent **deprecated or renamed Microsoft SITs** that no longer appear in `Get-DlpSensitiveInformationType` results.
-
-#### Why GUIDs Don't Always Resolve
-
-**eDiscovery Export Behavior**:
-
-1. **Historical Scan Results**: eDiscovery exports use **cached detection results** from when files were originally scanned
-2. **GUID-Only Format**: The "Sensitive type" column contains only GUIDs separated by `$#,#&` delimiters
-3. **Deprecated SITs**: Files scanned with SIT definitions that have since been removed/renamed will export with unresolvable GUIDs
-4. **No Friendly Names**: Microsoft Purview exports GUIDs by design; friendly name resolution happens during analysis
-
-**Example Raw Export Format**:
-
-```text
-Sensitive type: cb353f78-2b72-4c3c-8827-92ebe4f69fdf$#,#&1771481d-a337-4dbf-8e64-af8da0cc3ee9
-```
-
-#### GUID-to-Name Mapping File
-
-The analysis scripts use a centralized mapping file to resolve GUIDs to friendly SIT names:
-
-**Location**: `05-Data-Discovery-Paths\Purview-SIT-GUID-Mapping.json`
-
-This file contains:
-
-- **Universal built-in SIT GUIDs** (consistent across all Microsoft 365 tenants)
-- **Deprecated SIT mappings** for legacy GUIDs no longer in tenant definitions
-- **Tenant-verified mappings** based on eDiscovery export analysis
-
-**Common Deprecated SITs Found in Exports**:
-
-| GUID | Friendly Name | Status |
-|------|---------------|--------|
-| `1771481d-a337-4dbf-8e64-af8da0cc3ee9` | U.S. Bank Account Number | Deprecated GUID (SIT renamed/restructured) |
-| `11631f87-7ffe-4052-b173-abda16b231f3` | U.S. / U.K. Passport Number | Deprecated GUID (SIT renamed/restructured) |
-
-#### Handling Unmapped GUIDs
-
-If the analysis script detects unmapped GUIDs:
-
-1. **Diagnostic Script Launch**: The analysis script automatically offers to launch `Resolve-UnmappedSITGuids.ps1`
-2. **Context Analysis**: The diagnostic script analyzes file patterns, co-occurring SITs, and detection volumes
-3. **Intelligent Suggestions**: Provides suggested friendly names based on context:
-   - **File pattern matching**: "BenefitsEnrollment" → Employee Benefits Data
-   - **Co-occurrence analysis**: Co-occurs with SSN → Related Identity Verification
-   - **Volume-based inference**: >1000 occurrences → Likely deprecated built-in SIT
-4. **Interactive Mapping**: Confirm or customize suggested mappings before updating the JSON file
-
-**Manual Mapping Addition**:
-
-If you identify a GUID that should be added to the mapping file:
-
-```json
-{
-  "sitMappings": {
-    "your-guid-here": "Friendly SIT Name",
-    "1771481d-a337-4dbf-8e64-af8da0cc3ee9": "U.S. Bank Account Number"
-  }
-}
-```
-
-After updating the mapping file, re-run the analysis script to apply the new mappings.
-
-> **💡 Cross-Lab Consistency**: The centralized mapping file ensures **consistent SIT naming across all Lab 05 discovery methods** (05a, 05b, 05c, 05d) for accurate cross-method comparison.
-
----
-
-## 📊 Expected Results
-
-### Sample eDiscovery Detection Summary
-
-Based on Lab 02's document generation, you should see approximately:
-
-**Overall Statistics** (based on Medium scale from Lab 02):
-
-- **Total matches**: 4000-5000 items (depending on Lab 02 scale level)
-- **Total size**: 2-5 MB
-- **Locations with hits**: 4-5 sites out of 5 simulation sites
-- **Data sources with hits**: 4-5 locations
-- **Date range**: Last 7-30 days (depending on Lab 03 execution date)
-
-**SIT Type Distribution**:
-
-| SIT Type | Detections | Confidence Level |
-|----------|------------|------------------|
-| U.S. Social Security Number | 15-20 | High (85%+) |
-| Credit Card Number | 10-15 | High (85%+) |
-| U.S. Bank Account Number | 8-12 | Medium (75%+) |
-| U.S./U.K. Passport Number | 5-8 | High (85%+) |
-| U.S. Driver's License Number | 5-8 | Medium (75%+) |
-| ITIN | 3-5 | High (85%+) |
-| ABA Routing Number | 8-12 | High (85%+) |
-| IBAN | 5-8 | High (85%+) |
-
-**Top 3 Sites by Detection Count**:
-1. HR-Simulation: 25-35 detections
-2. Finance-Simulation: 20-30 detections
-3. Legal-Simulation: 10-15 detections
-
----
-
 ## 🔍 Troubleshooting
 
 ### Issue: "No items found" despite Lab 03 content uploaded 24+ hours ago
@@ -989,6 +897,7 @@ Based on Lab 02's document generation, you should see approximately:
 **Cause**: Content may not be indexed yet, or sites weren't included in search scope
 
 **Solution**:
+
 1. Verify 24 hours have passed since Lab 03 completion
 2. Test search with simple keyword query (e.g., "Employee") to verify content is searchable
 3. Check that all 5 site URLs are correct in search locations
@@ -1001,12 +910,12 @@ Based on Lab 02's document generation, you should see approximately:
 **Cause**: Insufficient permissions for eDiscovery
 
 **Solution**:
-```powershell
-# Request eDiscovery Manager role from tenant admin
-# Admin can grant access via Microsoft 365 Admin Center:
-# 1. Go to admin.microsoft.com
-# 2. Navigate to Roles > eDiscovery Manager
-# 3. Add your user account
+```text
+Request eDiscovery Manager role from tenant admin
+Admin can grant access via Microsoft 365 Admin Center:
+1. Go to admin.microsoft.com
+2. Navigate to Roles > eDiscovery Manager
+3. Add your user account
 ```
 
 ---
@@ -1017,6 +926,7 @@ Based on Lab 02's document generation, you should see approximately:
 
 **Solution**:
 This is **not an error**. The differences highlight:
+
 - **eDiscovery detections > PnP detections**: PnP regex missed some patterns (false negatives)
 - **PnP detections > eDiscovery detections**: PnP regex over-detected patterns (false positives)
 
@@ -1029,6 +939,7 @@ Use eDiscovery results as the "ground truth" for validating Lab 05a accuracy.
 **Cause**: Network interruption or antivirus blocking eDiscovery Export Tool
 
 **Solution**:
+
 1. Check firewall/antivirus isn't blocking the export tool
 2. Try downloading from a different network
 3. Restart export tool and re-paste export key
@@ -1041,7 +952,9 @@ Use eDiscovery results as the "ground truth" for validating Lab 05a accuracy.
 **Cause**: SIT name variation or deprecated SIT type
 
 **Solution**:
+
 Use exact SIT names from Microsoft documentation:
+
 - "U.S. Social Security Number (SSN)" not "Social Security Number"
 - "Credit Card Number" not "Credit Card"
 - Search for SIT in condition builder with partial name (e.g., "Social")
@@ -1054,11 +967,11 @@ After completing Lab 05b, verify:
 
 - [ ] **24 hours elapsed** since Lab 03 content upload
 - [ ] **Content is indexed** (test search confirmed files are searchable)
-- [ ] **Compliance search created** with 8 targeted SIT conditions
+- [ ] **Compliance search created** with 7 targeted SIT conditions
 - [ ] **All 5 simulation sites** included in search scope
 - [ ] **Search completed successfully** within 15 minutes
-- [ ] **At least 60 SIT detections** found across all sites
-- [ ] **All 8 SIT types detected** at least once
+- [ ] **At least 4,000 files with SIT detections** found across 4 sites (IT-Simulation excluded)
+- [ ] **All 7 SIT types detected** at least once
 - [ ] **Results exported** to local machine in CSV format
 - [ ] **Comparison with Lab 05a** completed (accuracy validation)
 - [ ] **Results documented** in lab summary template
@@ -1076,13 +989,14 @@ After completing Lab 05b, verify:
 - Search Name: Lab05b-SIT-Discovery-Compliance-Search
 - Locations: 5 SharePoint sites (HR, Finance, Legal, Marketing, IT)
 - Query Type: Sensitive Information Type detection
-- Targeted SITs: 8 (SSN, Credit Card, Bank Account, Passport, Driver's License, ITIN, ABA Routing, IBAN)
+- Targeted SITs: 7 (SSN, Credit Card, Bank Account, Passport, Driver's License, ITIN, ABA Routing)
 
 **Discovery Results**:
-- Total Items Matched: [Count] files
-- Locations with Hits: [Count] sites
-- Most Common SIT Type: [SIT Name] ([Count] detections)
-- Site with Most Sensitive Data: [Site Name] ([Count] detections)
+- Total Files with SIT Detections: [Count] files (e.g., 4,423)
+- Total SIT Detection Records: [Count] records (e.g., 10,308 - multiple SITs per file)
+- Locations with Hits: 4 sites out of 5 (IT-Simulation has no sensitive data)
+- Most Common SIT Type: [SIT Name] ([Count] detection records)
+- Site with Most Sensitive Data: [Site Name] ([Count] detection records)
 
 **Search Performance**:
 - Search Start Time: [Timestamp]
@@ -1113,7 +1027,7 @@ After completing Lab 05b, verify:
 
 **Next Steps**:
 - [ ] Compare with Lab 04 On-Demand Classification (when complete)
-- [ ] Wait 7-14 days for Labs 05c/05d (Graph API and SharePoint Search methods)
+- [ ] Wait 7-14 days for Lab 05c (Graph API discovery method)
 - [ ] Document accuracy differences between immediate (Lab 05a) and official (Lab 05b) methods
 - [ ] Use eDiscovery results as ground truth for validating other discovery methods
 
@@ -1122,6 +1036,7 @@ After completing Lab 05b, verify:
 - [Insight about Purview SIT detection accuracy]
 - [Insight about eDiscovery as ground truth for validation]
 - [Insight about differences between Lab 05a regex and Lab 05b official SIT detection]
+
 ```
 
 ---
@@ -1131,7 +1046,6 @@ After completing Lab 05b, verify:
 - **Lab 04**: On-Demand Classification Validation (7-day official Purview scan, Content Explorer results)
 - **Lab 05a**: PnP PowerShell Direct File Access (immediate discovery, custom regex)
 - **Lab 05c**: Graph API Discovery (7-14 day indexing, automated recurring discovery)
-- **Lab 05d**: SharePoint Search Discovery (7-14 day indexing, site-specific queries)
 
 ---
 

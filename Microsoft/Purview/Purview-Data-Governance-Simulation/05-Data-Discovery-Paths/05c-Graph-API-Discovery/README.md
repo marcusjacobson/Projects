@@ -495,23 +495,23 @@ You have successfully completed Lab 05b when:
 
 ## 🚀 Next Steps
 
-### Option 1: Lab 06 - Power BI Visualization (Recommended)
+### Option 1: Compare with Other Lab 05 Methods
 
-Transform your automated reports into interactive dashboards:
+Run the centralized cross-lab analysis to compare Graph API results with other discovery methods:
 
-- Import JSON/CSV reports into Power BI
-- Create automated refresh schedules syncing with your recurring scans
-- Build executive dashboards with trend charts
+- Compare accuracy with Lab 05a (regex-based)
+- Validate against Lab 05b (eDiscovery ground truth)
+- Analyze detection overlaps and unique findings
 
-**[→ Proceed to Lab 06: Power BI Visualization](../../06-Power-BI-Visualization/)**
+See the main [Lab 05 README](../README.md#cross-lab-comparison-orchestrator) for cross-method comparison.
 
 ---
 
-### Option 2: Lab 07 - Environment Cleanup
+### Option 2: Lab 06 - Cleanup and Reset
 
 If you've completed your discovery objectives, proceed to cleanup:
 
-**[→ Proceed to Lab 07: Environment Cleanup](../../07-Environment-Cleanup/)**
+**[→ Proceed to Lab 06: Cleanup and Reset](../../06-Cleanup-Reset/)**
 
 ---
 

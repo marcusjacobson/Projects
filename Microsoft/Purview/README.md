@@ -20,19 +20,21 @@ This directory contains **three comprehensive hands-on lab projects** designed t
 
 **Key Capabilities**:
 
-- Three discovery methods (immediate regex, 24hr eDiscovery, 7-14 day Graph API)
+- Three discovery methods (immediate regex, 24hr eDiscovery, 24hr Graph API)
 - Modern eDiscovery portal (purview.microsoft.com with Cases preview, Condition builder)
 - Microsoft Graph API automation (OAuth 2.0, tenant-wide discovery, SIEM integration)
 - On-Demand Classification (7-day portal-based with estimation and cost analysis)
 - Content Explorer proficiency (classification validation with 7-day update timing)
 - SharePoint indexing status validation (real-time readiness checks)
+- Configuration-driven architecture (single JSON config, multi-tenant portability)
+- Browser-based authentication (no secrets/certificates required)
 
 **Learning Paths**:
 
 - **Immediate Discovery** (Lab 05a): Regex-based detection for instant results
 - **24-Hour Discovery** (Lab 05b): eDiscovery compliance search after SharePoint indexing
-- **7-Day Discovery** (Lab 04): On-Demand Classification with Content Explorer
-- **7-14 Day Discovery** (Lab 05c): Automated API-based recurring discovery
+- **24-Hour API Discovery** (Lab 05c): Automated Graph API scanning after indexing
+- **7-Day Classification** (Lab 04): On-Demand Classification with Content Explorer validation
 
 **Coverage Depth**: ~45% of Purview landscape (discovery and classification focus)
 
@@ -133,7 +135,7 @@ This directory contains **three comprehensive hands-on lab projects** designed t
 
 6. **Weeks 6-7**: Complete Data-Governance-Simulation Labs 04-05 (Classification + Discovery)
    - Start 7-day On-Demand Classification with cost estimation
-   - Compare three discovery methods (immediate, 24hr, 7-day, 7-14 day)
+   - Compare discovery methods (immediate regex vs 24hr eDiscovery vs 24hr Graph API)
    - Execute immediate regex discovery (Lab 05a)
    - Run 24-hour modern eDiscovery searches (Lab 05b)
    - Validate timing and accuracy tradeoffs
@@ -156,7 +158,7 @@ This directory contains **three comprehensive hands-on lab projects** designed t
 **Unique Value from Combined Approach**:
 
 - Comprehensive classification expertise (built-in SITs → custom regex → EDM → trainable classifiers)
-- Multiple discovery methods (immediate → 24hr → 7 days → 7-14 days → APIs)
+- Multiple discovery methods (immediate → 24hr → 7-day classification → APIs)
 - Hybrid deployment experience (on-premises scanner + cloud governance)
 - Complete lifecycle understanding (policy creation → enforcement → monitoring → remediation)
 - API integration proficiency (Microsoft Graph, OAuth 2.0)
@@ -174,8 +176,8 @@ This matrix shows which project covers each Purview capability, with specific la
 | Capability | Complexity | Skills-Ramp Coverage | Classification-Lifecycle Coverage | Data-Governance-Simulation Coverage | Combined Status |
 |------------|------------|---------------------|----------------------------------|-------------------------------------|-----------------|
 | **Information Protection Scanner** | INTERMEDIATE | ✅ OnPrem-01, OnPrem-02 (deployment, discovery scans) | Not covered | Not covered | ✅ EXTENSIVE |
-| **Built-in SITs** | BASIC | ✅ OnPrem-02, OnPrem-03, OnPrem-04 (DLP policies) | Not covered | ✅ Lab 05a (regex pattern discovery) | ✅ EXTENSIVE |
-| **Custom SITs (Regex)** | INTERMEDIATE | ✅ Supplemental: Custom-Classification (Boost.RegEx patterns) | ✅ Lab 1 (7 exercises, confidence tuning 85%/75%/65%) | ✅ Lab 05a (immediate discovery) | ✅ COMPREHENSIVE |
+| **Built-in SITs** | BASIC | ✅ OnPrem-02, OnPrem-03, OnPrem-04 (DLP policies) | Not covered | ✅ Labs 02/05 (generation & discovery) | ✅ EXTENSIVE |
+| **Custom SITs (Regex)** | INTERMEDIATE | ✅ Supplemental: Custom-Classification (Boost.RegEx patterns) | ✅ Lab 1 (7 exercises, confidence tuning 85%/75%/65%) | ✅ Lab 05a (scripted regex discovery) | ✅ COMPREHENSIVE |
 | **Exact Data Match (EDM)** | ADVANCED | Not covered | ✅ Lab 2 (8 exercises, schema, hashing, upload) | Not covered | ✅ COMPREHENSIVE |
 | **Trainable Classifiers (ML)** | EXPERT | ✅ Supplemental: Custom-Classification (300 samples, 24hr training) | Not covered | Not covered | ✅ COMPREHENSIVE |
 | **Activity Explorer** | INTERMEDIATE | ✅ Supplemental: Advanced-Cross-Platform-SIT-Analysis (trending, dashboards) | Not covered | Not covered | ✅ EXTENSIVE |
@@ -258,8 +260,10 @@ This matrix shows which project covers each Purview capability, with specific la
 | **Bulk Operations (Deletion)** | INTERMEDIATE | ✅ Supplemental: Advanced-Remediation (deduplication, tombstones) | ✅ Lab 5 (audit trails, error handling) | Not covered | ✅ COMPREHENSIVE |
 | **Bulk Label Application** | INTERMEDIATE | Not covered | ✅ Lab 5 (multi-site scaling) | Not covered | ✅ COMPREHENSIVE |
 | **Policy Monitoring Scripts** | INTERMEDIATE | Not covered | ✅ Lab 5 (coverage dashboards) | Not covered | ✅ EXTENSIVE |
-| **Compliance Reporting** | INTERMEDIATE | ✅ Supplemental: Advanced-Cross-Platform-SIT-Analysis (executive reports) | ✅ Lab 5 (stakeholder reporting) | Not covered | ✅ COMPREHENSIVE |
+| **Compliance Reporting** | INTERMEDIATE | ✅ Supplemental: Advanced-Cross-Platform-SIT-Analysis (executive reports) | ✅ Lab 5 (stakeholder reporting) | ✅ Labs 05a/c (CSV discovery reports) | ✅ COMPREHENSIVE |
 | **REST API Integration** | ADVANCED | ✅ Supplemental: Advanced-Remediation (Azure Resource Management) | Not covered | ✅ Lab 05c (Graph API) | ✅ COMPREHENSIVE |
+| **Configuration-Driven Architecture** | INTERMEDIATE | Not covered | Not covered | ✅ All Labs (single JSON config) | ✅ DETAILED |
+| **Browser-Based Authentication** | INTERMEDIATE | Not covered | Not covered | ✅ All Labs (no secrets required) | ✅ DETAILED |
 
 #### ✅ Azure & Cloud Infrastructure
 
@@ -394,7 +398,7 @@ The following capabilities require **enterprise-scale deployments**, **advanced 
 
  Choose Data-Governance-Simulation When You Need
 
-- ✅ **Discovery method comparison** (immediate, 24hr, 7-14 day options)
+- ✅ **Discovery method comparison** (immediate, 24hr, API options)
 - ✅ **Modern eDiscovery portal** (purview.microsoft.com, Cases preview)
 - ✅ **API integration skills** (Microsoft Graph, SharePoint Search, OAuth 2.0)
 - ✅ **Zero Azure costs** (cloud-only, no infrastructure)
@@ -413,7 +417,7 @@ The following capabilities require **enterprise-scale deployments**, **advanced 
 - ✅ **Comprehensive Purview expertise** (70-80% capability coverage)
 - ✅ **Hybrid + cloud proficiency** (on-prem scanner + SharePoint governance)
 - ✅ **Advanced classification skills** (built-in SITs, custom regex, EDM, trainable classifiers)
-- ✅ **Multiple discovery methods** (immediate, 24hr, 7-day, 7-14 day, APIs)
+- ✅ **Multiple discovery methods** (immediate, 24hr, 7-day classification, APIs)
 - ✅ **Production-ready workflows** (DLP enforcement, retention automation, remediation, API integration)
 - ✅ **API integration expertise** (Microsoft Graph, SharePoint Search, OAuth 2.0)
 - ✅ **Career advancement** (SC-400 certification preparation, comprehensive professional portfolio)
@@ -450,7 +454,7 @@ Completing all three projects demonstrates proficiency in:
 **Core Technical Competencies**:
 
 - Information Protection (scanner deployment, custom SITs, EDM, trainable classifiers)
-- Data Discovery (three methods: immediate regex, 24hr eDiscovery, 7-14 day APIs)
+- Data Discovery (three methods: immediate regex, 24hr eDiscovery, 24hr APIs)
 - API Integration (Microsoft Graph, OAuth 2.0, SIEM connectivity)
 - Modern eDiscovery Portal (purview.microsoft.com, Cases preview, Condition builder)
 - Data Loss Prevention (policy design, enforcement, cross-platform monitoring)

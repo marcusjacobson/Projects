@@ -1,0 +1,17 @@
+# Ignore zip files (large binaries/artifacts)
+*.zip
+
+# Ignore generated reports in Purview Simulation
+Microsoft/Purview/Purview-Data-Governance-Simulation/**/reports/*
+!Microsoft/Purview/Purview-Data-Governance-Simulation/**/reports/.gitkeep
+
+# Ignore generated documents
+Microsoft/Purview/Purview-Data-Governance-Simulation/**/generated-documents/
+
+# Ignore temp and output folders
+**/temp/
+**/output/
+**/logs/
+
+# Ignore PowerShell transcript logs
+*.log

@@ -82,7 +82,8 @@ Write-Host "=============================" -ForegroundColor Cyan
 
 # Load global configuration
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
-$projectRoot = Split-Path -Parent $scriptPath
+$moduleRoot = Split-Path -Parent $scriptPath
+$projectRoot = Split-Path -Parent $moduleRoot
 . (Join-Path $projectRoot "Shared-Utilities\Import-GlobalConfig.ps1")
 $config = Import-GlobalConfig
 
@@ -359,7 +360,7 @@ This simulation demonstrates comprehensive Microsoft Purview data governance cap
 - **Lab 04:** Classification Validation ✅
 - **Lab 05:** Data Discovery Paths (Portal/Graph API/SharePoint Search) ✅
 - **Lab 06:** Power BI Visualization ✅
-- **Lab 07:** Cleanup & Reset ✅
+- **Lab 06:** Cleanup & Reset ✅
 
 ### Resource Creation
 

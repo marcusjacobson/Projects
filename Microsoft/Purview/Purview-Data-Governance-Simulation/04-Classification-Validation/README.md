@@ -6,32 +6,15 @@ This lab initiates **on-demand classification** for uploaded documents and valid
 
 ---
 
-## 🚀 Quick Navigation: Your Lab 04 + Lab 05 Workflow
+## 🚀 Quick Navigation: Lab 04 + Lab 05 Workflow
 
-**Recommended Approach for All Users:**
+1. **Start Lab 04 Step 1** (~15 min): [Initiate classification scan](#step-1-initiate-on-demand-classification-scan). This starts the 7-day deep scan for Content Explorer.
+2. **Go to Lab 05** (Immediate): Proceed to **[Lab 05a](../05-Data-Discovery-Paths/05a-PnP-Direct-File-Access/)**, **[Lab 05b](../05-Data-Discovery-Paths/05b-eDiscovery-Compliance-Search/)**, or **[Lab 05c](../05-Data-Discovery-Paths/05c-Graph-API-Discovery/)**. You do *not* need to wait for Lab 04 to finish.
+3. **Return Later** (7 Days): Come back to Lab 04 Steps 2-7 to validate your Lab 05 findings against the official Content Explorer baseline.
 
-1. **Complete Lab 04 Step 1** (~15-30 minutes): [Start on-demand classification scan](#step-1-initiate-on-demand-classification-scan)
-   - Initiates 7-day classification process that enables Labs 05c/05d
-   - Required for Labs 05c and 05d, but also provides validation baseline for Labs 05a and 05b
+> **💡 Strategy**: Start the slow scan now (Lab 04), do the fast discovery now (Lab 05), and validate later.
 
-2. **Start Labs 05a or 05b Immediately** (no waiting - proceed right after Step 1):
-   - ✅ **[Lab 05a: PnP Direct File Access](../05-Data-Discovery-Paths/05a-PnP-Direct-File-Access/)** - Start now, works immediately
-   - ✅ **[Lab 05b: eDiscovery Compliance Search](../05-Data-Discovery-Paths/05b-eDiscovery-Compliance-Search/)** - Start after 24 hours from Lab 03
-   - These labs do NOT require classification completion
-
-3. **Return to Lab 04 Steps 2-7** (after ~7 days): Complete validation once classification finishes
-   - This completes Lab 04 and enables Labs 05c/05d
-
-4. **Start Advanced Labs 05c or 05d** (after completing Lab 04 Steps 2-7):
-   - ✅ **[Lab 05c: Graph API Discovery](../05-Data-Discovery-Paths/05c-Graph-API-Discovery/)** - Automated recurring reports
-   - ✅ **[Lab 05d: SharePoint Search Discovery](../05-Data-Discovery-Paths/05d-SharePoint-Search-Discovery/)** - Site-specific queries
-   - These labs REQUIRE Lab 04 Steps 2-7 completion
-
-> **💡 Why This Workflow?** By starting Lab 04's classification scan first, you enable all four Lab 05 discovery methods. While waiting for classification to complete (~7 days), you can explore Labs 05a and 05b immediately. This maximizes your learning efficiency and ensures you have flexibility to try all discovery approaches.
->
-> **⚠️ What If You Skip Lab 04?** Labs 05a and 05b will work, but Labs 05c and 05d will require waiting 7-14 days for automatic indexing. Starting Lab 04 now accelerates this to 7 days and provides official Purview validation results.
-
-**For detailed Lab 05 path comparison**, see the [Next Steps: Choose Your Lab 05 Discovery Path](#-next-steps-choose-your-lab-05-discovery-path) section at the end of this document.
+**For guidance on using your results**, see [Next Steps](#-next-steps-leveraging-your-classification-baseline).
 
 ---
 
@@ -107,58 +90,26 @@ Microsoft Purview uses pattern matching, checksums, and machine learning to dete
 
 ---
 
-## 🎯 Use Case: Enterprise Data Discovery & Reporting
+## 🎯 Strategic Context: The "Fire and Forget" Workflow
 
-**Real-World Scenario**: Organizations with hundreds of SharePoint sites and petabytes of existing data need to quickly identify HR-related sensitive information (SSN, PII, etc.) for reporting, analysis, and compliance purposes. Traditional eDiscovery can take days or weeks to scan large datasets.
+**Real-World Scenario**: Organizations need to quickly identify sensitive information (SSN, PII) for reporting and compliance, but deep scanning takes time.
 
-**This Lab's Role**: Initiate **on-demand classification scans** to proactively classify newly uploaded documents from Lab 03 and populate the **Content Explorer / Microsoft Search unified index**. This lab provides:
+**The Strategy**:
 
-1. **7-day results** (faster than 7-14 day automatic indexing)
-2. **Portal-based comprehensive scan** with official Purview SIT accuracy
-3. **Foundation for Labs 05c/05d** - These discovery paths query the same Content Explorer index
-4. **Validation baseline** - Compare Lab 05a regex detection against official Purview results
+1. **Start Lab 04 (Deep Scan)**: Initiate the 7-day Content Explorer scan immediately.
+2. **Switch to Lab 05 (Rapid Discovery)**: Use fast tools (Regex, eDiscovery) to get immediate results while waiting.
+3. **Validate Later**: Use Lab 04's "Gold Standard" visual results to verify your Lab 05 findings after 7 days.
 
-**Lab 04 vs Lab 05**: Lab 04 populates Content Explorer with classification data. Lab 05 provides **four different methods** to discover and report on that data (or access files directly without classification).
+### 🔍 Comparison: Lab 04 vs. Lab 05
 
-### Lab 04 Approach: On-Demand Classification + Content Explorer
+| Feature | ✅ Lab 04 (Content Explorer) | ⚡ Lab 05 (Discovery Paths) |
+|---------|------------------------------|----------------------------|
+| **Role** | **"Gold Standard" Baseline** | **Rapid Discovery & Reporting** |
+| **Engine** | Data Classification Service (DCS) | SharePoint Search / Graph API |
+| **Timeline** | **7 Days** (Deep Scan) | **Immediate - 24 Hours** |
+| **Output** | Visual Dashboard | CSV Reports & Analytics |
 
-This lab uses **on-demand classification scans** initiated through the Microsoft Purview Compliance Portal, with results validated in **Content Explorer**. This approach:
-
-- ✅ Requires no PowerShell authentication (avoids WAM issues)
-- ✅ Provides fastest results for new content (7 days vs. 7-14 days automatic)
-- ✅ Proactive scanning - don't wait for passive Microsoft Search indexing
-- ✅ Enables visual exploration of classified content in Content Explorer
-- ✅ Enables manual CSV exports for validation
-- ✅ Serves as foundation for Lab 05 discovery paths
-
-### Required Prerequisites
-
-**For Lab Environment** (Labs 1-3 completed):
-
-- ✅ SharePoint sites created (Lab 01)
-- ✅ Test documents generated with SITs (Lab 02)
-- ✅ Documents uploaded to SharePoint (Lab 03)
-- ⏱️ Wait 15-30 minutes for SharePoint document indexing (not classification - just file indexing)
-
-**For Existing Production Data**:
-
-- ✅ Microsoft Purview Information Protection enabled
-- ✅ SharePoint sites included in Purview compliance scope
-- ✅ Compliance Administrator role to initiate on-demand scans
-- ⏱️ For historical data already in SharePoint: Automatic classification likely already complete (check Content Explorer)
-
-> **💡 Note**: This project focuses on **data discovery and reporting**, not DLP policies or prevention. Classification is all you need for finding and reporting on sensitive data.
-
-**Classification Timeline**:
-
-Classification timelines are **fixed by Microsoft's backend indexing processes**, not dependent on document volume:
-
-- **On-Demand Classification** (This Lab): Content Explorer updates within **7 days** after scan completion
-- **Automatic Classification** (Alternative): Microsoft Search indexing takes **7-14 days** for new SharePoint content
-
-> **💡 Lab Approach**: This lab uses on-demand classification to accelerate results for Lab 03 uploads (new content).
->
-> **💡 Production Note**: For existing data already in SharePoint (months/years old), automatic classification has likely completed. Check Content Explorer immediately for historical data.
+> **🔥 "Fire and Forget"**: Start Step 1 now, then **ignore this lab** and proceed to Lab 05. Do not wait for completion.
 
 ---
 
@@ -170,42 +121,11 @@ This lab uses the Microsoft Purview Compliance Portal web interface to initiate 
 
 ---
 
-## 🚀 Lab 05 Path Dependencies & Recommendations
-
-**Which Lab 05 Discovery Paths Require Classification?**
-
-| Lab 05 Path | Requires Classification? | When Can You Start? |
-|-------------|--------------------------|---------------------|
-| **Lab 05a: PnP Direct File Access** | ❌ No | ✅ **Immediately after Lab 04 Step 1** |
-| **Lab 05b: eDiscovery Compliance Search** | ❌ No | ✅ **24 hours after Lab 03** (can start after Lab 04 Step 1) |
-| **Lab 05c: Graph API Discovery** | ✅ Yes | ⏳ **After Lab 04 Steps 2-7 complete** (~7 days) |
-| **Lab 05d: SharePoint Search Discovery** | ✅ Yes | ⏳ **After Lab 04 Steps 2-7 complete** (~7 days) |
-
-### Recommended Approach: Start Classification Now
-
-Even if you plan to begin with Lab 05a or Lab 05b (which work without classification), **we recommend starting the on-demand classification scan now**:
-
-- **Enables all discovery methods**: You'll have the flexibility to explore Labs 05c and 05d without additional waiting
-- **Provides validation baseline**: Official Purview SIT detection results to compare against Lab 05a's regex accuracy
-- **Teaches enterprise workflow**: Learn the on-demand classification process used in real-world scenarios
-- **Accelerates unified index population**: 7 days with Lab 04 vs. 7-14 days waiting for automatic indexing
-
-> **⏱️ Timeline Strategy**:
->
-> 1. Complete Lab 04 Step 1 to start classification scan (~15-30 minutes)
-> 2. **Immediately proceed to Lab 05a or 05b** - no waiting required
-> 3. After ~7 days, return to complete Lab 04 Steps 2-7
-> 4. Then start Labs 05c or 05d (now enabled by completed classification)
->
-> **🔑 What Gets Enabled**: Labs 05a/05b work immediately (no classification needed). Labs 05c/05d require Lab 04 Steps 2-7 completion, which populates the Microsoft Search unified index (Content Explorer) needed for advanced discovery methods.
-
----
-
 ### Step 1: Initiate On-Demand Classification Scan
 
 > **⏱️ Timing Advantage**: On-Demand Classification provides Content Explorer results within **7 days** compared to **7-14 days** for automatic (passive) classification that relies on Microsoft Search indexing.
 >
-> **🔑 Enables Lab 05c/05d**: Starting this on-demand scan populates the Microsoft Search unified index (Content Explorer), which is required for Lab 05c (Graph API Discovery) and Lab 05d (SharePoint Search Discovery). Lab 05a and Lab 05b do NOT require this step.
+> **🔑 Enables Validation**: Starting this on-demand scan populates Content Explorer, which serves as your "Gold Standard" validation baseline for all Lab 05 discovery methods.
 
 Initiate a proactive classification scan for your Lab 03 SharePoint sites.
 
@@ -302,12 +222,6 @@ After estimation completes, you must manually start the classification phase:
 5. The scan status will change from **Estimation complete** to **Classifying**
 
 > **⏱️ Classification Timeline**: The classification phase can take **up to 7 days** to complete. You will receive in-portal notifications as the scan progresses through stages. Content Explorer will update within 7 days of scan completion.
->
-> **💡 Next Steps - Choose Your Path**:
->
-> - **Option 1**: [Go to Lab 05a](../05-Data-Discovery-Paths/05a-PnP-Direct-File-Access/) or [Lab 05b](../05-Data-Discovery-Paths/05b-eDiscovery-Compliance-Search/) now - these work immediately without waiting
-> - **Option 2**: Wait for classification to complete (~7 days), then return here to complete Steps 2-7 before starting Labs 05c or 05d
-> - The classification scan runs as a background process in Microsoft Purview
 
 ---
 
@@ -333,75 +247,24 @@ Navigate to Content Explorer to review classification results.
 
 ### Step 3: Monitor Classification Progress (Optional)
 
-> **💡 Optional Step**: During the 7-day waiting period, you can monitor scan progress and check Content Explorer for early results. Most users will skip this step and return after classification completes.
+> **💡 Optional Step**: Most users skip this step and return after 7 days.
 
 **Check On-Demand Scan Status**:
 
-- Navigate to **Data Classification** > **Classifiers** > **On-demand classification** tab
-- Find your scan by name: `Lab03-HR-Security-Classification`
-- Review scan status progression:
-  - **Estimating** → **Estimation complete** → **Classifying** → **Complete**
-- Click on the scan name to view detailed progress:
-  - **Items scanned**: Current count of items processed
-  - **Items with sensitive info**: Running count of detections
-  - **Estimated completion**: Projected finish time (if shown)
-  - **Progress percentage**: Visual indicator of completion status
+- Navigate to **Data Classification** > **Classifiers** > **On-demand classification**.
+- Review scan status: **Estimating** → **Classifying** → **Complete**.
 
 **Check Content Explorer for Early Results**:
 
-- Navigate to **Solutions** > **Data Lifecycle Management** > **Explorers** > **Content explorer**
-- Browse to the **Sensitive info types** filter/category in the left navigation
-- Click on each SIT type to see if documents are appearing (e.g., "U.S. Social Security Number (SSN)")
-- Check the document count displayed for each SIT type
-- Use the **Locations** filter to see which SharePoint sites have classified content
+- Navigate to **Content Explorer**.
+- Check if document counts for SITs (e.g., SSN) are increasing.
+- **Note**: If counts are low, be patient. This is a background process.
 
-**What to Monitor**:
+### Step 4: Verify Data Population (Pre-Check)
 
-- **Document counts per SIT type**: Should increase as classification progresses (e.g., SSN shows 250+ documents)
-- **Sensitive info types appearing**: Should start seeing SSN, Credit Card, Bank Account, Passport, Driver's License, ITIN, ABA Routing Number, IBAN
-- **Site locations**: Should include your simulation SharePoint sites (HR-Simulation, Finance-Simulation, Legal-Simulation, Marketing-Simulation, IT-Simulation)
+> **⏱️ When to Check**: After on-demand classification completes (up to 7 days).
 
-**If classification is not progressing after expected timeframes**:
-
-> **⏱️ Timing Expectations**:
->
-> - **On-Demand Classification**: Allow up to 7 days for scan completion after starting classification in Step 2
-> - **Automatic Classification**: Allow 7-14 days for Microsoft Search indexing of new SharePoint content
-
-**Troubleshooting Steps**:
-
-- For **on-demand scans**: Check scan status in **Data Classification** > **Classifiers** > **On-demand classification** tab > Click your scan name for detailed progress
-- For **automatic classification**: Verify documents uploaded successfully in Lab 03 (check SharePoint sites manually)
-- Confirm SharePoint sites are included in Purview compliance scope (**Settings** > **Data sources** > Verify SharePoint Online is enabled)
-- Note: Auto-labeling policies are NOT required for classification detection (only for applying retention/sensitivity labels)
-- Be patient: Classification is a background process that can take several days to complete
-
-> **💡 Why Target Specific SITs?**: By selecting only the 8 HR/security-related SITs that match our Lab 02 document generation, the scan is more efficient (faster processing) and results are more relevant (no noise from unrelated SITs). This focused approach aligns with real-world best practices where organizations scan for specific compliance requirements rather than all 300+ available SITs.
-
-### Step 4: View Classification Results in Content Explorer
-
-> **⏱️ When to Check**: After on-demand classification completes (up to 7 days), or after automatic classification indexing completes (7-14 days for new content).
-
-Once classification completes, explore the detailed results.
-
-Navigate to Content Explorer and review classification data:
-
-- Click on **Sensitive info types** tab
-- Click on individual SIT types to see documents containing them:
-  - **U.S. Social Security Number (SSN)** - Should show ~250 documents (HR category)
-  - **Credit Card Number** - Should show ~180 documents (Financial category)
-  - **U.S. Bank Account Number** - Should show ~175 documents (Financial category)
-  - **U.S./U.K. Passport Number** - Should show ~80 documents (Identity category)
-  - **U.S. Driver's License Number** - Should show ~85-95 documents (Identity category, varies by state format)
-  - **U.S. Individual Taxpayer Identification Number (ITIN)** - Should show ~90 documents (Identity category)
-  - **ABA Routing Number** - Should show ~165 documents (Financial category)
-  - **International Bank Account Number (IBAN)** - Should show ~50 documents (Financial category)
-
-For each SIT type, examine:
-
-- **Document count**: Total documents containing this SIT
-- **Locations**: SharePoint sites where SITs were detected
-- **Confidence levels**: Distribution of High/Medium/Low confidence detections
+Before recording your official baseline in Step 5, verify that Content Explorer is populated with data that roughly matches your Lab 02 generation expectations.
 
 **Expected Classification Coverage** (based on Lab 02 generation):
 
@@ -412,220 +275,104 @@ For each SIT type, examine:
 | **Identity Documents** | 85-95% (Passport/DL/ITIN) | High (90%+) |
 | **Mixed Documents** | 60-75% (Multiple SITs) | Mixed (85%+) |
 
-### Step 5: Export Classification Data Manually
+If your Content Explorer is empty or shows very low counts (<10), **do not proceed**. Wait for classification to complete.
 
-Export classification results for use in Lab 05 (DLP) and Lab 06 (Reporting).
+### Step 5: Use Content Explorer as Visual Baseline
 
-**Manual Export Process**:
+Instead of manually exporting CSV files (which is time-consuming and prone to format issues), use Content Explorer's visual interface as your "Gold Standard" baseline.
 
-For each sensitive information type:
+**Why Visual Validation?**
 
-- In **Content Explorer**, click on the SIT type (e.g., "U.S. Social Security Number (SSN)")
-- Click the **Export** button (top-right of the results pane)
-- Choose export options:
-  - **Date range**: Last 30 days (or custom range to include all Lab 03 upload dates)
-  - **Format**: CSV recommended for Lab 06 reporting
-- Click **Export** and wait for the export to complete (may take 5-15 minutes)
-- Download the CSV file when ready (you'll receive an in-portal notification or check **Exports** section)
-- Save the exported CSV to your local Reports directory: `C:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Data-Governance-Simulation\reports\`
+- **Accuracy**: Content Explorer uses the Data Classification Service (DCS), which is the most accurate engine in the Purview ecosystem.
+- **Simplicity**: You can quickly see the total count of "U.S. Social Security Number (SSN)" without managing 8 different CSV files.
+- **Verification**: You will use these visual counts to verify the automated reports generated in Lab 05.
 
-**File Naming Convention** (recommended):
+**Action: Record Your Baseline Counts**:
 
-- `classification-results-SSN-2025-11-17.csv`
-- `classification-results-CreditCard-2025-11-17.csv`
-- `classification-results-BankAccount-2025-11-17.csv`
-- `classification-results-Passport-2025-11-17.csv`
-- `classification-results-DriverLicense-2025-11-17.csv`
-- `classification-results-ITIN-2025-11-17.csv`
-- `classification-results-ABARouting-2025-11-17.csv`
-- `classification-results-IBAN-2025-11-17.csv`
+Navigate to **Content Explorer** > **Sensitive info types** and record the total document count for each of your target SITs:
 
-**Alternative: Export All SITs in One Report**:
+| SIT Type | Content Explorer Count (Visual) |
+|----------|---------------------------------|
+| **U.S. Social Security Number (SSN)** | _________________ |
+| **Credit Card Number** | _________________ |
+| **U.S. Bank Account Number** | _________________ |
+| **U.S./U.K. Passport Number** | _________________ |
+| **U.S. Driver's License Number** | _________________ |
+| **U.S. Individual Taxpayer ID (ITIN)** | _________________ |
+| **ABA Routing Number** | _________________ |
+| **International Bank Account Number (IBAN)** | _________________ |
 
-- In **Content Explorer**, select **All sensitive info types** view
-- Click **Export** to export comprehensive classification data
-- Save as: `classification-results-complete-2025-11-17.csv`
+> **💡 Tip**: Take a screenshot of your Content Explorer dashboard for your records.
 
-### Step 6: Validate SIT Detection Accuracy Manually
+### Step 6: Run Cross-Lab Analysis (Lab 05)
 
-Compare exported classification results against Lab 02 document generation reports.
+Now that you have your visual baseline from Lab 04, use the automated tools in Lab 05 to generate a comprehensive comparison report.
 
-**Manual Validation Process**:
+**Navigate to Lab 05**:
 
-Open the Lab 02 generation report:
+- Open PowerShell
+- Navigate to: `C:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Data-Governance-Simulation\05-Data-Discovery-Paths`
 
-- Navigate to: `C:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Data-Governance-Simulation\02-Test-Data-Generation\reports\`
-- Open the most recent generation report (e.g., `generation-report-2025-11-15-*.json`)
-- Review the **expected SIT counts** by category
+**Run the Analysis Script**:
 
-Compare against Content Explorer data:
-
-| SIT Type | Expected (Lab 02) | Detected (Lab 04) | Accuracy | Status |
-|----------|-------------------|-------------------|----------|--------|
-| **SSN** | ~250 | _[Your count]_ | _[Calculate %]_ | ✅ Pass if >95% |
-| **Credit Card** | ~180 | _[Your count]_ | _[Calculate %]_ | ✅ Pass if >95% |
-| **Bank Account** | ~175 | _[Your count]_ | _[Calculate %]_ | ✅ Pass if >95% |
-| **Passport** | ~80 | _[Your count]_ | _[Calculate %]_ | ✅ Pass if >95% |
-| **Driver's License** | ~85-95 | _[Your count]_ | _[Calculate %]_ | ✅ Pass if >85% |
-| **ITIN** | ~90 | _[Your count]_ | _[Calculate %]_ | ✅ Pass if >95% |
-| **ABA Routing** | ~165 | _[Your count]_ | _[Calculate %]_ | ✅ Pass if >95% |
-| **IBAN** | ~50 | _[Your count]_ | _[Calculate %]_ | ✅ Pass if >90% |
-
-**Accuracy Calculation**:
-
-```text
-Accuracy % = (Detected Count / Expected Count) × 100
-
-Example:
-Expected SSN: 250
-Detected SSN: 245
-Accuracy = (245 / 250) × 100 = 98% ✅ Pass (above 95% threshold)
+```powershell
+.\scripts\Invoke-CrossLabAnalysis.ps1 -GenerateHtmlReport
 ```
 
-**Validation Results**:
+**What This Does**:
 
-- ✅ **Pass**: Accuracy ≥ 95% for most SIT types (Driver's License ≥ 85% acceptable due to format variations)
-- ⚠️ **Warning**: Accuracy 85-94% (investigate low-confidence detections or pattern mismatches)
-- ❌ **Fail**: Accuracy < 85% (review document generation patterns, check for file corruption, verify SIT definitions match)
+1. **Scans** for completed reports from Lab 05a (PnP), Lab 05b (eDiscovery), and Lab 05c (Graph API).
+2. **Normalizes** the data (handles different CSV formats, column names, and confidence scores).
+3. **Generates** a unified HTML report comparing detection counts across all methods.
 
-### Step 7: Document Your Findings
+### Step 7: Validate Automated Findings
 
-Create a summary of classification validation results for Lab 05 and Lab 06.
+Compare your **Lab 05 Automated Report** against your **Lab 04 Visual Baseline**.
 
-**Create a manual summary document** (save as `classification-validation-summary-2025-11-17.md` in reports directory):
+1. Open the generated HTML report from `05-Data-Discovery-Paths\reports\`.
+2. Look at the **Detection Accuracy** section.
+3. Compare the **Lab 05b/05c** counts against your **Content Explorer** notes from Step 5.
 
-```markdown
-# Lab 04 Classification Validation Summary
+**Validation Criteria**:
 
-**Completed**: 2025-11-17  
-**Method**: Portal UI with On-Demand Classification (Recommended)  
-**Scan Name**: Lab03-HR-Security-Classification  
-**Classification Timeline**: [Your scan initiation date] to [completion date] (up to 7 days)
+- **Perfect Match**: Lab 05b/05c counts match Content Explorer exactly. (Expected for 100% indexed data).
+- **Minor Variance (<5%)**: Acceptable due to indexing timing differences (Content Explorer can lag behind eDiscovery by 24-48 hours).
+- **Major Variance (>10%)**: Indicates an issue.
+  - *Higher in Content Explorer*: eDiscovery index might be stale.
+  - *Higher in eDiscovery*: Content Explorer visualization might be delayed.
 
-## On-Demand Classification Scan Details
+**Conclusion**:
 
-- **Scan Status**: [Estimating / Classifying / Complete]
-- **Sites Scanned**: [List your 5 simulation sites]
-- **Estimated File Count**: [From estimation phase]
-- **Date Range**: Content created or modified in last 30 days
-- **Targeted SITs**: 8 HR/security-related sensitive info types (focused scan)
-
-## Classification Coverage
-
-- **Total Documents**: [Your count from Lab 03]
-- **Documents with SITs**: [Your count from Content Explorer]
-- **Coverage %**: [Calculate: (Documents with SITs / Total Documents) × 100]
-
-## SIT Detection Results
-
-| SIT Type | Expected | Detected | Accuracy | Confidence Distribution |
-|----------|----------|----------|----------|-------------------------|
-| SSN | 250 | [Your count] | [%] | High: [%], Med: [%], Low: [%] |
-| Credit Card | 180 | [Your count] | [%] | High: [%], Med: [%], Low: [%] |
-| Bank Account | 175 | [Your count] | [%] | High: [%], Med: [%], Low: [%] |
-| Passport | 80 | [Your count] | [%] | High: [%], Med: [%], Low: [%] |
-| Driver's License | 85-95 | [Your count] | [%] | High: [%], Med: [%], Low: [%] |
-| ITIN | 90 | [Your count] | [%] | High: [%], Med: [%], Low: [%] |
-| ABA Routing | 165 | [Your count] | [%] | High: [%], Med: [%], Low: [%] |
-| IBAN | 50 | [Your count] | [%] | High: [%], Med: [%], Low: [%] |
-
-## Validation Status
-
-- ✅ Overall Accuracy: [Your calculated average accuracy]
-- ✅ Classification coverage meets target (>90%)
-- ✅ High confidence detections: [Your %] (Target: >85%)
-- ✅ Ready to proceed to Lab 05 (DLP Policy Implementation)
-
-## Notes
-
-[Any observations, unexpected results, or issues encountered]
-```
+If your Lab 05 automated reports match your Lab 04 visual baseline, you have successfully validated that your automated discovery pipelines (Lab 05) are accurate and reliable for ongoing compliance monitoring.
 
 ---
 
-## 🎯 Next Steps: Choose Your Lab 05 Discovery Path
+## 🎯 Next Steps: Leveraging Your Classification Baseline
 
-**Where You Are Now**: Lab 04 classification is complete (or you completed Step 1 and are ready to start immediate labs).
+Now that you have a validated "Gold Standard" baseline in Content Explorer, you can use this data to drive your data protection strategy.
 
-Choose from **four discovery methods** in Lab 05 based on what you've completed:
+### 1. Continuous Monitoring
 
-**Available Now (after Lab 04 Step 1)**: Labs 05a and 05b  
-**Available After Lab 04 Steps 2-7**: Labs 05c and 05d
+Content Explorer is not just a one-time validation tool. Use it to monitor sensitive data growth over time.
 
-### Lab 05a: PnP PowerShell Direct File Access
+- **Trend Analysis**: Check if sensitive data is increasing in unauthorized locations (e.g., "Marketing" site suddenly has Credit Card numbers).
+- **Policy Effectiveness**: Verify if DLP policies are effectively blocking new sensitive data uploads.
 
-**Timeline**: ✅ **Start immediately after Lab 04 Step 1**  
-**Accuracy**: 70-90% (regex-based)  
-**Lab 04 Required**: Only Step 1 (scan initiation)
+### 2. Refine Automated Discovery (Lab 05)
 
-Direct file enumeration via PnP PowerShell with custom regex pattern matching.
+If you noticed discrepancies between your Lab 04 baseline and your Lab 05 automated reports:
 
-**Best For**: Immediate results while waiting for classification to complete, learning SIT detection fundamentals, interim analysis.
+- **False Positives**: If Lab 05a (Regex) found more items than Content Explorer, those are likely false positives. Tune your regex patterns.
+- **False Negatives**: If Lab 05b/c missed items found in Content Explorer, investigate indexing latency or search query scope.
 
-**[Go to Lab 05a →](../05-Data-Discovery-Paths/05a-PnP-Direct-File-Access/)**
+### 3. Prioritize Remediation
 
----
+Use the **Confidence Level** and **Count** to prioritize protection efforts:
 
-### Lab 05b: eDiscovery Compliance Search
+- **Immediate Action**: High-volume, High-confidence detections in low-security sites (e.g., "Public" or "Marketing").
+- **Investigation**: Low-confidence detections that might require manual review or "Trainable Classifiers" to improve accuracy.
 
-**Timeline**: ✅ **Start after Lab 04 Step 1** (needs 24 hours from Lab 03 upload)  
-**Accuracy**: 100% (official Purview SITs)  
-**Lab 04 Required**: Only Step 1 (scan initiation)
-
-Portal-based eDiscovery search with official Purview SIT detection.
-
-**Best For**: Fast official results while waiting for Lab 04 classification, compliance-quality reporting, validating Lab 05a regex accuracy.
-
-**[Go to Lab 05b →](../05-Data-Discovery-Paths/05b-eDiscovery-Compliance-Search/)**
-
----
-
-### Lab 05c: Graph API Discovery
-
-**Timeline**: ⏳ **Requires Lab 04 Steps 2-7 completion** (~7 days after Step 1)  
-**Accuracy**: 100% (official Purview SITs)  
-**Lab 04 Required**: ✅ Yes (all steps through validation)
-
-Automated Microsoft Graph Search API queries with PowerShell scripting.
-
-**Best For**: Recurring monitoring, SIEM integration, large-scale tenant-wide discovery, automation.
-
-**Prerequisites**: Return to complete Lab 04 Steps 2-7 after classification finishes before starting this lab.
-
-**[Go to Lab 05c →](../05-Data-Discovery-Paths/05c-Graph-API-Discovery/)**
-
----
-
-### Lab 05d: SharePoint Search Discovery
-
-**Timeline**: ⏳ **Requires Lab 04 Steps 2-7 completion** (~7 days after Step 1)  
-**Accuracy**: 100% (official Purview SITs)  
-**Lab 04 Required**: ✅ Yes (all steps through validation)
-
-Site-specific queries via PnP PowerShell with rich metadata extraction.
-
-**Best For**: Targeted site scans, detailed file metadata, custom SIT pattern validation.
-
-**Prerequisites**: Return to complete Lab 04 Steps 2-7 after classification finishes before starting this lab.
-
-**[Go to Lab 05d →](../05-Data-Discovery-Paths/05d-SharePoint-Search-Discovery/)**
-
----
-
-### Quick Decision Guide
-
-| Your Priority | Choose This Lab | When Can You Start? |
-|---------------|-----------------|---------------------|
-| "I need results right now" | **Lab 05a** (immediate, regex-based) | ✅ After Lab 04 Step 1 |
-| "I need official SITs fast" | **Lab 05b** (24 hours, 100% accurate) | ✅ After Lab 04 Step 1 + 24 hours |
-| "I need automated recurring scans" | **Lab 05c** (Graph API, fully automated) | ⏳ After Lab 04 Steps 2-7 (~7 days) |
-| "I need detailed site-specific reports" | **Lab 05d** (SharePoint Search, rich metadata) | ⏳ After Lab 04 Steps 2-7 (~7 days) |
-
-> **💡 Workflow Summary**:
-> 
-> - **Now**: Labs 05a and 05b work immediately after completing Lab 04 Step 1
-> - **Later**: Return to complete Lab 04 Steps 2-7 (~7 days), then Labs 05c and 05d become available
-> - Lab 04's full completion populates the Microsoft Search unified index (Content Explorer) needed for Labs 05c/05d
+> **🔄 Loop Back**: If you haven't run the full comparison yet, return to **[Lab 05 - Cross-Lab Analysis](../05-Data-Discovery-Paths/CROSS-LAB-ANALYSIS.md)** to generate your final compliance report.
 
 ---
 
@@ -641,10 +388,10 @@ Site-specific queries via PnP PowerShell with rich metadata extraction.
 
 - [ ] **Classification Complete**: Content Explorer shows classified documents (>90% coverage)
 - [ ] **SIT Detection Verified**: All 8 expected SIT types visible (SSN, Credit Card, Bank Account, Passport, Driver's License, ITIN, ABA Routing, IBAN)
-- [ ] **Results Exported**: Downloaded CSV exports from Content Explorer
-- [ ] **Accuracy Validated**: Compared detected counts against Lab 02 reports (>90% accuracy)
-- [ ] **Findings Documented**: Created classification validation summary in reports directory
-- [ ] **Ready for Labs 05c/05d**: Content Explorer populated, advanced discovery paths enabled
+- [ ] **Visual Baseline Recorded**: Documented counts from Content Explorer for all target SITs
+- [ ] **Cross-Lab Analysis Run**: Executed `Invoke-CrossLabAnalysis.ps1` in Lab 05
+- [ ] **Automated Findings Validated**: Confirmed Lab 05 automated reports match Lab 04 visual baseline
+- [ ] **Ready for Monitoring**: Content Explorer established as "Gold Standard" for ongoing compliance monitoring
 
 ---
 
@@ -663,15 +410,15 @@ Upon successful completion of Lab 04, you will have:
 
 - Accessing and navigating the modern Microsoft Purview portal.
 - Using Content Explorer to review classified content and SIT detections.
-- Exporting classification data manually for validation and reporting.
-- Validating SIT detection accuracy against known document generation reports.
+- Establishing a visual baseline for sensitive data validation.
+- Validating automated discovery pipelines against "Gold Standard" classification data.
 - Documenting classification validation findings for stakeholder communication.
 
 ### Deliverables
 
-- **Classification validation reports** (CSV exports from Content Explorer).
-- **Accuracy validation summary** comparing detected SITs against Lab 02 generation reports.
-- **Documentation of findings** including SIT detection rates, confidence scores, and any anomalies.
+- **Visual Baseline Records** (Screenshots/Notes from Content Explorer).
+- **Cross-Lab Analysis Report** (HTML report from Lab 05).
+- **Validation Confirmation** verifying automated discovery accuracy.
 - **Readiness for Lab 05** with understanding of three discovery path options.
 
 ---
@@ -682,14 +429,14 @@ You have successfully completed Lab 04 when:
 
 1. ✅ **Classification Scan Initiated** (Step 1): Created and started on-demand classification scan targeting Lab 03 SharePoint sites.
 2. ✅ **Classification Complete** (After ~7 days): Purview scan finished and Content Explorer shows classified documents.
-3. ✅ **SIT Detection Validated** (Steps 2-7): Verified expected SIT types detected with >90% accuracy.
-4. ✅ **Results Exported** (Step 5): Downloaded CSV reports for key sensitive information types.
-5. ✅ **Accuracy Validated** (Step 6): Compared detected counts against Lab 02 generation reports.
-6. ✅ **Findings Documented** (Step 7): Created classification validation summary.
+3. ✅ **SIT Detection Validated** (Steps 2-4): Verified expected SIT types detected with >90% accuracy.
+4. ✅ **Visual Baseline Recorded** (Step 5): Documented "Gold Standard" counts from Content Explorer.
+5. ✅ **Cross-Lab Analysis Run** (Step 6): Generated automated comparison report in Lab 05.
+6. ✅ **Findings Validated** (Step 7): Confirmed automated reports match visual baseline.
 
 > **⏱️ Two-Phase Completion**: Complete Step 1 (~15-30 minutes), then return after ~7 days to complete Steps 2-7.
 
-**Ready for Lab 05**: You can start Labs 05a/05b immediately after Step 1, or wait to start Labs 05c/05d after completing all steps.
+**Ready for Lab 05**: You can start Labs 05a/05b/05c immediately after Step 1, or wait to validate results after completing all steps.
 
 ---
 
@@ -707,4 +454,4 @@ You have successfully completed Lab 04 when:
 
 This comprehensive classification validation guide was created with the assistance of **GitHub Copilot** powered by advanced AI language models. The content was generated, structured, and refined through iterative collaboration between human expertise and AI assistance within **Visual Studio Code**, incorporating Microsoft Purview classification validation best practices, Content Explorer workflows, and enterprise data discovery methodologies.
 
-_AI tools were used to enhance productivity and ensure comprehensive coverage of Microsoft Purview classification validation while maintaining technical accuracy and reflecting enterprise-grade data discovery standards for sensitive information detection._
+*AI tools were used to enhance productivity and ensure comprehensive coverage of Microsoft Purview classification validation while maintaining technical accuracy and reflecting enterprise-grade data discovery standards for sensitive information detection.*

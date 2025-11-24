@@ -8,8 +8,7 @@
     "enabledLabs": {
       "lab05a": true,
       "lab05b": true,
-      "lab05c": false,
-      "lab05d": false
+      "lab05c": true
     },
     "minimumLabsRequired": 2,
     "autoDetectReports": true,
@@ -28,22 +27,15 @@
     },
     "lab05b": {
       "enabled": true,
-      "searchPattern": "Results.csv",
-      "defaultPath": ".\\05b-eDiscovery-Compliance-Search\\reports\\Lab05b-Export\\",
-      "useLatestReport": false,
+      "searchPattern": "eDiscovery-Detailed-Analysis-*.csv",
+      "defaultPath": ".\\05b-eDiscovery-Compliance-Search\\reports\\",
+      "useLatestReport": true,
       "explicitPath": null
     },
     "lab05c": {
       "enabled": true,
-      "searchPattern": "Graph-Discovery-*.csv",
+      "searchPattern": "eDiscovery-Detailed-Analysis-*.csv",
       "defaultPath": ".\\05c-Graph-API-Discovery\\reports\\",
-      "useLatestReport": true,
-      "explicitPath": null
-    },
-    "lab05d": {
-      "enabled": true,
-      "searchPattern": "SharePoint-Discovery-*.csv",
-      "defaultPath": ".\\05d-SharePoint-Search-Discovery\\reports\\",
       "useLatestReport": true,
       "explicitPath": null
     }
@@ -150,12 +142,6 @@
       "confidenceField": null
     },
     "lab05c": {
-      "fileNameField": "FileName",
-      "sitTypeField": "SITType",
-      "locationField": "Location",
-      "confidenceField": "Confidence"
-    },
-    "lab05d": {
       "fileNameField": "FileName",
       "sitTypeField": "SITType",
       "locationField": "Location",

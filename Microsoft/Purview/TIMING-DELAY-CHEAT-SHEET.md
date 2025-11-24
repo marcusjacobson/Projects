@@ -38,7 +38,7 @@
 
 | Operation | SharePoint Timing | OneDrive Timing | Notes |
 |-----------|-------------------|-----------------|-------|
-| **Initial document indexing** | **7-14 days** | **7-14 days** | Used by Graph API, SharePoint Search API |
+| **Initial document indexing** | **7-14 days** | **7-14 days** | Used by Graph API |
 | **On-Demand Classification results** | **7 days** | **7 days** | Content Explorer updates within 7 days of scanning |
 | **Automatic classification indexing** | 7-14 days | 7-14 days | Background processing |
 | **Content Explorer updates** | 7 days after classification | 7 days after classification | Aggregation timing |
@@ -59,7 +59,6 @@
 | **eDiscovery Compliance Search** | **24 hours** | 100% (Purview SITs) | ✅ Yes | ✅ Yes | ✅ SharePoint Search |
 | **On-Demand Classification** | **7 days** | 100% (Purview SITs) | ✅ Yes | ✅ Yes | ❌ Direct scan |
 | **Graph API Discovery** | **7-14 days** | 100% (Purview SITs) | ✅ Yes | ✅ Yes | ✅ Microsoft Search unified |
-| **SharePoint Search API** | **7-14 days** | 100% (Purview SITs) | ✅ Yes | ⚠️ Limited | ✅ Microsoft Search unified |
 
 ### On-Demand Classification Workflow
 
@@ -229,19 +228,6 @@
 
 > **💡 Throttling Considerations**: Graph API applies throttling limits for high-volume queries. Implement pagination and retry logic to handle 429 (Too Many Requests) responses. OneDrive sites can be discovered using MySite domain patterns (e.g., contoso-my.sharepoint.com).
 
-### SharePoint Search API
-
-| Operation | Timing | Index Dependency |
-|-----------|--------|------------------|
-| **Initial content availability** | **7-14 days** | Microsoft Search unified index |
-| **KQL query execution** | Seconds | Site-specific queries |
-| **Metadata retrieval** | Seconds | Managed properties |
-| **Site-scoped automation** | Configurable schedule | Targeted discovery |
-
-**Microsoft Learn Reference**: [SharePoint Search API](https://learn.microsoft.com/en-us/sharepoint/dev/general-development/sharepoint-search-rest-api-overview)
-
-> **💡 Key Insight**: Both Graph API and SharePoint Search API rely on the **Microsoft Search unified index** which requires **7-14 days** for content availability. On-Demand Classification can accelerate to **7 days**.
-
 ---
 
 ## 📊 Portal Updates & Reporting
@@ -334,7 +320,6 @@
 - **[Information Protection Scanner](https://learn.microsoft.com/en-us/purview/deploy-scanner-configure-install)** - Scanner deployment and sync
 - **[Trainable Classifiers](https://learn.microsoft.com/en-us/purview/classifier-get-started-with)** - 24-hour ML training
 - **[Microsoft Graph Security API](https://learn.microsoft.com/en-us/graph/api/resources/security-api-overview)** - API timing and throttling
-- **[SharePoint Search API](https://learn.microsoft.com/en-us/sharepoint/dev/general-development/sharepoint-search-rest-api-overview)** - Search query timing
 
 ### Related Documentation
 
@@ -404,7 +389,7 @@
 
 1. **24 hours**: SharePoint Search index (eDiscovery)
 2. **7 days**: On-Demand Classification & Content Explorer
-3. **7-14 days**: Microsoft Search unified index (Graph API, SharePoint Search API)
+3. **7-14 days**: Microsoft Search unified index (Graph API)
 4. **1-2 hours**: DLP policy sync
 5. **7 days**: Retention label production mode activation
 6. **24 hours or less**: Trainable classifier ML training (preview feature)
@@ -419,7 +404,7 @@ Immediate (regex patterns)
     ↓
 7 Days (On-Demand Classification)
     ↓
-7-14 Days (Graph API & SharePoint Search API)
+7-14 Days (Graph API)
 ```
 
 ### Use This Cheat Sheet When

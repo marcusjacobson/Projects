@@ -77,7 +77,8 @@ Write-Host "====================" -ForegroundColor Cyan
 
 # Load global configuration
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
-$projectRoot = Split-Path -Parent $scriptPath
+$moduleRoot = Split-Path -Parent $scriptPath
+$projectRoot = Split-Path -Parent $moduleRoot
 . (Join-Path $projectRoot "Shared-Utilities\Import-GlobalConfig.ps1")
 $config = Import-GlobalConfig
 

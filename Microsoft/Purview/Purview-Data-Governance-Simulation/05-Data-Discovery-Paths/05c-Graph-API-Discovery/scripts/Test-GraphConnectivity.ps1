@@ -4,9 +4,9 @@
 
 .DESCRIPTION
     This script validates that Microsoft Graph authentication is working correctly
-    and that the necessary permissions (Files.Read.All, Sites.Read.All) have been
-    granted. It performs sample queries to verify API access before running full
-    discovery scans.
+    and that the necessary eDiscovery permissions (eDiscovery.Read.All, 
+    eDiscovery.ReadWrite.All) have been granted. It performs a test eDiscovery
+    case creation and deletion to verify API access before running full discovery scans.
 
 .EXAMPLE
     .\Test-GraphConnectivity.ps1
@@ -39,6 +39,25 @@
 Write-Host "🔍 Microsoft Graph API Connectivity Test" -ForegroundColor Cyan
 Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host ""
+
+# Load global configuration
+$globalConfigPath = Join-Path $PSScriptRoot "..\..\..\global-config.json"
+
+if (-not (Test-Path $globalConfigPath)) {
+    Write-Host "❌ Global configuration file not found: $globalConfigPath" -ForegroundColor Red
+    Write-Host ""
+    Write-Host "💡 Ensure global-config.json exists in the repository root" -ForegroundColor Yellow
+    exit 1
+}
+
+try {
+    $globalConfig = Get-Content $globalConfigPath -Raw | ConvertFrom-Json
+    Write-Host "✅ Loaded global configuration from: $globalConfigPath" -ForegroundColor Green
+    Write-Host ""
+} catch {
+    Write-Host "❌ Failed to load global configuration: $_" -ForegroundColor Red
+    exit 1
+}
 
 # =============================================================================
 # Step 1: Verify Microsoft Graph SDK Installation
@@ -83,9 +102,8 @@ try {
         Write-Host "   Attempting to connect..." -ForegroundColor Cyan
         
         $requiredScopes = @(
-            "Files.Read.All",
-            "Sites.Read.All",
-            "InformationProtectionPolicy.Read"
+            "eDiscovery.Read.All",
+            "eDiscovery.ReadWrite.All"
         )
         
         Connect-MgGraph -Scopes $requiredScopes -UseDeviceCode:$false
@@ -122,9 +140,8 @@ Write-Host "=========================================" -ForegroundColor Green
 Write-Host ""
 
 $requiredScopes = @(
-    "Files.Read.All",
-    "Sites.Read.All",
-    "InformationProtectionPolicy.Read"
+    "eDiscovery.Read.All",
+    "eDiscovery.ReadWrite.All"
 )
 
 $grantedScopes = (Get-MgContext).Scopes
@@ -151,77 +168,63 @@ if (-not $allPermissionsValid) {
 }
 
 # =============================================================================
-# Step 4: Test SharePoint Sites Query
+# Step 4: Test eDiscovery Case Creation
 # =============================================================================
 
-Write-Host "📊 Step 4: Test SharePoint Sites Query" -ForegroundColor Green
-Write-Host "=======================================" -ForegroundColor Green
+Write-Host "🔬 Step 4: Test eDiscovery Case Creation" -ForegroundColor Green
+Write-Host "=========================================" -ForegroundColor Green
 Write-Host ""
 
-Write-Host "   ⏳ Querying SharePoint sites..." -ForegroundColor Cyan
+Write-Host "   ⏳ Creating temporary eDiscovery case..." -ForegroundColor Cyan
 
 try {
-    # Query SharePoint sites using Microsoft Graph
-    $sites = Get-MgSite -All -PageSize 10 -ErrorAction Stop
+    # Create test eDiscovery case to validate permissions
+    $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
+    $testCaseName = "Connectivity-Test-$timestamp"
     
-    if ($null -eq $sites -or $sites.Count -eq 0) {
-        Write-Host "   ⚠️ No SharePoint sites found (this might be normal for test tenants)" -ForegroundColor Yellow
-    } else {
-        Write-Host "   ✅ Successfully retrieved $($sites.Count) SharePoint site(s)" -ForegroundColor Green
-        Write-Host ""
-        Write-Host "   📋 Sample Sites:" -ForegroundColor Cyan
-        
-        $sites | Select-Object -First 5 | ForEach-Object {
-            Write-Host "      • $($_.DisplayName)" -ForegroundColor DarkGray
-        }
-        
-        if ($sites.Count -gt 5) {
-            Write-Host "      ... and $($sites.Count - 5) more" -ForegroundColor DarkGray
-        }
+    $testCase = New-MgSecurityCaseEdiscoveryCase `
+        -DisplayName $testCaseName `
+        -Description "Automated connectivity test - safe to delete" `
+        -ErrorAction Stop
+    
+    if ($null -eq $testCase -or $null -eq $testCase.Id) {
+        throw "Case creation returned null or invalid response"
     }
     
+    Write-Host "   ✅ Successfully created test eDiscovery case" -ForegroundColor Green
+    Write-Host "      • Case ID: $($testCase.Id)" -ForegroundColor DarkGray
+    Write-Host "      • Case Name: $testCaseName" -ForegroundColor DarkGray
+    Write-Host ""
+    
+    # Clean up test case
+    Write-Host "   ⏳ Cleaning up test case..." -ForegroundColor Cyan
+    
+    Remove-MgSecurityCaseEdiscoveryCase -EdiscoveryCaseId $testCase.Id -Confirm:$false -ErrorAction Stop
+    
+    Write-Host "   ✅ Test case deleted successfully" -ForegroundColor Green
+    Write-Host ""
+    Write-Host "   🎯 eDiscovery API access validated:" -ForegroundColor Cyan
+    Write-Host "      • Case creation: Working" -ForegroundColor DarkGray
+    Write-Host "      • Case deletion: Working" -ForegroundColor DarkGray
+    Write-Host "      • Permissions: Correctly configured" -ForegroundColor DarkGray
+    
 } catch {
-    Write-Host "   ❌ Failed to query SharePoint sites: $_" -ForegroundColor Red
+    Write-Host "   ❌ Failed to create/delete eDiscovery case: $_" -ForegroundColor Red
     Write-Host ""
     Write-Host "   💡 Possible causes:" -ForegroundColor Yellow
-    Write-Host "      • Insufficient permissions (Sites.Read.All required)" -ForegroundColor DarkGray
+    Write-Host "      • Insufficient permissions (eDiscovery.ReadWrite.All required)" -ForegroundColor DarkGray
+    Write-Host "      • Permission consent not completed (check Azure AD admin consent)" -ForegroundColor DarkGray
     Write-Host "      • Network connectivity issues" -ForegroundColor DarkGray
     Write-Host "      • API throttling or service outage" -ForegroundColor DarkGray
+    Write-Host ""
+    Write-Host "   Run Grant-GraphPermissions.ps1 to ensure eDiscovery permissions are granted" -ForegroundColor Yellow
     exit 1
 }
 
 Write-Host ""
 
 # =============================================================================
-# Step 5: Test File Search Query (Simplified)
-# =============================================================================
-
-Write-Host "🔍 Step 5: Test File Search Capability" -ForegroundColor Green
-Write-Host "=======================================" -ForegroundColor Green
-Write-Host ""
-
-Write-Host "   ⏳ Testing Graph Search API access..." -ForegroundColor Cyan
-
-try {
-    # Test basic Graph API connectivity (without full search which requires more setup)
-    $testUri = "https://graph.microsoft.com/v1.0/me"
-    $response = Invoke-MgGraphRequest -Method GET -Uri $testUri -ErrorAction Stop
-    
-    if ($null -ne $response) {
-        Write-Host "   ✅ Graph API queries working correctly" -ForegroundColor Green
-        Write-Host "      • User: $($response.displayName)" -ForegroundColor DarkGray
-        Write-Host "      • UPN: $($response.userPrincipalName)" -ForegroundColor DarkGray
-    }
-    
-} catch {
-    Write-Host "   ⚠️ Graph API query test encountered issues: $_" -ForegroundColor Yellow
-    Write-Host "      This may not affect discovery functionality" -ForegroundColor DarkGray
-}
-
-Write-Host ""
-
-# =============================================================================
-# Step 6: Connectivity Test Summary
+# Step 5: Connectivity Test Summary
 # =============================================================================
 
 Write-Host "📈 Connectivity Test Summary" -ForegroundColor Green
@@ -230,11 +233,11 @@ Write-Host ""
 
 Write-Host "✅ All connectivity tests PASSED" -ForegroundColor Green
 Write-Host ""
-Write-Host "📋 Ready for Discovery Operations:" -ForegroundColor Cyan
+Write-Host "📋 Ready for eDiscovery Operations:" -ForegroundColor Cyan
 Write-Host "   • Microsoft Graph SDK: Installed and functional" -ForegroundColor DarkGray
 Write-Host "   • Authentication: Connected with valid credentials" -ForegroundColor DarkGray
-Write-Host "   • Permissions: All required scopes granted" -ForegroundColor DarkGray
-Write-Host "   • API Access: SharePoint sites query successful" -ForegroundColor DarkGray
+Write-Host "   • Permissions: All required eDiscovery scopes granted" -ForegroundColor DarkGray
+Write-Host "   • API Access: eDiscovery case creation successful" -ForegroundColor DarkGray
 Write-Host ""
 Write-Host "🚀 Next Steps:" -ForegroundColor Cyan
 Write-Host "   1. Run Search-GraphSITs.ps1 to perform tenant-wide SIT discovery" -ForegroundColor DarkGray

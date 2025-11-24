@@ -51,24 +51,7 @@ All PowerShell scripts in the Purview Data Governance Simulation project have be
   - Uses `Connect-PurviewServices` with `PnPClientId` for SharePoint connections
   - Includes `Test-PurviewConnection` validation
 
-### 05 - DLP Policy Implementation (3 scripts)
-
-- **`Export-DLPIncidents.ps1`**
-  - Loads shared modules via `Import-PurviewModules.ps1`
-  - Uses `Connect-PurviewServices` for ComplianceCenter connection
-  - Includes `Test-PurviewConnection` validation
-
-- **`New-DLPPolicies.ps1`**
-  - Loads shared modules via `Import-PurviewModules.ps1`
-  - Uses `Connect-PurviewServices` for ComplianceCenter connection
-  - Includes `Test-PurviewConnection` validation
-
-- **`Set-PolicyRules.ps1`**
-  - Loads shared modules via `Import-PurviewModules.ps1`
-  - Uses `Connect-PurviewServices` for ComplianceCenter connection
-  - Includes `Test-PurviewConnection` validation
-
-### 07 - Cleanup & Reset (2 scripts)
+### 06 - Cleanup & Reset (2 scripts)
 
 - **`Remove-SimulationResources.ps1`**
   - Loads shared modules via `Import-PurviewModules.ps1`
@@ -88,17 +71,20 @@ All PowerShell scripts in the Purview Data Governance Simulation project have be
 **Location**: `Shared-Utilities/Functions/Connection-Management.ps1`
 
 **Key Functions**:
+
 - `Connect-PurviewServices` - Main connection function
 - `Test-PurviewConnection` - Connection validation
 - `Disconnect-PurviewServices` - Clean disconnection
 
 **Parameters**:
+
 - `-Services` - Array of services to connect: `@("SharePoint")`, `@("ComplianceCenter")`, or both
 - `-TenantUrl` - SharePoint site URL (for SharePoint connections)
 - `-PnPClientId` - Azure AD App Registration Client ID (from global-config.json)
 - `-Interactive` - Browser-based authentication (default: $true)
 
 **Usage Pattern**:
+
 ```powershell
 # Import shared modules
 . "$PSScriptRoot\..\..\Shared-Utilities\Import-PurviewModules.ps1"
@@ -127,6 +113,7 @@ if ($connectionTest.Connected) {
 ### global-config.json
 
 **PnPClientId Configuration**:
+
 ```json
 {
   "Environment": {
@@ -137,6 +124,7 @@ if ($connectionTest.Connected) {
 ```
 
 **Key Benefits**:
+
 - **No prompts**: All authentication values from configuration
 - **Single source of truth**: `global-config.json`
 - **Consistent behavior**: All scripts use same authentication method
@@ -150,6 +138,7 @@ if ($connectionTest.Connected) {
 **Method**: Browser-based interactive authentication with Azure AD App Registration
 
 **Pattern**:
+
 ```powershell
 Connect-PurviewServices -Services @("SharePoint") `
     -TenantUrl "https://tenant.sharepoint.com/sites/sitename" `
@@ -158,6 +147,7 @@ Connect-PurviewServices -Services @("SharePoint") `
 ```
 
 **Features**:
+
 - Session reuse (checks `Get-PnPConnection`)
 - Connection tracking in `$Script:ConnectedServices`
 - Automatic disconnect before reconnect for clean state
@@ -167,6 +157,7 @@ Connect-PurviewServices -Services @("SharePoint") `
 **Method**: Browser-based interactive authentication via `Connect-IPPSSession`
 
 **Pattern**:
+
 ```powershell
 Connect-PurviewServices -Services @("ComplianceCenter") -Interactive
 
@@ -177,6 +168,7 @@ if ($connectionTest.Connected) {
 ```
 
 **Features**:
+
 - Session reuse (checks `Get-PSSession`)
 - Connection validation with structured result objects
 - Graceful error handling with clear messages
@@ -184,26 +176,31 @@ if ($connectionTest.Connected) {
 ## 🎯 Benefits of Standardization
 
 ### 1. Consistency
+
 - All scripts use identical authentication approach
 - No variations in connection methods across project
 - Predictable behavior for users
 
 ### 2. Maintainability
+
 - Single module to update for authentication changes
 - Configuration changes in one location (`global-config.json`)
 - Reduced code duplication
 
 ### 3. Troubleshooting
+
 - Centralized error handling
 - Consistent error messages
 - Connection state tracking and validation
 
 ### 4. Security
+
 - App registration ID stored in configuration (not scripts)
 - Explicit permissions control via Azure AD app
 - Audit trail through app registration usage
 
 ### 5. User Experience
+
 - No repeated authentication prompts (session reuse)
 - Clear success/failure messages
 - Informative connection status feedback
@@ -213,11 +210,13 @@ if ($connectionTest.Connected) {
 ### Prerequisites Validation
 
 Run **`Test-Prerequisites.ps1`** to validate authentication setup:
+
 ```powershell
 .\00-Prerequisites-Setup\scripts\Test-Prerequisites.ps1
 ```
 
 **Expected Results**:
+
 - ✅ Configuration loaded with PnPClientId validation
 - ✅ SharePoint connection established with custom app registration
 - ✅ All prerequisites validation checks passed
@@ -226,15 +225,13 @@ Run **`Test-Prerequisites.ps1`** to validate authentication setup:
 ### Per-Script Testing
 
 Each updated script can be tested individually:
+
 ```powershell
 # Test SharePoint site creation authentication
 .\01-SharePoint-Site-Creation\scripts\New-SimulatedSharePointSites.ps1 -WhatIf
 
 # Test document upload authentication
 .\03-Document-Upload-Distribution\scripts\Copy-DocumentsToSharePoint.ps1 -WhatIf
-
-# Test DLP policy authentication
-.\05-DLP-Policy-Implementation\scripts\Export-DLPIncidents.ps1
 ```
 
 ## 🔍 Verification Checklist
@@ -253,6 +250,7 @@ After standardization, verify these items:
 ## 🚀 Future Enhancements
 
 **Potential Improvements**:
+
 - Certificate-based authentication for automation scenarios
 - Managed identity support for Azure-hosted execution
 - Additional connection validation checks
@@ -262,6 +260,7 @@ After standardization, verify these items:
 ## 📝 Documentation Updates
 
 **Related Files**:
+
 - `README.md` - Updated with authentication requirements
 - `global-config.json` - Contains PnPClientId configuration
 - `Connection-Management.ps1` - Core authentication module

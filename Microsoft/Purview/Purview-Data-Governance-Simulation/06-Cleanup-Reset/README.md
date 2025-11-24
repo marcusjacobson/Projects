@@ -63,13 +63,14 @@ By completing this lab, you will:
 
 ```powershell
 # Export final project documentation
-.\Export-FinalDocumentation.ps1
+.\scripts\Export-FinalDocumentation.ps1
 
 # Verify archive creation
-Get-ChildItem -Path "..\Reports\Archives" -Recurse
+Get-ChildItem -Path "..\Reports\Purview-Simulation-Final-Documentation-*.zip"
 ```
 
 **What this does**:
+
 - Creates comprehensive final project summary
 - Archives all reports from Labs 04-06
 - Generates execution statistics and metrics
@@ -77,29 +78,27 @@ Get-ChildItem -Path "..\Reports\Archives" -Recurse
 - Packages everything into timestamped archive
 
 **Expected output**:
+
 - `Final-Project-Summary-YYYY-MM-DD.html` - Comprehensive project overview
 - `Archived-Reports-YYYY-MM-DD.zip` - All reports and exports
 - `Project-Metrics-YYYY-MM-DD.json` - Execution statistics
 - `Lessons-Learned-YYYY-MM-DD.md` - Key takeaways and insights
 
-### Step 2: Remove Simulation Resources
+### Step 2: Execute Cleanup
 
-Use `Remove-SimulationResources.ps1` for targeted resource removal:
+Run the cleanup script to remove simulation resources:
 
 ```powershell
-# Preview what will be removed (dry-run mode)
-.\Remove-SimulationResources.ps1 -WhatIf
-
 # Remove specific resource types
-.\Remove-SimulationResources.ps1 -ResourceType "DLPPolicies"
-.\Remove-SimulationResources.ps1 -ResourceType "Documents"
-.\Remove-SimulationResources.ps1 -ResourceType "Sites"
+.\scripts\Remove-SimulationResources.ps1 -ResourceType "SharePoint"
+.\scripts\Remove-SimulationResources.ps1 -ResourceType "DLP"
 
 # Remove all simulation resources (requires confirmation)
-.\Remove-SimulationResources.ps1 -ResourceType "All"
+.\scripts\Remove-SimulationResources.ps1
 ```
 
 **What this does**:
+
 - Removes DLP policies and rules in proper dependency order
 - Deletes test documents from SharePoint sites
 - Removes SharePoint simulation sites
@@ -107,6 +106,7 @@ Use `Remove-SimulationResources.ps1` for targeted resource removal:
 - Validates removal at each stage
 
 **Resource Removal Order**:
+
 1. **DLP Rules** - Remove detection rules first
 2. **DLP Policies** - Remove policies after rules
 3. **Documents** - Delete test documents from sites
@@ -114,6 +114,7 @@ Use `Remove-SimulationResources.ps1` for targeted resource removal:
 5. **Classification Jobs** - Clean up job history
 
 **Expected output**:
+
 - Confirmation prompts for each resource type
 - Progress updates during removal
 - Validation of successful deletion
@@ -125,16 +126,17 @@ Use `Reset-Environment.ps1` for complete environment reset:
 
 ```powershell
 # Preview reset actions
-.\Reset-Environment.ps1 -WhatIf
+.\scripts\Reset-Environment.ps1 -WhatIf
 
 # Reset with confirmation prompts
-.\Reset-Environment.ps1
+.\scripts\Reset-Environment.ps1
 
 # Reset without prompts (use with caution)
-.\Reset-Environment.ps1 -Force
+.\scripts\Reset-Environment.ps1 -Force
 ```
 
 **What this does**:
+
 - Removes all simulation resources
 - Clears Reports directory (after archiving)
 - Resets global configuration to defaults
@@ -142,277 +144,111 @@ Use `Reset-Environment.ps1` for complete environment reset:
 - Validates environment is clean
 
 **Expected output**:
+
 - Complete removal of all simulation artifacts
 - Clean project structure ready for future use
 - Validation report confirming clean state
 - Reset completion summary
 
-### Step 4: Verify Complete Cleanup
+#### Step 3: Full Environment Reset (Optional)
 
-Use `Test-CleanupCompletion.ps1` to verify all resources removed:
+If you need to completely reset the environment to its initial state:
 
 ```powershell
-# Run comprehensive verification
-.\Test-CleanupCompletion.ps1
-
-# Verify specific resource types
-.\Test-CleanupCompletion.ps1 -ResourceType "Sites"
-.\Test-CleanupCompletion.ps1 -ResourceType "DLPPolicies"
-
-# Generate detailed verification report
-.\Test-CleanupCompletion.ps1 -DetailedReport
+.\scripts\Reset-Environment.ps1 -Force -ArchiveReports
 ```
 
 **What this does**:
-- Verifies SharePoint sites are deleted
-- Confirms DLP policies and rules removed
-- Checks for orphaned resources
-- Validates clean Reports directory
-- Generates verification report
+
+- Removes all simulation resources
+- Resets environment to clean state
+- Archives final reports and logs
+- Validates complete cleanup
 
 **Expected output**:
+
+- Complete removal of all simulation artifacts
+- Clean environment validation
+- Archived documentation package
+- Final status report
+
+### Step 4: Verify Cleanup
+
+Run the verification script to ensure all resources have been removed:
+
+```powershell
+.\scripts\Test-CleanupCompletion.ps1
+```
+
+**What this does**:
+
+- Verifies SharePoint sites are deleted
+- Checks for remaining DLP policies
+- Confirms classification job cleanup
+- Generates final status report
+
+**Expected output**:
+
 - ✅ All SharePoint simulation sites removed
-- ✅ All DLP policies and rules deleted
-- ✅ No orphaned documents or resources
-- ✅ Reports directory clean (or archived)
-- Verification report with pass/fail status
+- ✅ No active DLP simulation policies found
+- ✅ Classification jobs cleaned up
+- 📝 Final report generated: `Reports\Cleanup-Validation-Report.json`
 
-## 📊 Cleanup Process Flowchart
+#### Troubleshooting
 
-```
-┌─────────────────────────────────────┐
-│  Step 1: Archive Reports            │
-│  Export-FinalDocumentation.ps1      │
-│  - Create final summary             │
-│  - Archive all reports              │
-│  - Generate project metrics         │
-└──────────────┬──────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────┐
-│  Step 2: Remove DLP Policies        │
-│  Remove-SimulationResources.ps1     │
-│  - Remove DLP rules                 │
-│  - Remove DLP policies              │
-│  - Validate deletion                │
-└──────────────┬──────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────┐
-│  Step 3: Remove Documents           │
-│  Remove-SimulationResources.ps1     │
-│  - Delete test documents            │
-│  - Clear recycle bins               │
-│  - Validate removal                 │
-└──────────────┬──────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────┐
-│  Step 4: Remove SharePoint Sites    │
-│  Remove-SimulationResources.ps1     │
-│  - Delete simulation sites          │
-│  - Remove from recycle bin          │
-│  - Validate deletion                │
-└──────────────┬──────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────┐
-│  Step 5: Reset Environment          │
-│  Reset-Environment.ps1              │
-│  - Clear Reports directory          │
-│  - Reset configuration              │
-│  - Clean temporary files            │
-└──────────────┬──────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────┐
-│  Step 6: Verify Cleanup             │
-│  Test-CleanupCompletion.ps1         │
-│  - Check all resources removed      │
-│  - Generate verification report     │
-│  - Confirm clean state              │
-└─────────────────────────────────────┘
-```
+#### Issue: DLP Policy Removal Fails
 
-## ⚠️ Troubleshooting
-
-### Issue 1: DLP Policy Deletion Fails
-
-**Symptoms**:
 - Error: "Policy in use" or "Policy has rules"
-- DLP policy deletion returns error
-- Policy still appears after deletion attempt
+- **Solution**:
 
-**Resolution**:
-1. Remove all rules from the policy first
-2. Wait 2-3 minutes for rule removal to propagate
-3. Retry policy deletion
-4. Verify no rules reference the policy
-5. Check for dependent policies
-6. Use `-Force` parameter if safe to do so
+  1. Remove all rules from the policy first
+  2. Wait 5-10 minutes for rule deletion to propagate
+  3. Retry policy removal
 
-### Issue 2: SharePoint Site Cannot Be Deleted
+#### Issue: SharePoint Site Deletion Fails
 
-**Symptoms**:
 - Error: "Site is locked" or "Access denied"
-- Site appears in recycle bin but won't delete
-- Deletion hangs or times out
+- **Solution**:
 
-**Resolution**:
-1. Verify you have Site Collection Administrator permissions
-2. Check if site is in hold or retention policy
-3. Remove any legal holds on the site
-4. Wait 24 hours for recycle bin automatic cleanup
-5. Use SharePoint Admin Center to manually delete
-6. Contact SharePoint administrator if persistent
+  1. Verify you have Site Collection Administrator permissions
+  2. Check if site has a retention policy applied (remove if necessary)
+  3. Use `Remove-SPOSite -Identity $url -NoWait`
 
-### Issue 3: Documents Won't Delete from Site
+#### Issue: Document Deletion Fails
 
-**Symptoms**:
 - Error: "File is checked out" or "File locked"
-- Some documents remain after deletion
-- Recycle bin still contains files
+- **Solution**:
 
-**Resolution**:
-1. Check in all checked-out documents first
-2. Break any workflow locks on documents
-3. Remove retention labels if applied
-4. Delete in smaller batches (100-200 at a time)
-5. Empty site recycle bin after document deletion
-6. Wait 10 minutes between deletion attempts
+  1. Check in all checked-out documents first
+  2. Remove any preservation hold libraries
+  3. Force delete using `-Force` parameter
 
-### Issue 4: Cleanup Verification Reports Failures
+#### Issue: Cleanup Verification Fails
 
-**Symptoms**:
 - Verification reports orphaned resources
-- Sites/policies still detected after deletion
-- Inconsistent verification results
+- **Solution**:
 
-**Resolution**:
-1. Wait 15-30 minutes for deletion propagation
-2. Clear PowerShell session and reconnect
-3. Verify credentials have proper permissions
-4. Check Azure AD cache refresh (can take 1 hour)
-5. Re-run verification with `-DetailedReport` flag
-6. Manually verify resources in portals
+  1. Wait 15-30 minutes for deletion propagation
+  2. Run `.\scripts\Reset-Environment.ps1` again
+  3. Manually remove stubborn resources via portal
 
-### Issue 5: Archive Creation Fails
+#### Issue: Report Archiving Fails
 
-**Symptoms**:
 - Error: "Access denied" on archive creation
-- Archive file incomplete or corrupted
-- Reports missing from archive
+- **Solution**:
 
-**Resolution**:
-1. Verify write permissions to Reports directory
-2. Check available disk space (need 100MB+)
-3. Close any open report files in Excel/browsers
-4. Retry archive creation with `-Force` parameter
-5. Manually copy Reports directory as backup
-6. Use Windows Compress-Archive cmdlet directly
+  1. Verify write permissions to Reports directory
+  2. Ensure no files are open in other applications
+  3. Check available disk space
 
-### Issue 6: Reset Removes Too Much
+#### Issue: Accidental Deletion
 
-**Symptoms**:
 - Important non-simulation resources deleted
-- Configuration files corrupted
-- Project structure damaged
+- **Solution**:
 
-**Resolution**:
-1. **PREVENTION**: Always use `-WhatIf` first
-2. Restore from archived reports if available
-3. Re-create global configuration using template
-4. Regenerate directory structure
-5. Review Reset-Environment.ps1 exclusions
-6. Implement custom exclusion list if needed
-
-## 💡 Best Practices
-
-### Safety Measures
-
-- **Always Archive First**: Run Export-FinalDocumentation.ps1 before any deletion
-- **Use WhatIf**: Preview all deletion operations before executing
-- **Verify Scope**: Confirm resource names match simulation patterns
-- **Incremental Removal**: Remove resources by type, not all at once
-- **Wait for Propagation**: Allow 5-10 minutes between major deletions
-
-### Documentation
-
-- **Capture Final State**: Take screenshots before cleanup
-- **Save Reports**: Archive all Lab 04-06 reports
-- **Record Metrics**: Note final classification and incident counts
-- **Lessons Learned**: Document challenges and solutions
-- **Configuration Backup**: Save global configuration values
-
-### Verification
-
-- **Multi-Stage Checks**: Verify after each resource type removal
-- **Portal Validation**: Check SharePoint Admin Center and Compliance Center
-- **Wait Periods**: Allow time for backend cleanup to complete
-- **Detailed Reports**: Use `-DetailedReport` for comprehensive verification
-- **Manual Spot Checks**: Randomly verify a few resources manually
-
-### Environment Management
-
-- **Clean Slate**: Reset environment completely for future projects
-- **Preserve Scripts**: Never delete PowerShell script files
-- **Maintain Documentation**: Keep README files for reference
-- **Version Control**: Commit final state to Git before cleanup
-- **Future Readiness**: Leave environment ready for next simulation
-
-## 🎯 Expected Results
-
-After completing this lab, you should have:
-
-- ✅ **Complete Archive**: All reports and documentation preserved
-- ✅ **Zero Simulation Resources**: No SharePoint sites, DLP policies, or test documents
-- ✅ **Clean Environment**: Reports directory empty or archived
-- ✅ **Verification Report**: Confirmation all resources removed
-- ✅ **Final Documentation**: Comprehensive project summary generated
-- ✅ **Lessons Learned**: Documented insights and challenges
-
-### Success Indicators
-
-```
-SharePoint Sites:        0 simulation sites found
-DLP Policies:            0 simulation policies found
-DLP Rules:               0 simulation rules found
-Test Documents:          0 documents in simulation sites
-Reports Archived:        Yes - timestamped archive created
-Environment Status:      Clean - ready for future use
-Verification Status:     PASSED - all checks successful
-```
-
-## 📚 Additional Resources
-
-### Microsoft Documentation
-
-- [SharePoint Site Deletion](https://learn.microsoft.com/en-us/sharepoint/delete-site-collection)
-- [DLP Policy Management](https://learn.microsoft.com/en-us/purview/dlp-create-deploy-policy)
-- [Purview Cleanup Procedures](https://learn.microsoft.com/en-us/purview/compliance-manager-assessments)
-
-### Cleanup Tools
-
-- [SharePoint Admin Center](https://admin.microsoft.com/sharepoint)
-- [Microsoft Purview Compliance Portal](https://compliance.microsoft.com)
-- [PowerShell Recycle Bin Management](https://learn.microsoft.com/en-us/powershell/module/sharepoint-online)
-
-### Safety Guidelines
-
-- [Azure Resource Deletion Best Practices](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group)
-- [Data Loss Prevention Policy Lifecycle](https://learn.microsoft.com/en-us/purview/dlp-policy-reference)
-
-## ⏭️ After Cleanup
-
-Once cleanup is complete:
-
-1. **Review Final Documentation**: Examine archived reports and project summary
-2. **Preserve Lessons Learned**: Save insights for future projects
-3. **Update Skills**: Reflect on what you learned about Purview and data governance
-4. **Share Knowledge**: Document key findings for team or community
-5. **Plan Next Steps**: Consider production implementation or advanced scenarios
-
----
+  1. **PREVENTION**: Always use `-WhatIf` first
+  2. Restore from SharePoint Recycle Bin (93 days retention)
+  3. Restore deleted DLP policies from backup (if available)
 
 ## 🤖 AI-Assisted Content Generation
 

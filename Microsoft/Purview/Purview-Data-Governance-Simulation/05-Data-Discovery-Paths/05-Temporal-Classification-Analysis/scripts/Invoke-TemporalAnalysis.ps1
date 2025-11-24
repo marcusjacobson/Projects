@@ -90,12 +90,20 @@ try {
     $baseline24Hr = Get-ChildItem -Path $lab05bPath -Filter "Items_0*.csv" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
     
     if (-not $baseline24Hr) {
-        Write-Host "❌ 24-Hour baseline (Lab 05b) not found" -ForegroundColor Red
-        throw "Complete Lab 05b before generating temporal analysis report"
+        Write-Host "⚠️ 24-Hour baseline (Lab 05b) not found. Checking for simulated 24-Hour scan..." -ForegroundColor Yellow
+        $baseline24Hr = Get-ChildItem -Path $reportsPath -Filter "Temporal-Scan-24Hour*.csv" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+        
+        if (-not $baseline24Hr) {
+            Write-Host "❌ No 24-Hour baseline found (neither Lab 05b nor simulated scan)" -ForegroundColor Red
+            throw "Complete Lab 05b or run Invoke-TemporalScan.ps1 -ScanInterval '24-Hour' -SimulationMode"
+        }
+        Write-Host "   ✅ Simulated 24-Hour baseline loaded: $($baseline24Hr.Name)" -ForegroundColor Green
+    } else {
+        Write-Host "   ✅ 24-Hour baseline loaded (Lab 05b): $($baseline24Hr.Name)" -ForegroundColor Green
     }
     
     $results24Hr = Import-Csv $baseline24Hr.FullName
-    Write-Host "   ✅ 24-Hour baseline loaded: $($results24Hr.Count) detections" -ForegroundColor Green
+    Write-Host "   📊 Baseline count: $($results24Hr.Count) detections" -ForegroundColor Cyan
     
     # Load 7-Day scan
     $scan7Day = Get-ChildItem -Path $reportsPath -Filter "Temporal-Scan-7Day*.csv" | Sort-Object LastWriteTime -Descending | Select-Object -First 1

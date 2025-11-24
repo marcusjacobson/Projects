@@ -20,10 +20,9 @@ This directory contains **three comprehensive hands-on lab projects** designed t
 
 **Key Capabilities**:
 
-- Four discovery methods (immediate regex, 24hr eDiscovery, 7-14 day Graph/SharePoint Search APIs)
+- Three discovery methods (immediate regex, 24hr eDiscovery, 7-14 day Graph API)
 - Modern eDiscovery portal (purview.microsoft.com with Cases preview, Condition builder)
 - Microsoft Graph API automation (OAuth 2.0, tenant-wide discovery, SIEM integration)
-- SharePoint Search API (site-specific targeted scans, KQL queries, rich metadata)
 - On-Demand Classification (7-day portal-based with estimation and cost analysis)
 - Content Explorer proficiency (classification validation with 7-day update timing)
 - SharePoint indexing status validation (real-time readiness checks)
@@ -33,7 +32,7 @@ This directory contains **three comprehensive hands-on lab projects** designed t
 - **Immediate Discovery** (Lab 05a): Regex-based detection for instant results
 - **24-Hour Discovery** (Lab 05b): eDiscovery compliance search after SharePoint indexing
 - **7-Day Discovery** (Lab 04): On-Demand Classification with Content Explorer
-- **7-14 Day Discovery** (Labs 05c/05d): Automated API-based recurring discovery
+- **7-14 Day Discovery** (Lab 05c): Automated API-based recurring discovery
 
 **Coverage Depth**: ~45% of Purview landscape (discovery and classification focus)
 
@@ -134,14 +133,13 @@ This directory contains **three comprehensive hands-on lab projects** designed t
 
 6. **Weeks 6-7**: Complete Data-Governance-Simulation Labs 04-05 (Classification + Discovery)
    - Start 7-day On-Demand Classification with cost estimation
-   - Compare four discovery methods (immediate, 24hr, 7-day, 7-14 day)
+   - Compare three discovery methods (immediate, 24hr, 7-day, 7-14 day)
    - Execute immediate regex discovery (Lab 05a)
    - Run 24-hour modern eDiscovery searches (Lab 05b)
    - Validate timing and accuracy tradeoffs
 
-7. **Weeks 7-8**: Complete Data-Governance-Simulation Labs 05c/05d (API Discovery)
+7. **Weeks 7-8**: Complete Data-Governance-Simulation Lab 05c (API Discovery)
    - Microsoft Graph API automated discovery (OAuth 2.0, delegated permissions)
-   - SharePoint Search API targeted scans (KQL, site-specific)
    - Build recurring discovery automation for SIEM integration
    - Master API-based compliance workflows
 
@@ -161,7 +159,7 @@ This directory contains **three comprehensive hands-on lab projects** designed t
 - Multiple discovery methods (immediate → 24hr → 7 days → 7-14 days → APIs)
 - Hybrid deployment experience (on-premises scanner + cloud governance)
 - Complete lifecycle understanding (policy creation → enforcement → monitoring → remediation)
-- API integration proficiency (Microsoft Graph, SharePoint Search, OAuth 2.0)
+- API integration proficiency (Microsoft Graph, OAuth 2.0)
 
 ---
 
@@ -228,7 +226,7 @@ This matrix shows which project covers each Purview capability, with specific la
 | **Content Search (Basic)** | INTERMEDIATE | ✅ Cloud-04 (KQL queries, exports) | Not covered | ✅ Lab 05b (24hr modern Cases preview) | ✅ COMPREHENSIVE |
 | **KQL Query Language** | INTERMEDIATE | ✅ Cloud-04 (SIT-based discovery) | ✅ Lab 5 (compliance searches) | ✅ Lab 05b (Condition builder, metadata) | ✅ COMPREHENSIVE |
 | **eDiscovery Export** | INTERMEDIATE | ✅ Cloud-04 (legal export workflows) | Not covered | ✅ Lab 05b (PST export, reporting) | ✅ COMPREHENSIVE |
-| **Discovery Automation** | INTERMEDIATE | Not covered | Not covered | ✅ Labs 05c/05d (API-based, scheduled) | ✅ COMPREHENSIVE |
+| **Discovery Automation** | INTERMEDIATE | Not covered | Not covered | ✅ Lab 05c (API-based, scheduled) | ✅ COMPREHENSIVE |
 | **eDiscovery (Premium)** | ADVANCED | Not covered | Not covered | Not covered | ❌ Not Covered |
 | **Legal Hold** | INTERMEDIATE | Not covered | Not covered | Not covered | ❌ Not Covered |
 | **Custodian Management** | ADVANCED | Not covered | Not covered | Not covered | ❌ Not Covered |
@@ -245,17 +243,15 @@ This matrix shows which project covers each Purview capability, with specific la
 | **Indexing Status Validation** | INTERMEDIATE | Not covered | Not covered | ✅ Lab 05b (Test-ContentIndexingStatus.ps1) | ✅ COMPREHENSIVE |
 | **On-Demand Classification Triggers** | INTERMEDIATE | ✅ Supplemental: Advanced-SharePoint-SIT-Analysis | ✅ Lab 3 (manual re-indexing) | ✅ Lab 04 (7-day portal-based) | ✅ COMPREHENSIVE |
 | **Classification Validation** | INTERMEDIATE | ✅ Cloud-01, Supplemental labs (Content Explorer) | ✅ Lab 3 (validation workflows) | ✅ Lab 04 (Content Explorer, 7-day) | ✅ COMPREHENSIVE |
-| **SharePoint Search Schema** | ADVANCED | ✅ Supplemental: Advanced-SharePoint-SIT-Analysis (managed properties) | Not covered | ✅ Lab 05d (KQL queries, metadata) | ✅ COMPREHENSIVE |
 
 #### ✅ Automation & Scripting
 
 | Capability | Complexity | Skills-Ramp Coverage | Classification-Lifecycle Coverage | Data-Governance-Simulation Coverage | Combined Status |
 |------------|------------|---------------------|----------------------------------|-------------------------------------|-----------------|
 | **Security & Compliance PowerShell** | INTERMEDIATE | ✅ All sections (cmdlet operations) | ✅ Labs 0-5 (all operations) | ✅ Labs 04/05a (discovery operations) | ✅ COMPREHENSIVE |
-| **PnP PowerShell** | INTERMEDIATE | ✅ Supplemental: Advanced-Remediation (bulk operations) | Not covered | ✅ Labs 01/03/05a/05d (site creation, bulk upload) | ✅ COMPREHENSIVE |
+| **PnP PowerShell** | INTERMEDIATE | ✅ Supplemental: Advanced-Remediation (bulk operations) | Not covered | ✅ Labs 01/03/05a (site creation, bulk upload) | ✅ COMPREHENSIVE |
 | **Microsoft Graph PowerShell SDK** | INTERMEDIATE | Not covered | Not covered | ✅ Lab 05c (OAuth 2.0, delegated permissions) | ✅ EXTENSIVE |
-| **SharePoint Search API** | ADVANCED | Not covered | Not covered | ✅ Lab 05d (KQL, site-specific, metadata) | ✅ EXTENSIVE |
-| **Discovery Automation** | INTERMEDIATE | Not covered | Not covered | ✅ Labs 05c/05d (scheduled scans, SIEM) | ✅ COMPREHENSIVE |
+| **Discovery Automation** | INTERMEDIATE | Not covered | Not covered | ✅ Lab 05c (scheduled scans, SIEM) | ✅ COMPREHENSIVE |
 | **Azure CLI** | BASIC | ✅ Setup-02 (infrastructure deployment) | Not covered | Not covered | ✅ COMPREHENSIVE |
 | **Bicep IaC** | INTERMEDIATE | ✅ Setup-02 (Azure resource provisioning) | Not covered | Not covered | ✅ COMPREHENSIVE |
 | **Compliance Content Searches** | INTERMEDIATE | ✅ Cloud-04 (KQL-based searches) | ✅ Lab 5 (parameterized queries) | ✅ Lab 05b (modern portal, Cases) | ✅ COMPREHENSIVE |
@@ -263,7 +259,7 @@ This matrix shows which project covers each Purview capability, with specific la
 | **Bulk Label Application** | INTERMEDIATE | Not covered | ✅ Lab 5 (multi-site scaling) | Not covered | ✅ COMPREHENSIVE |
 | **Policy Monitoring Scripts** | INTERMEDIATE | Not covered | ✅ Lab 5 (coverage dashboards) | Not covered | ✅ EXTENSIVE |
 | **Compliance Reporting** | INTERMEDIATE | ✅ Supplemental: Advanced-Cross-Platform-SIT-Analysis (executive reports) | ✅ Lab 5 (stakeholder reporting) | Not covered | ✅ COMPREHENSIVE |
-| **REST API Integration** | ADVANCED | ✅ Supplemental: Advanced-Remediation (Azure Resource Management) | Not covered | ✅ Labs 05c/05d (Graph API, Search API) | ✅ COMPREHENSIVE |
+| **REST API Integration** | ADVANCED | ✅ Supplemental: Advanced-Remediation (Azure Resource Management) | Not covered | ✅ Lab 05c (Graph API) | ✅ COMPREHENSIVE |
 
 #### ✅ Azure & Cloud Infrastructure
 
@@ -272,7 +268,7 @@ This matrix shows which project covers each Purview capability, with specific la
 | **Azure VM Deployment** | INTERMEDIATE | ✅ Setup-02 (Windows Server, SQL Express) | Not covered | Not covered | ✅ COMPREHENSIVE |
 | **Azure Resource Management** | INTERMEDIATE | ✅ Setup-02 (resource groups, RBAC) | Not covered | Not covered | ✅ COMPREHENSIVE |
 | **Azure Files Integration** | INTERMEDIATE | ✅ OnPrem-02 (scanner repository) | Not covered | Not covered | ✅ COMPREHENSIVE |
-| **Microsoft Entra ID (Azure AD)** | INTERMEDIATE | ✅ Setup-03 (service accounts, app registration) | ✅ Labs 0-5 (authentication, permissions) | ✅ Labs 05c/05d (OAuth 2.0, delegated permissions) | ✅ COMPREHENSIVE |
+| **Microsoft Entra ID (Azure AD)** | INTERMEDIATE | ✅ Setup-03 (service accounts, app registration) | ✅ Labs 0-5 (authentication, permissions) | ✅ Lab 05c (OAuth 2.0, delegated permissions) | ✅ COMPREHENSIVE |
 | **Hybrid Identity Management** | INTERMEDIATE | ✅ Setup-01, Setup-03 (on-prem + cloud) | Not covered | Not covered | ✅ DETAILED |
 
 #### ✅ Operational Documentation & Runbooks
@@ -454,8 +450,8 @@ Completing all three projects demonstrates proficiency in:
 **Core Technical Competencies**:
 
 - Information Protection (scanner deployment, custom SITs, EDM, trainable classifiers)
-- Data Discovery (four methods: immediate regex, 24hr eDiscovery, 7-14 day APIs)
-- API Integration (Microsoft Graph, SharePoint Search, OAuth 2.0, SIEM connectivity)
+- Data Discovery (three methods: immediate regex, 24hr eDiscovery, 7-14 day APIs)
+- API Integration (Microsoft Graph, OAuth 2.0, SIEM connectivity)
 - Modern eDiscovery Portal (purview.microsoft.com, Cases preview, Condition builder)
 - Data Loss Prevention (policy design, enforcement, cross-platform monitoring)
 - Data Lifecycle Management (retention labels, auto-apply policies, lifecycle triggers)

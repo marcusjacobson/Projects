@@ -2,13 +2,19 @@
 
 ## 📚 Overview
 
-After uploading documents in Lab 03, you need to choose how to **discover and report** on sensitive data across your SharePoint environment. This lab provides **three core discovery approaches** plus an **optional temporal analysis lab**, each with different timing characteristics and use cases.
+After uploading documents in Lab 03, you need to choose how to **discover and report** on sensitive data across your SharePoint environment. This lab provides **three core discovery approaches** plus an **optional temporal analysis lab**, each with different timing characteristics, accuracy levels, and use cases.
+
+**Discovery Method Progression** (Speed vs. Reliability):
+
+- **Lab 05a (PnP Direct File Access)**: ⚡ **Quick but error-prone** - Immediate results with ~70-90% regex accuracy
+- **Lab 05b (eDiscovery Manual)**: ✅ **Reliable, manual** - 100% Purview SIT accuracy with 5-10 minute direct export via portal UI
+- **Lab 05c (eDiscovery API)**: 🏆 **Reliable, automated** - 100% Purview SIT accuracy with 5-10 minute direct export via Graph API automation
 
 **Critical Timing Context**: Microsoft Purview data discovery timing varies significantly based on the method used:
 
-- **PnP Direct File Access (Lab 05a)**: Results **immediately** (✅ Fastest - no indexing wait)
-- **eDiscovery Compliance Search (Lab 05b)**: Results within **24 hours** (SharePoint Search indexing)
-- **Graph API Search (Lab 05c)**: Requires **7-14 days** for Microsoft Search unified index, then enables fast queries
+- **PnP Direct File Access (Lab 05a)**: Results **immediately** (✅ Fastest - no indexing wait, but lower accuracy)
+- **eDiscovery Manual (Lab 05b)**: Results within **24 hours** (SharePoint Search indexing - 100% accurate, portal UI, fast export)
+- **eDiscovery API (Lab 05c)**: Results within **24 hours** (SharePoint Search indexing - 100% accurate, API automation, fast export)
 - **On-Demand Classification (Lab 04)**: Results within **7 days** (proactive portal-based scan)
 - **Temporal Analysis (Lab 05-Temporal)**: **Optional 2-3 week** longitudinal study tracking classification evolution (supplemental)
 
@@ -27,26 +33,43 @@ After uploading documents in Lab 03, you need to choose how to **discover and re
 
 Lab 05 offers **three core discovery approaches** plus an **optional temporal analysis** for longitudinal studies. **Choose based on your timing requirements, accuracy needs, and technical comfort level**:
 
-| Path | Method | Timeline | SIT Accuracy | Best For | Setup Time |
-|------|--------|----------|--------------|----------|------------|
-| **[05a: PnP Direct File Access](05a-PnP-Direct-File-Access/)** | Direct file enumeration + regex | **Immediate** | 94-95% (regex) | Immediate discovery, learning | 5-10 minutes |
-| **[05b: eDiscovery Compliance Search](05b-eDiscovery-Compliance-Search/)** | Portal-based search with Purview SITs | **24 hours** | ~100% (Purview) | Official compliance searches | 30-45 minutes |
-| **[05c: Graph API Discovery](05c-Graph-API-Discovery/)** | Microsoft Graph Search API automation | **7-14 days** (initial) | ~100% (Purview) | Automated recurring monitoring | 2-3 hours setup |
-| **[05-Temporal: Longitudinal Analysis](05-Temporal-Classification-Analysis/)** *(Optional)* | 4-interval temporal tracking (24hr, 7d, 14d, 21d) | **2-3 weeks** | ~100% (Purview) | Classification drift research | 2-4 hours total |
+| Path | Method | Timeline | Workflow | SIT Accuracy | Reliability Rank | Best For | Setup Time |
+|------|--------|----------|----------|--------------|-----------------|----------|------------|
+| **[05a: PnP Direct File Access](05a-PnP-Direct-File-Access/)** | Direct file enumeration + regex | **Immediate** | PowerShell direct access | 70-90% (regex) | ⚡ Quick but error-prone | Immediate discovery, learning | 5-10 minutes |
+| **[05b: eDiscovery Manual](05b-eDiscovery-Compliance-Search/)** | Portal-based search with Purview SITs | **24 hours** | Portal UI → Direct export (5-10 min) | ~100% (Purview) | ✅ Reliable, manual | One-time compliance searches | 30-45 minutes |
+| **[05c: eDiscovery API](05c-Graph-API-Discovery/)** | Microsoft Graph eDiscovery API | **24 hours** (SharePoint Search) | Graph API → Direct export (5-10 min) | ~100% (Purview) | 🏆 Reliable, automated | Recurring scans, API integration | 2-3 hours setup |
+| **[05-Temporal: Longitudinal Analysis](05-Temporal-Classification-Analysis/)** *(Optional)* | 4-interval temporal tracking (24hr, 7d, 14d, 21d) | **2-3 weeks** | Periodic manual scans | ~100% (Purview) | Classification drift research | 2-4 hours total |
+
+---
+
+## 🔬 Technical Analysis & Validation
+
+The following technical analysis documents provide deep dives into the validation logic, data structures, and script enhancements used in these labs:
+
+- **[GUID Mapping Solution Analysis](GUID-Mapping-Solution-Analysis.md)**: Detailed breakdown of the SIT GUID resolution strategy, including the hybrid approach of using cached JSON mappings and dynamic tenant queries.
+- **[Lab 05b vs 05c Data Structure Analysis](LAB-05B-VS-05C-DATA-STRUCTURE-ANALYSIS.md)**: A comprehensive comparison of the export formats between the manual eDiscovery method (05b) and the Graph API method (05c), highlighting schema differences and normalization strategies.
+- **[Script Enhancements Summary](SCRIPT-ENHANCEMENTS-SUMMARY.md)**: A changelog and summary of the robust error handling, path validation, and user feedback improvements implemented across the automation scripts.
 
 ---
 
 ## 📊 Path Comparison
 
-### Lab 05a: PnP PowerShell Direct File Access (Immediate Regex-Based Discovery)
+### Lab 05a: PnP PowerShell Direct File Access (⚡ Quick but Error-Prone)
 
 **Method**: Direct file enumeration via PnP PowerShell with custom regex pattern matching
 
 **Timeline**: **Immediate** - works minutes after Lab 03 file uploads complete (no indexing wait)
 
+**Why "Quick but Error-Prone"**:
+
+- ⚡ **Fastest possible discovery** - results in minutes, no waiting for indexing
+- ⚠️ **70-90% accuracy** - regex patterns lack context awareness and validation logic
+- ⚠️ **Higher false positives** - pattern matching incorrectly flags non-SIT content (6-12% over-detection)
+- ⚠️ **Some false negatives** - misses SIT variations and context-dependent detections (0-2% under-detection)
+- 📚 **Best for learning** - understand SIT detection fundamentals, get immediate interim results
+
 **Advantages**:
 
-- ⚡ **Fastest possible discovery method** - no indexing delays whatsoever
 - 🚀 Works immediately after document upload (minutes, not days)
 - 📚 Educational - shows how SIT detection works "under the hood"
 - 🔧 Simple setup - 5-10 minutes to start scanning
@@ -54,10 +77,9 @@ Lab 05 offers **three core discovery approaches** plus an **optional temporal an
 
 **Limitations**:
 
-- ⚠️ 70-90% accuracy due to regex pattern limitations (no context awareness, no validation logic)
-- ⚠️ Higher false positive rate compared to official Purview SIT engine
-- ⚠️ Best for learning and immediate interim results, not for compliance reporting
-- ⚠️ Pattern-based detection may miss SIT variations
+- ⚠️ **Not suitable for compliance reporting** - use Lab 05b or 05c for official results
+- ⚠️ Pattern-based detection misses context-dependent SIT variations
+- ⚠️ Cannot distinguish similar formats (SSN vs Employee ID vs Passport without context)
 
 **Choose this path if**:
 
@@ -70,18 +92,27 @@ Lab 05 offers **three core discovery approaches** plus an **optional temporal an
 
 ---
 
-### Lab 05b: eDiscovery Compliance Search (24-Hour Official SIT Detection)
+### Lab 05b: eDiscovery Manual (✅ Reliable, Manual Workflow)
 
-**Method**: Microsoft Purview eDiscovery portal-based search with official Purview SITs
+**Method**: Microsoft Purview eDiscovery portal-based search with **direct "Run Query" export** (no review sets)
 
 **Timeline**: **24 hours** after Lab 03 upload (SharePoint Search indexing delay)
 
+**Workflow**: Portal UI → Create Search → Run Query → **Direct Export** (5-10 minutes)
+
+**Why "Reliable, Manual"**:
+
+- ✅ **100% Purview SIT accuracy** - official Microsoft classification engine vs. Lab 05a's 70-90% regex
+- ⚡ **Fast 5-10 minute export** - direct export vs. Lab 05c's 25-45 minute review set processing
+- 🎯 **Zero false positives** - context-aware ML detection vs. Lab 05a's 6-12% false positive rate
+- 📊 **Complete SIT coverage** - detects all SIT variations vs. Lab 05a's pattern-only matching
+- 🖱️ **Simple portal workflow** - no scripting required vs. Lab 05c's API automation complexity
+
 **Advantages**:
 
-- ✅ **100% Purview SIT accuracy** - uses official Purview classification engine
+- 🚀 **Simplest reliable method** - portal-based, no review set overhead, no PowerShell required
 - ⚡ Much faster than waiting 7-14 days for Microsoft Search unified index
-- 🖱️ Portal-based workflow - no PowerShell or coding required
-- 📊 Export CSV results for compliance reporting
+- 📊 Export CSV results for compliance reporting with site/library metadata
 - 🎯 Official compliance search suitable for legal hold and eDiscovery workflows
 
 **Limitations**:
@@ -90,51 +121,78 @@ Lab 05 offers **three core discovery approaches** plus an **optional temporal an
 - 👤 Requires eDiscovery Manager role
 - 📏 Export limit (1,000 items per export batch)
 - 🔄 Manual search initiation (not automated recurring)
+- 📋 **No advanced features** - lacks OCR processing, conversation threading, immutable snapshots available in Lab 05c
 
 **Choose this path if**:
 
 - You need **official Purview SIT detection** faster than 7-day Lab 04 scan
 - You can wait 24 hours after Lab 03 upload
-- You want portal-based workflow without scripting
+- You want **simple, fast portal-based workflow** without scripting (5-10 minute export)
 - You need compliance-quality results for reporting
+- You prefer **direct export** without review set overhead
+- You want CSV exports with explicit site/library columns
 
 > **💡 Validation Strategy**: Use Lab 05b to validate Lab 05a regex accuracy by comparing results after 24 hours.
+>
+> **🔄 Workflow Note**: Lab 05b uses **direct "Run Query" export** (5-10 minutes) without creating review sets. For advanced features like OCR, conversation threading, or immutable snapshots, use Lab 05c's review set workflow instead.
 
 **[→ Go to Lab 05b: eDiscovery Compliance Search](05b-eDiscovery-Compliance-Search/)**
 
 ---
 
-### Lab 05c: Graph API Discovery (7-14 Day Post-Indexing Automated Recurring Reports)
+### Lab 05c: Graph eDiscovery API (🏆 Most Reliable - Advanced Features & Automation)
 
-**Method**: Use Microsoft Graph Search API with PowerShell automation scripts
+**Method**: Microsoft Graph eDiscovery API with PowerShell automation using **review set collection and export**
 
-**Timeline**: Requires **7-14 days** for initial Microsoft Search unified index, then enables fast automated queries
+**Timeline**: **24 hours** after Lab 03 upload (SharePoint Search indexing - same backend as Lab 05b)
+
+**Workflow**: API calls → Create Case → Create Search → **Create Review Set** → Add to Review Set (20-30 min) → Export (5-15 min)
+
+**Why "Most Reliable"**:
+
+- 🏆 **100% Purview SIT accuracy** - same official classification engine as Lab 05b
+- 🔬 **Advanced OCR processing** - detects SITs in scanned PDFs and images that Labs 05a/05b miss (reduces false negatives)
+- 📧 **Conversation threading** - reconstructs email/Teams conversations for complete context
+- 👨‍👩‍👧‍👦 **Family grouping** - links attachments to parent emails for relationship mapping
+- 📦 **Immutable snapshots** - Azure Storage-backed point-in-time copies for audit trail
+- 🔗 **De-duplication** - eliminates duplicate content across locations (~27% file reduction)
+- 🤖 **Fully automatable** - recurring scans without manual portal interaction
 
 **Advantages**:
 
-- ⚡ Fast programmatic queries **after initial indexing** (minutes to scan entire tenant)
-- 🔄 Fully automatable for recurring scans (daily/weekly/monthly)
-- ✅ 100% Purview SIT accuracy (queries same index as Content Explorer)
-- 📊 Custom reporting with trend analysis over time
-- 🔗 Easy integration with SIEM, dashboards, or ticketing systems
-- ✅ No WAM authentication issues (uses standard Graph API)
+- 🔬 **Advanced OCR processing** - detects SITs in scanned PDFs/images that Labs 05a/05b miss
+- 📧 **Conversation threading** - reconstructs email/Teams conversations for complete context
+- 👨‍👩‍👧‍👦 **Family grouping** - links attachments to parent emails for relationship mapping
+- 📦 **Immutable snapshots** - Azure Storage point-in-time copies for audit trail
+- 🔗 **De-duplication** - eliminates duplicate content (~27% file reduction)
+- 🔬 **Most comprehensive detection** - OCR catches SITs that text-only searches miss
 
 **Limitations**:
 
-- ⏱️ **7-14 day initial Microsoft Search unified indexing wait** before Graph API returns results for new content
-- ⚙️ Requires one-time Graph API permissions setup
+- ⏱️ **25-45 minute total processing time** - review set collection (20-30 min) + export (5-15 min) vs. Lab 05b's 5-10 min direct export
+- ⚙️ Requires eDiscovery.Read.All and eDiscovery.ReadWrite.All permissions
 - 📚 PowerShell/API knowledge helpful (scripts provided)
 - ⏱️ Initial setup takes 2-3 hours
+- 🔧 More complex than portal-based Lab 05b (complexity justified by advanced features)
 
 **Choose this path if**:
 
-- You need automated recurring monitoring **after initial indexing completes** (weekly security reports)
-- You want to integrate with SIEM or security dashboards
-- You have large-scale tenant-wide discovery needs (10K+ documents)
+- You need **advanced eDiscovery features** (OCR, conversation threading, immutable snapshots)
+- You want to detect SITs in **scanned PDFs and images** (OCR processing)
+- You need **email/Teams conversation reconstruction** for context
+- You want **immutable Azure Storage snapshots** for audit trail
+- You want **de-duplicated content** (eliminates duplicates across locations)
 - Your team has PowerShell/API expertise or wants to learn
-- You're willing to wait 7-14 days for Microsoft Search unified index to populate
+- You can accept **25-45 minute total processing time** for review set enrichment benefits
+- You want programmatic control over eDiscovery workflows (basis for future automation)
 
-> **⏱️ Timing Strategy**: Start Lab 05a for immediate results or Lab 05b for 24-hour official results. Then implement Lab 05c for ongoing automated monitoring after 7-14 days.
+> **⏱️ Timing Strategy**: Start Lab 05a for immediate results (minutes). After 24 hours, choose between:
+> - **Lab 05b**: Portal-based, fast direct export (5-10 min total) for simple SIT discovery
+> - **Lab 05c**: Graph API with review sets (25-45 min total) for advanced features (OCR, threading, immutable snapshots)
+>
+> Both 05b and 05c use the same SharePoint Search backend with identical 24-hour indexing timeline.
+>
+> **🔬 Workflow Difference**: Lab 05c uses **review set collection** which provides OCR processing (scanned PDFs/images), conversation threading (email/Teams context), family grouping (attachment relationships), and immutable Azure Storage snapshots (audit trail). This takes 20-30 minutes for collection plus 5-15 minutes for export (vs. Lab 05b's 5-10 minute direct export).
 
 **[→ Go to Lab 05c: Graph API Discovery](05c-Graph-API-Discovery/)**
 
@@ -185,9 +243,9 @@ Lab 05 offers **three core discovery approaches** plus an **optional temporal an
 **Question 1: How quickly do you need results?**
 
 - **Immediately (minutes after Lab 03)** → Go to **Lab 05a: PnP Direct File Access**
-- **Within 24 hours** → Go to **Lab 05b: eDiscovery Compliance Search**
+- **Within 24 hours (portal-based)** → Go to **Lab 05b: eDiscovery Compliance Search**
+- **Within 24 hours (API automation)** → Go to **Lab 05c: Graph eDiscovery API**
 - **Within 7 days** → Go to **[Lab 04: On-Demand Classification](../04-On-Demand-Classification/)**
-- **Can wait 7-14 days** → Go to **Lab 05c: Graph API Discovery**
 
 **Question 2: Are you interested in longitudinal research (optional)?**
 
@@ -204,16 +262,17 @@ Lab 05 offers **three core discovery approaches** plus an **optional temporal an
 
 ## 📈 Common Use Cases
 
-| Your Scenario | Recommended Path | Timeline | Accuracy |
+| Your Scenario | Recommended Path | Timeline | Workflow |
 |---------------|------------------|----------|----------|
-| "I need discovery results immediately after Lab 03 upload" | **Lab 05a: PnP Direct File Access** | Immediate | 70-90% regex |
-| "I need official Purview SIT detection within 24 hours" | **Lab 05b: eDiscovery Compliance Search** | 24 hours | 100% Purview |
-| "I need comprehensive portal-based scan with official SITs" | **Lab 04: On-Demand Classification** | 7 days | 100% Purview |
-| "I need weekly automated scans sent to our security team" | **Lab 05c: Graph API Discovery** | 7-14 days initial + automated | 100% Purview |
-| "I want to integrate sensitive data detection with our SIEM" | **Lab 05c: Graph API Discovery** | 7-14 days initial + automated | 100% Purview |
-| "I'm not technical and just need portal-based CSV exports" | **Lab 05b: eDiscovery** (24hr) | 24 hours | 100% Purview |
-| "I want to learn how SIT detection works under the hood" | **Lab 05a: PnP Direct File Access** | Immediate | 70-90% regex |
-| "I need to validate my custom regex patterns" | **Lab 05a** (immediate) then **Lab 05b** (24hr validation) | Immediate + 24hr | Compare results |
+| "I need discovery results immediately after Lab 03 upload" | **Lab 05a: PnP Direct File Access** | Immediate | PowerShell direct file access |
+| "I need official Purview SIT detection within 24 hours with fast export" | **Lab 05b: eDiscovery Compliance Search** | 24 hours + 5-10 min export | Portal UI → Direct export |
+| "I need comprehensive portal-based scan with official SITs" | **Lab 04: On-Demand Classification** | 7 days | Portal-based full scan |
+| "I need weekly automated scans sent to our security team" | **Lab 05c: Graph eDiscovery API** | 24 hours + 25-45 min processing | API → Review Set → Export |
+| "I want to integrate sensitive data detection with our SIEM" | **Lab 05c: Graph eDiscovery API** | 24 hours + automated | API → Review Set → SIEM integration |
+| "I'm not technical and just need portal-based CSV exports quickly" | **Lab 05b: eDiscovery** (24hr + fast export) | 24 hours + 5-10 min | Portal UI → Direct export |
+| "I need advanced features like OCR, threading, immutable snapshots" | **Lab 05c: Graph eDiscovery API** | 24 hours + 25-45 min | API → Review Set with advanced processing |
+| "I want to learn how SIT detection works under the hood" | **Lab 05a: PnP Direct File Access** | Immediate | PowerShell regex patterns |
+| "I need to validate my custom regex patterns" | **Lab 05a** (immediate) then **Lab 05b** (24hr validation) | Immediate + 24hr | Compare regex vs Purview |
 
 ---
 
@@ -239,12 +298,13 @@ Lab 05 offers **three core discovery approaches** plus an **optional temporal an
 
 ### After completing Lab 05c, you will
 
-- Configure Microsoft Graph API permissions for search operations
-- Write PowerShell scripts to query sensitive data programmatically via Graph API
+- Configure Microsoft Graph eDiscovery API permissions (eDiscovery.Read.All, eDiscovery.ReadWrite.All)
+- Create and manage eDiscovery cases programmatically via Graph API
+- Execute automated SIT discovery searches with PowerShell scripts
+- Retrieve search statistics and generate detailed reports
 - Schedule automated recurring scans using Task Scheduler or Azure Automation
-- Generate trend reports showing sensitive data over time
 - Integrate discovery results with security dashboards or SIEM
-- **Understand the 7-14 day Microsoft Search unified indexing requirement** for Graph API queries
+- **Understand the 24-hour SharePoint Search indexing timeline** (same backend as Lab 05b)
 
 ### After completing Lab 05-Temporal (Optional), you will
 
@@ -264,8 +324,8 @@ Lab 05 offers **three core discovery approaches** plus an **optional temporal an
 **Recommended Learning Sequence**:
 
 1. **Lab 05a** (5-10 minutes) → Immediate results, learn SIT detection fundamentals with regex
-2. **Lab 05b** (30-45 minutes, wait 24 hours) → Official Purview SIT results, validate Lab 05a accuracy
-3. **Lab 05c** (2-3 hours setup, wait 7-14 days) → Automated recurring discovery after indexing
+2. **Lab 05b** (30-45 minutes, wait 24 hours) → Official Purview SIT results via portal, validate Lab 05a accuracy
+3. **Lab 05c** (2-3 hours setup, wait 24 hours) → Automated recurring discovery via eDiscovery API (same timeline as 05b)
 4. **Lab 05-Temporal** (optional, 2-3 weeks) → Longitudinal classification stability study
 
 Many users complete:
@@ -304,7 +364,7 @@ The mapping file contains:
 
 **Lab 05b Analysis Scripts**: The eDiscovery analysis scripts load this mapping file to translate GUIDs in the "Sensitive type" column to friendly SIT names during CSV generation.
 
-**Cross-Lab Comparison**: The `Invoke-CrossLabAnalysis.ps1` script uses this mapping to ensure consistent SIT naming across all discovery methods (Labs 05a/b/c/d).
+**Cross-Lab Comparison**: The `Invoke-CrossLabAnalysis.ps1` script uses this mapping to ensure consistent SIT naming across all discovery methods (Labs 05a/b/c).
 
 **Terminal Output**: Scripts display SIT names instead of GUIDs for better readability during analysis execution.
 
@@ -391,8 +451,8 @@ If you've completed multiple Lab 05 paths, you can compare their results to unde
 
 - **Lab 05a (PnP regex)**: 70-90% accuracy - fast but approximate
 - **Lab 05b (eDiscovery)**: 100% accuracy - official Purview SITs with 24-hour wait
+- **Lab 05c (Graph eDiscovery API)**: 100% accuracy - automated eDiscovery with 24-hour wait (same backend as 05b)
 - **Lab 04 (On-Demand)**: 100% accuracy - comprehensive portal-based scan with 7-day wait
-- **Labs 05c/05d (Graph/SharePoint Search)**: 100% accuracy - automated with 7-14 day indexing
 
 **Validation Use Cases**:
 
@@ -436,7 +496,7 @@ Common configuration scenarios:
 **What the orchestrator provides**:
 
 - **Automatic lab detection**: Finds completed labs by searching report folders.
-- **Multi-method comparison**: Compares all available Lab 05 methods (05a, 05b, 05c, 05d).
+- **Multi-method comparison**: Compares all available Lab 05 methods (05a, 05b, 05c).
 - **Accuracy metrics**: Calculates precision, recall, and accuracy for regex vs Purview SIT methods.
 - **Overlap analysis**: Identifies files detected by all methods (high-confidence detections).
 - **False positive/negative identification**: Shows what regex missed or over-detected.
@@ -630,14 +690,14 @@ After completing any Lab 05 path, you can proceed to:
 2. **Review the discovery method timeline comparison** to see all options side-by-side
 3. **Use the decision guide** to identify the best path for your immediate needs
 4. **Start with Lab 05a** if you want immediate results (5-10 minutes)
-5. **Wait for Lab 05b** if you need official SITs within 24 hours (requires 24-hour indexing)
-6. **Plan for Labs 05c/05d** if you need automated recurring discovery (requires 7-14 day indexing)
+5. **Wait for Lab 05b** if you need portal-based official SITs within 24 hours
+6. **Use Lab 05c** if you need automated API-driven discovery (same 24-hour timeline as Lab 05b)
 
 **Remember**: You can complete multiple paths to compare approaches:
 
 - **Lab 05a** provides immediate learning and interim results
-- **Lab 05b** validates Lab 05a accuracy with official Purview SITs (24 hours)
-- **Labs 05c/05d** enable ongoing automation after 7-14 day indexing wait
+- **Lab 05b** validates Lab 05a accuracy with portal-based official Purview SITs (24 hours)
+- **Lab 05c** enables API-driven automation with same 24-hour SharePoint Search timeline as Lab 05b
 
 ---
 

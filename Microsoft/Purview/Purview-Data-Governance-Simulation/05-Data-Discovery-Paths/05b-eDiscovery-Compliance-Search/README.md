@@ -1,23 +1,26 @@
-# Lab 05b: eDiscovery Compliance Search Discovery (24-Hour Timeline)
+# Lab 05b: eDiscovery Compliance Search Discovery (24-Hour Timeline - Direct Export)
 
 ## 📋 Overview
 
 This lab demonstrates **official Purview-based sensitive data discovery** using Microsoft 365 eDiscovery Compliance Search to detect Sensitive Information Types (SITs) with **100% Purview accuracy**. Unlike Lab 05a's immediate regex-based scanning, this method uses Microsoft's native SIT detection engine and provides results within **24 hours** after SharePoint indexing completes.
 
+**Workflow**: Portal UI → Create Search → Run Query → **Direct Export** (no review sets)
+
 **What You'll Accomplish**:
 
 - Validate SharePoint Search indexing status for Lab 03 uploaded content
 - Create eDiscovery Compliance Search with 7 targeted SIT types
-- Execute search across all 5 simulation SharePoint sites
+- Execute search across all 5 simulation SharePoint sites using **direct "Run Query" workflow**
 - Analyze official Purview SIT detection results (100% accurate)
+- **Export results directly** without creating review sets (5-10 minute export)
 - Compare eDiscovery findings with Lab 05a regex results for accuracy validation
-- Export results for cross-method comparison and reporting
+- Export results in CSV format with explicit site/library columns
 
-**Duration**: 24 hours wait time + 30-45 minutes hands-on portal configuration
+**Duration**: 24 hours wait time + 30-45 minutes hands-on portal configuration + 5-10 minutes export
 
-**Method**: Portal-based Microsoft Purview eDiscovery with no scripting required
+**Method**: Portal-based Microsoft Purview eDiscovery with **direct export** (no scripting required)
 
-**Output**: Official Purview SIT detections exportable in CSV format for analysis
+**Output**: Official Purview SIT detections exportable in CSV format with SiteName, LibraryName, FileURL columns
 
 > **⏱️ Timing by Lab 02 Scale Level**:
 >
@@ -30,6 +33,8 @@ This lab demonstrates **official Purview-based sensitive data discovery** using 
 > **🔍 Scale Reference**: Wait time is consistent (24 hours for SharePoint Search indexing), but search execution and export times scale with document volume.
 >
 > **⚠️ Indexing Requirement**: eDiscovery Compliance Search relies on SharePoint Search index. Lab 03 content requires **up to 24 hours** to be indexed before discovery. Use `Test-ContentIndexingStatus.ps1` to check readiness before proceeding.
+>
+> **🔄 Workflow Note**: This lab uses **direct "Run Query" export** without creating review sets. For advanced features like OCR, conversation threading, or immutable snapshots, see **Lab 05c** which uses the review set workflow (25-45 minute processing time vs. 5-10 minutes direct export).
 
 ---
 
@@ -72,7 +77,7 @@ By completing this lab, you will:
 
 - ✅ **24+ hours after Lab 03 completion** (allows SharePoint Search indexing)
 - ✅ **While Lab 04 is running** (parallel discovery - Lab 04 takes 7 days)
-- ⚠️ **Before Lab 05c** (requires 7-14 days for Microsoft Search indexing)
+- ⚠️ **Before Lab 05c** (requires 24 hours for SharePoint Search indexing)
 
 ---
 
@@ -80,13 +85,15 @@ By completing this lab, you will:
 
 ### Discovery Timeline Comparison
 
-| Method | Indexing Wait | Execution Time | Accuracy | Automation |
-|--------|---------------|----------------|----------|------------|
-| **Lab 05a: PnP Direct** | None (immediate) | 60-90 min | 70-90% (regex) | ✅ Scripted |
-| **Lab 05b: eDiscovery** | **24 hours** | **10-15 min** | **100% (Purview SITs)** | ❌ Portal-based |
-| **Lab 05c: Graph API** | 7-14 days | 5-10 min | 100% (Purview SITs) | ✅ Scripted |
+| Method | Indexing Wait | Execution Time | Workflow | Accuracy | Reliability Rank | Automation |
+|--------|---------------|----------------|----------|----------|------------------|------------|
+| **Lab 05a: PnP Direct** | None (immediate) | 60-90 min | PowerShell direct file access | 70-90% (regex) | ⚡ Quick but error-prone | ✅ Scripted |
+| **Lab 05b: eDiscovery** | **24 hours** | **10-15 min** | **Portal UI → Direct export (5-10 min)** | **100% (Purview SITs)** | **✅ More reliable, faster** | ❌ Portal-based |
+| **Lab 05c: Graph API** | 24 hours | 25-45 min | API → Review Set (20-30 min) → Export (5-15 min) | 100% (Purview SITs) | 🏆 Most reliable | ✅ Scripted |
 
-> **💡 Key Insight**: eDiscovery uses SharePoint's **search index** (24-hour indexing) rather than the full **Microsoft Search unified index** (7-14 days). This provides official Purview SIT accuracy much faster than waiting for Content Explorer results while maintaining 100% detection quality.
+> **💡 Key Insight**: Lab 05b uses SharePoint's **search index** (24-hour indexing) with **direct "Run Query" export** (5-10 minutes total). This provides official Purview SIT accuracy much faster than Lab 05c's review set workflow (25-45 minutes) while maintaining 100% detection quality.
+>
+> **🔄 Workflow Difference**: Lab 05b exports search results directly without creating review sets. For advanced features (OCR, conversation threading, immutable snapshots), use Lab 05c's review set workflow instead.
 
 ### How eDiscovery Search Works
 
@@ -685,8 +692,8 @@ Extract the Reports package to access Results.csv for analysis:
 **Use extraction script (Recommended - bypasses Windows Defender block)**:
 
 ```powershell
-# Navigate to scripts folder
-cd "C:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Data-Governance-Simulation\05-Data-Discovery-Paths\05b-eDiscovery-Compliance-Search\scripts"
+# Navigate to Lab 05 shared scripts folder
+cd "C:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Data-Governance-Simulation\05-Data-Discovery-Paths\scripts"
 
 # Extract Reports package only
 .\Expand-eDiscoveryExportPackages.ps1 -ExtractReports
@@ -1027,7 +1034,7 @@ After completing Lab 05b, verify:
 
 **Next Steps**:
 - [ ] Compare with Lab 04 On-Demand Classification (when complete)
-- [ ] Wait 7-14 days for Lab 05c (Graph API discovery method)
+- [ ] Wait 24 hours for Lab 05c (Graph API discovery method)
 - [ ] Document accuracy differences between immediate (Lab 05a) and official (Lab 05b) methods
 - [ ] Use eDiscovery results as ground truth for validating other discovery methods
 

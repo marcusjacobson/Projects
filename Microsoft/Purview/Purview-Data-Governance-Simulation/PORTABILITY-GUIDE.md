@@ -254,7 +254,7 @@ Purview-Data-Governance-Simulation/
 1. Update `SharePointSites` array in `global-config.json` with production-specific names
 2. Add environment prefix: Change `HR-Simulation` to `Prod-HR-Simulation`
 3. Use ResourcePrefix: Leverage `$config.Simulation.ResourcePrefix` in site names
-4. Delete conflicting sites if safe to do so: Use Lab 07 cleanup scripts
+4. Delete conflicting sites if safe to do so: Use Lab 06 cleanup scripts
 
 ### Issue: Paths don't exist in new environment
 

@@ -4,9 +4,9 @@
 
 .DESCRIPTION
     This script configures the necessary Microsoft Graph API permissions to enable
-    automated discovery of classified content across SharePoint Online. It grants
-    read-only delegated permissions for files, sites, and information protection
-    policies, establishing the authentication foundation for Lab 05b automation.
+    automated discovery of classified content across SharePoint Online using the
+    Microsoft Graph eDiscovery APIs. It grants delegated permissions for eDiscovery
+    operations, establishing the authentication foundation for Lab 05c automation.
 
 .EXAMPLE
     .\Grant-GraphPermissions.ps1
@@ -31,9 +31,9 @@
     Script development orchestrated using GitHub Copilot.
 
 .PERMISSIONS GRANTED
-    - Files.Read.All (Delegated): Read files in SharePoint and OneDrive
-    - Sites.Read.All (Delegated): Read SharePoint site structure
-    - InformationProtectionPolicy.Read (Delegated): Read sensitivity labels and SIT definitions
+    - eDiscovery.Read.All (Delegated): Read eDiscovery cases and searches
+    - eDiscovery.ReadWrite.All (Delegated): Create and manage eDiscovery cases and searches for SIT discovery
+    - Sites.Read.All (Delegated): Read SharePoint site information for targeted data discovery
 #>
 
 #Requires -Version 7.0
@@ -81,9 +81,9 @@ Write-Host "=======================================" -ForegroundColor Green
 Write-Host ""
 
 $requiredScopes = @(
-    "Files.Read.All",
-    "Sites.Read.All",
-    "InformationProtectionPolicy.Read"
+    "eDiscovery.Read.All",
+    "eDiscovery.ReadWrite.All",
+    "Sites.Read.All"
 )
 
 Write-Host "   📌 Permissions to be granted:" -ForegroundColor Cyan
@@ -92,7 +92,8 @@ foreach ($scope in $requiredScopes) {
 }
 
 Write-Host ""
-Write-Host "   💡 These are READ-ONLY permissions for data discovery" -ForegroundColor Yellow
+Write-Host "   💡 eDiscovery permissions: Create and manage eDiscovery cases/searches" -ForegroundColor Yellow
+Write-Host "   💡 Sites.Read.All: Query SharePoint sites for targeted data discovery" -ForegroundColor Yellow
 Write-Host ""
 
 # =============================================================================
@@ -164,11 +165,11 @@ try {
     Write-Host ""
     
     if ($allGranted) {
-        Write-Host "🎉 All required permissions granted successfully!" -ForegroundColor Green
+        Write-Host "🎉 All required eDiscovery permissions granted successfully!" -ForegroundColor Green
         Write-Host ""
         Write-Host "📋 Next Steps:" -ForegroundColor Cyan
-        Write-Host "   1. Run Test-GraphConnectivity.ps1 to verify API access" -ForegroundColor DarkGray
-        Write-Host "   2. Execute Search-GraphSITs.ps1 to perform tenant-wide discovery" -ForegroundColor DarkGray
+        Write-Host "   1. Run Test-GraphConnectivity.ps1 to verify eDiscovery API access" -ForegroundColor DarkGray
+        Write-Host "   2. Execute Search-GraphSITs.ps1 to perform tenant-wide SIT discovery" -ForegroundColor DarkGray
         Write-Host ""
     } else {
         Write-Host "⚠️ Some permissions were not granted" -ForegroundColor Yellow
@@ -194,7 +195,7 @@ try {
 Write-Host "✅ Permission grant completed successfully" -ForegroundColor Green
 Write-Host ""
 Write-Host "⚠️ Note: You can disconnect from Graph if desired with: Disconnect-MgGraph" -ForegroundColor Yellow
-Write-Host "         However, the connection will be used by subsequent Lab 05b scripts" -ForegroundColor Yellow
+Write-Host "         However, the connection will be used by subsequent Lab 05c scripts" -ForegroundColor Yellow
 Write-Host ""
 
 exit 0

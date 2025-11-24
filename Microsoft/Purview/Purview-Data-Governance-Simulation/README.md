@@ -36,8 +36,8 @@ This comprehensive lab environment demonstrates Microsoft Purview Information Pr
 > - **Day 1**: Complete Labs 00-03 (Setup, Sites, Generation, Upload: ~2-4 hours hands-on)
 > - **Days 2-7**: On-Demand Classification processing (up to 7 days async, Content Explorer updates within 7 days)
 > - **Day 2+ (Parallel)**: Lab 05a immediate regex discovery (88-95% accuracy, no classification wait)
-> - **Day 3+ (24hr wait)**: Lab 05b eDiscovery search (100% Purview SITs after SharePoint Search indexing)
-> - **Days 7-14**: Lab 04 Content Explorer validation + Lab 05c Graph API discovery (after Microsoft Search indexing)
+> - **Day 3+ (24hr wait)**: Lab 05b eDiscovery search + Lab 05c Graph API discovery (100% Purview SITs after SharePoint Search indexing)
+> - **Days 7-14**: Lab 04 Content Explorer validation (after Microsoft Search indexing)
 > - **Cleanup**: Lab 06 anytime (15-30 minutes)
 >
 > **💡 Accelerated Option**: Complete Labs 00-03 + 05a in **4-6 hours** for immediate regex-based discovery (88-95% accuracy) without waiting for classification or indexing.
@@ -176,11 +176,19 @@ This comprehensive lab environment demonstrates Microsoft Purview Information Pr
 
 **Timing Note**: ⏱️ **Classification runs asynchronously** over up to 7 days. Process includes estimation phase (minutes), then classification phase (up to 7 days), with Content Explorer updates appearing within 7 days of scan completion. Portal at purview.microsoft.com provides progress tracking.
 
+> **💡 Strategic "Fire and Forget" Workflow**:
+>
+> 1. **Start Lab 04 Immediately**: Initiate the classification scan (Step 1).
+> 2. **Do Not Wait**: Proceed immediately to Lab 05a or 05b (which do not require classification).
+> 3. **Return Later**: Come back in 7 days to validate results in Content Explorer.
+>
+> **Why?** Lab 04 is the **only** way to populate **Content Explorer (Visualization)**, but Lab 05 provides **CSV Reports (Discovery)**. Lab 04 serves as the "Gold Standard" baseline to validate the accuracy of your Lab 05 discovery reports.
+
 > **💡 Parallel Execution**: While Lab 04 classification runs asynchronously over 7 days, you can proceed with discovery labs:
 >
 > - **Lab 05a**: Immediate regex-based discovery (88-95% accuracy, no classification required)
 > - **Lab 05b**: 24-hour eDiscovery search (100% Purview SITs, no classification required)
-> - **Lab 05c**: 7-14 day Graph API discovery (100% Purview SITs, optional: wait for Lab 04 for Content Explorer validation)
+> - **Lab 05c**: 24-hour Graph API discovery (100% Purview SITs, no classification required)
 
 ---
 
@@ -191,31 +199,28 @@ This comprehensive lab environment demonstrates Microsoft Purview Information Pr
 
 **What You'll Learn**:
 
-- Choose between four discovery methods based on timing needs: Immediate (05a), 24 hours (05b), or 7-14 days (05c/05d).
-- Understand accuracy differences: 70-90% regex detection (05a) vs 100% Purview SITs (05b/05c/05d).
+- Choose between three discovery methods based on timing needs: Immediate (05a) or 24 hours (05b/05c).
+- Understand accuracy differences: 70-90% regex detection (05a) vs 100% Purview SITs (05b/05c).
 - Execute manual portal-based discovery with PnP PowerShell direct file access.
 - Run official compliance searches using modern eDiscovery portal (purview.microsoft.com).
 - Automate tenant-wide discovery using Microsoft Graph Search API.
-- Perform site-specific deep scans using PnP PowerShell with SharePoint Search API.
 - Generate comprehensive CSV reports for compliance audits and security operations.
 
-**Four Discovery Paths**:
+**Three Discovery Paths**:
 
 - **Lab 05a: PnP Direct File Access** - Immediate results with custom regex detection (70-90% accuracy)
 - **Lab 05b: eDiscovery Compliance Search** - 24-hour results with official Purview SITs (100% accuracy)
-- **Lab 05c: Graph API Discovery** - Automated tenant-wide scanning after 7-14 days indexing (100% accuracy)
-- **Lab 05d: SharePoint Search Discovery** - Targeted site-specific scanning after 7-14 days indexing (100% accuracy)
+- **Lab 05c: Graph API Discovery** - Automated tenant-wide scanning after 24 hours indexing (100% accuracy)
 
 **Timeline Distinctions**:
 
 - **Immediate**: Lab 05a (regex-based, learning-focused)
-- **24 hours**: Lab 05b (SharePoint Search index, compliance searches)
-- **7-14 days**: Labs 05c/05d (Microsoft Search unified index, automation-ready)
+- **24 hours**: Lab 05b/05c (SharePoint Search index, compliance searches/API)
 
 **Key Deliverables**:
 
 - CSV discovery reports with SIT types, file paths, confidence levels, and rich metadata.
-- Automation scripts for recurring discovery (Labs 05c/05d with Microsoft Graph and SharePoint Search APIs).
+- Automation scripts for recurring discovery (Lab 05c with Microsoft Graph API).
 - Discovery comparison analysis across multiple methods and accuracy levels.
 - Compliance audit reports suitable for stakeholder presentations.
 
@@ -259,9 +264,9 @@ This project provides **hands-on practical experience with core Microsoft Purvie
 - **Built-In Sensitive Information Types** (leveraging Microsoft's pre-configured SITs with 100% accuracy)
 - **On-Demand Classification** (7-day portal-based classification with estimation and cost analysis)
 - **Content Explorer Validation** (classification coverage analysis with 7-day update timing)
-- **Four Discovery Methods** (immediate regex, 24hr eDiscovery, 7-14 day Graph/SharePoint Search APIs)
+- **Three Discovery Methods** (immediate regex, 24hr eDiscovery, 24hr Graph API)
 - **Modern eDiscovery Portal** (purview.microsoft.com with Cases preview and Condition builder)
-- **Microsoft Graph & SharePoint Search APIs** (automated tenant-wide and site-specific discovery)
+- **Microsoft Graph API** (automated tenant-wide discovery)
 - **SharePoint Online Governance** (automated site provisioning, document distribution, metadata management)
 - **PowerShell & API Automation** (Graph SDK, PnP PowerShell, OAuth 2.0 authentication)
 - **Configuration-Driven Architecture** (environment portability, multi-tenant support, scalable simulations)
@@ -291,10 +296,9 @@ This project provides **hands-on practical experience with core Microsoft Purvie
 | **eDiscovery Compliance Search** | ✅ COMPREHENSIVE | Lab 05b (modern Cases preview, Condition builder, 24hr results) |
 | **Direct File Access Discovery** | ✅ COMPREHENSIVE | Lab 05a (PnP PowerShell, immediate regex-based detection) |
 | **Microsoft Graph API Discovery** | ✅ EXTENSIVE | Lab 05c (automated tenant-wide scans, SIEM integration) |
-| **SharePoint Search API Discovery** | ✅ EXTENSIVE | Lab 05d (site-specific targeted scans, rich metadata) |
 | **Multi-Method Discovery Comparison** | ✅ COMPREHENSIVE | Lab 05 overview (timing/accuracy matrix, decision guide) |
-| **CSV Report Generation** | ✅ COMPREHENSIVE | Labs 05a/05c/05d (Excel-ready discovery reports) |
-| **Discovery Automation** | ✅ EXTENSIVE | Labs 05c/05d (scheduled scans, recurring discovery) |
+| **CSV Report Generation** | ✅ COMPREHENSIVE | Labs 05a/05c (Excel-ready discovery reports) |
+| **Discovery Automation** | ✅ EXTENSIVE | Lab 05c (scheduled scans, recurring discovery) |
 
 #### ✅ SharePoint Online Governance (90% Simulation Features)
 
@@ -311,13 +315,12 @@ This project provides **hands-on practical experience with core Microsoft Purvie
 | Capability | Coverage Level | Project Section(s) |
 |------------|----------------|-------------------|
 | **Browser-Based Authentication** | ✅ COMPREHENSIVE | All labs (interactive auth, OAuth 2.0) |
-| **PnP PowerShell Operations** | ✅ COMPREHENSIVE | Labs 01, 03, 05a/05d (sites, upload, discovery) |
+| **PnP PowerShell Operations** | ✅ COMPREHENSIVE | Labs 01, 03, 05a (sites, upload, discovery) |
 | **Microsoft Graph SDK** | ✅ EXTENSIVE | Lab 05c (Graph Search API, delegated permissions) |
-| **SharePoint Search API** | ✅ EXTENSIVE | Lab 05d (KQL queries, metadata extraction) |
 | **Bulk Document Generation** | ✅ COMPREHENSIVE | Lab 02 (500-20,000 documents with realistic PII) |
 | **Throttling Management** | ✅ COMPREHENSIVE | Lab 03 (automatic retry logic, rate limiting) |
 | **Indexing Status Validation** | ✅ COMPREHENSIVE | Lab 05b (real SharePoint scanning, readiness checks) |
-| **Discovery Automation** | ✅ EXTENSIVE | Labs 05c/05d (scheduled scans, JSON/CSV reports) |
+| **Discovery Automation** | ✅ EXTENSIVE | Lab 05c (scheduled scans, recurring discovery) |
 | **Environment Cleanup** | ✅ COMPREHENSIVE | Lab 06 (complete resource removal, reset operations) |
 
 #### ✅ Configuration Management & Portability (100% Core Features)
@@ -410,11 +413,10 @@ The following capabilities require **custom development**, **advanced configurat
 | **Microsoft Purview Configuration** | 00, 01, 04, 05 | Intermediate to Advanced |
 | **PowerShell Automation** | All Labs | Intermediate to Advanced |
 | **Microsoft Graph API Integration** | 05c | Intermediate |
-| **SharePoint Search API** | 05d | Intermediate |
 | **SharePoint Administration** | 01, 03, 07 | Intermediate |
 | **PII Data Generation** | 02 | Foundational |
 | **Classification Workflows** | 04 | Intermediate to Advanced |
-| **Data Discovery Methods** | 05a, 05b, 05c, 05d | Advanced |
+| **Data Discovery Methods** | 05a, 05b, 05c | Advanced |
 | **eDiscovery Compliance Search** | 05b | Advanced |
 | **Compliance Reporting** | 06 | Intermediate |
 | **Environment Portability** | 00, 07 | Advanced |
@@ -480,14 +482,14 @@ This project complements official Microsoft Learn paths:
 .\05-Data-Discovery-Paths\05b-eDiscovery-Compliance-Search\scripts\Test-ContentIndexingStatus.ps1
 # Portal: purview.microsoft.com > eDiscovery > Cases (preview) > Create search
 
-# Lab 05c/05d: Graph API / SharePoint Search (wait 7-14 days after Lab 03 for unified index)
+# Lab 05c: Graph API Discovery (wait 24 hours after Lab 03 for SharePoint Search index)
 # See Lab 05 overview for decision guide on which path to use
 
 # Lab 05: Discover sensitive data across sites (multiple paths available)
 # Choose one or more discovery methods based on timing needs
 
 # Lab 06: Cleanup (when ready to remove all simulation resources)
-.\07-Cleanup-Reset\Reset-Environment.ps1 -FullReset -Confirm:$false
+.\06-Cleanup-Reset\scripts\Reset-Environment.ps1 -FullReset -Confirm:$false
 ```
 
 > **💡 Best Practice**: Start with **Small scale** (1,000 documents) for testing, then scale up to Medium or Large for demonstrations.
@@ -517,12 +519,16 @@ Purview-Data-Governance-Simulation/
 ├── 02-Test-Data-Generation/       # PII document generation
 ├── 03-Document-Upload-Distribution/ # Document upload and metadata
 ├── 04-Classification-Validation/  # On-Demand Classification and validation
-├── 05-DLP-Policy-Implementation/  # DLP policy creation and testing
-├── 06-Monitoring-Reporting/       # Metrics and dashboard generation
-├── 07-Cleanup-Reset/              # Environment cleanup and reset
+├── 05-Data-Discovery-Paths/       # Data discovery and reporting
+├── 06-Cleanup-Reset/              # Environment cleanup and reset
 ├── global-config.json             # Single source of truth for configuration
 ├── global-config.json.template    # Pristine template for reset operations
-└── README.md                      # This file
+├── README.md                      # This file
+└── Documentation/                 # Technical documentation
+    ├── AUTHENTICATION-STANDARDIZATION.md # Browser-based auth patterns
+    ├── IMPLEMENTATION-STATUS.md          # Current project status
+    ├── PORTABILITY-GUIDE.md              # Multi-tenant migration guide
+    └── PROJECT-FLOW-ANALYSIS.md          # Dependency and timeline analysis
 ```
 
 **Prerequisites**: M365 E5 licensing, PowerShell modules, admin permissions. See [Lab 00: Prerequisites Setup](./00-Prerequisites-Setup/) for complete requirements.
@@ -541,7 +547,7 @@ Completing this project demonstrates proficiency in the following industry-recog
 - On-Demand Classification workflow execution with estimation and cost analysis (7-day processing).
 - Modern eDiscovery portal operations (purview.microsoft.com, Cases preview, Condition builder).
 - Content Explorer proficiency for classification validation (7-day update timing).
-- Four discovery method implementations (immediate regex, 24hr eDiscovery, 7-14 day APIs).
+- Three discovery method implementations (immediate regex, 24hr eDiscovery, 24hr APIs).
 - SharePoint Online data governance and compliance management.
 - Purview Information Protection configuration and lifecycle management.
 
@@ -549,8 +555,7 @@ Completing this project demonstrates proficiency in the following industry-recog
 
 - PowerShell automation for Purview simulation workflows.
 - Microsoft Graph PowerShell SDK for tenant-wide discovery automation (OAuth 2.0, delegated permissions).
-- PnP PowerShell for SharePoint bulk operations, document management, and Search API integration.
-- SharePoint Search API querying with KQL for site-specific targeted discovery.
+- PnP PowerShell for SharePoint bulk operations and document management.
 - Automated document generation with realistic PII patterns.
 - Configuration-driven deployment patterns for environment portability.
 - Modern authentication implementation (interactive browser-based, OAuth 2.0, no service principals required).
@@ -561,7 +566,7 @@ Completing this project demonstrates proficiency in the following industry-recog
 - Classification accuracy validation and coverage analysis (100% Purview SIT accuracy).
 - Discovery method comparison and effectiveness analysis (regex vs official Purview SITs).
 - SharePoint Search indexing status validation and readiness checks.
-- Multi-method discovery results comparison (immediate, 24hr, 7-14 day timelines).
+- Multi-method discovery results comparison (immediate, 24hr timelines).
 - Compliance monitoring dashboard development.
 - Executive-level reporting for data governance metrics.
 
@@ -572,7 +577,7 @@ Completing this project demonstrates proficiency in the following industry-recog
 - Data classification strategy implementation (7-day On-Demand Classification).
 - Discovery method selection and timing strategy (immediate vs 24hr vs 7-14 day).
 - eDiscovery compliance search execution and analysis.
-- Automated discovery workflows with Microsoft Graph and SharePoint Search APIs.
+- Automated discovery workflows with Microsoft Graph API.
 - Purview simulation environments for POC and demonstrations.
 - Data discovery validation workflows across multiple methods.
 
@@ -613,7 +618,7 @@ This project provides hands-on experience aligned with:
 
 For maximum visibility on LinkedIn and applicant tracking systems (ATS), this project covers:
 
-`Microsoft Purview` • `Information Protection` • `Data Classification` • `Built-In SITs` • `On-Demand Classification` • `Content Explorer` • `eDiscovery` • `Compliance Search` • `Data Discovery` • `Microsoft Graph API` • `SharePoint Search API` • `Microsoft Graph PowerShell SDK` • `Compliance Management` • `Microsoft 365 Administration` • `SharePoint Online` • `PowerShell Scripting` • `PnP PowerShell` • `API Integration` • `OAuth 2.0 Authentication` • `Data Governance` • `Discovery Automation` • `Compliance Reporting` • `Compliance Testing` • `Simulation Environments` • `POC Development` • `Configuration Management` • `Modern Authentication` • `Technical Documentation` • `Demonstration Environments`
+`Microsoft Purview` • `Information Protection` • `Data Classification` • `Built-In SITs` • `On-Demand Classification` • `Content Explorer` • `eDiscovery` • `Compliance Search` • `Data Discovery` • `Microsoft Graph API` • `Microsoft Graph PowerShell SDK` • `Compliance Management` • `Microsoft 365 Administration` • `SharePoint Online` • `PowerShell Scripting` • `PnP PowerShell` • `API Integration` • `OAuth 2.0 Authentication` • `Data Governance` • `Discovery Automation` • `Compliance Reporting` • `Compliance Testing` • `Simulation Environments` • `POC Development` • `Configuration Management` • `Modern Authentication` • `Technical Documentation` • `Demonstration Environments`
 
 ---
 

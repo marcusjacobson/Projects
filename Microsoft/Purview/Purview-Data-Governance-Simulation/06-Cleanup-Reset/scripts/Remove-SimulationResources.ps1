@@ -83,7 +83,8 @@ Write-Host "===============================" -ForegroundColor Cyan
 
 # Load global configuration
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
-$projectRoot = Split-Path -Parent $scriptPath
+$moduleRoot = Split-Path -Parent $scriptPath
+$projectRoot = Split-Path -Parent $moduleRoot
 . (Join-Path $projectRoot "Shared-Utilities\Import-GlobalConfig.ps1")
 $config = Import-GlobalConfig
 
@@ -116,7 +117,7 @@ if ($ResourceType -eq "DLPPolicies" -or $ResourceType -eq "All") {
     Write-Host "`n🔐 Removing DLP Policies and Rules..." -ForegroundColor Cyan
     
     # Import shared modules
-    . "$PSScriptRoot\..\Shared-Utilities\Import-PurviewModules.ps1"
+    . "$PSScriptRoot\..\..\Shared-Utilities\Import-PurviewModules.ps1"
     
     try {
         # Connect to Security & Compliance Center using shared module
@@ -203,7 +204,7 @@ if ($ResourceType -eq "Documents" -or $ResourceType -eq "All") {
                 # Connect to site using shared module
                 # Load config if not already available
                 if (-not $config) {
-                    $config = & "$PSScriptRoot\..\Shared-Utilities\Import-GlobalConfig.ps1"
+                    $config = & "$PSScriptRoot\..\..\Shared-Utilities\Import-GlobalConfig.ps1"
                 }
                 Connect-PurviewServices -Services @("SharePoint") -TenantUrl $siteUrl -PnPClientId $config.Environment.PnPClientId -Interactive
                 
@@ -271,7 +272,7 @@ if ($ResourceType -eq "Sites" -or $ResourceType -eq "All") {
     try {
         # Import shared modules (if not already loaded)
         if (-not (Get-Command Connect-PurviewServices -ErrorAction SilentlyContinue)) {
-            . "$PSScriptRoot\..\Shared-Utilities\Import-PurviewModules.ps1"
+            . "$PSScriptRoot\..\..\Shared-Utilities\Import-PurviewModules.ps1"
         }
         
         # Connect to SharePoint Admin using shared module

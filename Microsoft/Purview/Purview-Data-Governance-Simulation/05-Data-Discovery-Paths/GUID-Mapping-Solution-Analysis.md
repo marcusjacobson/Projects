@@ -496,7 +496,7 @@ If building a web application or service (not PowerShell scripts), Microsoft Gra
 
 ### For Future Projects
 
-✅ **Extensible pattern** - Can be used in Labs 05c, 05d, and future eDiscovery work
+✅ **Extensible pattern** - Can be used in Lab 05c and future eDiscovery work
 
 ✅ **Organization-agnostic** - Works in any M365 tenant (lab, production, customer environments)
 

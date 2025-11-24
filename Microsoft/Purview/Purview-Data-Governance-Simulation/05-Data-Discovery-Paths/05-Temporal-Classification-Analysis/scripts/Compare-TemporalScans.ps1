@@ -92,17 +92,26 @@ Write-Host "🔍 Loading baseline scan ($BaselineScan)..." -ForegroundColor Cyan
 
 try {
     if ($BaselineScan -eq "24-Hour") {
-        # Load Lab 05b eDiscovery baseline
+        # Try to load Lab 05b eDiscovery baseline first
         $lab05bPath = Join-Path $PSScriptRoot "..\..\05b-eDiscovery-Compliance-Search\reports"
         $baselineCsv = Get-ChildItem -Path $lab05bPath -Filter "Items_0*.csv" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
         
-        if (-not $baselineCsv) {
-            Write-Host "❌ Lab 05b baseline (24-Hour) not found" -ForegroundColor Red
-            throw "Complete Lab 05b before running temporal comparison"
+        if ($baselineCsv) {
+            $baselineResults = Import-Csv $baselineCsv.FullName
+            Write-Host "   ✅ Loaded Lab 05b baseline: $($baselineCsv.Name)" -ForegroundColor Green
+        } else {
+            # Fallback to Temporal 24-Hour scan (e.g. from Simulation Mode)
+            $searchPattern = "Temporal-Scan-24Hour*.csv"
+            $baselineCsv = Get-ChildItem -Path $reportsPath -Filter $searchPattern | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+            
+            if ($baselineCsv) {
+                $baselineResults = Import-Csv $baselineCsv.FullName
+                Write-Host "   ✅ Loaded Temporal 24-Hour scan: $($baselineCsv.Name)" -ForegroundColor Green
+            } else {
+                Write-Host "❌ Lab 05b baseline (24-Hour) not found" -ForegroundColor Red
+                throw "Complete Lab 05b or run 'Invoke-TemporalScan.ps1 -ScanInterval 24-Hour -SimulationMode' before running temporal comparison"
+            }
         }
-        
-        $baselineResults = Import-Csv $baselineCsv.FullName
-        Write-Host "   ✅ Loaded Lab 05b baseline: $($baselineCsv.Name)" -ForegroundColor Green
         
     } else {
         # Load temporal scan result

@@ -104,7 +104,7 @@ The Purview Data Governance Simulation project demonstrates **EXCELLENT structur
 - ✅ Lab 05 REQUIRES Lab 03 + timing requirements:
   - Lab 05a: Immediate (no indexing wait)
   - Lab 05b: 24 hours (SharePoint Search index)
-  - Lab 05c: 7-14 days (Microsoft Search unified index)
+  - Lab 05c: 24 hours (SharePoint Search index)
   - Lab 05-Temporal: 2-3 weeks (longitudinal study)
 
 **Issues Found**:
@@ -135,7 +135,7 @@ The Purview Data Governance Simulation project demonstrates **EXCELLENT structur
 - ✅ Lab 05 paths have different timing requirements:
   - Lab 05a: Can run immediately (doesn't depend on classification)
   - Lab 05b: Wait 24 hours after Lab 03 for SharePoint Search index
-  - Lab 05c: Wait 7-14 days after Lab 03 for Microsoft Search unified index
+  - Lab 05c: Wait 24 hours after Lab 03 for SharePoint Search index
   - Lab 05-Temporal: 2-3 week longitudinal study
 
 **Issues Found**:
@@ -161,13 +161,13 @@ The Purview Data Governance Simulation project demonstrates **EXCELLENT structur
 - ✅ **Timing-dependent**:
   - Lab 05a: Immediate after Lab 03
   - Lab 05b: 24 hours after Lab 03
-  - Lab 05c: 7-14 days after Lab 03
+  - Lab 05c: 24 hours after Lab 03
   - Lab 05-Temporal: 2-3 weeks after Lab 03
 
 **Deliverables**:
 - ✅ Lab 05a: Regex-based discovery reports (88-95% accuracy, immediate)
 - ✅ Lab 05b: eDiscovery compliance search reports (100% Purview SITs, 24hr)
-- ✅ Lab 05c: Graph API automated discovery (100% Purview SITs, 7-14 days)
+- ✅ Lab 05c: Graph API automated discovery (100% Purview SITs, 24 hours)
 - ✅ Lab 05-Temporal: Longitudinal classification stability analysis (2-3 weeks)
 
 **Flow into Next Labs**:
@@ -225,7 +225,7 @@ Lab 03 (Upload to SharePoint) ←──────┘
   │     ↓ wait 24 hours after Lab 03
   │
   ├─→ Lab 05c (7-14 day Discovery - Graph API 100%)
-  │     ↓ wait 7-14 days after Lab 03
+  │     ↓ wait 24 hours after Lab 03
   │
   └─→ Lab 05-Temporal (2-3 week Longitudinal Study)
         ↓ weekly scans for 2-3 weeks
@@ -275,8 +275,8 @@ Lab 06 (Cleanup - can run anytime)
 > - **Day 1**: Complete Labs 00-03 (Setup, Sites, Generation, Upload: ~2-4 hours hands-on)
 > - **Days 2-7**: On-Demand Classification processing (up to 7 days async, Content Explorer updates within 7 days)
 > - **Day 2+ (Parallel)**: Lab 05a immediate discovery (regex-based, 88-95% accuracy)
-> - **Day 3+ (24hr wait)**: Lab 05b eDiscovery discovery (100% Purview SITs after SharePoint Search indexing)
-> - **Days 7-14**: Lab 04 validation (Content Explorer available), Lab 05c Graph API discovery (after Microsoft Search indexing)
+> - **Day 3+ (24hr wait)**: Lab 05b eDiscovery discovery + Lab 05c Graph API discovery (100% Purview SITs after SharePoint Search indexing)
+> - **Days 7-14**: Lab 04 validation (Content Explorer available)
 > - **Cleanup**: Lab 06 anytime
 >
 > **💡 Accelerated Option**: Complete Labs 00-03 + 05a in **4-6 hours** for immediate regex-based discovery (88-95% accuracy) without waiting for classification or indexing.
@@ -311,7 +311,7 @@ Lab 06 (Cleanup - can run anytime)
 - **Lab 05a**: Can run immediately after Lab 03 (regex-based, no classification required)
 - **Lab 05b**: Can run after 24 hours (SharePoint Search index, no classification required)
 - **Lab 04**: Runs in parallel over 7 days (On-Demand Classification for Content Explorer)
-- **Lab 05c**: Run after 7-14 days (Microsoft Search index + optional Lab 04 completion)
+- **Lab 05c**: Run after 24 hours (SharePoint Search index)
 ```
 
 ---
@@ -329,7 +329,7 @@ Lab 06 (Cleanup - can run anytime)
 **Actual Project Structure**:
 ```text
 05-Data-Discovery-Paths/  ← Exists
-06-Cleanup-Reset/          ← Exists (but main README calls it Lab 07)
+06-Cleanup-Reset/          ← Exists
 ```
 
 **Recommendations**:
@@ -340,7 +340,7 @@ Lab 06 (Cleanup - can run anytime)
 
 2. **Update lab numbering**:
    - Lab 05: Data Discovery Paths (current)
-   - Lab 06: Cleanup and Reset (currently listed as Lab 07)
+   - Lab 06: Cleanup and Reset
 
 3. **Add "What This Project Does NOT Cover" section** (already exists but should be more prominent):
    - Move earlier in README
@@ -411,7 +411,7 @@ Remove non-existent labs and renumber:
 **Duration**: 15-30 minutes
 **Objective**: Remove simulation resources and restore environment to clean state
 
-[Move content from "Lab 07" section]
+[Move content from "Lab 06" section]
 ```
 
 ---
@@ -424,7 +424,7 @@ Add note in Lab 04 section:
 > **💡 Parallel Execution**: While Lab 04 classification runs asynchronously over 7 days, you can proceed with discovery labs:
 > - Lab 05a: Immediate regex-based discovery (no classification required)
 > - Lab 05b: 24-hour eDiscovery search (no classification required)
-> - Lab 05c: 7-14 day Graph API discovery (optional: wait for Lab 04 completion for Content Explorer validation)
+> - Lab 05c: 24-hour Graph API discovery (no classification required)
 ```
 
 ---

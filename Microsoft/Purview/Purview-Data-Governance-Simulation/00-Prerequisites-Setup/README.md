@@ -61,7 +61,7 @@ code global-config.json  # Or use notepad, vim, etc.
 
 > **📋 Configuration Overview**: The `global-config.json` file contains 7 main sections. This lab (Lab 00) covers **Environment**, **Simulation**, **SharePointSites**, **Paths**, and **Logging** configuration. Additional sections are detailed in later labs where they're actively used.
 >
-> **💾 Template Backup**: A template copy (`global-config.json.template`) is maintained in the project root. This file contains the default configuration with placeholder values and is used by the **Lab 07 Reset-Environment.ps1** script to restore configuration to defaults during cleanup operations.
+> **💾 Template Backup**: A template copy (`global-config.json.template`) is maintained in the project root. This file contains the default configuration with placeholder values and is used by the **Lab 06 Reset-Environment.ps1** script to restore configuration to defaults during cleanup operations.
 
 #### Environment Configuration (Required - Lab 00)
 

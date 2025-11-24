@@ -74,7 +74,8 @@ Write-Host "=======================" -ForegroundColor Cyan
 
 # Load global configuration
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
-$projectRoot = Split-Path -Parent $scriptPath
+$moduleRoot = Split-Path -Parent $scriptPath
+$projectRoot = Split-Path -Parent $moduleRoot
 . (Join-Path $projectRoot "Shared-Utilities\Import-GlobalConfig.ps1")
 $config = Import-GlobalConfig
 
@@ -116,7 +117,7 @@ if ($ResourceType -eq "Sites" -or $ResourceType -eq "All") {
     Write-Host "`n🌐 Verifying SharePoint Sites..." -ForegroundColor Cyan
     
     # Import shared modules
-    . "$PSScriptRoot\..\Shared-Utilities\Import-PurviewModules.ps1"
+    . "$PSScriptRoot\..\..\Shared-Utilities\Import-PurviewModules.ps1"
     
     try {
         # Connect to SharePoint Admin
@@ -182,7 +183,7 @@ if ($ResourceType -eq "DLPPolicies" -or $ResourceType -eq "All") {
     
     # Import shared modules (if not already loaded)
     if (-not (Get-Command Connect-PurviewServices -ErrorAction SilentlyContinue)) {
-        . "$PSScriptRoot\..\Shared-Utilities\Import-PurviewModules.ps1"
+        . "$PSScriptRoot\..\..\Shared-Utilities\Import-PurviewModules.ps1"
     }
     
     try {

@@ -1,16 +1,29 @@
-# Lab 05a: PnP PowerShell Direct File Access Discovery
+# Lab 05a: PnP PowerShell Direct File Access Discovery (⚡ Quick but Error-Prone)
 
-## 📋 Overview
+## 📚 Overview
 
-This lab demonstrates **immediate sensitive data discovery** using PnP PowerShell to directly access SharePoint document libraries and scan file content with regex patterns. Unlike other discovery methods that require indexing delays (24 hours to 14 days), this approach provides results **within minutes to hours** of file uploads.
+This lab demonstrates **immediate sensitive data discovery** using PnP PowerShell to directly access SharePoint document libraries and scan file content with regex patterns. This is the **quickest method** but also the **least reliable**, providing results **within minutes** of file uploads but with **70-90% accuracy** due to regex pattern limitations.
+
+**Why "Quick but Error-Prone"**:
+
+- ⚡ **Fastest discovery method** - results in minutes vs. 24 hours (Labs 05b/05c) or 7 days (Lab 04)
+- ⚠️ **70-90% accuracy** - regex patterns lack context awareness and validation logic
+- ⚠️ **Higher false positives** - incorrectly flags non-SIT content (6-12% over-detection)
+- ⚠️ **Some false negatives** - misses SIT variations and context-dependent detections (0-2% under-detection)
+- 📚 **Best for learning** - understand SIT detection fundamentals, get immediate interim results
 
 **What You'll Accomplish**:
 
 - Retrieve file content directly from SharePoint into memory (no disk downloads)
 - Apply 8 regex-based SIT patterns to detect sensitive information
 - Generate CSV reports with SIT detection details in real-time
-- Compare regex accuracy (~70-90%) with official Purview classification
+- **Compare regex accuracy with official Purview methods** (Labs 05b/05c achieve 100% accuracy)
 - Understand how SIT detection works "under the hood" with pattern matching
+
+**Comparison with More Reliable Methods**:
+
+- **Lab 05b (More Reliable)**: 100% Purview SIT accuracy, 24-hour wait + 5-10 min export
+- **Lab 05c (Most Reliable)**: 100% Purview SIT accuracy + advanced features (OCR, threading, immutable snapshots), 24-hour wait + 25-45 min processing
 
 **Duration**: 60-90 minutes for Medium scale (Lab 03 default: ~5000 files)
 
@@ -63,7 +76,7 @@ After completing this lab, you will be able to:
 - Understanding of regex patterns for custom SIT detection
 - Excel or CSV viewer for analyzing results
 
-> **⏱️ No Waiting Required**: Unlike Labs 05c/05d (7-14 days), this lab works immediately after Lab 03 file uploads complete.
+> **⏱️ No Waiting Required**: Unlike Lab 05b/05c (24 hours), this lab works immediately after Lab 03 file uploads complete.
 
 ---
 
@@ -98,12 +111,12 @@ After completing this lab, you will be able to:
 
 **Method Comparison**:
 
-| Method | Speed | Accuracy | Use Case |
-|--------|-------|----------|----------|
-| **Lab 05a (This Lab)** | **Minutes** | 70-90% (regex) | ✅ Immediate learning & interim analysis |
-| Lab 04 (On-Demand Classification) | 7 days | 100% (official) | Official classification validation |
-| Lab 05b (eDiscovery) | 24 hours | 100% (official) | Fast official results |
-| Labs 05c/05d (Graph/Search) | 7-14 days | 100% (official) | Automated recurring monitoring |
+| Method | Speed | Accuracy | Reliability Rank | Use Case |
+|--------|-------|----------|------------------|----------|
+| **Lab 05a (This Lab)** | **Minutes** | 70-90% (regex) | ⚡ Quick but error-prone | Immediate learning & interim analysis |
+| **Lab 05b (eDiscovery)** | 24 hours | 100% (official) | ✅ More reliable, faster | Fast official results with simple export |
+| **Lab 05c (Graph API + Review sets)** | 24 hours | 100% (official) | 🏆 Most reliable | Advanced features (OCR, threading, automation) |
+| Lab 04 (On-Demand Classification) | 7 days | 100% (official) | ✅ Reliable | Official classification validation |
 
 ---
 
@@ -421,8 +434,6 @@ Explore automated recurring monitoring with Graph API or SharePoint Search:
 > **Best For**: Production-ready automated monitoring and compliance reporting.
 
 **[→ Lab 05c: Microsoft Graph API Discovery](../05c-Graph-API-Discovery/)**
-
-**[→ Lab 05d: SharePoint Search API Discovery](../05d-SharePoint-Search-Discovery/)**
 
 ---
 

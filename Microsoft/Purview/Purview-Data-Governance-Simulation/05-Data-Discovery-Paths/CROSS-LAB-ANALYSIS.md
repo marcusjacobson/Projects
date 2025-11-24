@@ -8,12 +8,18 @@ The cross-lab analysis orchestrator compares results from multiple Lab 05 discov
 
 ## 🎯 Why Compare Discovery Methods?
 
-**Understanding Accuracy Trade-offs**:
+**Understanding Accuracy and Reliability Trade-offs**:
 
-- **Lab 05a (PnP regex)**: 70-90% accuracy - fast but approximate
-- **Lab 05b (eDiscovery)**: 100% accuracy - official Purview SITs with 24-hour wait
+- **Lab 05a (⚡ Quick but Error-Prone)**: 70-90% accuracy - immediate results but with false positives/negatives
+- **Lab 05b (✅ More Reliable, Faster)**: 100% Purview SIT accuracy - official classification with fast 5-10 min export (24-hour indexing wait)
+- **Lab 05c (🏆 Most Reliable)**: 100% Purview SIT accuracy + advanced features (OCR for scanned PDFs/images, conversation threading for email/Teams context, immutable snapshots for audit trail) - 25-45 min processing (24-hour indexing wait)
 - **Lab 04 (On-Demand)**: 100% accuracy - comprehensive portal-based scan with 7-day wait
-- **Labs 05c/05d (Graph/SharePoint Search)**: 100% accuracy - automated with 7-14 day indexing
+
+**Understanding Workflow Trade-offs**:
+
+- **Lab 05a**: Fastest (immediate), but least accurate (70-90%)
+- **Lab 05b**: More reliable than 05a, faster than 05c - simple portal workflow with direct CSV export
+- **Lab 05c**: Most reliable - advanced features (OCR, threading, immutable snapshots) justify longer processing time, uses Graph API with review sets
 
 **Validation Use Cases**:
 
@@ -22,6 +28,74 @@ The cross-lab analysis orchestrator compares results from multiple Lab 05 discov
 - Identify false negatives (eDiscovery detected but Lab 05a missed)
 - Understand which files are consistently detected across all methods
 - Measure accuracy improvements from regex to official SITs
+- **Compare Lab 05b vs Lab 05c data structure differences** (direct export vs review set export)
+
+---
+
+## 📊 Understanding Lab 05b vs Lab 05c Data Structure Differences
+
+### Why Different CSV Formats?
+
+Lab 05b and Lab 05c use different eDiscovery workflows that produce different CSV export structures:
+
+| Aspect | Lab 05b (Direct Export) | Lab 05c (Review Set Export) |
+|--------|------------------------|----------------------------|
+| **Workflow** | Portal UI → Run Query → Direct Export | API → Review Set Collection → Export |
+| **Processing Time** | 5-10 minutes | 25-45 minutes (20-30 min collection + 5-15 min export) |
+| **Site Column** | `SiteName` (explicit column) | Not included (must parse from `Location` URL) |
+| **Library Column** | `LibraryName` (explicit column) | Not included (must parse from `Location` URL) |
+| **File Path** | `FileURL` (relative local path) | `Location` (full SharePoint URL) |
+| **Detection Count** | Implicit (1 per row) | `SITInstances` (numeric count) |
+| **Confidence** | Text ("High", "Medium", "Low") | `Confidence` (numeric 85-100) |
+| **Backend Processing** | Minimal (direct search results) | Extensive (OCR, threading, family grouping, analytics) |
+
+### Cross-Lab Analysis Script Normalization
+
+The `Invoke-CrossLabAnalysis.ps1` script automatically normalizes these differences:
+
+**Lab 05c Normalization Logic**:
+
+```powershell
+'Lab05c' {
+    # Extract site name from full SharePoint URL
+    $csvData | Select-Object @{Name='Site'; Expression={
+        if ($_.Location -match '/sites/([^/]+)') {
+            $matches[1]  # Returns "HR-Simulation", "Finance-Simulation", etc.
+        } else {
+            'Unknown-Site'
+        }
+    }},
+    # Map SITInstances to DetectionCount
+    @{Name='DetectionCount'; Expression={
+        if ($_.SITInstances) { $_.SITInstances } else { 1 }
+    }},
+    # Convert numeric Confidence to text levels
+    @{Name='ConfidenceLevel'; Expression={
+        $confidence = $_.Confidence
+        if ($confidence -ge 95) { 'High' }
+        elseif ($confidence -ge 85) { 'Medium' }
+        else { 'Low' }
+    }}
+}
+```
+
+### Expected File Count Differences
+
+Lab 05b and Lab 05c may show different file counts due to review set collection filtering:
+
+| Lab | Typical File Count (Medium Scale) | Reason |
+|-----|----------------------------------|---------|
+| **Lab 05b** | ~4,400 files | Direct export of all search results |
+| **Lab 05c** | ~3,200 files | Review set collection may filter duplicates, apply de-duplication |
+
+**Difference**: ~1,200 fewer files in Lab 05c (27% reduction) is typical due to:
+- Review set de-duplication logic
+- Collection timing differences (20-30 minute processing window)
+- Advanced indexing filtering
+
+> **📊 Analysis Impact**: The cross-lab analysis script accounts for these differences by normalizing data structures before comparison. Site distribution, SIT type analysis, and overlap detection work correctly across both formats.
+>
+> **📖 Detailed Documentation**: For comprehensive workflow and data structure analysis, see [LAB-05B-VS-05C-DATA-STRUCTURE-ANALYSIS.md](LAB-05B-VS-05C-DATA-STRUCTURE-ANALYSIS.md)
 
 ---
 
@@ -80,8 +154,8 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
     "enabledLabs": {
       "lab05a": true,
       "lab05b": false,
-      "lab05c": false,
-      "lab05d": false
+      "lab05c": false
+    },
     "generateHtmlReport": true
   }
 }
@@ -107,9 +181,8 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
     "enabledLabs": {
       "lab05a": true,
       "lab05b": true,
-      "lab05c": true,
-      "lab05d": true
-  },
+      "lab05c": true
+    },
   "filterOptions": {
     "sitTypeFilter": {
       "enabled": true,
@@ -144,7 +217,6 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
       "lab05a": true,
       "lab05b": true,
       "lab05c": true,
-      "lab05d": true,
       "lab04": false
     }
   },
@@ -235,9 +307,7 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
     "enabledLabs": {
       "lab05a": true,
       "lab05b": true,
-      "lab05c": false,
-      "lab05d": false,
-      "lab04": true
+      "lab05c": true
     },
     "generateHtmlReport": true
   },
@@ -286,7 +356,6 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
       "lab05a": true,    // PnP Direct File Access (regex)
       "lab05b": true,    // eDiscovery Compliance Search (24hr)
       "lab05c": true,    // Graph API Discovery (7-14 days)
-      "lab05d": true,    // SharePoint Search (7-14 days)
       "lab04": true      // On-Demand Classification (7 days)
     },
     "minimumLabsRequired": 2,
@@ -599,7 +668,7 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
 
 **Meaning**: Significant divergence between regex and official SIT detection
 
-**Action**: Rely on Purview SIT methods (05b/c/d) for accurate counts
+**Action**: Rely on Purview SIT methods (05b/c) for accurate counts
 
 **Investigation**: Review false positives/negatives to understand pattern gaps
 
@@ -655,7 +724,7 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
 **Cause**: Fewer than 2 labs have completed reports available
 
 **Solution**:
-1. Complete at least 2 Lab 05 paths (05a, 05b, 05c, 05d)
+3. Complete at least 2 Lab 05 paths (05a, 05b, 05c)
 2. Verify report files exist in expected locations
 3. Check `enabledLabs` configuration (ensure at least 2 are `true`)
 4. Verify file paths in `reportPaths` configuration

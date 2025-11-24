@@ -2,7 +2,7 @@
 
 ## 🎯 Project Overview
 
-This comprehensive lab environment demonstrates Microsoft Purview Information Protection through **automated simulation** of enterprise-scale data governance workflows. Through **seven progressive hands-on labs**, you'll implement SharePoint provisioning, realistic document generation, classification validation, DLP policy enforcement, and comprehensive monitoring - all using **browser-based authentication** and **configuration-driven architecture** for complete environment portability.
+This comprehensive lab environment demonstrates Microsoft Purview Information Protection through **automated simulation** of enterprise-scale data governance workflows. Through **five progressive hands-on labs**, you'll implement SharePoint provisioning, realistic document generation, classification validation, DLP policy enforcement, and comprehensive monitoring - all using **browser-based authentication** and **configuration-driven architecture** for complete environment portability.
 
 **Target Audience**: Security engineers, compliance administrators, consultants, and IT professionals implementing Microsoft Purview Information Protection in enterprise environments.
 
@@ -224,7 +224,7 @@ This comprehensive lab environment demonstrates Microsoft Purview Information Pr
 - Discovery comparison analysis across multiple methods and accuracy levels.
 - Compliance audit reports suitable for stakeholder presentations.
 
-**Prerequisites**: Lab 04 completed (classification active for portal-based discovery)
+**Prerequisites**: Lab 04 (step 1) completed (classification active for portal-based discovery)
 
 ---
 

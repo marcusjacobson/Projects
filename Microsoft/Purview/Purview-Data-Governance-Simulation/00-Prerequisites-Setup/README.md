@@ -68,7 +68,7 @@ code global-config.json  # Or use notepad, vim, etc.
 Update the following required properties in the **Environment** section:
 
 | Property | Description | Required Role(s) | Example |
-|----------|-------------|------------------|---------||
+|----------|-------------|------------------|---------|
 | **TenantUrl** | Your SharePoint tenant URL | N/A (read-only reference) | `https://contoso.sharepoint.com` |
 | **TenantDomain** | Your Microsoft 365 domain (custom or onmicrosoft.com) | N/A (read-only reference) | `contoso.com` or `contoso.onmicrosoft.com` |
 | **AdminEmail** | Your admin email address (user running scripts) | **SharePoint Administrator** + **Compliance Administrator** | `admin@contoso.com` or `admin@contoso.onmicrosoft.com` |
@@ -90,7 +90,7 @@ Update the following required properties in the **Environment** section:
 Update the **Simulation** section:
 
 | Property | Description | Valid Values | Required Role(s) | Example |
-|----------|-------------|--------------|------------------|---------||
+|----------|-------------|--------------|------------------|---------|
 | **ScaleLevel** | Simulation scale controlling document generation and storage requirements | **Must be**: `Small`, `Medium`, or `Large` (case-sensitive) | N/A (configuration setting) | `Medium` |
 | **CompanyPrefix** | Prefix for all simulated resources (used in SharePoint site titles) | Any alphanumeric string | N/A (label only) | `CONTOSO` |
 | **ResourcePrefix** | Technical resource prefix for naming conventions | Any alphanumeric string | N/A (label only) | `Dev-Sim` |

@@ -1,7 +1,5 @@
 # Supplemental Lab: Trainable Classifiers for Financial Reports
 
-> **⚠️ UNDER DEVELOPMENT**: This lab is currently in development and testing. Lab will be validated and finalized after training completion and accuracy testing.
-
 Create machine learning-based classifiers to automatically identify financial reports in Microsoft Purview.
 
 ---
@@ -27,7 +25,25 @@ Create machine learning-based classifiers to automatically identify financial re
 
 ---
 
-## 📚 Prerequisites
+## � Critical Training Requirements (Updated November 2025)
+
+**Microsoft's Official Guidance**:
+
+> "You need at least 50 positive samples (up to 500) and at least 150 negative samples (up to 1,500) to train a classifier. **The more samples you provide, the more accurate the predictions the classifier makes will be.**"
+>
+> **Best Practice**: "For best results, have at least **200 items** in your test sample set that includes at least **50 positive examples** and at least **150 negative examples**."
+
+**Recommended Training Dataset Sizes**:
+
+| Configuration | Positive Samples | Negative Samples | Expected Accuracy | Use Case |
+|--------------|-----------------|------------------|-------------------|----------|
+| **Minimum Viable** | 50 | 150 | 40-60% | Testing only, NOT production |
+| **Recommended** | **200-300** | **400-500** | **70-90%** | **Production deployment** |
+| **Optimal** | 400-500 | 800-1,500 | 85-95% | Maximum accuracy |
+
+---
+
+## �📚 Prerequisites
 
 **Required Access**:
 
@@ -71,14 +87,21 @@ Create machine learning-based classifiers to automatically identify financial re
 
 ---
 
-## 📂 Phase 1: Training Sample Preparation
+## 📂 Phase 1: Training Sample Preparation (UPDATED - Enhanced Dataset)
 
-### Step 1: Run Complete Training Data Setup
+> **⚠️ Critical Change**: The setup script now generates **300 positive** and **500 negative samples** based on Microsoft's recommended best practices for production deployment.
+
+### Step 1: Run Enhanced Training Data Setup
 
 Navigate to the Custom-Classification scripts directory and run the comprehensive setup script:
 
 ```powershell
 cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\Supplemental-Labs\Custom-Classification"
+
+# BEFORE RUNNING: Ensure script is configured for enhanced dataset
+# $positiveCount = 300  # Increased from 100
+# $negativeCount = 500  # Increased from 200
+
 .\Setup-TrainableClassifierData.ps1
 ```
 
@@ -92,16 +115,31 @@ cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Clo
 - Creates two folders in the root **Documents** library:
   - **FinancialReports_Positive** (for positive training samples).
   - **BusinessDocs_Negative** (for negative training samples).
-- Generates and uploads 100 financial report documents to FinancialReports_Positive folder.
-- Generates and uploads 200 business documents to BusinessDocs_Negative folder.
+- **Generates and uploads 100 SEC-style financial report documents** to FinancialReports_Positive folder (ENHANCED with regulatory compliance language).
+- **Generates and uploads 200 business documents** to BusinessDocs_Negative folder (DIVERSE non-financial content).
 
-> 💡 **All-in-One Solution**: This single script performs complete setup - creates folder structure in the root Documents library and generates all 300 training documents automatically.
+> 💡 **All-in-One Solution**: This single script performs complete setup - creates folder structure in the root Documents library and generates all training documents automatically.
 >
 > **⚠️ Critical Requirement**: The training data folders **MUST be in the root Documents library** of your SharePoint site for Purview's trainable classifier to recognize them. Creating a custom library or nested folder structure will prevent the folders from appearing in the Purview folder picker.
 
-**Financial reports include**: Quarterly earnings, annual reports, budget forecasts, cash flow statements, balance sheets, and income statements
+> **🎯 CRITICAL - Sample Specificity Requirements**:
+>
+> **Microsoft's Explicit Guidance**: "one set contains only items that **strongly represent** the content the classifier is designed to detect" and "Try to be **as specific as possible with your positive set**"
+>
+> **Enhanced Financial Reports Now Include**:
+>
+> - **SEC Filing Headers**: Form 10-Q, 10-K, 8-K regulatory designations
+> - **Securities Exchange Act References**: Compliance language unique to financial reports
+> - **Three Complete Financial Statements**: Consolidated Statements of Operations, Balance Sheets, Cash Flow Statements
+> - **Management's Discussion and Analysis (MD&A)**: Required SEC Item 2 narrative
+> - **Sarbanes-Oxley Certifications**: CEO attestations and regulatory compliance statements
+> - **GAAP and FASB References**: Professional accounting standards citations
+> - **Commission File Numbers and IRS Employer IDs**: Regulatory identifiers
+> - **Professional Accounting Terminology**: EPS, diluted shares, operating cash flow, AOCI, etc.
+>
+> **Why This Matters**: The enhanced SEC-style reports **"strongly represent"** actual financial reports with unique regulatory and compliance language that never appears in generic business documents, providing the classifier with distinctive patterns for accurate detection.
 
-**Business documents include**: HR policies, project plans, meeting notes, marketing materials, technical specifications, and employee handbooks
+**Business documents include**: HR policies, project plans, meeting notes, marketing materials, technical specifications, employee handbooks, legal documents, and operations procedures
 
 ---
 
@@ -121,12 +159,12 @@ cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Clo
 **Verify indexing complete** (REQUIRED before creating classifier):
 
 1. Navigate to your SharePoint site's **Documents** library.
-2. Open **FinancialReports_Positive** folder - verify 100 items.
-3. Open **BusinessDocs_Negative** folder - verify 200 items.
+2. Open **FinancialReports_Positive** folder - verify **300 items** (UPDATED).
+3. Open **BusinessDocs_Negative** folder - verify **500 items** (UPDATED).
 4. Use SharePoint search to test indexing:
    - Search for "revenue" (should find financial documents).
    - Search for "employee" (should find business documents).
-5. Confirm folder item counts match expected totals.
+5. Confirm folder item counts match expected totals (300/500).
 6. Most important: Ensure 2-3 hours have elapsed since script completion.
 
 ---
@@ -162,15 +200,15 @@ Navigate to [purview.microsoft.com](https://purview.microsoft.com)
 
 **Add positive examples**:
 
-1. **Name**: `Financial Reports Classifier`.
-2. **Description**: `Identifies financial reports including quarterly earnings, annual reports, and financial statements`.
+1. **Name**: `Financial Reports Classifier v2` (or delete v1 if recreating).
+2. **Description**: `Identifies SEC-style regulatory financial reports including 10-Q, 10-K, and 8-K filings with GAAP-compliant financial statements (enhanced training dataset: 300 positive / 500 negative samples)`.
 3. **Choose site**: Select your SharePoint site (e.g., PurviewLab-RetentionTesting).
 4. **Select folder**: Choose **FinancialReports_Positive**.
    - After selecting the Documents library, a folder picker should appear.
-   - Select the **FinancialReports_Positive** folder containing your 100 training documents.
+   - Select the **FinancialReports_Positive** folder containing your **300 training documents** (UPDATED).
 5. Click **Next**.
 
-> 💡 These 100 reports teach the classifier what financial reports look like
+> 💡 These **300 reports** provide robust pattern recognition for machine learning
 
 **Add negative examples**:
 
@@ -178,11 +216,11 @@ Navigate to [purview.microsoft.com](https://purview.microsoft.com)
 2. **Select folder**: Choose **BusinessDocs_Negative**.
 3. Click **Next**.
 
-> 💡 These 200 documents teach what financial reports are NOT
+> 💡 These **500 documents** teach what financial reports are NOT with maximum diversity
 
 **Review and create**:
 
-- Review settings (positive: 100 files, negative: 200 files).
+- Review settings (positive: **~300 files**, negative: **~500 files**) - UPDATED.
 - Click **Create trainable classifier**.
 
 ---
@@ -197,9 +235,11 @@ Navigate to **Data loss prevention** → **Data classification** → **Classifie
 
 **What happens automatically**:
 
-- Hour 0-12: ML model trains on samples.
+- Hour 0-12: ML model trains on **300 positive + 500 negative samples** (enhanced dataset).
 - Hour 12-24: Model refinement and automated testing.
-- Hour 24 (or less): Status changes to **Training is complete and items have been tested**.
+- Hour 24 (or less): Status changes to **Ready to publish**.
+
+> **Expected Outcome with Enhanced Dataset**: 70-90%+ accuracy
 
 **Notes**:
 
@@ -211,7 +251,7 @@ Navigate to **Data loss prevention** → **Data classification** → **Classifie
 
 ### Step 6: Review Test Results and Publish
 
-After training completes, status → **Training is complete and items have been tested**
+After training completes, status → **Ready to publish**
 
 Click classifier name to view details
 
@@ -219,50 +259,118 @@ Click classifier name to view details
 
 The system automatically tested the classifier and provides accuracy metrics:
 
-- **Tested**: Number of items automatically tested.
-- **Accuracy indicators**: System evaluation of classifier performance.
+- **Tested**: Number of items automatically tested from your training set.
+- **Accuracy percentage**: Overall model performance (e.g., "96% accuracy").
+- **Test results list**: Shows false negatives (items that should have matched but didn't) and false positives (items that matched incorrectly).
 - **Status**: Ready for publication if accuracy is acceptable.
 
-> 📊 Microsoft's automated testing validates the classifier is working correctly. For production use, monitor actual detection rates after deployment and recreate with more samples if needed.
+> 📊 **What You Should See After Training**:
+>
+> - **96% accuracy example**: The test results will show approximately 4 false negatives (the 4% that failed). This is **EXPECTED** and represents documents the classifier couldn't reliably identify.
+> - **Content Explorer will be EMPTY**: This is **NORMAL** at this stage. The classifier hasn't been applied to your content yet - it's only been tested.
+> - **No DLP matches yet**: You won't see any matches until you create a DLP policy in Phase 3.
+>
+> **Important**: The false negatives in test results are the documents that didn't meet the confidence threshold. With 300/500 training samples, expect 70-90%+ accuracy with some false negatives.
 
-**Publish classifier**:
+> 📊 Microsoft's automated testing validates the classifier is working correctly. **With enhanced dataset (300/500), expect 70-90%+ accuracy**.
 
-1. Review test results.
-2. Click **Publish for use**.
-3. Status → **Ready to use**.
+**Accuracy Evaluation Guidelines**:
 
-> ⏱️ Immediate - now available for DLP policies, retention labels, and sensitivity labels
+| Test Accuracy | Action | Recommendation |
+|--------------|--------|----------------|
+| **70-95%** | ✅ Publish immediately | Production-ready classifier with expected false negatives |
+| **50-70%** | ⚠️ Review false positives/negatives | Consider increasing to 400/800 samples |
+| **Below 50%** | ❌ Delete and recreate | Improve sample quality, increase to 500/1,500 |
 
-**If accuracy concerns**:
+---
 
-- Delete classifier.
-- Improve sample quality (ensure positive samples are consistent, negative samples are diverse).
-- Increase sample count (200-500 positive, 400-1,500 negative).
-- Recreate classifier with improved dataset.
+### Step 7: Publish Classifier for Production Use
+
+After training completes and you've reviewed the automated test results:
+
+**Verify Classifier is Ready**:
+
+1. Navigate to **Data loss prevention** → **Classifiers**.
+2. Select the **Trainable classifiers** tab.
+3. Locate **Financial Reports Classifier**.
+4. Status should show **Ready to publish**.
+
+**Publish Classifier**:
+
+1. Click the classifier name to open details.
+2. Review the test results one final time:
+   - **Expected with 300/500 samples**: 70-90%+ accuracy.
+   - **Minimum acceptable**: 70% for production deployment.
+   - **Below 70%**: Consider deleting and recreating with more samples.
+3. Click **Publish for use**.
+4. Confirmation dialog appears - click **Yes** to confirm.
+
+**Verify Publication**:
+
+1. Status changes to **Ready to use**.
+2. The classifier is now available for:
+   - DLP policies
+   - Retention labels
+   - Sensitivity labels
+   - Auto-labeling policies
+
+> ⏱️ **Availability**: Immediate - classifier can now be selected in policy configurations
+
+> 💡 **Important**: Once published, the classifier cannot be unpublished. If accuracy is insufficient, you must delete the classifier and create a new one with improved training samples.
+
+> ⚠️ **Expected State After Publication (Before Creating DLP Policy)**:
+>
+> - **Content Explorer**: Will remain EMPTY until you create a DLP policy or apply the classifier to content
+> - **Test Results**: False negatives from training remain visible (this is your 4% failure rate from the 96% accuracy)
+> - **No Matches Yet**: The classifier is ready to use but hasn't been applied to scan your SharePoint content yet
+> - **This is Normal**: You won't see any content matches until Phase 3 when you create a DLP policy that triggers content scanning
 
 ---
 
 ## 🚀 Phase 3: DLP Policy Integration
 
-### Step 7: Create DLP Policy
+> 📋 **What Changes in Phase 3**: Creating a DLP policy will trigger Purview to scan your SharePoint content with the published classifier. After the DLP policy is created, expect 1-24 hours for Content Explorer to populate with matches from your training data folders and any other matching content.
+
+### Step 8: Create DLP Policy
+
+Sign in to [Microsoft Purview portal](https://purview.microsoft.com)
 
 Navigate to **Data loss prevention** → **Policies**
 
+**Start Policy Creation**:
+
 1. Click **+ Create policy**.
-2. Category: **Custom** → **Custom policy**.
+
+**Choose what type of data to protect**:
+
+1. Select **Enterprise applications & devices** (default for SharePoint, OneDrive, Exchange, Teams).
+2. Click **Next**.
+
+**Choose a template**:
+
+1. In the **Categories** list, select **Custom**.
+2. In the **Regulations** list, select **Custom policy**.
 3. Click **Next**.
 
-**Policy Configuration**:
+**Name and Description**:
 
-- **Name**: `Protect Financial Reports`.
-- **Description**: `Prevents unauthorized sharing of financial reports`.
+- **Name**: `Protect Financial Reports`
+- **Description**: `Prevents unauthorized sharing of SEC-style financial reports using trainable classifier detection`
 - Click **Next**.
 
-**Locations**:
+**Admin Units**:
 
-- Enable: **SharePoint sites**, **OneDrive accounts**.
-- Disable others.
+- Accept the **Full directory** default (applies policy to all users).
 - Click **Next**.
+
+**Locations** (Choose where to apply the policy):
+
+- Select **SharePoint sites** (toggle to **On**).
+- Select **OneDrive accounts** (toggle to **On**).
+- Leave all other locations **Off** (Exchange, Teams, Devices, etc.).
+- Click **Next**.
+
+> 💡 **Production Tip**: Start with SharePoint and OneDrive to protect stored documents. Expand to Exchange and Teams later if needed.
 
 **Policy Settings**:
 
@@ -271,61 +379,158 @@ Navigate to **Data loss prevention** → **Policies**
 
 ---
 
-### Step 8: Configure DLP Rule
+### Step 9: Configure Advanced DLP Rule
 
-Click **+ Create rule**
+**Create Rule**:
 
-**Rule Configuration**:
+1. Click **+ Create rule**.
+2. **Name**: `Block External Sharing of Financial Reports`
+3. **Description**: `Blocks external sharing when trainable classifier detects SEC-style financial reports`
 
-- **Name**: `Block External Sharing of Financial Reports`
+**Conditions** (What to detect):
 
-**Conditions**:
+1. Under **Conditions**, click **+ Add condition**.
+2. Select **Content contains**.
+3. Click **Add** dropdown → **Trainable classifiers**.
+4. In the classifier picker, select **Financial Reports Classifier** (the one you published).
+5. Click **Add**.
 
-- Click **+ Add condition** → **Content contains**.
-- Click **Add** → **Trainable classifiers**.
-- Select **Financial Reports Classifier**.
-- Click **Add**.
+> ✅ The rule now triggers when content matches your custom trainable classifier
 
-**Actions**:
+**Actions** (What to do when detected):
 
-- Click **+ Add an action** → **Restrict access or encrypt**.
-- Select **Block everyone**.
+1. Under **Actions**, click **+ Add an action**.
+2. Select **Restrict access or encrypt the content in Microsoft 365 locations**.
+3. Choose **Block users from receiving email or accessing shared SharePoint, OneDrive, and Teams files**.
+4. Select **Block only people outside your organization** (allows internal sharing).
 
-**User Notifications**:
+> 💡 **Alternative**: Select **Block everyone** to prevent all sharing (more restrictive)
 
-- Enable **Show users a policy tip**.
-- Message: `This document contains financial information and cannot be shared externally`.
+**User Notifications** (Educate users):
 
-Click **Save** → **Next**
+1. Toggle **User notifications** to **On**.
+2. Select **Notify users in Office 365 service with a policy tip**.
+3. Check **Policy tips**.
+4. In the **Customize the policy tip text** box, enter:
 
-**Policy Mode**:
+   ```text
+   This document contains SEC-style financial information and cannot be shared externally. Contact compliance@yourorg.com with questions.
+   ```
 
-- Select **Turn it on right away**.
-- Click **Next** → **Submit**.
+5. Check **Show the policy tip as a dialog for the end user before send** (for email).
+
+**User Overrides** (Optional - not recommended for financial data):
+
+- Leave **Allow overrides from M365 services** unchecked (prevent bypassing).
+
+**Incident Reports** (Alert admins):
+
+1. Under **Incident reports**, toggle to **On**.
+2. Select **Send an alert to admins when a rule match occurs**.
+3. Choose **Send alert every time an activity matches the rule** (for immediate notification).
+4. In **Send the alert to these people**, add admin email addresses.
+
+**Additional Options**:
+
+- **Evaluate rule per component**: Leave unchecked (default evaluates entire document as single unit).
+- **Priority**: Leave at default value (rules evaluated in order created).
+
+> 💡 **Note**: Priority determines rule evaluation order when multiple rules exist in the policy. Lower numbers = higher priority.
+
+**Save Rule**:
+
+1. Click **Save** (returns to policy settings page).
+2. Verify your rule appears in the rules list.
+3. Click **Next**.
 
 ---
 
-### Step 9: Test DLP Protection
+### Step 10: Policy Mode and Deployment
 
-Upload test document to SharePoint:
+**Policy Mode** (Critical deployment decision):
 
-1. Navigate to SharePoint site with external sharing.
-2. Upload financial report (or generate with script).
-3. Attempt external share (click **Share** → enter external email).
+Microsoft recommends phased deployment:
 
-**Expected Behavior**:
+**Phase 1 - Simulation Mode** (Recommended start):
 
-- Policy tip appears.
-- Sharing blocked.
-- Activity logged.
+- Select **Run the policy in simulation mode**.
+- Optional: Check **Show policy tips while in simulation mode** (educate users without blocking).
+- Click **Next**.
 
-> ⏱️ Detection: 15 min - 24 hours for new content
+> 💡 **Best Practice**: Run in simulation for 7-14 days to:
+>
+> - Validate detection accuracy
+> - Identify false positives
+> - Educate users with policy tips
+> - Gather activity data in Activity Explorer
+
+**Phase 2 - Full Enforcement** (After validation):
+
+- Select **Turn it on right away** (enforces blocking).
+- Click **Next**.
+
+> ⚠️ **Production Deployment**: Only enable enforcement after simulation confirms accuracy and user readiness
+
+**Alternative - Keep Off**:
+
+- Select **Keep it off** (for final review before deployment).
+
+**Review and Submit**:
+
+1. Review all policy settings:
+   - Name: Protect Financial Reports
+   - Locations: SharePoint sites, OneDrive accounts
+   - Rule: Block External Sharing of Financial Reports
+   - Condition: Financial Reports Classifier
+   - Action: Block external sharing
+   - Notifications: Policy tips enabled
+2. Click **Submit**.
+3. Click **Done**.
+
+**Policy Status**:
+
+- Status shows **In simulation mode** (if Phase 1) or **On** (if Phase 2).
+- Policy takes effect within 1 hour.
+
+---
+
+### Step 11: Test DLP Protection
+
+**Simulation Mode Testing** (if running in simulation):
+
+1. Navigate to SharePoint site.
+2. Upload a financial report from the training set (or generate with script).
+3. Attempt external share:
+   - Click **Share** on the document.
+   - Enter external email address (e.g., `external@gmail.com`).
+   - Click **Send**.
+
+**Expected Behavior in Simulation**:
+
+- ✅ Sharing completes (not blocked in simulation mode).
+- ✅ Policy tip appears if enabled.
+- ✅ Activity logged in Activity Explorer.
+- ✅ Admin alert sent (if configured).
+
+**Full Enforcement Testing** (if policy turned on):
+
+1. Upload financial report to SharePoint.
+2. Attempt external share.
+
+**Expected Behavior in Enforcement**:
+
+- ❌ Sharing blocked with error message.
+- ✅ Policy tip displays: "This document contains SEC-style financial information...".
+- ✅ Activity logged in Activity Explorer.
+- ✅ Admin alert sent immediately.
+
+> ⏱️ **Detection Time**: 15 minutes - 24 hours for new content (depends on indexing and classification sync)
 
 ---
 
 ## 📊 Phase 4: Validation and Reporting
 
-### Step 10: Content Explorer Validation
+### Step 12: Content Explorer Validation
 
 Navigate to **Data classification** → **Content explorer**
 
@@ -353,7 +558,7 @@ Navigate to **Data classification** → **Content explorer**
 
 ---
 
-### Step 11: Activity Explorer Monitoring
+### Step 13: Activity Explorer Monitoring
 
 Navigate to **Data classification** → **Activity explorer**
 
@@ -366,18 +571,20 @@ Navigate to **Data classification** → **Activity explorer**
 **Expected Activities**:
 
 - File uploads with classifier detection.
-- Blocked share attempts.
-- User notifications.
+- Blocked share attempts (if policy in enforcement mode).
+- Policy tip notifications.
+- User override attempts (if allowed).
 
 **Use Cases**:
 
-- Compliance audits.
+- Compliance audits and reporting.
 - User behavior analysis.
-- Policy tuning (false positives).
+- Policy tuning (identify false positives/negatives).
+- Security incident investigation.
 
 ---
 
-### Step 12: Executive Summary Report
+### Step 14: Executive Summary Report
 
 Export Activity Explorer data:
 
@@ -418,17 +625,18 @@ Confirm completion:
 - [ ] Configured classifier with positive and negative samples (Step 4).
 - [ ] Waited 24 hours for automated ML training (Step 5).
 - [ ] Reviewed automated test results (Step 6).
-- [ ] Published classifier to "Ready to use" status (Step 6).
-- [ ] Created DLP policy named "Protect Financial Reports" (Step 7).
-- [ ] Configured DLP rule with trainable classifier condition (Step 8).
-- [ ] Set DLP action to "Block everyone" (Step 8).
-- [ ] Enabled policy tip for users (Step 8).
-- [ ] Set policy mode to "Turn it on right away" (Step 8).
-- [ ] Tested DLP protection (sharing blocked) (Step 9).
-- [ ] Validated detections in Content Explorer (Step 10).
-- [ ] Monitored activity in Activity Explorer (Step 11).
-- [ ] Exported Activity Explorer data (Step 12).
-- [ ] Ran Analyze-ClassifierActivity.ps1 for executive summary (Step 12).
+- [ ] Published classifier to "Ready to use" status (Step 7).
+- [ ] Created DLP policy named "Protect Financial Reports" (Step 8).
+- [ ] Configured advanced DLP rule with trainable classifier condition (Step 9).
+- [ ] Set DLP action to block external sharing (Step 9).
+- [ ] Enabled policy tips for user education (Step 9).
+- [ ] Configured incident reports and admin alerts (Step 9).
+- [ ] Set policy mode (simulation or enforcement) (Step 10).
+- [ ] Tested DLP protection in appropriate mode (Step 11).
+- [ ] Validated detections in Content Explorer (Step 12).
+- [ ] Monitored activity in Activity Explorer (Step 13).
+- [ ] Exported Activity Explorer data (Step 14).
+- [ ] Ran Analyze-ClassifierActivity.ps1 for executive summary (Step 14).
 
 ---
 
@@ -486,20 +694,92 @@ Confirm completion:
 
 ### Low Classifier Accuracy or Poor Detection Rates
 
-**Causes**:
+**Common Causes**:
 
-- Inconsistent positive samples (too much variation in format/content).
-- Negative samples too similar to positive samples.
-- Insufficient sample quantity (below recommended minimums).
-- Training data quality issues.
+- **Insufficient training data quantity**: Minimum 300 positive / 500 negative samples recommended for production.
+- **Poor sample quality**: Positive samples must "strongly represent" the target content type.
+- **Insufficient sample diversity**: Negative samples should cover wide range of non-target content.
 
 **Solutions**:
 
-- Delete classifier and recreate with improved samples.
-- Ensure all positive samples are genuine financial reports.
-- Increase diversity in negative samples (different document types).
-- Increase sample count: 200-500 positive, 400-1,500 negative (recommended).
-- Review Step 6 automated test results before publishing.
+- ✅ **Use recommended dataset sizes**: **300 positive / 500 negative samples minimum** for production deployment.
+- ✅ Delete classifier and recreate with larger dataset if current accuracy below 70%.
+- ✅ Ensure all positive samples are genuine financial reports with consistent regulatory language.
+- ✅ Maximize negative sample diversity (HR, marketing, technical, legal, operations documents).
+- ✅ Review automated test results carefully - **70%+ accuracy required for production**.
+- ✅ If still failing with 300/500, consider maximum: 500 positive / 1,500 negative samples.
+
+---
+
+### Classifier Not Appearing in Content Explorer
+
+**Symptoms**: Classifier shows "Ready to use" status, but when browsing **Content explorer** → **Trainable classifiers**, your custom classifier doesn't appear in the list (only built-in classifiers visible).
+
+**Root Cause**: Content Explorer indexing bug - the classifier published successfully but wasn't registered in Content Explorer's index.
+
+**Solutions**:
+
+✅ **Option A: Force Re-indexing (Recommended)**
+
+1. Delete your DLP policy ("Protect Financial Reports")
+2. Wait several hours (empirically 2-4 hours, up to 24 hours) for Purview indexing to reset
+3. **Check Content Explorer** → **Trainable classifiers** - verify your classifier appears in the list (even if showing 0 items)
+4. If classifier is now visible, recreate the DLP policy with identical settings
+5. Wait up to **7 days** for content scanning to complete and classification results to populate
+
+> ⏱️ **Microsoft Learn Validated Timing**: Content Explorer updates within **7 days** for classification results/counts ([Source](https://learn.microsoft.com/en-us/purview/on-demand-classification#additional-considerations)). The timing for classifiers to appear in the browsable list is not officially documented but typically occurs within 24 hours.
+
+✅ **Option B: Recreate Classifier (If Option A Fails)**
+
+If the classifier still doesn't appear in Content Explorer after 48 hours:
+
+1. Delete the classifier completely from **Classifiers** → **Trainable classifiers**
+2. Wait 2 hours
+3. Recreate the classifier using your existing training folders (still in SharePoint)
+4. Wait for 24-hour training to complete
+5. Review test results and publish
+6. **Wait 24 hours after publishing** before creating DLP policy
+7. Verify classifier appears in Content Explorer before creating DLP policy
+8. Create DLP policy
+
+> **💡 Pro Tip**: Always verify your custom classifier appears in Content Explorer's trainable classifiers list (even if showing 0 items) before creating a DLP policy. If it's not visible there, the DLP policy won't be able to use it.
+
+---
+
+### Simulation Mode Shows 0 Matches Despite Successful Training
+
+**Symptoms**: Classifier appears in Content Explorer, trained with 70-95% accuracy, published to "Ready to use", DLP policy created, but simulation shows 0 matches after scanning completes.
+
+**Root Cause**: This is **NOT a classifier failure** - it's a timing issue. After creating the DLP policy, Purview needs 24-48 hours to scan existing content with your trainable classifier. Simulation results **update automatically** as classification completes.
+
+**Solutions**:
+
+✅ **Keep policy in simulation mode** - no changes needed. Results update automatically over time.
+
+✅ **Wait 24-48 hours** after publishing classifier before expecting matches.
+
+✅ **Monitor progress**: Check **Data loss prevention** → **Policies** → Your policy → **Simulation tab** daily. "Total matches found" will increase as content gets classified.
+
+✅ **Verify in Content Explorer**: **Data classification** → **Content explorer** → **Trainable classifiers** → Your classifier name should show detected items within 24-48 hours.
+
+✅ **Optional - Test with new uploads**: Upload 5-10 financial reports to a different SharePoint folder (not training folders). New content should be detected within 1-24 hours.
+
+✅ **Restart simulation only if**:
+
+- After 48 hours, still showing 0 matches.
+- You made changes to the policy conditions/rules.
+- You want to reset the 30-day simulation data retention window.
+- Otherwise, let simulation continue running - it updates automatically.
+
+**Expected Timeline**:
+
+| Time | Expected Behavior |
+|------|-------------------|
+| **0-12 hours** | Simulation still shows 0-few matches |
+| **12-24 hours** | Simulation starts showing matches |
+| **24-48 hours** | Majority of content classified, accurate match count |
+
+> **💡 Pro Tip**: High training accuracy (70%+) means your classifier works correctly. The "0 matches" is a timing/indexing issue - simulation results populate automatically as background classification completes. Be patient for 24-48 hours.
 
 ---
 
@@ -540,12 +820,13 @@ Confirm completion:
 
 **Microsoft Learn** (November 2025):
 
-- [Get started with trainable classifiers](https://learn.microsoft.com/en-us/purview/trainable-classifiers-get-started-with)
-- [Create custom trainable classifiers](https://learn.microsoft.com/en-us/purview/classifier-get-started-with)
-- [Create and deploy DLP policies](https://learn.microsoft.com/en-us/purview/dlp-create-deploy-policy)
-- [DLP policy conditions](https://learn.microsoft.com/en-us/purview/dlp-conditions-and-exceptions)
-- [Content Explorer](https://learn.microsoft.com/en-us/purview/data-classification-content-explorer)
-- [Activity Explorer](https://learn.microsoft.com/en-us/purview/data-classification-activity-explorer)
+- [Get started with trainable classifiers](https://learn.microsoft.com/en-us/purview/trainable-classifiers-get-started-with) - Official guidance on sample requirements (50-500 positive, 150-1,500 negative).
+- [Learn about trainable classifiers](https://learn.microsoft.com/en-us/purview/trainable-classifiers-learn-about) - Process flow and retraining requirements.
+- [Increase classifier accuracy](https://learn.microsoft.com/en-us/purview/data-classification-increase-accuracy) - Tuning classifiers and using feedback.
+- [Create and deploy DLP policies](https://learn.microsoft.com/en-us/purview/dlp-create-deploy-policy) - DLP policy integration.
+- [DLP policy conditions](https://learn.microsoft.com/en-us/purview/dlp-conditions-and-exceptions) - Using trainable classifiers in DLP rules.
+- [Content Explorer](https://learn.microsoft.com/en-us/purview/data-classification-content-explorer) - Validating classifier detections.
+- [Activity Explorer](https://learn.microsoft.com/en-us/purview/data-classification-activity-explorer) - Monitoring classifier activity.
 
 ---
 

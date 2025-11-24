@@ -204,19 +204,19 @@ if (-not $documentsLib) {
 Write-Host "✅ Found Documents library" -ForegroundColor Green
 
 # Check if folders already exist
-$existingPositive = Get-PnPFolder -Url "Documents/FinancialReports_Positive" -ErrorAction SilentlyContinue
-$existingNegative = Get-PnPFolder -Url "Documents/BusinessDocs_Negative" -ErrorAction SilentlyContinue
+$existingPositive = Get-PnPFolder -Url "Shared Documents/FinancialReports_Positive" -ErrorAction SilentlyContinue
+$existingNegative = Get-PnPFolder -Url "Shared Documents/BusinessDocs_Negative" -ErrorAction SilentlyContinue
 
 if ($existingPositive -or $existingNegative) {
     Write-Host "⚠️  Training data folders already exist in Documents library" -ForegroundColor Yellow
     $overwrite = Read-Host "Delete and recreate folders? (y/n)"
     if ($overwrite -eq 'y') {
         if ($existingPositive) {
-            Remove-PnPFolder -Name "FinancialReports_Positive" -Folder "Documents" -Force
+            Remove-PnPFolder -Name "FinancialReports_Positive" -Folder "Shared Documents" -Force
             Write-Host "✅ Deleted existing FinancialReports_Positive folder" -ForegroundColor Green
         }
         if ($existingNegative) {
-            Remove-PnPFolder -Name "BusinessDocs_Negative" -Folder "Documents" -Force
+            Remove-PnPFolder -Name "BusinessDocs_Negative" -Folder "Shared Documents" -Force
             Write-Host "✅ Deleted existing BusinessDocs_Negative folder" -ForegroundColor Green
         }
     } else {
@@ -227,93 +227,373 @@ if ($existingPositive -or $existingNegative) {
 
 # Create folders in Documents library
 Write-Host "🔄 Creating FinancialReports_Positive folder in Documents library..." -ForegroundColor Cyan
-Add-PnPFolder -Name "FinancialReports_Positive" -Folder "Documents" | Out-Null
+Add-PnPFolder -Name "FinancialReports_Positive" -Folder "Shared Documents" | Out-Null
 Write-Host "✅ Positive samples folder created in Documents" -ForegroundColor Green
 
 Write-Host "🔄 Creating BusinessDocs_Negative folder in Documents library..." -ForegroundColor Cyan
-Add-PnPFolder -Name "BusinessDocs_Negative" -Folder "Documents" | Out-Null
+Add-PnPFolder -Name "BusinessDocs_Negative" -Folder "Shared Documents" | Out-Null
 Write-Host "✅ Negative samples folder created in Documents" -ForegroundColor Green
 
 # =============================================================================
 # Step 5: Generate Positive Training Samples (Financial Reports)
 # =============================================================================
 
-Write-Host "`n📋 Step 5: Generating Positive Training Samples" -ForegroundColor Green
-Write-Host "=============================================" -ForegroundColor Green
-Write-Host "🔄 Creating 100 financial report documents..." -ForegroundColor Cyan
+Write-Host "`n📋 Step 5: Generating Positive Training Samples (ENHANCED)" -ForegroundColor Green
+Write-Host "=========================================================" -ForegroundColor Green
+Write-Host "🔄 Creating 100 HIGHLY SPECIFIC financial report documents..." -ForegroundColor Cyan
+Write-Host "📊 Using professional SEC-style quarterly report format" -ForegroundColor Cyan
+
+# Report type templates for maximum specificity
+$reportTypes = @(
+    @{Name="10-Q"; Title="QUARTERLY REPORT PURSUANT TO SECTION 13 OR 15(d)"; Header="FORM 10-Q"; Regulatory="Securities Exchange Act of 1934"},
+    @{Name="10-K"; Title="ANNUAL REPORT PURSUANT TO SECTION 13 OR 15(d)"; Header="FORM 10-K"; Regulatory="Securities Exchange Act of 1934"},
+    @{Name="8-K"; Title="CURRENT REPORT PURSUANT TO SECTION 13 OR 15(d)"; Header="FORM 8-K"; Regulatory="Securities Exchange Act of 1934"},
+    @{Name="Earnings"; Title="QUARTERLY EARNINGS RELEASE"; Header="EARNINGS ANNOUNCEMENT"; Regulatory="SEC Regulation FD"},
+    @{Name="MD&A"; Title="MANAGEMENT'S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION"; Header="MD&A SECTION"; Regulatory="Item 2 - MD&A"}
+)
 
 1..100 | ForEach-Object {
     $reportNumber = $_
+    $reportType = $reportTypes[(Get-Random -Minimum 0 -Maximum $reportTypes.Count)]
     $quarter = "Q$((Get-Random -Minimum 1 -Maximum 5))"
     $year = Get-Random -Minimum 2022 -Maximum 2025
-    $revenue = (Get-Random -Minimum 5000000 -Maximum 50000000)
-    $expenses = [int]($revenue * ((Get-Random -Minimum 60 -Maximum 85) / 100))
-    $netIncome = $revenue - $expenses
-    $grossMargin = [math]::Round((($revenue - $expenses) / $revenue) * 100, 2)
+    $fiscalQuarter = "FY$(Get-Random -Minimum 2022 -Maximum 2025)-$quarter"
+    $filingDate = Get-Date -Year $year -Month (Get-Random -Minimum 1 -Maximum 12) -Day (Get-Random -Minimum 1 -Maximum 28) -Format "MM/dd/yyyy"
+    
+    # Generate comprehensive financial metrics
+    $revenue = (Get-Random -Minimum 50000000 -Maximum 500000000)
+    $costOfRevenue = [int]($revenue * ((Get-Random -Minimum 45 -Maximum 65) / 100))
+    $grossProfit = $revenue - $costOfRevenue
+    $operatingExpenses = [int]($revenue * ((Get-Random -Minimum 20 -Maximum 35) / 100))
+    $operatingIncome = $grossProfit - $operatingExpenses
+    $interestExpense = [int]($revenue * ((Get-Random -Minimum 1 -Maximum 5) / 100))
+    $taxExpense = [int]($operatingIncome * ((Get-Random -Minimum 18 -Maximum 28) / 100))
+    $netIncome = $operatingIncome - $interestExpense - $taxExpense
+    $eps = [math]::Round($netIncome / 10000000, 2)
+    $dilutedEPS = [math]::Round($eps * 0.98, 2)
+    
+    # Balance sheet items
+    $cashAndEquivalents = [int]($revenue * ((Get-Random -Minimum 30 -Maximum 60) / 100))
+    $accountsReceivable = [int]($revenue * ((Get-Random -Minimum 15 -Maximum 25) / 100))
+    $inventory = [int]($revenue * ((Get-Random -Minimum 10 -Maximum 20) / 100))
+    $totalCurrentAssets = $cashAndEquivalents + $accountsReceivable + $inventory + (Get-Random -Minimum 5000000 -Maximum 15000000)
+    $ppe = (Get-Random -Minimum 100000000 -Maximum 300000000)
+    $intangibleAssets = (Get-Random -Minimum 50000000 -Maximum 150000000)
+    $totalAssets = $totalCurrentAssets + $ppe + $intangibleAssets + (Get-Random -Minimum 20000000 -Maximum 50000000)
+    
+    $accountsPayable = [int]($revenue * ((Get-Random -Minimum 10 -Maximum 15) / 100))
+    $shortTermDebt = (Get-Random -Minimum 20000000 -Maximum 80000000)
+    $totalCurrentLiabilities = $accountsPayable + $shortTermDebt + (Get-Random -Minimum 10000000 -Maximum 30000000)
+    $longTermDebt = (Get-Random -Minimum 100000000 -Maximum 250000000)
+    $totalLiabilities = $totalCurrentLiabilities + $longTermDebt + (Get-Random -Minimum 20000000 -Maximum 50000000)
+    $shareholderEquity = $totalAssets - $totalLiabilities
+    
+    # Cash flow statement
+    $operatingCashFlow = [int]($netIncome * ((Get-Random -Minimum 110 -Maximum 140) / 100))
+    $investingCashFlow = (Get-Random -Minimum -50000000 -Maximum -10000000)
+    $financingCashFlow = (Get-Random -Minimum -30000000 -Maximum 30000000)
+    $netCashChange = $operatingCashFlow + $investingCashFlow + $financingCashFlow
+    
+    # Financial ratios
+    $currentRatio = [math]::Round($totalCurrentAssets / $totalCurrentLiabilities, 2)
+    $quickRatio = [math]::Round(($totalCurrentAssets - $inventory) / $totalCurrentLiabilities, 2)
+    $debtToEquity = [math]::Round($totalLiabilities / $shareholderEquity, 2)
+    $roe = [math]::Round(($netIncome / $shareholderEquity) * 100, 2)
+    $roa = [math]::Round(($netIncome / $totalAssets) * 100, 2)
+    $profitMargin = [math]::Round(($netIncome / $revenue) * 100, 2)
+    $grossMargin = [math]::Round(($grossProfit / $revenue) * 100, 2)
+    $operatingMargin = [math]::Round(($operatingIncome / $revenue) * 100, 2)
     
     $content = @"
-CONTOSO CORPORATION
-QUARTERLY FINANCIAL REPORT
-$quarter $year
+================================================================================
+                            UNITED STATES
+                  SECURITIES AND EXCHANGE COMMISSION
+                        Washington, D.C. 20549
 
-EXECUTIVE SUMMARY
+                              $($reportType.Header)
 
-This report presents Contoso Corporation's financial performance for $quarter $year.
-The company achieved strong revenue growth and maintained healthy profit margins.
+                 $($reportType.Title)
+                     OF THE $($reportType.Regulatory)
 
-FINANCIAL HIGHLIGHTS
+For the fiscal period ended: $filingDate
+Commission File Number: 001-$(Get-Random -Minimum 10000 -Maximum 99999)
 
-Revenue: `$$($revenue.ToString('N0'))
-Operating Expenses: `$$($expenses.ToString('N0'))
-Net Income: `$$($netIncome.ToString('N0'))
-Gross Margin: $grossMargin%
+================================================================================
 
-BALANCE SHEET SUMMARY
+                           CONTOSO CORPORATION
+           (Exact name of registrant as specified in its charter)
 
-Assets:
-- Current Assets: `$$((Get-Random -Minimum 10000000 -Maximum 30000000).ToString('N0'))
-- Fixed Assets: `$$((Get-Random -Minimum 20000000 -Maximum 50000000).ToString('N0'))
-- Total Assets: `$$((Get-Random -Minimum 30000000 -Maximum 80000000).ToString('N0'))
+       Delaware                                      $(Get-Random -Minimum 10 -Maximum 99)-$(Get-Random -Minimum 1000000 -Maximum 9999999)
+(State of incorporation)                        (I.R.S. Employer ID Number)
 
-Liabilities:
-- Current Liabilities: `$$((Get-Random -Minimum 5000000 -Maximum 15000000).ToString('N0'))
-- Long-term Liabilities: `$$((Get-Random -Minimum 10000000 -Maximum 25000000).ToString('N0'))
-- Total Liabilities: `$$((Get-Random -Minimum 15000000 -Maximum 40000000).ToString('N0'))
+  One Contoso Plaza, Redmond, WA 98052           (425) 555-$(Get-Random -Minimum 1000 -Maximum 9999)
+(Address of principal executive offices)         (Registrant's telephone number)
 
-Shareholder Equity: `$$((Get-Random -Minimum 15000000 -Maximum 40000000).ToString('N0'))
+================================================================================
 
-CASH FLOW STATEMENT
+ITEM 1. FINANCIAL STATEMENTS (UNAUDITED)
 
-Operating Activities: `$$((Get-Random -Minimum 3000000 -Maximum 10000000).ToString('N0'))
-Investing Activities: `$$((Get-Random -Minimum -2000000 -Maximum 2000000).ToString('N0'))
-Financing Activities: `$$((Get-Random -Minimum -1000000 -Maximum 1000000).ToString('N0'))
+                           CONTOSO CORPORATION
+             CONDENSED CONSOLIDATED STATEMENTS OF OPERATIONS
+                    (In thousands, except per share data)
+                              (Unaudited)
 
-KEY FINANCIAL RATIOS
+                                                       Three Months Ended
+                                                         $filingDate
+                                                    ----------------------
+Revenue:
+  Product revenue                                    `$   $(($revenue * 0.7).ToString('N0'))
+  Services revenue                                       $(($revenue * 0.3).ToString('N0'))
+                                                    ----------------------
+    Total revenue                                        $($revenue.ToString('N0'))
 
-Return on Equity (ROE): $((Get-Random -Minimum 10 -Maximum 25))%
-Return on Assets (ROA): $((Get-Random -Minimum 5 -Maximum 15))%
-Debt-to-Equity Ratio: $([math]::Round((Get-Random) + 0.3, 2))
-Current Ratio: $([math]::Round((Get-Random) + 1.5, 2))
+Cost of revenue:
+  Cost of product revenue                                $(($costOfRevenue * 0.6).ToString('N0'))
+  Cost of services revenue                               $(($costOfRevenue * 0.4).ToString('N0'))
+                                                    ----------------------
+    Total cost of revenue                                $($costOfRevenue.ToString('N0'))
+                                                    ----------------------
 
-This financial report contains confidential information and is intended for internal use only.
+Gross profit                                             $($grossProfit.ToString('N0'))
+Gross margin                                             $grossMargin%
 
-END OF REPORT
+Operating expenses:
+  Research and development                               $(($operatingExpenses * 0.45).ToString('N0'))
+  Sales and marketing                                    $(($operatingExpenses * 0.35).ToString('N0'))
+  General and administrative                             $(($operatingExpenses * 0.20).ToString('N0'))
+                                                    ----------------------
+    Total operating expenses                             $($operatingExpenses.ToString('N0'))
+                                                    ----------------------
+
+Operating income                                         $($operatingIncome.ToString('N0'))
+Operating margin                                         $operatingMargin%
+
+Other income (expense):
+  Interest expense                                       $((-$interestExpense).ToString('N0'))
+  Other income, net                                      $((Get-Random -Minimum 1000000 -Maximum 5000000).ToString('N0'))
+                                                    ----------------------
+
+Income before income taxes                               $(($operatingIncome - $interestExpense).ToString('N0'))
+Provision for income taxes                               $((-$taxExpense).ToString('N0'))
+Effective tax rate                                       $([math]::Round(($taxExpense / ($operatingIncome - $interestExpense)) * 100, 1))%
+                                                    ----------------------
+
+Net income                                           `$   $($netIncome.ToString('N0'))
+                                                    ======================
+
+Earnings per share:
+  Basic                                              `$   $eps
+  Diluted                                            `$   $dilutedEPS
+
+Weighted-average shares outstanding:
+  Basic                                                  $((Get-Random -Minimum 8000000 -Maximum 12000000).ToString('N0'))
+  Diluted                                                $((Get-Random -Minimum 9000000 -Maximum 13000000).ToString('N0'))
+
+================================================================================
+
+                           CONTOSO CORPORATION
+              CONDENSED CONSOLIDATED BALANCE SHEETS
+                         (In thousands)
+                           (Unaudited)
+
+                                                         As of
+                                                      $filingDate
+                                                   ----------------
+ASSETS
+
+Current assets:
+  Cash and cash equivalents                        `$  $($cashAndEquivalents.ToString('N0'))
+  Short-term investments                               $((Get-Random -Minimum 50000000 -Maximum 150000000).ToString('N0'))
+  Accounts receivable, net                             $($accountsReceivable.ToString('N0'))
+  Inventories                                          $($inventory.ToString('N0'))
+  Prepaid expenses and other                           $((Get-Random -Minimum 5000000 -Maximum 15000000).ToString('N0'))
+                                                   ----------------
+    Total current assets                               $($totalCurrentAssets.ToString('N0'))
+
+Property, plant and equipment, net                     $($ppe.ToString('N0'))
+Goodwill                                               $((Get-Random -Minimum 80000000 -Maximum 200000000).ToString('N0'))
+Intangible assets, net                                 $($intangibleAssets.ToString('N0'))
+Other long-term assets                                 $((Get-Random -Minimum 20000000 -Maximum 50000000).ToString('N0'))
+                                                   ----------------
+    Total assets                                   `$  $($totalAssets.ToString('N0'))
+                                                   ================
+
+LIABILITIES AND STOCKHOLDERS' EQUITY
+
+Current liabilities:
+  Accounts payable                                 `$  $($accountsPayable.ToString('N0'))
+  Accrued compensation                                 $((Get-Random -Minimum 10000000 -Maximum 30000000).ToString('N0'))
+  Short-term debt                                      $($shortTermDebt.ToString('N0'))
+  Other current liabilities                            $((Get-Random -Minimum 15000000 -Maximum 35000000).ToString('N0'))
+                                                   ----------------
+    Total current liabilities                          $($totalCurrentLiabilities.ToString('N0'))
+
+Long-term debt, net                                    $($longTermDebt.ToString('N0'))
+Deferred income taxes                                  $((Get-Random -Minimum 15000000 -Maximum 40000000).ToString('N0'))
+Other long-term liabilities                            $((Get-Random -Minimum 10000000 -Maximum 25000000).ToString('N0'))
+                                                   ----------------
+    Total liabilities                                  $($totalLiabilities.ToString('N0'))
+
+Stockholders' equity:
+  Common stock and paid-in capital                     $((Get-Random -Minimum 50000000 -Maximum 150000000).ToString('N0'))
+  Retained earnings                                    $(($shareholderEquity * 0.8).ToString('N0'))
+  Accumulated other comprehensive income               $(($shareholderEquity * 0.2).ToString('N0'))
+                                                   ----------------
+    Total stockholders' equity                         $($shareholderEquity.ToString('N0'))
+                                                   ----------------
+    Total liabilities and stockholders' equity     `$  $($totalAssets.ToString('N0'))
+                                                   ================
+
+================================================================================
+
+                           CONTOSO CORPORATION
+           CONDENSED CONSOLIDATED STATEMENTS OF CASH FLOWS
+                         (In thousands)
+                           (Unaudited)
+
+                                                       Three Months Ended
+                                                         $filingDate
+                                                     ------------------
+Operating activities:
+  Net income                                         `$  $($netIncome.ToString('N0'))
+  Adjustments to reconcile net income to cash:
+    Depreciation and amortization                        $((Get-Random -Minimum 15000000 -Maximum 35000000).ToString('N0'))
+    Stock-based compensation                             $((Get-Random -Minimum 10000000 -Maximum 25000000).ToString('N0'))
+    Deferred income taxes                                $((Get-Random -Minimum -5000000 -Maximum 5000000).ToString('N0'))
+    Changes in operating assets and liabilities:
+      Accounts receivable                                $((Get-Random -Minimum -15000000 -Maximum -5000000).ToString('N0'))
+      Inventories                                        $((Get-Random -Minimum -10000000 -Maximum 10000000).ToString('N0'))
+      Accounts payable and accrued liabilities           $((Get-Random -Minimum 5000000 -Maximum 20000000).ToString('N0'))
+                                                     ------------------
+    Cash provided by operating activities                $($operatingCashFlow.ToString('N0'))
+
+Investing activities:
+  Additions to property and equipment                    $(($investingCashFlow * 0.6).ToString('N0'))
+  Acquisitions, net of cash acquired                     $(($investingCashFlow * 0.4).ToString('N0'))
+  Purchases of investments                               $((Get-Random -Minimum -30000000 -Maximum -10000000).ToString('N0'))
+  Sales of investments                                   $((Get-Random -Minimum 10000000 -Maximum 30000000).ToString('N0'))
+                                                     ------------------
+    Cash used in investing activities                    $($investingCashFlow.ToString('N0'))
+
+Financing activities:
+  Proceeds from issuance of debt                         $((Get-Random -Minimum 0 -Maximum 50000000).ToString('N0'))
+  Repayment of debt                                      $((Get-Random -Minimum -40000000 -Maximum 0).ToString('N0'))
+  Dividends paid                                         $((Get-Random -Minimum -20000000 -Maximum -5000000).ToString('N0'))
+  Repurchases of common stock                            $((Get-Random -Minimum -30000000 -Maximum 0).ToString('N0'))
+                                                     ------------------
+    Cash provided by (used in) financing activities      $($financingCashFlow.ToString('N0'))
+                                                     ------------------
+
+Net increase in cash and equivalents                     $($netCashChange.ToString('N0'))
+Cash and equivalents, beginning of period                $(($cashAndEquivalents - $netCashChange).ToString('N0'))
+                                                     ------------------
+Cash and equivalents, end of period                  `$  $($cashAndEquivalents.ToString('N0'))
+                                                     ==================
+
+================================================================================
+
+ITEM 2. MANAGEMENT'S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION
+        AND RESULTS OF OPERATIONS
+
+OVERVIEW
+
+We are a leading technology company focused on delivering innovative software,
+devices, and cloud services that empower people and organizations worldwide.
+Our business is organized into three segments: Productivity and Business
+Processes, Intelligent Cloud, and More Personal Computing.
+
+RESULTS OF OPERATIONS
+
+Revenue increased $([math]::Round((Get-Random -Minimum 5 -Maximum 20), 1))% compared to the prior year period, driven by strong
+commercial cloud revenue growth. Our commercial cloud gross margin percentage
+improved year-over-year, primarily due to improvements in Azure and
+improvements across our commercial cloud portfolio.
+
+KEY PERFORMANCE INDICATORS AND NON-GAAP FINANCIAL MEASURES
+
+We use certain key performance indicators (KPIs) and non-GAAP financial
+measures to evaluate performance:
+
+- Current Ratio: $currentRatio (measure of liquidity)
+- Quick Ratio: $quickRatio (acid-test ratio)
+- Debt-to-Equity Ratio: $debtToEquity
+- Return on Equity (ROE): $roe%
+- Return on Assets (ROA): $roa%
+- Net Profit Margin: $profitMargin%
+- Gross Margin: $grossMargin%
+- Operating Margin: $operatingMargin%
+
+LIQUIDITY AND CAPITAL RESOURCES
+
+Cash and cash equivalents totaled `$$($cashAndEquivalents.ToString('N0')) thousand as of $filingDate.
+Our principal sources of liquidity are cash from operations and access to
+capital markets. We believe that existing cash, cash equivalents, short-term
+investments, and cash flows from operations, together with access to capital
+markets, will be sufficient to fund our operating activities, capital
+expenditures, acquisition activities, and other liquidity requirements for
+at least the next 12 months.
+
+CRITICAL ACCOUNTING POLICIES AND ESTIMATES
+
+The preparation of financial statements in conformity with generally accepted
+accounting principles (GAAP) requires management to make estimates and
+assumptions. These estimates and assumptions affect reported amounts of assets,
+liabilities, revenue, and expenses, as well as disclosures of contingent
+liabilities. Actual results may differ from these estimates.
+
+FORWARD-LOOKING STATEMENTS
+
+This report contains forward-looking statements within the meaning of the
+Private Securities Litigation Reform Act of 1995. These statements are based
+on current expectations and are subject to risks and uncertainties that could
+cause actual results to differ materially.
+
+================================================================================
+
+CERTIFICATIONS
+
+I, John Doe, Chief Executive Officer, certify that:
+
+1. I have reviewed this quarterly report on $($reportType.Header);
+2. Based on my knowledge, this report does not contain any untrue statement
+   of a material fact or omit to state a material fact;
+3. Based on my knowledge, the financial statements fairly present the
+   financial condition and results of operations;
+4. The registrant's other certifying officer and I are responsible for
+   establishing and maintaining disclosure controls and procedures;
+5. We have evaluated the effectiveness of disclosure controls and procedures
+   as of the end of the period covered by this report.
+
+Date: $filingDate
+
+This report contains confidential and proprietary financial information.
+Unauthorized distribution is prohibited.
+
+Prepared in accordance with:
+- Generally Accepted Accounting Principles (GAAP)
+- SEC Regulation S-K
+- Sarbanes-Oxley Act of 2002
+- FASB Accounting Standards Codification
+
+================================================================================
+                                END OF REPORT
+================================================================================
 "@
     
-    # Create and upload
-    $fileName = "Financial_Report_${quarter}_${year}_${reportNumber}.txt"
+    # Create and upload with descriptive filename
+    $fileName = "$($reportType.Name)_Financial_Report_${fiscalQuarter}_${reportNumber}.txt"
     $tempPath = "$env:TEMP\$fileName"
     $content | Out-File -FilePath $tempPath -Encoding UTF8
     
-    Add-PnPFile -Path $tempPath -Folder "Documents/FinancialReports_Positive" | Out-Null
+    Add-PnPFile -Path $tempPath -Folder "Shared Documents/FinancialReports_Positive" | Out-Null
     Remove-Item -Path $tempPath -Force
     
     if ($reportNumber % 10 -eq 0) {
-        Write-Host "   Created $reportNumber financial reports..." -ForegroundColor Cyan
+        Write-Host "   Created $reportNumber SEC-style financial reports..." -ForegroundColor Cyan
     }
 }
 
-Write-Host "✅ Created 100 positive training samples (financial reports)" -ForegroundColor Green
+Write-Host "✅ Created 100 HIGHLY SPECIFIC positive training samples (SEC-style financial reports)" -ForegroundColor Green
 
 # =============================================================================
 # Step 6: Generate Negative Training Samples (Business Documents)
@@ -374,7 +654,7 @@ $documentTypes = @(
     $tempPath = "$env:TEMP\$fileName"
     $content | Out-File -FilePath $tempPath -Encoding UTF8
     
-    Add-PnPFile -Path $tempPath -Folder "Documents/BusinessDocs_Negative" | Out-Null
+    Add-PnPFile -Path $tempPath -Folder "Shared Documents/BusinessDocs_Negative" | Out-Null
     Remove-Item -Path $tempPath -Force
     
     if ($docNumber % 20 -eq 0) {
@@ -407,5 +687,5 @@ Write-Host "   5. Select FinancialReports_Positive folder for positive samples" 
 Write-Host "   6. Select BusinessDocs_Negative folder for negative samples" -ForegroundColor White
 Write-Host ""
 Write-Host "🔗 SharePoint Site: $siteUrl" -ForegroundColor Cyan
-Write-Host "🔗 Direct Link: $siteUrl/Documents/Forms/AllItems.aspx" -ForegroundColor Cyan
+Write-Host "🔗 Direct Link: $siteUrl/Shared%20Documents/Forms/AllItems.aspx" -ForegroundColor Cyan
 Write-Host ""

@@ -1,0 +1,18 @@
+{
+  "Timestamp": "2025-11-16 18:21:13",
+  "TotalDocuments": 1100,
+  "DocumentType": "Mixed",
+  "TotalPIIPatterns": 4977,
+  "OutputPath": ".\\generated-documents\\Mixed",
+  "DensityDistribution": {
+    "Low": 317,
+    "High": 342,
+    "Medium": 441
+  },
+  "FileTypeDistribution": {
+    "TXT": 110,
+    "XLSX": 330,
+    "PDF": 165,
+    "DOCX": 495
+  }
+}

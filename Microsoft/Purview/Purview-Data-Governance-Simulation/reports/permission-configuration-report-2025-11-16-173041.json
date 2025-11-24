@@ -1,0 +1,39 @@
+{
+  "Timestamp": "2025-11-16 17:30:41",
+  "TenantUrl": "https://marcusjcloud.sharepoint.com/",
+  "SitesProcessed": 5,
+  "FailureCount": 0,
+  "Results": [
+    {
+      "Owner": "marcus@marcusj-dev.cloud",
+      "Status": "Success",
+      "SiteName": "HR-Simulation",
+      "ExternalSharingDisabled": true
+    },
+    {
+      "Owner": "marcus@marcusj-dev.cloud",
+      "Status": "Success",
+      "SiteName": "Finance-Simulation",
+      "ExternalSharingDisabled": true
+    },
+    {
+      "Owner": "marcus@marcusj-dev.cloud",
+      "Status": "Success",
+      "SiteName": "Legal-Simulation",
+      "ExternalSharingDisabled": true
+    },
+    {
+      "Owner": "marcus@marcusj-dev.cloud",
+      "Status": "Success",
+      "SiteName": "Marketing-Simulation",
+      "ExternalSharingDisabled": true
+    },
+    {
+      "Owner": "marcus@marcusj-dev.cloud",
+      "Status": "Success",
+      "SiteName": "IT-Simulation",
+      "ExternalSharingDisabled": true
+    }
+  ],
+  "SuccessCount": 5
+}

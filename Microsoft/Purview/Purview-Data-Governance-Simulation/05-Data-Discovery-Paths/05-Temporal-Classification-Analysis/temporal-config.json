@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Configuration for Lab 05-Temporal longitudinal classification analysis",
+  "temporalSettings": {
+    "scanIntervals": [
+      {
+        "name": "24-Hour",
+        "description": "Initial classification after SharePoint Search index refresh",
+        "expectedDaysAfterUpload": 1,
+        "toleranceDays": 1,
+        "scanMethod": "eDiscovery"
+      },
+      {
+        "name": "7-Day",
+        "description": "First Microsoft Search unified index refresh",
+        "expectedDaysAfterUpload": 7,
+        "toleranceDays": 2,
+        "scanMethod": "GraphAPI"
+      },
+      {
+        "name": "14-Day",
+        "description": "Secondary index maturation checkpoint",
+        "expectedDaysAfterUpload": 14,
+        "toleranceDays": 2,
+        "scanMethod": "GraphAPI"
+      },
+      {
+        "name": "21-Day",
+        "description": "Final classification stability validation",
+        "expectedDaysAfterUpload": 21,
+        "toleranceDays": 3,
+        "scanMethod": "GraphAPI"
+      }
+    ],
+    "analysisParameters": {
+      "minimumConfidenceThreshold": 75,
+      "significantDriftThreshold": 5,
+      "enableTrendVisualization": true,
+      "exportFormat": "CSV",
+      "includeFileHistory": true
+    },
+    "reportingOptions": {
+      "generateExecutiveSummary": true,
+      "includeSiteBreakdown": true,
+      "trackIndividualFiles": true,
+      "compareWithLab05a": true,
+      "highlightStabilityMetrics": true
+    }
+  },
+  "dataRetention": {
+    "keepHistoricalScans": true,
+    "retentionDays": 90,
+    "archiveCompletedAnalysis": true
+  }
+}

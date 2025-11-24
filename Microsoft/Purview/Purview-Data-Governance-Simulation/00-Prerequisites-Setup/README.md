@@ -112,7 +112,7 @@ Update the **Simulation** section:
 The **SharePointSites** array defines sites that will be created in **Lab 01**. Each site requires the following properties:
 
 | Property | Description | Valid Values | Required Role(s) | Example |
-|----------|-------------|--------------|------------------|---------||
+|----------|-------------|--------------|------------------|---------|
 | **Name** | Site alias (URL-friendly name) | Alphanumeric with hyphens | N/A (configuration setting) | `HR-Simulation` |
 | **Template** | SharePoint site template type | `Team` or `Communication` (scripts use `TeamSite` template regardless) | N/A (configuration setting) | `Team` |
 | **Department** | Department name (used in site title) | Any descriptive string | N/A (label only) | `Human Resources` |

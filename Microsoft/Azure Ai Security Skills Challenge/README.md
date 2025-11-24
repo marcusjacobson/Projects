@@ -1,6 +1,49 @@
-# AI Skilling Roadmap – Marcus Jacobson
+# Azure AI Security Skills Challenge
 
-Welcome to the AI Skilling Roadmap repository! This project outlines a **10-week journey** to build deep, hands-on expertise in secure AI deployment, Microsoft Security tools, and Copilot integration. It aligns with Microsoft's AI Transformation strategy and EAG Security's FY26 objectives, with a strong emphasis on practical delivery, governance, and reusable prompt engineering.
+**A comprehensive 10-week journey to master secure AI deployment, Microsoft Security tools, and Copilot integration.**
+
+This project aligns with Microsoft's AI Transformation strategy and provides a hands-on roadmap for building enterprise-grade AI security skills. It covers the full spectrum of AI security, from foundational infrastructure to advanced generative AI governance.
+
+## 🎯 Strategic Value
+
+The **Azure AI Security Skills Challenge** is designed to bridge the gap between traditional security operations and the emerging world of AI engineering. By completing this roadmap, you will build:
+
+- **Enterprise-Ready AI Security**: Practical experience deploying and securing Azure OpenAI, Copilot, and custom AI models.
+- **Unified Security Operations**: Deep integration of Defender XDR, Sentinel, and Security Copilot for modern SOC capabilities.
+- **Governance & Compliance**: Implementation of Purview and Priva for responsible AI and data protection.
+- **Reusable Assets**: A library of deployment scripts, Bicep templates, and prompt engineering guides for customer delivery.
+
+---
+
+## 🏗️ Architecture Overview
+
+This project builds a complete **AI Security Ecosystem** integrating core Microsoft technologies:
+
+```text
+┌─────────────────────────────────────────────────────────────────────────┐
+│                       Unified Security Operations                       │
+│  ┌──────────────┐   ┌──────────────┐   ┌──────────────┐   ┌──────────┐  │
+│  │ Defender XDR │↔│   Sentinel   │↔│ Security     │↔│ Copilot  │  │
+│  └──────────────┘   └──────────────┘   │ Copilot      │   │ Studio   │  │
+│         ▲                  ▲           └──────────────┘   └──────────┘  │
+└─────────┼──────────────────┼──────────────────▲─────────────────────────┘
+          │                  │                  │
+┌─────────▼──────────────────▼──────────────────▼─────────────────────────┐
+│                     Secure AI Infrastructure                            │
+│  ┌──────────────┐   ┌──────────────┐   ┌──────────────┐                 │
+│  │ Azure OpenAI │   │ AI Foundry   │   │   Fabric     │                 │
+│  └──────────────┘   └──────────────┘   └──────────────┘                 │
+└─────────────────────────────────────────────────────────────────────────┘
+          ▲                  ▲                  ▲
+┌─────────┴──────────────────┴──────────────────┴─────────────────────────┐
+│                    Governance & Compliance                              │
+│  ┌──────────────┐   ┌──────────────┐   ┌──────────────┐                 │
+│  │   Purview    │   │    Priva     │   │   Entra ID   │                 │
+│  └──────────────┘   └──────────────┘   └──────────────┘                 │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
 
 ## 🌍 **Important: Regional Deployment Guidance**
 
@@ -17,14 +60,22 @@ Welcome to the AI Skilling Roadmap repository! This project outlines a **10-week
 
 📖 **Learn More**: [Microsoft Defender XDR unified security operations platform](https://learn.microsoft.com/en-us/defender-xdr/)
 
-## 📌 Project Goals
+---
 
-- Build a structured, week-by-week AI skilling plan tailored to security-focused consulting.
-- Integrate Microsoft Defender, Purview, Priva, Fabric, and Copilot Studio into real-world scenarios.
-- Develop and publish reusable prompt libraries and deployment guides.
-- Share learnings and artifacts incrementally to support internal enablement and customer delivery.
+## 🎓 Skills & Certification Alignment
 
-## 🎯 **10-Week Learning Path Structure**
+This roadmap is mapped to key Microsoft certifications and job roles, ensuring that your practical work translates directly to professional growth.
+
+| Phase | Weeks | Focus Area | Aligned Certifications | Key Skills |
+|-------|-------|------------|------------------------|------------|
+| **1** | 00-01 | **Security Foundations** | **AZ-500**, **SC-200** | Azure Security, Defender for Cloud, IaC (Bicep/PowerShell) |
+| **2** | 02-03 | **AI Engineering & Ops** | **AI-102**, **AZ-400** | Azure OpenAI, Prompt Engineering, Logic Apps Automation, Cost Mgmt |
+| **3** | 04-06 | **Advanced SecOps & Gov** | **SC-100**, **DP-600** | Security Copilot, Purview, Priva, Data Governance |
+| **4** | 07-10 | **Applied AI & Delivery** | **AI-102**, **PL-200** | Fabric, AI Foundry, Copilot Studio, Secure Delivery |
+
+---
+
+## 📅 Implementation Roadmap
 
 This roadmap has been optimized for working professionals with a logical progression through **4 distinct phases**:
 
@@ -50,6 +101,8 @@ This roadmap has been optimized for working professionals with a logical progres
 - **Week 9**: Copilot Studio for security agents and AI automation
 - **Week 10**: Secure Copilot deployment and comprehensive delivery practices
 
+---
+
 ## ⚡ **Key Benefits of This Structure**
 
 - **Realistic Time Investment**: Each week designed for 8-12 hours total (manageable with full-time work)
@@ -58,11 +111,13 @@ This roadmap has been optimized for working professionals with a logical progres
 - **Practical Outcomes**: Every week delivers deployable solutions and reusable assets
 - **Enterprise Ready**: Progresses from foundational skills to customer-facing delivery capability
 
+---
+
 ## 🗂️ Repository Structure
 
 Each week is organized as a separate folder to support modular development and publishing.
 
-## ✅ Project Status
+## 📊 Module Breakdown & Status
 
 As project weeks are completed, the **Completed** checkbox will be marked.
 
@@ -72,21 +127,89 @@ As project weeks are completed, the **Completed** checkbox will be marked.
 - [🔄] = In Progress (core deliverables complete, final items pending)
 - [ ] = Not Started
 
-| Week | Focus Area | Completed |
-|------|------------|--------|
-| 0 | [Project Setup & Admin](./00%20-%20Project%20Setup%20&%20Admin/README.md) | [x] |
-| 1 | [Defender for Cloud Deployment Foundation](./01%20-%20Defender%20for%20Cloud%20Deployment%20Foundation/README.md) | [x] |
-| 2 | [AI Foundation & Secure Model Deployment](./02%20-%20AI%20Foundation%20&%20Secure%20Model%20Deployment/README.md) | [🔄] |
-| 3 | [AI-Driven Security Operations Automation](./03%20-%20AI-Driven%20Security%20Operations%20Automation/README.md) | [ ] |
-| 4 | [Advanced XDR + Security Copilot Integration](./04%20-%20Defender%20XDR%20+%20Security%20Copilot%20Integration/README.md) | [ ] |
-| 5 | [Microsoft Purview for Data Governance](./05%20-%20Microsoft%20Purview%20for%20Data%20Governance/README.md) | [ ] |
-| 6 | [Microsoft Priva and Responsible AI](./06%20-%20Microsoft%20Priva%20and%20Responsible%20AI/README.md) | [ ] |
-| 7 | [Microsoft Fabric for Secure Analytics](./07%20-%20Microsoft%20Fabric%20for%20Secure%20Analytics/README.md) | [ ] |
-| 8 | [Azure AI Foundry & Secure AI Workloads](./08%20-%20Azure%20AI%20Foundry%20&%20Secure%20AI%20Workloads/README.md) | [ ] |
-| 9 | [Copilot Studio for Security Agents](./09%20-%20Copilot%20Studio%20for%20Security%20Agents/README.md) | [ ] |
-| 10 | [Secure Copilot Deployment & Delivery Practices](./10%20-%20Secure%20Copilot%20Deployment%20&%20Delivery%20Practices/README.md) | [ ] |
+| Week | Focus Area | Status | Key Deliverables |
+|------|------------|--------|------------------|
+| 0 | [Project Setup & Admin](./00%20-%20Project%20Setup%20&%20Admin/README.md) | [x] | Environment Validation Script, Dev Setup |
+| 1 | [Defender for Cloud Deployment Foundation](./01%20-%20Defender%20for%20Cloud%20Deployment%20Foundation/README.md) | [x] | MDC Deployment, Unified SecOps Integration |
+| 2 | [AI Foundation & Secure Model Deployment](./02%20-%20AI%20Foundation%20&%20Secure%20Model%20Deployment/README.md) | [🔄] | Azure OpenAI, Cost Mgmt, Prompt Library |
+| 3 | [AI-Driven Security Operations Automation](./03%20-%20AI-Driven%20Security%20Operations%20Automation/README.md) | [🔄] | Logic Apps Automation, Incident Enrichment |
+| 4 | [Advanced XDR + Security Copilot Integration](./04%20-%20Defender%20XDR%20+%20Security%20Copilot%20Integration/README.md) | [ ] | Security Copilot Plugin, Advanced Hunting |
+| 5 | [Microsoft Purview for Data Governance](./05%20-%20Microsoft%20Purview%20for%20Data%20Governance/README.md) | [ ] | Data Map, Classification, Sensitivity Labels |
+| 6 | [Microsoft Priva and Responsible AI](./06%20-%20Microsoft%20Priva%20and%20Responsible%20AI/README.md) | [ ] | Privacy Risk Mgmt, Subject Rights Requests |
+| 7 | [Microsoft Fabric for Secure Analytics](./07%20-%20Microsoft%20Fabric%20for%20Secure%20Analytics/README.md) | [ ] | Fabric Capacity, OneLake Security |
+| 8 | [Azure AI Foundry & Secure AI Workloads](./08%20-%20Azure%20AI%20Foundry%20&%20Secure%20AI%20Workloads/README.md) | [ ] | AI Studio, Content Safety, Model Catalog |
+| 9 | [Copilot Studio for Security Agents](./09%20-%20Copilot%20Studio%20for%20Security%20Agents/README.md) | [ ] | Custom Copilots, Plugin Development |
+| 10 | [Secure Copilot Deployment & Delivery Practices](./10%20-%20Secure%20Copilot%20Deployment%20&%20Delivery%20Practices/README.md) | [ ] | Production Readiness, Adoption Framework |
 
-## 🚀 Enhanced Setup and Validation Tools
+## 📊 Comprehensive AI Security Capability Coverage
+
+### Coverage Matrix: 10-Week Roadmap
+
+This matrix shows which module covers each AI Security capability, with specific week references.
+
+#### ✅ Cloud Security Posture & Workload Protection
+
+| Capability | Complexity | Module Coverage | Status |
+|------------|------------|-----------------|--------|
+| **Environment Validation** | BASIC | ✅ Week 0 (9-step validation script) | ✅ COMPREHENSIVE |
+| **Defender for Cloud (CSPM)** | INTERMEDIATE | ✅ Week 1 (MDC deployment, policy) | ✅ EXTENSIVE |
+| **Workload Protection (CWP)** | INTERMEDIATE | ✅ Week 1 (Server, Storage, App Service plans) | ✅ EXTENSIVE |
+| **Infrastructure as Code (Bicep)** | INTERMEDIATE | ✅ Weeks 1-2 (Modular Bicep templates) | ✅ COMPREHENSIVE |
+| **PowerShell Automation** | INTERMEDIATE | ✅ All Weeks (Orchestrator scripts) | ✅ EXTENSIVE |
+| **Unified SecOps Integration** | ADVANCED | ✅ Week 1 (Defender XDR connector) | ✅ DETAILED |
+
+#### ✅ AI Engineering & Secure Infrastructure
+
+| Capability | Complexity | Module Coverage | Status |
+|------------|------------|-----------------|--------|
+| **Azure OpenAI Deployment** | INTERMEDIATE | ✅ Week 2 (GPT-4o-mini, secure endpoints) | ✅ COMPREHENSIVE |
+| **AI Cost Management** | INTERMEDIATE | ✅ Week 2 (Budget alerts, token optimization) | ✅ EXTENSIVE |
+| **Prompt Engineering** | INTERMEDIATE | ✅ Week 2 (Security-optimized templates) | ✅ DETAILED |
+| **Azure AI Foundry** | ADVANCED | ✅ Week 8 (AI Studio, Model Catalog) | ✅ PLANNED |
+| **Content Safety Filters** | INTERMEDIATE | ✅ Week 8 (RAI policies, jailbreak detection) | ✅ PLANNED |
+| **Private Networking for AI** | ADVANCED | ✅ Week 2 (Private Endpoints foundation) | ✅ DETAILED |
+
+#### ✅ Security Operations & Automation
+
+| Capability | Complexity | Module Coverage | Status |
+|------------|------------|-----------------|--------|
+| **Defender XDR Integration** | INTERMEDIATE | ✅ Week 3 (Incident enrichment) | ✅ PLANNED |
+| **Logic Apps Automation** | INTERMEDIATE | ✅ Week 3 (Automated response playbooks) | ✅ PLANNED |
+| **Microsoft Sentinel** | ADVANCED | ✅ Week 3 (Connector setup, analytics rules) | ✅ PLANNED |
+| **Security Copilot** | ADVANCED | ✅ Week 4 (Plugin integration, promptbooks) | ✅ PLANNED |
+| **Advanced Hunting (KQL)** | ADVANCED | ✅ Week 4 (AI-assisted query generation) | ✅ PLANNED |
+
+#### ✅ Data Governance & Privacy
+
+| Capability | Complexity | Module Coverage | Status |
+|------------|------------|-----------------|--------|
+| **Purview Data Map** | INTERMEDIATE | ✅ Week 5 (Scanning, classification) | ✅ PLANNED |
+| **Sensitivity Labels** | INTERMEDIATE | ✅ Week 5 (AI-labeling, auto-labeling) | ✅ PLANNED |
+| **Data Loss Prevention (DLP)** | INTERMEDIATE | ✅ Week 5 (AI endpoint DLP) | ✅ PLANNED |
+| **Microsoft Priva** | ADVANCED | ✅ Week 6 (Privacy Risk Management) | ✅ PLANNED |
+| **Subject Rights Requests** | ADVANCED | ✅ Week 6 (Automated discovery) | ✅ PLANNED |
+
+#### ✅ Secure Analytics & Applied AI
+
+| Capability | Complexity | Module Coverage | Status |
+|------------|------------|-----------------|--------|
+| **Microsoft Fabric Security** | ADVANCED | ✅ Week 7 (OneLake security, workspace gov) | ✅ PLANNED |
+| **Copilot Studio** | ADVANCED | ✅ Week 9 (Custom security agents) | ✅ PLANNED |
+| **Secure Copilot Delivery** | EXPERT | ✅ Week 10 (Adoption framework, readiness) | ✅ PLANNED |
+| **Custom Plugin Dev** | EXPERT | ✅ Week 9 (API connectors, auth) | ✅ PLANNED |
+
+### ❌ Capabilities NOT Covered
+
+The following capabilities require **enterprise-scale deployments** or **specialized licensing** beyond the scope of this challenge:
+
+| Capability | Complexity | Why Not Covered |
+|------------|------------|-----------------|
+| **Physical Security** | BASIC | Out of scope for cloud/AI focus |
+| **Hardware Security Modules (HSM)** | ADVANCED | Requires dedicated hardware provisioning |
+| **Legacy On-Premises Integration** | ADVANCED | Focus is on cloud-native AI security |
+| **Third-Party AI Model Training** | EXPERT | Focus is on Microsoft Azure AI ecosystem |
+
+## 🛠️ Automation & Tooling
 
 The project includes comprehensive automation and validation tools to ensure reliable setup and deployment success:
 
@@ -163,12 +286,12 @@ The project includes comprehensive automation and validation tools to ensure rel
 
 This enhanced tooling ensures reliable setup, deployment success, and professional-grade automation throughout the 10-week learning journey.
 
-## 🎉 Recent Achievements and Updates
+## 📈 Change Log & Achievements
 
 ### Comprehensive Environment Foundation (August 2025)
 
 - **Advanced Validation Framework**: 9-step environment validation with comprehensive error handling and JSON export capabilities
-- **Optimized Performance**: Resolved script performance issues including PowerShell module loading optimization and Azure CLI timeout protection  
+- **Optimized Performance**: Resolved script performance issues including PowerShell module loading optimization and Azure CLI timeout protection
 - **Professional Automation**: Enhanced PowerShell scripts following industry-standard preambles and consistent terminology
 - **Multi-Scenario Testing**: Comprehensive simulation capabilities for various setup and failure conditions
 - **Cost Management Integration**: Advanced cost monitoring and budget controls throughout AI integration workflows
@@ -180,7 +303,7 @@ This enhanced tooling ensures reliable setup, deployment success, and profession
 - **Enterprise Deployment Readiness**: Production-ready automation with comprehensive error handling and validation
 - **Modern Security Integration**: Complete unified security operations platform foundation for Weeks 1-2
 
-## � Documentation Standards
+## 📚 Documentation Standards
 
 This project follows established style guides to ensure consistency and professionalism across all documentation and code:
 

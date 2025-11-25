@@ -1066,8 +1066,6 @@ This modular deployment serves as the foundation for upcoming weeks:
 
 - **Week 2**: Use this Defender for Cloud foundation for AI integration and enhanced security operations
 - **Week 3**: Use this foundation for Defender XDR and Security Copilot integration
-- **Week 4**: Apply these security governance patterns to Microsoft Purview
-- **Week 8**: Leverage this infrastructure for Copilot Studio security agents
 
 ---
 

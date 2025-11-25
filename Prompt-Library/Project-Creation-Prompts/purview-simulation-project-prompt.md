@@ -96,7 +96,6 @@ Follow Infrastructure-as-Code patterns with:
 - Browser-based authentication patterns matching existing Purview projects
 
 **Content Reuse Strategy:**
-- Review the Purview-Classification-Lifecycle-Labs project in Microsoft/Purview/ directory
 - Review the Purview-Skills-Ramp-OnPrem-and-Cloud project in Microsoft/Purview/ directory
 - Leverage authentication patterns (Connect-IPPSSession, Connect-PnPOnline with browser auth)
 - Adapt custom SIT creation and EDM implementation workflows
@@ -119,13 +118,12 @@ This is a "from scratch" simulation project - do not assume any prior Purview co
 Before creating any content, you MUST:
 
 1. **Review Repository Style-Guides:**
-   - Read and understand the Markdown Style Guide (Style-Guides/markdown-style-guide.md)
-   - Read and understand the PowerShell Style Guide (Style-Guides/powershell-style-guide.md)
-   - Read and understand the Parameters File Style Guide (Style-Guides/parameters-file-style-guide.md) for configuration file standards
+   - Read and understand the Markdown Style Guide (Repository-Management/Style-Guides/markdown-style-guide.md)
+   - Read and understand the PowerShell Style Guide (Repository-Management/Style-Guides/powershell-style-guide.md)
+   - Read and understand the Parameters File Style Guide (Repository-Management/Style-Guides/parameters-file-style-guide.md) for configuration file standards
    - Follow all style guide requirements for headers, formatting, punctuation, and structure
 
 2. **Review Existing Reference Projects:**
-   - Examine Purview-Classification-Lifecycle-Labs for authentication patterns, SIT creation, EDM workflows, bulk operations
    - Examine Purview-Skills-Ramp-OnPrem-and-Cloud for SharePoint site configuration, document generation, cleanup procedures
    - Use semantic_search or read_file to extract relevant PowerShell modules, error handling patterns, documentation structures
    - **CRITICAL**: Extract and duplicate content - do not reference projects by name or create links
@@ -457,7 +455,7 @@ The structure follows proven patterns from existing Purview projects while adapt
 
 2. **Scalable Design**: Scale level parameter (Small/Medium/Large) adjusts site counts, document quantities, and processing batches automatically.
 
-3. **Browser-Based Security**: Matches authentication patterns from Classification-Lifecycle-Labs and Skills-Ramp projects (no secret management complexity).
+3. **Browser-Based Security**: Matches authentication patterns from Skills-Ramp projects (no secret management complexity).
 
 4. **Progressive Workflow**: Numbered labs follow logical dependency chain with clear prerequisites and outcomes.
 
@@ -526,7 +524,7 @@ The structure follows proven patterns from existing Purview projects while adapt
 
 **Content Reuse from Reference Projects:**
 
-- **Authentication patterns**: Browser-based Connect-IPPSSession and Connect-PnPOnline -Interactive wrappers from Classification-Lifecycle-Labs
+- **Authentication patterns**: Browser-based Connect-IPPSSession and Connect-PnPOnline -Interactive wrappers
 - **Custom SIT creation**: Regex pattern development and confidence tuning from Lab 01-CustomSITs
 - **EDM implementation**: Schema creation, hashing workflows, and upload procedures from Lab 02-CustomSITs-EDM
 - **Bulk operations**: Error handling, progress tracking, and logging patterns from Lab 05-PowerShellAutomation
@@ -617,7 +615,7 @@ The structure follows proven patterns from existing Purview projects while adapt
 - ✅ PnP PowerShell cmdlets verified: New-PnPSite, Add-PnPFile, Connect-PnPOnline validated against v2.x documentation
 - ✅ Security & Compliance PowerShell verified: New-DlpComplianceRule, New-DataClassification cmdlets validated
 - ✅ Content Explorer API endpoints verified against Microsoft Graph Security API v1.0 documentation
-- ✅ Browser authentication patterns validated from existing Classification-Lifecycle-Labs project
+- ✅ Browser authentication patterns validated from existing projects
 - ✅ SharePoint throttling limits researched: 600 requests per minute, 2500 requests per hour per user
 
 **Simulation Scale Levels Implemented:**
@@ -669,10 +667,10 @@ The structure follows proven patterns from existing Purview projects while adapt
 
 Before implementing, verify:
 
-- [ ] Reviewed Markdown Style Guide (Style-Guides/markdown-style-guide.md)
-- [ ] Reviewed PowerShell Style Guide (Style-Guides/powershell-style-guide.md)
+- [ ] Reviewed Markdown Style Guide (Repository-Management/Style-Guides/markdown-style-guide.md)
+- [ ] Reviewed PowerShell Style Guide (Repository-Management/Style-Guides/powershell-style-guide.md)
 - [ ] Reviewed Parameters File Style Guide for JSON config structure
-- [ ] Reviewed Purview-Classification-Lifecycle-Labs for authentication and bulk operation patterns
+- [ ] Reviewed Purview-Skills-Ramp-OnPrem-and-Cloud for authentication and bulk operation patterns
 - [ ] Reviewed Purview-Skills-Ramp-OnPrem-and-Cloud for SharePoint site operations
 - [ ] Identified browser-based authentication patterns (Connect-PnPOnline -Interactive, Connect-IPPSSession)
 - [ ] Planned configuration-driven architecture (centralized variables file)
@@ -1125,6 +1123,7 @@ Before suggesting any code or technical procedures:
 ### Deep Reasoning Integration
 
 **When to Engage Deep Reasoning:**
+
 - **Simulation scaling strategy**: Determining optimal site counts, document quantities, batch sizes for each scale level
 - **Document type distribution**: Analyzing enterprise patterns and choosing realistic ratios
 - **Configuration architecture**: Designing JSON structure balancing flexibility with usability
@@ -1132,6 +1131,7 @@ Before suggesting any code or technical procedures:
 - **Cleanup safety mechanisms**: Designing safeguards preventing accidental production data deletion
 
 **How to Apply Deep Reasoning:**
+
 - Break down complex problems (e.g., "How should scale levels affect batch sizes and timeouts?")
 - Evaluate trade-offs (e.g., "JSON vs PowerShell hashtable for configuration")
 - Consider edge cases (e.g., "What if user specifies invalid SIT names?")
@@ -1139,18 +1139,18 @@ Before suggesting any code or technical procedures:
 
 ### Content Extraction Best Practices
 
-**From Purview-Classification-Lifecycle-Labs:**
-- Extract authentication wrapper patterns from Shared-Utilities/ scripts
-- Adapt custom SIT creation logic from Lab 01 and Lab 02
-- Reuse bulk operation error handling from Lab 05 scripts
-- Extract Content Explorer query patterns from Lab 03
-
 **From Purview-Skills-Ramp-OnPrem-and-Cloud:**
+
+- Extract authentication wrapper patterns from Shared-Utilities/ scripts
+- Adapt custom SIT creation logic
+- Reuse bulk operation error handling
+- Extract Content Explorer query patterns
 - Extract SharePoint site creation patterns from Setup labs
 - Adapt document upload logic for multi-site distribution
 - Reuse cleanup script safety checks and verification patterns
 
 **Integration Guidelines:**
+
 - Never mention source project names in created documentation
 - Adapt patterns to simulation context (config-driven vs hardcoded)
 - Enhance with simulation-specific features (scale levels, flexible targeting)
@@ -1159,6 +1159,7 @@ Before suggesting any code or technical procedures:
 ### Configuration-Driven Development Principles
 
 **All scripts must:**
+
 - Import global configuration at startup: `$globalConfig = Import-GlobalConfig`
 - Optionally merge with lab config: `$config = Merge-LabConfig -Global $globalConfig -LabConfigPath "./lab-config.json"`
 - Use config values instead of hardcoded parameters: `$sites = $globalConfig.SharePointSites`
@@ -1169,6 +1170,7 @@ Before suggesting any code or technical procedures:
 - Handle missing lab config gracefully: Lab configs are optional extensions
 
 **Global config (`global-config.json`) must contain:**
+
 - **Environment section**: Tenant URL, tenant domain, admin email, admin center URL, organization name, environment type
 - **Simulation section**: Scale level, company prefix, resource prefix, default owner, notification email
 - **SharePointSites array**: Site names, templates, departments, owners, descriptions
@@ -1177,6 +1179,7 @@ Before suggesting any code or technical procedures:
 - **Logging section**: Log level, retention days, console/file output settings
 
 **Lab config (`lab-config.json`) optionally contains:**
+
 - **Lab-specific parameters**: Document generation settings, policy rules, cleanup targets
 - **Global references**: Use `$GLOBAL:` notation to reference global config values
 - **Overrides**: Lab-specific values that override global defaults for that lab only

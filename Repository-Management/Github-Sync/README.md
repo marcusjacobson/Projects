@@ -121,7 +121,7 @@ Key steps in the script:
 4. Select **Azure Repos Git** as the source.
 5. Select your repository.
 6. Choose **Existing Azure Pipelines YAML file**.
-7. Set the path to the `github-sync.yml` file (e.g., `/Pipeline/github-sync.yml`).
+7. Set the path to the `github-sync.yml` file (e.g., `/Repository-Management/Github-Sync/Pipeline/github-sync.yml`).
 8. Click **Continue**.
 9. Review the pipeline configuration and click **Run** to start the pipeline.
 

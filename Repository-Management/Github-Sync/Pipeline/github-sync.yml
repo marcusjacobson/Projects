@@ -44,7 +44,7 @@ jobs:
       assets: '**/*.zip' 
       isDraft: false
       isPreRelease: false
-  - script: |
-      chmod +x $(Build.SourcesDirectory)/Github-Sync/Scripts/sync-to-github.sh
-      $(Build.SourcesDirectory)/Github-Sync/Scripts/sync-to-github.sh "$(gitUserEmail)" "$(gitUserName)" "$(github_token)" "$(gitHubRepo)" "$(gitHubBranch)" "$(Build.SourceBranchName)"
+    - script: |
+      chmod +x $(Build.SourcesDirectory)/Repository-Management/Github-Sync/Scripts/sync-to-github.sh
+      $(Build.SourcesDirectory)/Repository-Management/Github-Sync/Scripts/sync-to-github.sh "$(gitUserEmail)" "$(gitUserName)" "$(github_token)" "$(gitHubRepo)" "$(gitHubBranch)" "$(Build.SourceBranchName)"
     displayName: 'Run sync-to-github.sh'

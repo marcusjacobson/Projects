@@ -1,0 +1,89 @@
+variables:
+########################################################################################################
+  # Environment - general. 
+  # REQUIRED: Update the serviceConnection value to match your Azure DevOps service connection name.
+########################################################################################################
+  serviceConnection: '<YOUR-SERVICE-CONNECTION-NAME>'
+  scriptPath: "$(Build.SourcesDirectory)/Entra/Authentication-Methods/FIDO2-Passkey-Config/Scripts/passkey-policy-config.ps1"
+  schemaFilePath: "$(Build.SourcesDirectory)/Entra/Authentication-Methods/FIDO2-Passkey-Config/Template/fido2.schema.json"
+
+########################################################################################################
+  # Passkey (FIDO2) Authentication Methods Properties.
+  # Multiple JSON blocks can be used to add multiple groups to includeTargets or excludeTargets.
+  #   IMPORTANT NOTE: The logic to add multiple groups to includeTargets is not currently working as expected.
+  #   Adding multiple groups to excludeTargets works as expected if the JSON is formatted correctly.
+  #
+  # Please note the following limitations for passkey/FIDO2 policies:
+  #   The policy can only be applied to select groups or "all_users", the "user" type is not supported.
+  #   "all_users" is only allowed for includeTargets, and cannot be used with additional groups for this setting.
+  #   For includeTargets, the "isRegistrationRequired" property cannot be set to true.
+  #   The "isSelfServiceRegistrationAllowed" property cannot be set to false.
+  #   For each of the exceptions above, there is error handling in the script which will provide specific error messages.
+  #
+  # REQUIRED: Update the following values to match your environment and requirements:
+  #   state: enabled | disabled
+  #   isSelfServiceRegistrationAllowed: true
+  #   isAttestationEnforced: true | false
+  #   keyRestrictions/isEnforced: true | false
+  #   keyRestrictions/enforcementType: allow | block
+  #   keyRestrictions/aaGuids: [GUID1, GUID2, ...] - List of Authenticator Attestation GUIDs for allowed/blocked keys
+  #   includeTargets/targetType: group
+  #   includeTargets/displayName: <name of group, or "all_users">
+  #   includeTargets/isRegistrationRequired: false
+  #   excludeTargets/targetType: group
+  #   excludeTargets/displayName: <name of group>
+  #
+  #  Example:
+  #    {
+  #      "state": "enabled",
+  #      "isSelfServiceRegistrationAllowed": true,
+  #      "isAttestationEnforced": false,
+  #      "keyRestrictions": {
+  #        "isEnforced": true,
+  #        "enforcementType": "allow",
+  #        "aaGuids": [
+  #          "90a3ccdf-635c-4729-a248-9b709135078f",
+  #          "de1e552d-db1d-4423-a619-566b625cdc84"
+  #        ]
+  #      },
+  #      "includeTargets": [
+  #        {
+  #          "targetType": "group",
+  #          "displayName": "all_users",
+  #          "isRegistrationRequired": false
+  #        }
+  #      ],
+  #      "excludeTargets": [
+  #        {
+  #          "targetType": "group",
+  #          "displayName": "<YOUR-EXCLUDE-GROUP-NAME>"
+  #        }
+  #      ]
+  #    }
+########################################################################################################
+
+  policyDetails: >
+    {
+      "state": "enabled",
+      "isSelfServiceRegistrationAllowed": true,
+      "isAttestationEnforced": false,
+      "keyRestrictions": {
+        "isEnforced": false,
+        "enforcementType": "allow",
+        "aaGuids": []
+      },
+      "includeTargets": [
+        {
+          "targetType": "group",
+          "displayName": "all_users",
+          "isRegistrationRequired": false
+        }
+      ],
+      "excludeTargets": [
+        {
+          "targetType": "group",
+          "displayName": "<YOUR-EXCLUDE-GROUP-NAME>"
+        }
+      ]
+    }
+      

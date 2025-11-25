@@ -1,0 +1,54 @@
+variables:
+########################################################################################################
+  # Environment - general. 
+  # REQUIRED: Update the serviceConnection value to match your Azure DevOps service connection name.
+########################################################################################################
+  serviceConnection: '<YOUR-SERVICE-CONNECTION-NAME>'
+  scriptPath: "$(Build.SourcesDirectory)/Entra/Named-Locations/Named-Locations-Edit-Countries/Scripts/named-locations-edit-countries.ps1"
+
+########################################################################################################
+  # Named Location Properties. 
+  # REQUIRED: Edit the displayName variable to provide the display name for the named locations list to be edited.
+  # REQUIRED: Edit the includeUnknownCountriesAndRegions variable to include or exclude unknown countries and regions.
+  #   The includeUnknownCountriesAndRegions variable must be set to "true" or "false".
+  #   Use the value of "false" for most circumstances.
+  # REQUIRED: Edit the countriesAndRegions variable to provide the country/region and display name for the list.
+  #   The countriesAndRegions variable must maintain the provided JSON format.
+  #   Any countries from the published list that are not included will be removed from the list.
+  #   Use ISO 3166-1 alpha-2 two-letter country codes. Reference: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+  # countriesAndRegions Example:
+  #   {
+  #     "countriesAndRegion": [
+  #       {
+  #         "countryOrRegion": "US",
+  #         "displayName": "United States"
+  #       },
+  #       {
+  #         "countryOrRegion": "GB"
+  #         "displayName": "United Kingdom"
+  #       }
+  #     ]
+  #   }
+########################################################################################################
+
+  # Display name of the new named locations list
+  displayName: "<YOUR-NAMED-LOCATION-NAME>"
+
+  # Flag on  whether to include unknown countries and regions
+  includeUnknownCountriesAndRegions: "false"
+
+  # List of countries to update to the named locations list, in JSON format.
+  countriesAndRegions: >
+    {
+      "countriesAndRegions": [
+        {
+          "countryOrRegion": "US",
+          "displayName": "United States"
+        },
+        {
+          "countryOrRegion": "GB",
+          "displayName": "United Kingdom"
+        }
+      ]
+    }
+

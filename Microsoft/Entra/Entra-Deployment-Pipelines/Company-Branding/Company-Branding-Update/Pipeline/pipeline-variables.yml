@@ -1,0 +1,45 @@
+variables:
+########################################################################################################
+  # Environment - general. 
+  # REQUIRED: Update the serviceConnection value to match your Azure DevOps service connection name.
+########################################################################################################
+  serviceConnection: '<YOUR-SERVICE-CONNECTION-NAME>' 
+  scriptPath: "$(Build.SourcesDirectory)/Entra/Company-Branding/Company-Branding-Update/Scripts/company-branding-update.ps1"
+
+########################################################################################################
+  # Company Branding Properties.
+  # REQUIRED: Update the values below to match your organization's branding requirements.
+  # List of TEXT-BASED settings to configure for company branding.
+  # Additional Attributes are available but not provided within this pipeline 
+  #   since empty values will cause an error.
+  # To add or remove attributes to the pipeline, uncomment/comment the lines below as needed.
+  # If additional attributes are added, ensure that the attribute is also added to the pipeline.yml 
+  #   file as well as the company-branding-update.ps1 script.
+  # For more data on configuring each attribute, see:
+  #   https://learn.microsoft.com/en-us/graph/api/resources/organizationalbranding?view=graph-rest-1.0
+########################################################################################################
+  backgroundColor: "#FFFFFF"
+  headerBackgroundColor: "#000000"
+  customPrivacyAndCookiesText: "We value your privacy and eat your cookies."
+  customTermsOfUseText: "Please see the terms of use."
+  usernameHintText: "firstname.lastname@yourcompany.com"
+  signInPageText: "Your Organization Name" 
+  customCannotAccessYourAccountText: "Unable to access your account?"
+  customForgotMyPasswordText: "Forgot your password?"
+  customResetItNowText: "Reset it now"
+  
+  # backgroundImage: "path/to/backgroundImage.png"
+  # bannerLogo: "path/to/bannerLogo.png"
+  # squareLogo: "path/to/squareLogo.png"
+  # squareLogoDark: "path/to/squareLogoDark.png"
+  # contentCustomization: "contentCustomization"
+  # customAccountResetCredentialsUrl: "https://example.com/reset-credentials"
+  # customCSS: "path/to/custom.css"
+  # customPrivacyAndCookiesUrl: "https://example.com/privacy"
+  # customTermsOfUseUrl: "https://example.com/terms"
+  # favicon: "path/to/favicon.ico"
+  # headerLogo: "path/to/headerLogo.png"
+  # loginPageLayoutConfiguration: "loginPageLayoutConfiguration"
+  # loginPageTextVisibilitySettings: "loginPageTextVisibilitySettings"
+  # loginPageText: "Welcome to our service"
+  # footerText: "Footer text"

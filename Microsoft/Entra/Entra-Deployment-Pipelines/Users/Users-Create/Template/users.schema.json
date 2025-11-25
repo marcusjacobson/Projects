@@ -1,0 +1,121 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "http://example.com/example.json",
+	"type": "object",
+	"title": "The Root Schema",
+	"description": "The root schema comprises the entire JSON document.",
+	"required": [
+		"users"
+	],
+	"properties": {
+		"users": {
+			"title": "users",
+			"type": "array",
+			"default": [],
+			"items": {
+				"title": "Items",
+				"type": "object",
+				"required": [
+					"firstName",
+					"lastName",
+					"location"
+				],
+				"properties": {
+					"firstName": {
+						"title": "firstName",
+						"type": "string",
+						"default": "",
+						"examples": [
+							"John"
+						],
+						"pattern": "^.*$"
+					},
+					"lastName": {
+						"title": "lastName",
+						"type": "string",
+						"default": "",
+						"examples": [
+							"Doe"
+						],
+						"pattern": "^.*$"
+					},
+					"location": {
+						"title": "location",
+						"type": "string",
+						"default": "",
+						"examples": [
+							"US"
+						],
+						"pattern": "^[A-Z]{2}"
+					},
+					"company": {
+						"title": "company",
+						"type": "string",
+						"default": "",
+						"examples": [
+							"Your Company"
+						],
+						"pattern": "^.*$"
+					},
+					"department": {
+						"title": "department",
+						"type": "string",
+						"default": "",
+						"examples": [
+							"Information Technology"
+						],
+						"pattern": "^.*$"
+					},
+					"alternateEmail": {
+						"title": "alternateEmail",
+						"type": "string",
+						"default": "",
+						"examples": [
+							"john.doe@contoso.com"
+						],
+						"pattern": "^\\S+@\\S+\\.\\S+$"
+					},
+					"mobilePhone": {
+						"title": "mobilePhone",
+						"type": "string",
+						"default": "",
+						"examples": [
+							"(123) 456-7890"
+						],
+						"pattern": "^.*$"
+					},
+					"jobTitle": {
+						"title": "jobTitle",
+						"type": "string",
+						"default": "",
+						"examples": [
+							"Analyst"
+						],
+						"pattern": "^.*$"
+					},
+					"manager": {
+						"title": "manager",
+						"type": "string",
+						"default": "",
+						"examples": [
+							"manager@yourcompany.com"
+						],
+						"pattern": "^.*$"
+					},
+					"groups": {
+						"title": "groups",
+						"type": "array",
+						"default": [],
+						"examples": [
+							["Group-Name-1", "Group-Name-2"]
+						],
+						"items": {
+							"type": "string",
+							"pattern": "^.*$"
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,80 @@
+variables:
+########################################################################################################
+  # Environment - general. 
+  # REQUIRED: Update the serviceConnection value with your Azure DevOps service connection name.
+########################################################################################################
+  serviceConnection: '<YOUR-SERVICE-CONNECTION-NAME>'
+  scriptPath: "$(Build.SourcesDirectory)/Entra/Users/User-Properties-Edit/Scripts/user-properties-edit.ps1"
+
+
+########################################################################################################
+  # User Properties. 
+  # REQUIRED: Edit the userUPN variable to use the userPrincipalName for the user you want to update.
+  # REQUIRED: Edit the userProperties variable to use the JSON format for the properties you want to update.
+  #   The userProperties variable must maintain the provided JSON format.
+  #   Additional properties can be added to the userProperties JSON object as needed, by copying the
+  #   format of one of the commented attributes at the bottom of the file.
+  #     Values not in this list will be ignored.
+  #   See https://learn.microsoft.com/en-us/graph/api/user-update?view=graph-rest-1.0&tabs=http for more 
+  #   information on how to configure the properties for REST API calls.
+  # User Example:
+  #   {
+  #     "userUPN": "user@yourcompany.com",
+  #     "userProperties": {
+  #       "displayName": "User Name",
+  #       "givenName": "User",
+  #       "surname": "Name"
+  #     }
+  #   } 
+########################################################################################################
+
+  # User to update, in the format of a userPrincipalName: "firstname.lastname@yourcompany.com"
+  userUPN: "user@yourcompany.com"
+
+  # User properties for update
+  userProperties: >
+    {
+      "displayName": "John Doe",
+      "givenName": "John",
+      "surname": "Doe",
+      "jobTitle": "IT Manager",
+      "companyName": "Your Company",
+      "department": "Information Technology",
+      "mobilePhone": "+1 555 555 5555",
+      "accountEnabled": true,
+      "usageLocation": "US"
+    }
+
+  # Add any following lines to the userProperties JSON object to update the property.
+  # aboutMe: "I am a software engineer."
+  # accountEnabled: true
+  # birthday: "1980-01-01"
+  # businessPhones: ["+1 555 555 5555"]
+  # city: "Seattle"
+  # companyName: "Your Company"
+  # country: "US"
+  # department: "Information Technology"
+  # displayName: "John Doe"
+  # employeeId: "12345"
+  # faxNumber: "+1 555 555 5556"
+  # givenName: "John"
+  # hireDate: "2020-01-01"
+  # interests: ["coding", "reading"]
+  # jobTitle: "IT Manager"
+  # mailNickname: "john.doe"
+  # mobilePhone: "+1 555 555 5555"
+  # officeLocation: "Building 1"
+  # passwordPolicies: "DisablePasswordExpiration"
+  # passwordProfile: { "password": "P@ssw0rd", "forceChangePasswordNextSignIn": true }
+  # postalCode: "98101"
+  # preferredLanguage: "en-US"
+  # proxyAddresses: ["SMTP:user@yourcompany.com"]
+  # responsibilities: ["manage IT team", "oversee projects"]
+  # schools: ["University of Washington"]
+  # skills: ["programming", "project management"]
+  # state: "WA"
+  # streetAddress: "1234 Main St"
+  # surname: "Doe"
+  # usageLocation: "US"
+  # userPrincipalName: "user@yourcompany.com"
+  # userType: "Member"

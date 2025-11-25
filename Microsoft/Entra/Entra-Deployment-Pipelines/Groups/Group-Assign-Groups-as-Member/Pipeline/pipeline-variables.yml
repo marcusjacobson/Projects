@@ -1,0 +1,42 @@
+variables:
+########################################################################################################
+  # Environment - general. 
+  # REQUIRED: Update the serviceConnection value to match your Azure DevOps service connection name.
+########################################################################################################
+  serviceConnection: '<YOUR-SERVICE-CONNECTION-NAME>'
+  scriptPath: "$(Build.SourcesDirectory)/Entra/Groups/Group-Assign-Groups-as-Member/Scripts/Group-Assign-Groups-as-Member.ps1"
+
+########################################################################################################
+  # Groups Properties. 
+  # REQUIRED: Update the groupName and groups values below to match your requirements.
+  # Edit the groupName variable to use the display name for the target group you want to add groups as members of.
+  # Edit the groups variable to use the displayName for the groups you want to add as members of the target group.
+  # The groups variable must maintain the provided JSON format.
+  # Groups Example:
+  #   {
+  #     "groups": [
+  #       {
+  #         "displayName": "<CHILD-GROUP-1>"
+  #       },
+  #       {
+  #         "displayName": "<CHILD-GROUP-2>"
+  #       }
+  #     ]
+  #   }
+########################################################################################################
+
+  # Target group to add group(s) as members
+  groupName: "<YOUR-PARENT-GROUP-NAME>"
+
+  # Group(s) to add to members of the target group
+  groups: >
+    {
+      "groups": [  
+        {
+            "displayName": "<YOUR-CHILD-GROUP-1>"
+        },
+        {
+            "displayName": "<YOUR-CHILD-GROUP-2>"
+        }
+      ]
+    }

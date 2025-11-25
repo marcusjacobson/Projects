@@ -1,0 +1,93 @@
+variables:
+########################################################################################################
+  # Environment - general. 
+  # REQUIRED: Update the serviceConnection value to match your Azure DevOps service connection name.
+########################################################################################################
+  serviceConnection: '<YOUR-SERVICE-CONNECTION-NAME>'
+  scriptPath: "$(Build.SourcesDirectory)/Entra/Conditional-Access/Risky-SignIn-Policy-Create/Scripts/risky-signin-policy-create.ps1"
+  schemaFilePath: "$(Build.SourcesDirectory)/Entra/Conditional-Access/Risky-SignIn-Policy-Create/Template/ca-policy.schema.json"
+
+########################################################################################################
+  # Named Conditional Access Properties - Sign-In Risk Properties.
+  # REQUIRED: Update the policyDetails below to match your organization's requirements.
+  # All provided values are validated against the schema file located in the Template folder.
+  # The provided properties are checked for conflicting values within the script. 
+  # Variable values:
+  #   - displayName: The name of the policy to be created.
+  #   - state: The state of the policy. Valid values are "enabled", "disabled" or "enabledForReportingButNotEnforced".
+  #   - conditions:
+  #      - users: The users or groups to be included or excluded from the policy.
+  #           Valid values are "all", "none" or an array of specific UPNs (users) or Display Names (groups), separated by a comma.
+  #      - applications: The applications to be included or excluded from the policy.
+  #           - includeApplications: Valid values are "none", "all", "Office365", and "MicrosoftAdminPortals".
+  #             Additionally, an array of specific application IDs can be used, separated by a comma.
+  #             Note: includeApplications can not be set to "none" or left empty if excludeApplications is set to "none".
+  #           - excludeApplications: Valid values are "none", "Office365", and "MicrosoftAdminPortals".
+  #             Additionally, an array of specific application IDs can be used, separated by a comma.
+  #               A mixed array of application IDs and valid values is supported, but may not contain "all" or "none".
+  #               Note: There is currently not an included method to look up the Conditional Access application IDs by displayName. 
+  #             excludedApplications can be left as an empty array if there are no values to add.
+  #           WARNING: The script called by the pipeline does not contain logic to validate application IDs.
+  #             If an invalid application ID is provided for includeApplications or excludeApplications, the policy creation will fail.   
+  #      - signInRiskLevels: The sign-in risk levels to be included in the policy. 
+  #           Valid values are "high", "medium", "low" or "none". Separate multiple values with a comma.
+  #   grantControls:
+  #      - operator: The operator to be used for the policy. Valid values are "OR" or "AND".
+  #      - builtInControls: The built-in controls to be applied to the policy. 
+  #           Valid values for user risk policy are "block", "mfa", and "passwordChange".
+  #             Separate multiple values with a comma.
+  #             If builtInControls is set to "block", the operator value must be set to "OR", and no other values should be added.
+  #             If using "passwordChange", see the special considerations at the link below.
+  #               https://learn.microsoft.com/en-us/graph/api/resources/conditionalaccessgrantcontrols?view=graph-rest-1.0 
+  #               The script contains logic to validate these special considerations. 
+  #           The provided schema does not allow other builtIn controls (such as "compliantDevice" to be used with user risk policies.        
+  #
+  # Best Practice example:
+  #   {
+  #     "displayName": "ca-user-risk-policy",
+  #     "state": "enabledForReportingButNotEnforced",
+  #     "conditions": {
+  #       "users": {
+  #         "includeUsers": ["all"],
+  #         "excludeUsers": [],
+  #         "includeGroups": [],
+  #         "excludeGroups": ["Break Glass Accounts"]
+  #       },
+  #     "applications": {
+  #       "includeApplications": ["All"],
+  #       "excludeApplications": []
+  #       },
+  #       "signInRiskLevels": ["high", "medium"]
+  #     },
+  #     "grantControls": {
+  #       "operator": "OR",
+  #       "builtInControls": ["block"]
+  #     } 
+  #  }
+########################################################################################################
+
+  # JSON definition for the new sign-in risk policy
+  policyDetails: >
+    
+
+    {
+      "displayName": "ca-signin-risk-policy",
+      "state": "enabledForReportingButNotEnforced",
+      "conditions": {
+        "users": {
+          "includeUsers": ["all"],
+          "excludeUsers": [],
+          "includeGroups": [],
+          "excludeGroups": ["<YOUR-BREAK-GLASS-ACCOUNTS-GROUP>"]
+        },
+      "applications": {
+        "includeApplications": ["all"],
+        "excludeApplications": []
+      },
+        "signInRiskLevels": ["high", "medium"]
+      },
+      "grantControls": {
+        "operator": "OR",
+        "builtInControls": ["block"]
+      } 
+    }

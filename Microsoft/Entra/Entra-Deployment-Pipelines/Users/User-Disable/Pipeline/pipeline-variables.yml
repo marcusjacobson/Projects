@@ -1,0 +1,29 @@
+variables:
+########################################################################################################
+  # Environment - general. 
+  # REQUIRED: Update the serviceConnection value with your Azure DevOps service connection name.
+########################################################################################################
+  serviceConnection: '<YOUR-SERVICE-CONNECTION-NAME>'
+  scriptPath: "$(Build.SourcesDirectory)/Entra/Users/User-Disable/Scripts/disable-user.ps1"
+
+
+########################################################################################################
+  # User Properties. 
+  # REQUIRED: Edit the userUPN variable to use the userPrincipalName for the user you want to disable.
+  # Within the userProperties variable, ensure the accountEnabled attribute is set to false.
+  # userProperties Example:
+  #   {
+  #     "userProperties": {
+  #       "accountEnabled": false
+  #     }
+  #   } 
+########################################################################################################
+
+  # User to update, in the format of a userPrincipalName: "firstname.lastname@yourcompany.com"
+  userPrincipalName: "user@yourcompany.com"
+
+  # User properties for update
+  userProperties: >
+    {
+      "accountEnabled": false
+    }

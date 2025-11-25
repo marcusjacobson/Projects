@@ -1,0 +1,33 @@
+trigger:
+- none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - template: pipeline-variables.yml
+
+# OPTIONAL: If you need to reference additional repositories, update the values below.
+# Otherwise, you can remove this entire resources section.
+resources:
+  repositories:
+    - repository: <YOUR-REPOSITORY-ALIAS>
+      type: git
+      name: '<YOUR-PROJECT-NAME>/<YOUR-REPOSITORY-NAME>'
+
+jobs:
+- job: 'AddUserToGroup'
+  displayName: 'Add user(s) to a group as an owner, using Pipeline variables'
+  steps:
+  - checkout: self
+    persistCredentials: true
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: '$(serviceConnection)'
+      addSpnToEnvironment: true
+      scriptType: pscore
+      scriptPath: '$(scriptPath)'
+      scriptLocation: scriptPath
+      scriptArguments: 
+        -UsersJson '$(users)'
+        -GroupName '$(groupName)'

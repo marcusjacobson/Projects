@@ -132,7 +132,7 @@ As project weeks are completed, the **Completed** checkbox will be marked.
 | 0 | [Project Setup & Admin](./00%20-%20Project%20Setup%20&%20Admin/README.md) | [x] | Environment Validation Script, Dev Setup |
 | 1 | [Defender for Cloud Deployment Foundation](./01%20-%20Defender%20for%20Cloud%20Deployment%20Foundation/README.md) | [x] | MDC Deployment, Unified SecOps Integration |
 | 2 | [AI Foundation & Secure Model Deployment](./02%20-%20AI%20Foundation%20&%20Secure%20Model%20Deployment/README.md) | [🔄] | Azure OpenAI, Cost Mgmt, Prompt Library |
-| 3 | [AI-Driven Security Operations Automation](./03%20-%20AI-Driven%20Security%20Operations%20Automation/README.md) | [🔄] | Logic Apps Automation, Incident Enrichment |
+| 3 | [AI-Driven Security Operations Automation](./03-AI-SecOps/README.md) | [🔄] | Logic Apps Automation, Incident Enrichment |
 | 4 | [Advanced XDR + Security Copilot Integration](./04%20-%20Defender%20XDR%20+%20Security%20Copilot%20Integration/README.md) | [ ] | Security Copilot Plugin, Advanced Hunting |
 | 5 | [Microsoft Purview for Data Governance](./05%20-%20Microsoft%20Purview%20for%20Data%20Governance/README.md) | [ ] | Data Map, Classification, Sensitivity Labels |
 | 6 | [Microsoft Priva and Responsible AI](./06%20-%20Microsoft%20Priva%20and%20Responsible%20AI/README.md) | [ ] | Privacy Risk Mgmt, Subject Rights Requests |

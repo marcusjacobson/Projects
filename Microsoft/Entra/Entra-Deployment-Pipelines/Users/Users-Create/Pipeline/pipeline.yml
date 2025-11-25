@@ -1,0 +1,32 @@
+trigger:
+- none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - template: pipeline-variables.yml
+
+resources:
+  repositories:
+    - repository: <YOUR-REPOSITORY-NAME>
+      type: git
+      name: '<YOUR-PROJECT-NAME>/<YOUR-REPOSITORY-NAME>'
+
+jobs:
+- job: CreateUsers
+  displayName: 'Create users'
+  steps:
+    - checkout: self
+    - task: AzureCLI@2
+      displayName: Create users
+      inputs:
+        azureSubscription: $(serviceConnection)
+        addSpnToEnvironment: true
+        ScriptType: pscore
+        scriptPath: '$(scriptPath)'
+        scriptLocation: scriptPath
+        scriptArguments:
+          -UserJson '$(userProperties)'
+          -UsersSchemaFilePath '$(usersSchemaFilePath)'
+          -TenantFqdn '$(domain)'

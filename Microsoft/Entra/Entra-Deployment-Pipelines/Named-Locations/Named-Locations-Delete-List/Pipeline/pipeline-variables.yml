@@ -1,0 +1,15 @@
+variables:
+########################################################################################################
+  # Environment - general. 
+  # REQUIRED: Update the serviceConnection value to match your Azure DevOps service connection name.
+########################################################################################################
+  serviceConnection: '<YOUR-SERVICE-CONNECTION-NAME>'
+  scriptPath: "$(Build.SourcesDirectory)/Entra/Named-Locations/Named-Locations-Delete-List/Scripts/named-locations-delete-list.ps1"
+
+########################################################################################################
+  # Named Location Properties. 
+  # REQUIRED: Delete the named locations list relating to the displayName provided below.
+########################################################################################################
+
+  # Display name of named locations list to delete
+  displayName: "<YOUR-NAMED-LOCATION-NAME>"

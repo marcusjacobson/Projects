@@ -1,0 +1,65 @@
+variables:
+######################################################################################
+  # Environment - general. 
+  # REQUIRED: Update the serviceConnection value with your Azure DevOps service connection name.
+  # REQUIRED: Update the domain value with your tenant domain (e.g., "yourcompany.com").
+  # See Template/users.schema.json for the approved values for user properties.
+######################################################################################
+  
+  serviceConnection: "<YOUR-SERVICE-CONNECTION-NAME>" 
+  domain: "<YOUR-DOMAIN-NAME>"
+  scriptPath: "$(Build.SourcesDirectory)/Entra/Users/Users-Create/Scripts/Users-Create.ps1"
+  usersSchemaFilePath: "$(Build.SourcesDirectory)/Entra/Users/Users-Create/Template/users.schema.json"
+
+######################################################################################
+  # User Properties. 
+  # REQUIRED: Edit the values as needed, maintaining the JSON format.
+  # Check Template/users.schema.json for the approved values for each of these properties.
+  # 
+  # Required fields per user:
+  #   - firstName: User's first name
+  #   - lastName: User's last name
+  #   - location: Two-letter country code (e.g., "US", "GB", "CA")
+  #
+  # Optional fields per user:
+  #   - company: Company name
+  #   - department: Department name
+  #   - alternateEmail: Recovery/alternate email address
+  #   - mobilePhone: Mobile phone number
+  #   - jobTitle: Job title
+  #   - manager: Manager's userPrincipalName (must exist in Entra)
+  #   - groups: Array of group display names to assign user to (groups must exist in Entra)
+  #
+  # Note: The userPrincipalName will be auto-generated as firstname.lastname@<domain>
+  # Note: A random password will be generated and user will be required to change on first sign-in
+######################################################################################
+
+  userProperties: >
+    {
+      "users": [
+        {
+          "firstName": "John",
+          "lastName": "Doe",
+          "location": "US",
+          "company": "Your Company",
+          "department": "Engineering",
+          "alternateEmail": "john.doe@example.com",
+          "mobilePhone": "5551234567",
+          "jobTitle": "Software Engineer",
+          "manager": "manager@yourcompany.com",
+          "groups": ["Engineering-Team", "All-Employees"]
+        },
+        {
+          "firstName": "Jane",
+          "lastName": "Smith",
+          "location": "US",
+          "company": "Your Company",
+          "department": "Marketing",
+          "alternateEmail": "jane.smith@example.com",
+          "mobilePhone": "5551234567",
+          "jobTitle": "Marketing Manager",
+          "manager": "manager@yourcompany.com",
+          "groups": ["Marketing-Team", "All-Employees"]
+        }
+      ]
+    }

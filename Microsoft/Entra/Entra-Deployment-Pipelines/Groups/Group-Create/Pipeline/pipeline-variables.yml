@@ -1,0 +1,90 @@
+variables:
+########################################################################################################
+  # Environment - general. 
+  # REQUIRED: Update the serviceConnection value to match your Azure DevOps service connection name.
+########################################################################################################
+  serviceConnection: '<YOUR-SERVICE-CONNECTION-NAME>'
+  scriptPath: "$(Build.SourcesDirectory)/Entra/Groups/Group-Create/Scripts/create-groups.ps1"
+
+########################################################################################################
+  # Group & user Properties. 
+  # REQUIRED: Update the groups variable with your group definitions.
+  # Edit the groups variable update the values for the new group(s).
+  # The groups variable must maintain the provided JSON format.
+  # See the link below for more information on updating group properties using the REST API:
+  #   https://learn.microsoft.com/en-us/graph/api/group-post-groups?view=graph-rest-1.0&tabs=http
+  # 
+  # If adding members or owners to a group, add the property to the group definition as shown in the example below:
+  # "owners": [
+  #      {
+  #          "userPrincipalName": "user@yourcompany.com"
+  #      }          
+  #  ],          
+  #  "membersUsers": [
+  #      {
+  #          "userPrincipalName": "user@yourcompany.com"
+  #      }
+  #  ],
+  #  "membersGroups": [
+  #      {
+  #          "displayName": "<GROUP-NAME>"
+  #      }
+  #  ]
+  # 
+  # Dynamic Group Example:
+  #   {
+  #     "groups": [
+  #       {
+  #         "displayName": "Sample Group 1",
+  #         "mailNickname": "sample-group-1",
+  #         "groupDescription": "This is a sample group for demonstration purposes.",
+  #         "securityEnabled": true,
+  #         "mailEnabled": false,
+  #         "isAssignableToRole": false,
+  #         "role": "Sample Role 1",
+  #         "groupTypes": ["DynamicMembership"],
+  #         "dynamicMembershipRule": "(user.department -eq \"Sample Department\")",
+  #         "owners": [],
+  #         "members": []
+  #       }
+  #     ]
+  #   }
+  #
+  # Role-Assignable Group Example:
+  # { 
+  #   "groups": [
+  #     {
+  #       "displayName": "Global Administrators",
+  #       "mailNickname": "global-administrators",
+  #       "groupDescription": "This is a test group for global administrators.",
+  #       "securityEnabled": true,
+  #       "mailEnabled": false,
+  #       "isAssignableToRole": true,
+  #       "role": "Global Administrator",
+  #       "groupTypes": ["Unified"]
+  #     }
+  #   ]
+  # }
+########################################################################################################  
+
+# Group definitions including member and owner assignments
+
+  groups: >
+      {
+        "groups": [
+          {
+            "displayName": "<YOUR-GROUP-NAME-1>",
+            "mailNickname": "<your-group-nickname-1>",
+            "groupDescription": "Description of your group.",
+            "securityEnabled": true,
+            "mailEnabled": false,
+            "isAssignableToRole": false,
+            "role": "",
+            "groupTypes": [],
+            "dynamicMembershipRule": "",
+            "owners": [],
+            "membersUsers": [],
+            "membersGroups": []
+          }
+        ]
+      }

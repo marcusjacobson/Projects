@@ -1,0 +1,54 @@
+variables:
+########################################################################################################
+  # Environment - general. 
+  # REQUIRED: Update the serviceConnection value to match your Azure DevOps service connection name.
+########################################################################################################
+  serviceConnection: '<YOUR-SERVICE-CONNECTION-NAME>' 
+  scriptPath: "$(Build.SourcesDirectory)/Entra/Named-Locations/Named-Locations-New-List-IP-Ranges/Scripts/named-locations-new-list-ip-ranges.ps1"
+
+########################################################################################################
+  # Named Location Properties. 
+  # REQUIRED: Edit the displayName variable to provide the display name for the new named locations list.
+  # REQUIRED: Edit the isTrusted variable to determine if this list of IPs should be trusted by Azure.
+  #   Users signing in from these IP ranges may be subject to less stringent security requirements, such as bypassing MFA.
+  #   This flag should be set to false in most cases.
+  # REQUIRED: Edit the ipRanges variable to provide the IP addresses to add to the named locations list.
+  #   The ipRanges variable must maintain the provided JSON format.
+  #   The ipRanges variable must include both @odata.type and cidrAddress properties.
+  #   The @odata.type property must be set to either #microsoft.graph.iPv4CidrRange or #microsoft.graph.iPv6CidrRange.
+  # ipRanges Example:
+  #   {
+  #     "ipRanges": [
+  #       {
+  #         "@odata.type": "#microsoft.graph.iPv4CidrRange",
+  #         "cidrAddress": "192.168.0.0/24"
+  #       },
+  #       {
+  #         "@odata.type": "#microsoft.graph.iPv6CidrRange",
+  #         "cidrAddress": "fd00::/8"
+  #       }
+  #     ]
+  #   }
+########################################################################################################
+
+
+  # Display name of the new named locations list
+  displayName: "<YOUR-NAMED-LOCATION-NAME>"
+
+  # Whether the IP list is considered as trusted locations by Azure.
+  isTrusted: false
+
+  # IP ranges to add to the named locations list
+  ipRanges: >
+    {
+      "ipRanges": [
+        {
+          "@odata.type": "#microsoft.graph.iPv4CidrRange",
+          "cidrAddress": "192.168.0.0/24"
+        },
+        {
+          "@odata.type": "#microsoft.graph.iPv6CidrRange",
+          "cidrAddress": "fd00::/8"
+        }
+      ]
+    }

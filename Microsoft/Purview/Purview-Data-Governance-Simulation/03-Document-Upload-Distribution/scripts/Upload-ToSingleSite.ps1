@@ -3,7 +3,7 @@
     Uploads documents from a local folder to a single SharePoint site.
 
 .DESCRIPTION
-    This script replicates the proven upload pattern from Purview-Classification-Lifecycle-Labs.
+    This script replicates the proven upload pattern.
     It connects to a SharePoint site and uploads all documents from a specified local folder.
     
     Key features:

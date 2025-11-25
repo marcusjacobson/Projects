@@ -41,7 +41,6 @@ This week focuses on implementing advanced AI-driven security automation through
 - [ ] **[Threat Scenario Simulation](./03.03-Threat-Scenario-Simulation/README.md)** - Execute comprehensive threat scenarios with AI analysis leveraging validated Logic App workflows.
 - [ ] **[AI Workflow Optimization](./03.04-AI-Workflow-Optimization/README.md)** - Fine-tune Logic Apps performance, cost efficiency, and response accuracy based on testing and simulation results.
 - [ ] **[AI Security Operations Automation Validation](./03.05-AI-Security-Operations-Automation-Validation/README.md)** - Comprehensive enterprise-grade testing and validation of complete security automation capabilities.
-- [ ] **[Week 3 to Week 4 Bridge](./03.06-Week-3-to-Week-4-Bridge/README.md)** - Integration readiness validation and transition preparation from AI automation to advanced XDR integration workflows.
 
 ## 📂 Project Files
 
@@ -87,7 +86,6 @@ Navigate to the comprehensive module documentation for step-by-step deployment:
 - Execute comprehensive integration testing with baseline response establishment
 - Perform threat scenario simulations with AI analysis validation
 - Document enterprise automation patterns and operational excellence practices
-- Prepare infrastructure foundation for Week 4 advanced XDR + Security Copilot integration
 
 ## 🔄 Week 2 Integration Foundation
 
@@ -155,7 +153,6 @@ az storage account show --name "st[environmentName]ai" --resource-group "rg-[env
 ## 🔗 Related Resources
 
 - [Week 2: AI Foundation & Secure Model Deployment](../02-AI-Foundation-and-Secure-Model-Deployment/README.md)
-- [Week 4: Advanced XDR + Security Copilot Integration](../04-Defender-XDR-and-Security-Copilot-Integration/README.md)
 - [Project Root](../README.md)
 
 ---

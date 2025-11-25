@@ -16,7 +16,7 @@ This directory contains complex, cross-domain projects that demonstrate the inte
 
 ### [Azure AI Security Skills Challenge](./Azure-Ai-Security-Skills-Challenge/README.md)
 
-**A comprehensive 10-week journey to master secure AI deployment, Microsoft Security tools, and Copilot integration.**
+**A comprehensive 3-week journey to master secure AI deployment, Microsoft Security tools, and Copilot integration.**
 
 This project aligns with Microsoft's AI Transformation strategy and provides a hands-on roadmap for building enterprise-grade AI security skills. It covers the full spectrum of AI security, from foundational infrastructure to advanced generative AI governance.
 

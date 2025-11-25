@@ -457,7 +457,7 @@ International Banking...      Low       IBAN formats
    - `"Enabled": true` → Include in validation and DLP policy testing
    - `"Enabled": false` → Exclude from validation (documents may still contain this data type)
 
-> **📚 Note on Custom SIT Creation**: This project does **NOT** cover creating new custom SITs from scratch. It assumes you're using Microsoft's built-in SITs or pre-existing custom SITs already created in your tenant. To learn how to create custom SITs, see the separate [Purview-Classification-Lifecycle-Labs](../../Purview-Classification-Lifecycle-Labs/) project.
+> **📚 Note on Custom SIT Creation**: This project does **NOT** cover creating new custom SITs from scratch. It assumes you're using Microsoft's built-in SITs or pre-existing custom SITs already created in your tenant.
 
 **Reference**: [Microsoft Purview Sensitive Information Type Definitions](https://learn.microsoft.com/en-us/purview/sensitive-information-type-entity-definitions)
 

@@ -341,7 +341,7 @@ The following capabilities require **custom development**, **advanced configurat
 
 | Capability | Complexity | Why Not Covered |
 |------------|------------|-----------------|
-| **Custom SITs (Regex-based)** | INTERMEDIATE | Project uses built-in SITs only; for custom SIT creation see [Classification-Lifecycle-Labs](../Purview-Classification-Lifecycle-Labs/) |
+| **Custom SITs (Regex-based)** | INTERMEDIATE | Project uses built-in SITs only; custom SIT creation requires advanced configuration |
 | **Exact Data Match (EDM) SITs** | ADVANCED | Complex EDM schema design beyond simulation scope |
 | **SIT Confidence Tuning** | INTERMEDIATE | Uses default confidence levels for built-in SITs |
 | **Keyword Dictionaries** | INTERMEDIATE | Custom dictionaries not required for built-in SIT simulation |
@@ -359,7 +359,7 @@ The following capabilities require **custom development**, **advanced configurat
 
 | Capability | Complexity | Why Not Covered |
 |------------|------------|-----------------|
-| **Retention Labels** | INTERMEDIATE | Classification and DLP focus; for retention see [Classification-Lifecycle-Labs](../Purview-Classification-Lifecycle-Labs/) |
+| **Retention Labels** | INTERMEDIATE | Classification and DLP focus; retention lifecycle management not simulation objective |
 | **Auto-Apply Retention Policies** | INTERMEDIATE | Retention lifecycle management not simulation objective |
 | **Disposition Reviews** | ADVANCED | Manual approval workflows beyond simulation scope |
 | **File Plan Descriptors** | INTERMEDIATE | Advanced records metadata not covered |
@@ -400,7 +400,7 @@ The following capabilities require **custom development**, **advanced configurat
 
 **Not Suitable For**: Custom SIT development, DLP policy implementation, advanced retention lifecycle management, or production compliance configurations requiring custom pattern development.
 
-**Complementary Projects**: For custom SIT creation and retention labels, see [Purview-Classification-Lifecycle-Labs](../Purview-Classification-Lifecycle-Labs/). For hybrid on-premises/cloud scenarios, see [Purview-Skills-Ramp-OnPrem-and-Cloud](../Purview-Skills-Ramp-OnPrem-and-Cloud/).
+**Complementary Projects**: For hybrid on-premises/cloud scenarios, see [Purview-Skills-Ramp-OnPrem-and-Cloud](../Purview-Skills-Ramp-OnPrem-and-Cloud/).
 
 ---
 
@@ -433,12 +433,11 @@ This project complements official Microsoft Learn paths:
 
 **Beginner → Intermediate**: Start with this project's **Small scale** simulation to understand core Purview workflows, then explore:
 
-- **[Purview-Classification-Lifecycle-Labs](../Purview-Classification-Lifecycle-Labs/)** for custom SIT creation and retention labels
 - **[Purview-Skills-Ramp-OnPrem-and-Cloud](../Purview-Skills-Ramp-OnPrem-and-Cloud/)** for on-premises scanner deployment
 
 **Intermediate → Advanced**: Complete this project's **Large scale** simulation, then advance to:
 
-- Custom SIT development (regex patterns, EDM) via Classification-Lifecycle-Labs
+- Custom SIT development (regex patterns, EDM)
 - Hybrid scanning scenarios (on-prem + cloud) via Skills-Ramp project
 - Production automation with PowerShell at scale
 
@@ -655,7 +654,7 @@ Eliminates complex service principal configuration.
 **Personal**: SSN, Passport, Driver's License, ITIN  
 **Financial**: Credit Cards, Bank Accounts, ABA Routing Numbers
 
-Built-in SITs are immediately available in any M365 E5 tenant. For custom SIT creation, see [Purview-Classification-Lifecycle-Labs](../Purview-Classification-Lifecycle-Labs/).
+Built-in SITs are immediately available in any M365 E5 tenant.
 
 ---
 
@@ -665,9 +664,9 @@ Built-in SITs are immediately available in any M365 E5 tenant. For custom SIT cr
 
 **PowerShell Modules**: [PnP PowerShell](https://pnp.github.io/powershell/) • [Exchange Online Management](https://learn.microsoft.com/en-us/powershell/exchange/)
 
-**Related Projects**: [Classification-Lifecycle-Labs](../Purview-Classification-Lifecycle-Labs/) (custom SITs, retention labels) • [Skills-Ramp-OnPrem-and-Cloud](../Purview-Skills-Ramp-OnPrem-and-Cloud/) (hybrid scanning)
+**Related Projects**: [Skills-Ramp-OnPrem-and-Cloud](../Purview-Skills-Ramp-OnPrem-and-Cloud/) (hybrid scanning)
 
-**Repository Style-Guides**: [PowerShell](../../Style-Guides/powershell-style-guide.md) • [Markdown](../../Style-Guides/markdown-style-guide.md) • [Parameters](../../Style-Guides/parameters-file-style-guide.md)
+**Repository Style-Guides**: [PowerShell](../../../Repository-Management/Style-Guides/powershell-style-guide.md) • [Markdown](../../../Repository-Management/Style-Guides/markdown-style-guide.md) • [Parameters](../../../Repository-Management/Style-Guides/parameters-file-style-guide.md)
 
 **Advanced Scenarios**: [Future Enhancements & Integrations](FUTURE-ENHANCEMENTS.md) - Enterprise integrations (SIEM, ITSM, AI/ML), operational automation, compliance extensions, and advanced analytics beyond core simulation capabilities
 

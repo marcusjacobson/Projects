@@ -4,7 +4,7 @@
 
 .DESCRIPTION
     Runs the single-site upload script multiple times, once per site, using the
-    proven pattern from Purview-Classification-Lifecycle-Labs.
+    proven pattern.
     
 .EXAMPLE
     .\Upload-AllDocuments.ps1

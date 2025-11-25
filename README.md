@@ -19,9 +19,9 @@ This repository serves as a professional portfolio showcasing a growing expertis
 
 **Key Outcomes Demonstrated:**
 
-* ✅ **Deployed Enterprise AI Security:** Secured Azure OpenAI workloads with Defender for Cloud and Purview.
+* ✅ **Deployed Enterprise AI Security:** Secured Azure OpenAI workloads with Defender for Cloud.
 * ✅ **Automated SOC Operations:** Built a cloud-native SIEM with Microsoft Sentinel and Logic App automation.
-* ✅ **Enforced Data Governance:** Implemented comprehensive data classification and lifecycle management with Microsoft Purview.
+* ✅ **Enforced Data Governance:** Implemented comprehensive data governance simulation with Microsoft Purview.
 * ✅ **Streamlined DevSecOps:** Established automated synchronization between Azure DevOps and GitHub for hybrid workflows.
 
 The projects within this portfolio reflect a rigorous approach to:
@@ -104,9 +104,9 @@ Across all projects, this portfolio highlights proficiency in the following key 
 
 All projects in this portfolio adhere to strict engineering and documentation standards to ensure quality and maintainability:
 
-* **[Markdown Style Guide](./Style-Guides/markdown-style-guide.md)**: Ensures professional, consistent, and accessible documentation.
-* **[PowerShell Style Guide](./Style-Guides/powershell-style-guide.md)**: Enforces industry-standard scripting practices and error handling.
-* **[Parameters File Style Guide](./Style-Guides/parameters-file-style-guide.md)**: Standardizes configuration management for IaC deployments.
+* **[Markdown Style Guide](./Repository-Management/Style-Guides/markdown-style-guide.md)**: Ensures professional, consistent, and accessible documentation.
+* **[PowerShell Style Guide](./Repository-Management/Style-Guides/powershell-style-guide.md)**: Enforces industry-standard scripting practices and error handling.
+* **[Parameters File Style Guide](./Repository-Management/Style-Guides/parameters-file-style-guide.md)**: Standardizes configuration management for IaC deployments.
 
 ---
 

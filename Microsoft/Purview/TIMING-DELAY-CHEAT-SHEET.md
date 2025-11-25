@@ -325,7 +325,6 @@
 
 - **[Data-Governance-Simulation Project](./Purview-Data-Governance-Simulation/)** - Discovery method comparison
 - **[Skills-Ramp Project](./Purview-Skills-Ramp-OnPrem-and-Cloud/)** - Hybrid scanning workflows
-- **[Classification-Lifecycle Project](./Purview-Classification-Lifecycle-Labs/)** - Classification and retention
 - **[Main Purview README](./README.md)** - Complete project portfolio overview
 
 ---
@@ -423,4 +422,4 @@ Immediate (regex patterns)
 
 This comprehensive timing and delay cheat sheet was created with the assistance of **GitHub Copilot** powered by advanced AI language models. The content was generated, structured, and refined through iterative collaboration between human expertise and AI assistance within **Visual Studio Code**, incorporating hands-on lab validation findings from three Purview projects and cross-referenced with official Microsoft Learn documentation.
 
-*AI tools were used to enhance productivity and ensure comprehensive coverage of Purview timing expectations while maintaining technical accuracy and reflecting real-world lab validation results across Data-Governance-Simulation, Skills-Ramp, and Classification-Lifecycle projects.*
+*AI tools were used to enhance productivity and ensure comprehensive coverage of Purview timing expectations while maintaining technical accuracy and reflecting real-world lab validation results across Data-Governance-Simulation and Skills-Ramp projects.*

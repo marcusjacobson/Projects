@@ -52,8 +52,8 @@ git pull github $5 --rebase || {
 }
 
 # Verify if there are still conflicts and exit if conflicts are not resolved
-if git diff --name-only --diff-filter=U | grep -q 'Github-Sync/Pipeline/github-sync.yml'; then
-  echo 'Conflict resolution failed for Github-Sync/Pipeline/github-sync.yml'
+if git diff --name-only --diff-filter=U | grep -q 'Repository-Management/Github-Sync/Pipeline/github-sync.yml'; then
+  echo 'Conflict resolution failed for Repository-Management/Github-Sync/Pipeline/github-sync.yml'
   exit 1
 fi
 

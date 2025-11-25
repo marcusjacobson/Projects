@@ -1,12 +1,14 @@
 # GitHub Sync
 
+**Keywords:** Azure DevOps, GitHub, CI/CD, Pipelines, Git Automation, Version Control, Synchronization, Bash Scripting, DevOps Engineering.
+
 **Author:** Marcus Jacobson  
 **Version:** 1.0.0  
 **Last Updated:** February 15, 2025
 
 This project performs a one-way sync from Azure DevOps to GitHub using a pipeline and a script. It will only write new files and changes to existing files.
 
-<span style="color:red">**Important** Files that have been moved will appear in both the original and new location, since the deletion from the original location will not take place since files that have been deleted will not sync. Reconciliation of deleted files will need to occur manually within the GitHub repository. </span>
+> **⚠️ Important**: Files that have been moved will appear in both the original and new location, since the deletion from the original location will not take place since files that have been deleted will not sync. Reconciliation of deleted files will need to occur manually within the GitHub repository.
 
 ## Prerequisites
 
@@ -93,7 +95,7 @@ Key steps in the script:
 
 ### Adding Files to Azure DevOps
 
-#### Method 1: If you already have the repo cloned locally
+#### Method 1: Existing Local Clone
 
 1. Open your local repository in VSCode.
 2. Copy the **Github-Sync** folder and it's contents to the appropriate directory in your local repository.
@@ -103,7 +105,7 @@ Key steps in the script:
 6. Enter a commit message, such as "Add GitHub Sync pipeline and script", and click the **✔** icon to commit the changes.
 7. Click the **...** icon in the Source Control view and select **Push** to push the changes to Azure DevOps.
 
-#### Method 2: Upload the entirety of the GitHub-Sync folder within the Azure DevOps site
+#### Method 2: Azure DevOps Portal Upload
 
 1. Go to your Azure DevOps project.
 2. Navigate to **Repos** > **Files**.
@@ -128,4 +130,5 @@ Key steps in the script:
 The script is automatically called as part of the pipeline. To manually run the script, use the following command and update the variable references:
 
 ```sh
-./sync-to-github.sh <gitUserEmail> <gitUserName> <github_token> <gitHubRepo> <gitHubBranch> <BuildSourceBranchName>```
+./sync-to-github.sh <gitUserEmail> <gitUserName> <github_token> <gitHubRepo> <gitHubBranch> <BuildSourceBranchName>
+```

@@ -2,11 +2,13 @@
 
 **A comprehensive 10-week journey to master secure AI deployment, Microsoft Security tools, and Copilot integration.**
 
+**Keywords:** Azure OpenAI, AI Security, Defender for Cloud, Security Copilot, Microsoft Purview, Prompt Engineering, LLM Security, DevSecOps, Governance, Responsible AI.
+
 This project aligns with Microsoft's AI Transformation strategy and provides a hands-on roadmap for building enterprise-grade AI security skills. It covers the full spectrum of AI security, from foundational infrastructure to advanced generative AI governance.
 
 ## 🎯 Strategic Value
 
-The **Azure AI Security Skills Challenge** is designed to bridge the gap between traditional security operations and the emerging world of AI engineering. By completing this roadmap, you will build:
+**The Azure AI Security Skills Challenge is designed to bridge the gap between traditional security operations and the emerging world of AI engineering.** By completing this roadmap, you will build:
 
 - **Enterprise-Ready AI Security**: Practical experience deploying and securing Azure OpenAI, Copilot, and custom AI models.
 - **Unified Security Operations**: Deep integration of Defender XDR, Sentinel, and Security Copilot for modern SOC capabilities.
@@ -45,7 +47,7 @@ This project builds a complete **AI Security Ecosystem** integrating core Micros
 
 ---
 
-## 🌍 **Important: Regional Deployment Guidance**
+## 🌍 Regional Deployment Guidance
 
 **⚠️ CRITICAL**: This project deploys infrastructure to **East US** region for complete AI security coverage and curriculum compliance.
 
@@ -59,19 +61,6 @@ This project builds a complete **AI Security Ecosystem** integrating core Micros
 **Regional Impact**: Deploying in regions with limited modern security operations features would create a curriculum compliance gap and prevent completion of required Week 2 deliverables.
 
 📖 **Learn More**: [Microsoft Defender XDR unified security operations platform](https://learn.microsoft.com/en-us/defender-xdr/)
-
----
-
-## 🎓 Skills & Certification Alignment
-
-This roadmap is mapped to key Microsoft certifications and job roles, ensuring that your practical work translates directly to professional growth.
-
-| Phase | Weeks | Focus Area | Aligned Certifications | Key Skills |
-|-------|-------|------------|------------------------|------------|
-| **1** | 00-01 | **Security Foundations** | **AZ-500**, **SC-200** | Azure Security, Defender for Cloud, IaC (Bicep/PowerShell) |
-| **2** | 02-03 | **AI Engineering & Ops** | **AI-102**, **AZ-400** | Azure OpenAI, Prompt Engineering, Logic Apps Automation, Cost Mgmt |
-| **3** | 04-06 | **Advanced SecOps & Gov** | **SC-100**, **DP-600** | Security Copilot, Purview, Priva, Data Governance |
-| **4** | 07-10 | **Applied AI & Delivery** | **AI-102**, **PL-200** | Fabric, AI Foundry, Copilot Studio, Secure Delivery |
 
 ---
 
@@ -105,11 +94,11 @@ This roadmap has been optimized for working professionals with a logical progres
 
 ## ⚡ **Key Benefits of This Structure**
 
-- **Realistic Time Investment**: Each week designed for 8-12 hours total (manageable with full-time work)
-- **Logical Learning Flow**: Each phase builds methodically on previous knowledge
-- **Balanced Workload**: Complex deployment work separated from AI integration
-- **Practical Outcomes**: Every week delivers deployable solutions and reusable assets
-- **Enterprise Ready**: Progresses from foundational skills to customer-facing delivery capability
+- **Realistic Time Investment**: Each week is designed for 8-12 hours total (manageable with full-time work).
+- **Logical Learning Flow**: Each phase builds methodically on previous knowledge.
+- **Balanced Workload**: Complex deployment work is separated from AI integration.
+- **Practical Outcomes**: Every week delivers deployable solutions and reusable assets.
+- **Enterprise Ready**: Progresses from foundational skills to customer-facing delivery capability.
 
 ---
 
@@ -133,13 +122,13 @@ As project weeks are completed, the **Completed** checkbox will be marked.
 | 1 | [Defender for Cloud Deployment Foundation](./01-Defender-for-Cloud-Deployment-Foundation/README.md) | [x] | MDC Deployment, Unified SecOps Integration |
 | 2 | [AI Foundation & Secure Model Deployment](./02-AI-Foundation-and-Secure-Model-Deployment/README.md) | [🔄] | Azure OpenAI, Cost Mgmt, Prompt Library |
 | 3 | [AI-Driven Security Operations Automation](./03-AI-SecOps/README.md) | [🔄] | Logic Apps Automation, Incident Enrichment |
-| 4 | [Advanced XDR + Security Copilot Integration](./04-Defender-XDR-and-Security-Copilot-Integration/README.md) | [ ] | Security Copilot Plugin, Advanced Hunting |
-| 5 | [Microsoft Purview for Data Governance](./05-Microsoft-Purview-for-Data-Governance/README.md) | [ ] | Data Map, Classification, Sensitivity Labels |
-| 6 | [Microsoft Priva and Responsible AI](./06-Microsoft-Priva-and-Responsible-AI/README.md) | [ ] | Privacy Risk Mgmt, Subject Rights Requests |
-| 7 | [Microsoft Fabric for Secure Analytics](./07-Microsoft-Fabric-for-Secure-Analytics/README.md) | [ ] | Fabric Capacity, OneLake Security |
-| 8 | [Azure AI Foundry & Secure AI Workloads](./08-Azure-AI-Foundry-and-Secure-AI-Workloads/README.md) | [ ] | AI Studio, Content Safety, Model Catalog |
-| 9 | [Copilot Studio for Security Agents](./09-Copilot-Studio-for-Security-Agents/README.md) | [ ] | Custom Copilots, Plugin Development |
-| 10 | [Secure Copilot Deployment & Delivery Practices](./10-Secure-Copilot-Deployment-and-Delivery-Practices/README.md) | [ ] | Production Readiness, Adoption Framework |
+| 4 | [Advanced XDR + Security Copilot Integration](./04-Defender-XDR-and-Security-Copilot-Integration-COMING-SOON/README.md) | [ ] | Security Copilot Plugin, Advanced Hunting |
+| 5 | [Microsoft Purview for Data Governance](./05-Microsoft-Purview-for-Data-Governance-COMING-SOON/README.md) | [ ] | Data Map, Classification, Sensitivity Labels |
+| 6 | [Microsoft Priva and Responsible AI](./06-Microsoft-Priva-and-Responsible-AI-COMING-SOON/README.md) | [ ] | Privacy Risk Mgmt, Subject Rights Requests |
+| 7 | [Microsoft Fabric for Secure Analytics](./07-Microsoft-Fabric-for-Secure-Analytics-COMING-SOON/README.md) | [ ] | Fabric Capacity, OneLake Security |
+| 8 | [Azure AI Foundry & Secure AI Workloads](./08-Azure-AI-Foundry-and-Secure-AI-Workloads-COMING-SOON/README.md) | [ ] | AI Studio, Content Safety, Model Catalog |
+| 9 | [Copilot Studio for Security Agents](./09-Copilot-Studio-for-Security-Agents-COMING-SOON/README.md) | [ ] | Custom Copilots, Plugin Development |
+| 10 | [Secure Copilot Deployment & Delivery Practices](./10-Secure-Copilot-Deployment-and-Delivery-Practices-COMING-SOON/README.md) | [ ] | Production Readiness, Adoption Framework |
 
 ## 📊 Comprehensive AI Security Capability Coverage
 

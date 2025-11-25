@@ -1,5 +1,7 @@
 # Microsoft Purview Learning Labs
 
+**Keywords:** Microsoft Purview, Data Governance, Information Protection, Data Loss Prevention (DLP), eDiscovery, Compliance, Data Classification, Sensitivity Labels, Retention Policies, PowerShell Automation.
+
 ## 🎯 Overview
 
 This directory contains **three comprehensive hands-on lab projects** designed to build practical Microsoft Purview expertise across different capability areas. Together, these projects provide **70-80% coverage** of the Microsoft Purview capability landscape with deep, hands-on implementation experience.
@@ -67,7 +69,7 @@ This directory contains **three comprehensive hands-on lab projects** designed t
 
 ---
 
-### [Purview Classification & Lifecycle Labs](./Purview-Classification-Lifecycle-Labs/)
+### [Purview Classification & Lifecycle Labs](./Purview-Classification-Lifecycle-Labs-UNDER-CONSTRUCTION/)
 
 **Focus**: Deep classification expertise with custom SITs, EDM, and lifecycle automation
 
@@ -396,7 +398,7 @@ The following capabilities require **enterprise-scale deployments**, **advanced 
 
 ---
 
- Choose Data-Governance-Simulation When You Need
+### Choose Data-Governance-Simulation When You Need
 
 - ✅ **Discovery method comparison** (immediate, 24hr, API options)
 - ✅ **Modern eDiscovery portal** (purview.microsoft.com, Cases preview)
@@ -438,7 +440,7 @@ The following capabilities require **enterprise-scale deployments**, **advanced 
 → Start with [Purview Skills Ramp](./Purview-Skills-Ramp-OnPrem-and-Cloud/)
 
 **For Classification & Lifecycle Expertise**:  
-→ Start with [Purview Classification & Lifecycle Labs](./Purview-Classification-Lifecycle-Labs/)
+→ Start with [Purview Classification & Lifecycle Labs](./Purview-Classification-Lifecycle-Labs-UNDER-CONSTRUCTION/)
 
 **For Complete Mastery**:  
 → Complete Data-Governance-Simulation Labs 00-05, then Skills-Ramp Sections 1-2, then Classification-Lifecycle Labs 0-6, then Skills-Ramp Section 3 + Supplemental Labs

@@ -1,10 +1,12 @@
 # Microsoft Sentinel Learning Labs
 
+**Keywords:** Microsoft Sentinel, SIEM, SOAR, KQL, Threat Hunting, Incident Response, Logic Apps, Automation, DevSecOps, Infrastructure as Code (IaC), Bicep, Azure DevOps.
+
 ## 🎯 Overview
 
 This directory contains **comprehensive hands-on lab projects** designed to build practical Microsoft Sentinel expertise focused on **Cloud-Native SIEM & SOAR** implementation. The portfolio demonstrates enterprise-grade security operations capabilities, from Infrastructure-as-Code deployment to advanced threat hunting and automation.
 
-**Combined Learning Value**: 10-15 hours of hands-on lab work covering DevOps-driven deployment, KQL analytics, Logic App automation, and Unified Security Operations integration.
+**Combined Learning Value**: 8-12 hours of hands-on lab work covering DevOps-driven deployment, KQL analytics, Logic App automation, and Unified Security Operations integration.
 
 ---
 

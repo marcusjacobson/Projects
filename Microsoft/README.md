@@ -1,8 +1,16 @@
 # Microsoft Cloud Technology Portfolio
 
+**Keywords:** Azure, Microsoft 365, Entra ID, Security, Governance, Compliance, AI, Sentinel, Purview, Defender, Intune, Architecture, Implementation.
+
 ## 🎯 Overview
 
 This repository serves as a central hub for **Microsoft Cloud technology projects**, demonstrating enterprise-grade implementation skills across **Azure, Microsoft 365, and Microsoft Entra**.
+
+**Problem Statement:**
+Organizations often struggle to integrate disparate Microsoft cloud services into a cohesive, secure, and governed ecosystem. Fragmented implementations lead to security gaps, compliance risks, and inefficient operations.
+
+**Solution:**
+This portfolio demonstrates a unified approach to the Microsoft Cloud, showcasing how to architect and deploy integrated solutions that bridge Infrastructure, Security, Identity, and Data Governance. It highlights the ability to deliver secure, compliant, and optimized environments that drive business value.
 
 The portfolio is organized by technology domain, with each section containing hands-on projects, infrastructure-as-code templates, and operational documentation designed to showcase real-world architectural patterns.
 

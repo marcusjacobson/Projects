@@ -26,9 +26,9 @@ This repository contains various technology projects including Azure AI Security
 
 This repository maintains centralized style guides that MUST be followed for all content:
 
-- **[Markdown Style Guide](../Style Guides/markdown-style-guide.md)** - Comprehensive formatting, punctuation, and tone standards
-- **[PowerShell Style Guide](../Style Guides/powershell-style-guide.md)** - Visual and organizational patterns for PowerShell scripts
-- **[Parameters File Style Guide](../Style Guides/parameters-file-style-guide.md)** - Configuration standards for Azure parameters files
+- **[Markdown Style Guide](../Style-Guides/markdown-style-guide.md)** - Comprehensive formatting, punctuation, and tone standards
+- **[PowerShell Style Guide](../Style-Guides/powershell-style-guide.md)** - Visual and organizational patterns for PowerShell scripts
+- **[Parameters File Style Guide](../Style-Guides/parameters-file-style-guide.md)** - Configuration standards for Azure parameters files
 
 ### 1.2 Systematic Review Requirements
 
@@ -144,7 +144,7 @@ Portal interfaces, admin centers, and product UIs change frequently. **NEVER rel
 
 ### 3.1 PowerShell Style Guide Compliance
 
-All PowerShell content must follow the [PowerShell Style Guide](../Style Guides/powershell-style-guide.md) requirements:
+All PowerShell content must follow the [PowerShell Style Guide](../Style-Guides/powershell-style-guide.md) requirements:
 
 **Script Classification:**
 
@@ -383,7 +383,7 @@ Navigate to your newly created resource group.
 
 **Parameters File Standards (main.parameters.json) - Command-Line Scripts Only:**
 
-All parameters file configuration must follow the [Parameters File Style Guide](../Style Guides/parameters-file-style-guide.md) requirements:
+All parameters file configuration must follow the [Parameters File Style Guide](../Style-Guides/parameters-file-style-guide.md) requirements:
 
 **Consistent Parameters File Usage:**
 
@@ -552,7 +552,7 @@ All parameters file configuration must follow the [Parameters File Style Guide](
 
 **Key Repository Areas:**
 
-- `Style Guides/` - Central style guide location (reference these first)
+- `Style-Guides/` - Central style guide location (reference these first)
 - `Microsoft/Azure Ai Security Skills Challenge/` - AI security learning path
 - `Microsoft/Sentinel/` - Microsoft Sentinel implementations
 - `Github-Sync/` - Repository synchronization workflows

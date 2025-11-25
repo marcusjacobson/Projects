@@ -77,7 +77,7 @@ This setup week prepares the environment for:
 - Baseline monitoring and logging
 - Resource group and networking prerequisites
 
-**Week 02**: [AI Foundation & Secure Model Deployment](../02-AI-Foundation-&-Secure-Model-Deployment/README.md)  
+**Week 02**: [AI Foundation & Secure Model Deployment](../02-AI-Foundation-and-Secure-Model-Deployment/README.md)  
 
 - Azure OpenAI service prerequisites
 - Storage account foundations for AI workloads

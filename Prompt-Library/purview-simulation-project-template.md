@@ -118,10 +118,10 @@ This is a "from scratch" simulation project - do not assume any prior Purview co
 
 Before creating any content, you MUST:
 
-1. **Review Repository Style Guides:**
-   - Read and understand the Markdown Style Guide (Style Guides/markdown-style-guide.md)
-   - Read and understand the PowerShell Style Guide (Style Guides/powershell-style-guide.md)
-   - Read and understand the Parameters File Style Guide (Style Guides/parameters-file-style-guide.md) for configuration file standards
+1. **Review Repository Style-Guides:**
+   - Read and understand the Markdown Style Guide (Style-Guides/markdown-style-guide.md)
+   - Read and understand the PowerShell Style Guide (Style-Guides/powershell-style-guide.md)
+   - Read and understand the Parameters File Style Guide (Style-Guides/parameters-file-style-guide.md) for configuration file standards
    - Follow all style guide requirements for headers, formatting, punctuation, and structure
 
 2. **Review Existing Reference Projects:**
@@ -669,8 +669,8 @@ The structure follows proven patterns from existing Purview projects while adapt
 
 Before implementing, verify:
 
-- [ ] Reviewed Markdown Style Guide (Style Guides/markdown-style-guide.md)
-- [ ] Reviewed PowerShell Style Guide (Style Guides/powershell-style-guide.md)
+- [ ] Reviewed Markdown Style Guide (Style-Guides/markdown-style-guide.md)
+- [ ] Reviewed PowerShell Style Guide (Style-Guides/powershell-style-guide.md)
 - [ ] Reviewed Parameters File Style Guide for JSON config structure
 - [ ] Reviewed Purview-Classification-Lifecycle-Labs for authentication and bulk operation patterns
 - [ ] Reviewed Purview-Skills-Ramp-OnPrem-and-Cloud for SharePoint site operations

@@ -104,9 +104,9 @@ Across all projects, this portfolio highlights proficiency in the following key 
 
 All projects in this portfolio adhere to strict engineering and documentation standards to ensure quality and maintainability:
 
-- **[Markdown Style Guide](./Style%20Guides/markdown-style-guide.md)**: Ensuring professional, consistent, and accessible documentation.
-- **[PowerShell Style Guide](./Style%20Guides/powershell-style-guide.md)**: Enforcing industry-standard scripting practices and error handling.
-- **[Parameters File Style Guide](./Style%20Guides/parameters-file-style-guide.md)**: Standardizing configuration management for IaC deployments.
+- **[Markdown Style Guide](./Style-Guides/markdown-style-guide.md)**: Ensuring professional, consistent, and accessible documentation.
+- **[PowerShell Style Guide](./Style-Guides/powershell-style-guide.md)**: Enforcing industry-standard scripting practices and error handling.
+- **[Parameters File Style Guide](./Style-Guides/parameters-file-style-guide.md)**: Standardizing configuration management for IaC deployments.
 
 ---
 

@@ -49,7 +49,7 @@ This week builds directly on Week 2's AI foundation with advanced automation and
 
 ### 🚀 Comprehensive Integration
 
-- **[Deploy Azure OpenAI Service](../02-AI-Foundation-&-Secure-Model-Deployment/02.03-Azure-OpenAI-Service-Deployment/deploy-azure-openai-service.md)** - Complete deployment with GPT-4o-mini model configured for cost-effective security operations
+- **[Deploy Azure OpenAI Service](../02-AI-Foundation-and-Secure-Model-Deployment/02.03-Azure-OpenAI-Service-Deployment/deploy-azure-openai-service.md)** - Complete deployment with GPT-4o-mini model configured for cost-effective security operations
 
 Navigate to the comprehensive module documentation for step-by-step deployment:
 
@@ -154,8 +154,8 @@ az storage account show --name "st[environmentName]ai" --resource-group "rg-[env
 
 ## 🔗 Related Resources
 
-- [Week 2: AI Foundation & Secure Model Deployment](../02-AI-Foundation-&-Secure-Model-Deployment/README.md)
-- [Week 4: Advanced XDR + Security Copilot Integration](../04-Defender-XDR-+-Security-Copilot-Integration/README.md)
+- [Week 2: AI Foundation & Secure Model Deployment](../02-AI-Foundation-and-Secure-Model-Deployment/README.md)
+- [Week 4: Advanced XDR + Security Copilot Integration](../04-Defender-XDR-and-Security-Copilot-Integration/README.md)
 - [Project Root](../README.md)
 
 ---

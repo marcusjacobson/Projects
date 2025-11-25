@@ -135,11 +135,11 @@ Before proceeding with either deployment method, verify that your Sentinel works
 
 ## 📋 Prerequisites
 
-This module builds upon the **[Azure OpenAI Service Deployment](../../../02-AI-Foundation-&-Secure-Model-Deployment/02.03-Azure-OpenAI-Service-Deployment/deploy-azure-openai-service.md)** from Week 2. Before proceeding with Defender XDR integration, ensure you have completed:
+This module builds upon the **[Azure OpenAI Service Deployment](../../../02-AI-Foundation-and-Secure-Model-Deployment/02.03-Azure-OpenAI-Service-Deployment/deploy-azure-openai-service.md)** from Week 2. Before proceeding with Defender XDR integration, ensure you have completed:
 
 ### Required Previous Step
 
-- **[Deploy Azure OpenAI Service](../../../02-AI-Foundation-&-Secure-Model-Deployment/02.03-Azure-OpenAI-Service-Deployment/deploy-azure-openai-service.md)** - Complete deployment with o4-mini model configured for cost-effective security operations.
+- **[Deploy Azure OpenAI Service](../../../02-AI-Foundation-and-Secure-Model-Deployment/02.03-Azure-OpenAI-Service-Deployment/deploy-azure-openai-service.md)** - Complete deployment with o4-mini model configured for cost-effective security operations.
 
 ### Validation
 

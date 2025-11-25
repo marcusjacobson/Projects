@@ -390,7 +390,7 @@ Lab 5 (Operations) ← References Labs 1-4 + Shared Utilities
 
 All content follows strict style guides:
 
-**Markdown Standards** (Style Guides/markdown-style-guide.md):
+**Markdown Standards** (Style-Guides/markdown-style-guide.md):
 
 - Hash-based headers (not bold text)
 - Unique descriptive headings
@@ -400,7 +400,7 @@ All content follows strict style guides:
 - Blank lines around code blocks and lists
 - Professional documentation voice
 
-**PowerShell Standards** (Style Guides/powershell-style-guide.md):
+**PowerShell Standards** (Style-Guides/powershell-style-guide.md):
 
 - Industry-standard comment-based help
 - Consistent authorship attribution
@@ -410,7 +410,7 @@ All content follows strict style guides:
 - REST API integration preference
 - Pipeline vs command-line distinction
 
-**Parameters File Standards** (Style Guides/parameters-file-style-guide.md):
+**Parameters File Standards** (Style-Guides/parameters-file-style-guide.md):
 
 - Azure Resource Manager schema
 - CamelCase parameter naming
@@ -486,7 +486,7 @@ All content follows strict style guides:
 - **Lab READMEs**: Comprehensive guides for each lab
 - **Troubleshooting Guide**: Lab 2 troubleshooting-guide.md
 - **Operational Runbooks**: Lab 5 complete runbook catalog
-- **Style Guides**: Markdown, PowerShell, Parameters standards
+- **Style-Guides**: Markdown, PowerShell, Parameters standards
 
 ### External Resources
 

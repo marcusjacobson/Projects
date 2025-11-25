@@ -223,7 +223,7 @@ Once you've completed your chosen deployment method and the Week 2 bridge valida
 
 ## 🔗 Quick Navigation
 
-- [Week 2: AI Foundation & Secure Model Deployment](../02-AI-Foundation-&-Secure-Model-Deployment/README.md)
+- [Week 2: AI Foundation & Secure Model Deployment](../02-AI-Foundation-and-Secure-Model-Deployment/README.md)
 - [Project Root](../README.md)
 
 ---

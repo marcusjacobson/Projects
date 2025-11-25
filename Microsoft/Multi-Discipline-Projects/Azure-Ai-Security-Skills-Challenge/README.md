@@ -129,17 +129,17 @@ As project weeks are completed, the **Completed** checkbox will be marked.
 
 | Week | Focus Area | Status | Key Deliverables |
 |------|------------|--------|------------------|
-| 0 | [Project Setup & Admin](./00-Project-Setup-&-Admin/README.md) | [x] | Environment Validation Script, Dev Setup |
+| 0 | [Project Setup & Admin](./00-Project-Setup-and-Admin/README.md) | [x] | Environment Validation Script, Dev Setup |
 | 1 | [Defender for Cloud Deployment Foundation](./01-Defender-for-Cloud-Deployment-Foundation/README.md) | [x] | MDC Deployment, Unified SecOps Integration |
-| 2 | [AI Foundation & Secure Model Deployment](./02-AI-Foundation-&-Secure-Model-Deployment/README.md) | [🔄] | Azure OpenAI, Cost Mgmt, Prompt Library |
+| 2 | [AI Foundation & Secure Model Deployment](./02-AI-Foundation-and-Secure-Model-Deployment/README.md) | [🔄] | Azure OpenAI, Cost Mgmt, Prompt Library |
 | 3 | [AI-Driven Security Operations Automation](./03-AI-SecOps/README.md) | [🔄] | Logic Apps Automation, Incident Enrichment |
-| 4 | [Advanced XDR + Security Copilot Integration](./04-Defender-XDR-+-Security-Copilot-Integration/README.md) | [ ] | Security Copilot Plugin, Advanced Hunting |
+| 4 | [Advanced XDR + Security Copilot Integration](./04-Defender-XDR-and-Security-Copilot-Integration/README.md) | [ ] | Security Copilot Plugin, Advanced Hunting |
 | 5 | [Microsoft Purview for Data Governance](./05-Microsoft-Purview-for-Data-Governance/README.md) | [ ] | Data Map, Classification, Sensitivity Labels |
 | 6 | [Microsoft Priva and Responsible AI](./06-Microsoft-Priva-and-Responsible-AI/README.md) | [ ] | Privacy Risk Mgmt, Subject Rights Requests |
 | 7 | [Microsoft Fabric for Secure Analytics](./07-Microsoft-Fabric-for-Secure-Analytics/README.md) | [ ] | Fabric Capacity, OneLake Security |
-| 8 | [Azure AI Foundry & Secure AI Workloads](./08-Azure-AI-Foundry-&-Secure-AI-Workloads/README.md) | [ ] | AI Studio, Content Safety, Model Catalog |
+| 8 | [Azure AI Foundry & Secure AI Workloads](./08-Azure-AI-Foundry-and-Secure-AI-Workloads/README.md) | [ ] | AI Studio, Content Safety, Model Catalog |
 | 9 | [Copilot Studio for Security Agents](./09-Copilot-Studio-for-Security-Agents/README.md) | [ ] | Custom Copilots, Plugin Development |
-| 10 | [Secure Copilot Deployment & Delivery Practices](./10-Secure-Copilot-Deployment-&-Delivery-Practices/README.md) | [ ] | Production Readiness, Adoption Framework |
+| 10 | [Secure Copilot Deployment & Delivery Practices](./10-Secure-Copilot-Deployment-and-Delivery-Practices/README.md) | [ ] | Production Readiness, Adoption Framework |
 
 ## 📊 Comprehensive AI Security Capability Coverage
 
@@ -217,7 +217,7 @@ The project includes comprehensive automation and validation tools to ensure rel
 
 #### Comprehensive Environment Validation
 
-- **[Test-EnvironmentValidation.ps1](./00-Project-Setup-&-Admin/scripts/Test-EnvironmentValidation.ps1)** - Advanced 9-step environment validation script that checks:
+- **[Test-EnvironmentValidation.ps1](./00-Project-Setup-and-Admin/scripts/Test-EnvironmentValidation.ps1)** - Advanced 9-step environment validation script that checks:
   - Azure CLI installation and authentication
   - PowerShell Az module configuration
   - Subscription permissions (Owner/Contributor validation)
@@ -228,7 +228,7 @@ The project includes comprehensive automation and validation tools to ensure rel
 
 #### Automated Development Environment Installation
 
-- **[Install-DevelopmentEnvironment.ps1](./00-Project-Setup-&-Admin/scripts/Install-DevelopmentEnvironment.ps1)** - Complete 7-step automated installation covering:
+- **[Install-DevelopmentEnvironment.ps1](./00-Project-Setup-and-Admin/scripts/Install-DevelopmentEnvironment.ps1)** - Complete 7-step automated installation covering:
   - Azure CLI latest version installation
   - PowerShell Az module setup
   - Visual Studio Code with Azure extensions
@@ -279,9 +279,9 @@ The project includes comprehensive automation and validation tools to ensure rel
 
 #### Documentation Excellence
 
-- **[Markdown Style Guide](../../Style-Guides/markdown-style-guide.md)** compliance across all documentation
-- **[PowerShell Style Guide](../../Style-Guides/powershell-style-guide.md)** implementation in all automation scripts
-- **[Parameters File Style Guide](../../Style-Guides/parameters-file-style-guide.md)** standardization for Infrastructure-as-Code configuration
+- **[Markdown Style Guide](../../../Style-Guides/markdown-style-guide.md)** compliance across all documentation
+- **[PowerShell Style Guide](../../../Style-Guides/powershell-style-guide.md)** implementation in all automation scripts
+- **[Parameters File Style Guide](../../../Style-Guides/parameters-file-style-guide.md)** standardization for Infrastructure-as-Code configuration
 - **Comprehensive AI-Assisted Content Attribution** - Transparency in AI tool usage for content generation
 
 This enhanced tooling ensures reliable setup, deployment success, and professional-grade automation throughout the 10-week learning journey.
@@ -298,7 +298,7 @@ This enhanced tooling ensures reliable setup, deployment success, and profession
 
 ### Technical Excellence Standards
 
-- **Style Guide Compliance**: All documentation follows centralized [Markdown](../../Style-Guides/markdown-style-guide.md), [PowerShell](../../Style-Guides/powershell-style-guide.md), and [Parameters File](../../Style-Guides/parameters-file-style-guide.md) style guides
+- **Style Guide Compliance**: All documentation follows centralized [Markdown](../../../Style-Guides/markdown-style-guide.md), [PowerShell](../../../Style-Guides/powershell-style-guide.md), and [Parameters File](../../../Style-Guides/parameters-file-style-guide.md) style guides
 - **AI-Assisted Development**: Transparent acknowledgment of GitHub Copilot usage in content generation and script development
 - **Enterprise Deployment Readiness**: Production-ready automation with comprehensive error handling and validation
 - **Modern Security Integration**: Complete unified security operations platform foundation for Weeks 1-2
@@ -307,9 +307,9 @@ This enhanced tooling ensures reliable setup, deployment success, and profession
 
 This project follows established style guides to ensure consistency and professionalism across all documentation and code:
 
-- **[Markdown Style Guide](../../Style-Guides/markdown-style-guide.md)** - Formatting, punctuation, and tone standards for all markdown documentation
-- **[PowerShell Style Guide](../../Style-Guides/powershell-style-guide.md)** - Consistent visual and organizational patterns for PowerShell scripts
-- **[Parameters File Style Guide](../../Style-Guides/parameters-file-style-guide.md)** - Configuration standards for Azure parameters files
+- **[Markdown Style Guide](../../../Style-Guides/markdown-style-guide.md)** - Formatting, punctuation, and tone standards for all markdown documentation
+- **[PowerShell Style Guide](../../../Style-Guides/powershell-style-guide.md)** - Consistent visual and organizational patterns for PowerShell scripts
+- **[Parameters File Style Guide](../../../Style-Guides/parameters-file-style-guide.md)** - Configuration standards for Azure parameters files
 
 These guides define comprehensive standards for headers, lists, code blocks, interface elements, professional documentation practices, and Infrastructure-as-Code configuration patterns.
 

@@ -838,8 +838,8 @@ Each lab includes validation steps to confirm successful completion:
 
 This project is designed for learning and can be customized for organizational needs. When adapting labs:
 
-- Follow the PowerShell Style Guide in `Style Guides/powershell-style-guide.md`.
-- Maintain markdown formatting standards from `Style Guides/markdown-style-guide.md`.
+- Follow the PowerShell Style Guide in `Style-Guides/powershell-style-guide.md`.
+- Maintain markdown formatting standards from `Style-Guides/markdown-style-guide.md`.
 - Test all scripts in a non-production tenant before enterprise deployment.
 - Update validation checkpoints when modifying lab objectives.
 

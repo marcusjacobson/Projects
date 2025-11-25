@@ -125,21 +125,21 @@ Before proceeding with either deployment method, verify that your Sentinel works
 
 **Best for:** Understanding Logic Apps designer interface and step-by-step integration configuration
 
-📖 **[Follow the complete Azure Portal guide](./Azure%20Portal/deploy-openai-defender-xdr-integration-azure-portal.md)**
+📖 **[Follow the complete Azure Portal guide](./Azure-Portal/deploy-openai-defender-xdr-integration-azure-portal.md)**
 
 ### Method 2: Infrastructure-as-Code Deployment ⚡ (Production-Ready)
 
 **Best for:** Automated, repeatable Logic Apps deployments with PowerShell scripts and REST API integration
 
-📖 **[Follow the complete Infrastructure-as-Code guide](./Infrastructure%20as%20Code/deploy-openai-defender-xdr-integration-iac.md)**
+📖 **[Follow the complete Infrastructure-as-Code guide](./Infrastructure-as-Code/deploy-openai-defender-xdr-integration-iac.md)**
 
 ## 📋 Prerequisites
 
-This module builds upon the **[Azure OpenAI Service Deployment](../../../02%20-%20AI%20Foundation%20&%20Secure%20Model%20Deployment/02.03%20Azure%20OpenAI%20Service%20Deployment/deploy-azure-openai-service.md)** from Week 2. Before proceeding with Defender XDR integration, ensure you have completed:
+This module builds upon the **[Azure OpenAI Service Deployment](../../../02-AI-Foundation-&-Secure-Model-Deployment/02.03-Azure-OpenAI-Service-Deployment/deploy-azure-openai-service.md)** from Week 2. Before proceeding with Defender XDR integration, ensure you have completed:
 
 ### Required Previous Step
 
-- **[Deploy Azure OpenAI Service](../../../02%20-%20AI%20Foundation%20&%20Secure%20Model%20Deployment/02.03%20Azure%20OpenAI%20Service%20Deployment/deploy-azure-openai-service.md)** - Complete deployment with o4-mini model configured for cost-effective security operations.
+- **[Deploy Azure OpenAI Service](../../../02-AI-Foundation-&-Secure-Model-Deployment/02.03-Azure-OpenAI-Service-Deployment/deploy-azure-openai-service.md)** - Complete deployment with o4-mini model configured for cost-effective security operations.
 
 ### Validation
 

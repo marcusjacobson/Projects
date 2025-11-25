@@ -34,14 +34,14 @@ This week focuses on implementing advanced AI-driven security automation through
 
 ## ✅ Checklist
 
-- [x] **[Azure OpenAI + Defender XDR Integration](./03.01%20Azure%20OpenAI%20+%20Defender%20XDR%20Integration/deploy-openai-defender-xdr-integration.md)** - Implement Logic Apps-based AI automation for intelligent incident analysis through Defender XDR unified portal:
-  - [x] **[Azure Portal Guide](./03.01%20Azure%20OpenAI%20+%20Defender%20XDR%20Integration/Azure%20Portal/deploy-openai-defender-xdr-integration-azure-portal.md)** - Step-by-step Logic Apps designer configuration using manual secret assignment for simplicity and learning experience (Recommended for learning Azure AI security workflows)
-  - [x] **[Infrastructure-as-Code Guide](./03.01%20Azure%20OpenAI%20+%20Defender%20XDR%20Integration/Infrastructure%20as%20Code/deploy-openai-defender-xdr-integration-iac.md)** - Comprehensive PowerShell automation with Key Vault integration, App Registration management, and complete workflow orchestration including API connections, duplicate prevention, and enterprise-grade security controls (Recommended for production deployments and advanced automation scenarios)
-- [ ] **[Logic App Integration Testing](./03.02%20Logic%20App%20Integration%20Testing/README.md)** - Validate AI workflow integration and establish baseline response patterns before threat simulation.
-- [ ] **[Threat Scenario Simulation](./03.03%20Threat%20Scenario%20Simulation/README.md)** - Execute comprehensive threat scenarios with AI analysis leveraging validated Logic App workflows.
-- [ ] **[AI Workflow Optimization](./03.04%20AI%20Workflow%20Optimization/README.md)** - Fine-tune Logic Apps performance, cost efficiency, and response accuracy based on testing and simulation results.
-- [ ] **[AI Security Operations Automation Validation](./03.05%20AI%20Security%20Operations%20Automation%20Validation/README.md)** - Comprehensive enterprise-grade testing and validation of complete security automation capabilities.
-- [ ] **[Week 3 to Week 4 Bridge](./03.06%20Week%203%20to%20Week%204%20Bridge/README.md)** - Integration readiness validation and transition preparation from AI automation to advanced XDR integration workflows.
+- [x] **[Azure OpenAI + Defender XDR Integration](./03.01-Azure-OpenAI-+-Defender-XDR-Integration/deploy-openai-defender-xdr-integration.md)** - Implement Logic Apps-based AI automation for intelligent incident analysis through Defender XDR unified portal:
+  - [x] **[Azure Portal Guide](./03.01-Azure-OpenAI-+-Defender-XDR-Integration/Azure-Portal/deploy-openai-defender-xdr-integration-azure-portal.md)** - Step-by-step Logic Apps designer configuration using manual secret assignment for simplicity and learning experience (Recommended for learning Azure AI security workflows)
+  - [x] **[Infrastructure-as-Code Guide](./03.01-Azure-OpenAI-+-Defender-XDR-Integration/Infrastructure-as-Code/deploy-openai-defender-xdr-integration-iac.md)** - Comprehensive PowerShell automation with Key Vault integration, App Registration management, and complete workflow orchestration including API connections, duplicate prevention, and enterprise-grade security controls (Recommended for production deployments and advanced automation scenarios)
+- [ ] **[Logic App Integration Testing](./03.02-Logic-App-Integration-Testing/README.md)** - Validate AI workflow integration and establish baseline response patterns before threat simulation.
+- [ ] **[Threat Scenario Simulation](./03.03-Threat-Scenario-Simulation/README.md)** - Execute comprehensive threat scenarios with AI analysis leveraging validated Logic App workflows.
+- [ ] **[AI Workflow Optimization](./03.04-AI-Workflow-Optimization/README.md)** - Fine-tune Logic Apps performance, cost efficiency, and response accuracy based on testing and simulation results.
+- [ ] **[AI Security Operations Automation Validation](./03.05-AI-Security-Operations-Automation-Validation/README.md)** - Comprehensive enterprise-grade testing and validation of complete security automation capabilities.
+- [ ] **[Week 3 to Week 4 Bridge](./03.06-Week-3-to-Week-4-Bridge/README.md)** - Integration readiness validation and transition preparation from AI automation to advanced XDR integration workflows.
 
 ## 📂 Project Files
 
@@ -49,7 +49,7 @@ This week builds directly on Week 2's AI foundation with advanced automation and
 
 ### 🚀 Comprehensive Integration
 
-- **[Deploy Azure OpenAI Service](../02%20-%20AI%20Foundation%20&%20Secure%20Model%20Deployment/02.03%20Azure%20OpenAI%20Service%20Deployment/deploy-azure-openai-service.md)** - Complete deployment with GPT-4o-mini model configured for cost-effective security operations
+- **[Deploy Azure OpenAI Service](../02-AI-Foundation-&-Secure-Model-Deployment/02.03-Azure-OpenAI-Service-Deployment/deploy-azure-openai-service.md)** - Complete deployment with GPT-4o-mini model configured for cost-effective security operations
 
 Navigate to the comprehensive module documentation for step-by-step deployment:
 
@@ -65,7 +65,7 @@ Navigate to the comprehensive module documentation for step-by-step deployment:
 ### 🔬 Testing & Validation
 
 - **[PowerShell Validation Scripts](./scripts/scripts-validation/)** - Comprehensive automated testing and verification tools
-- **[Integration Testing Procedures](./03.01%20Azure%20OpenAI%20+%20Defender%20XDR%20Integration/Azure%20Portal/deploy-openai-defender-xdr-integration-azure-portal.md)** - Step-by-step testing guidance within deployment guides
+- **[Integration Testing Procedures](./03.01-Azure-OpenAI-+-Defender-XDR-Integration/Azure-Portal/deploy-openai-defender-xdr-integration-azure-portal.md)** - Step-by-step testing guidance within deployment guides
 - **[Enterprise Validation Tools](./scripts/scripts-orchestration/Deploy-DefenderXDRIntegration.ps1)** - Complete workflow orchestration and testing automation
 
 ## 🎯 Weekly Focus Areas
@@ -154,8 +154,8 @@ az storage account show --name "st[environmentName]ai" --resource-group "rg-[env
 
 ## 🔗 Related Resources
 
-- [Week 2: AI Foundation & Secure Model Deployment](../02%20-%20AI%20Foundation%20&%20Secure%20Model%20Deployment/README.md)
-- [Week 4: Advanced XDR + Security Copilot Integration](../04%20-%20Defender%20XDR%20+%20Security%20Copilot%20Integration/README.md)
+- [Week 2: AI Foundation & Secure Model Deployment](../02-AI-Foundation-&-Secure-Model-Deployment/README.md)
+- [Week 4: Advanced XDR + Security Copilot Integration](../04-Defender-XDR-+-Security-Copilot-Integration/README.md)
 - [Project Root](../README.md)
 
 ---

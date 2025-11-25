@@ -130,7 +130,7 @@ All prompts must meet these criteria:
 ## 🔗 Related Resources
 
 - [Azure AI Security Skills Challenge Overview](../README.md)
-- [Project Setup & Administration](../00%20-%20Project%20Setup%20&%20Admin/README.md)
+- [Project Setup & Administration](../00-Project-Setup-&-Admin/README.md)
 - [Microsoft 365 Copilot Documentation](https://docs.microsoft.com/copilot/)
 - [Azure AI Platform Documentation](https://docs.microsoft.com/azure/ai/)
 - [GitHub Copilot Documentation](https://docs.github.com/copilot)

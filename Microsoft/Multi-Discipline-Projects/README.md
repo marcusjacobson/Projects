@@ -6,7 +6,7 @@ This directory contains complex, cross-domain projects that demonstrate the inte
 
 ## 📂 Project Portfolio
 
-### [Azure AI Security Skills Challenge](./Azure%20Ai%20Security%20Skills%20Challenge/README.md)
+### [Azure AI Security Skills Challenge](./Azure-Ai-Security-Skills-Challenge/README.md)
 
 **A comprehensive 10-week journey to master secure AI deployment, Microsoft Security tools, and Copilot integration.**
 

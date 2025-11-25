@@ -1,0 +1,34 @@
+trigger:
+- none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - template: pipeline-variables.yml
+
+# OPTIONAL: If you need to reference additional repositories, update the values below.
+# Otherwise, you can remove this entire resources section.
+resources:
+  repositories:
+    - repository: <YOUR-REPOSITORY-ALIAS>
+      type: git
+      name: '<YOUR-PROJECT-NAME>/<YOUR-REPOSITORY-NAME>'
+
+jobs:
+- job: 'CreatePasskeyFIDO2Policy'
+  displayName: 'Create/Update Passkey (FIDO2) Authentication Methods Policy'
+  steps:
+  - checkout: self
+    persistCredentials: true
+  - task: AzureCLI@2
+    displayName: 'Run PowerShell Script to Create/Update Passkey (FIDO2) Policy'
+    inputs:
+      azureSubscription: '$(serviceConnection)'
+      addSpnToEnvironment: true
+      scriptType: pscore
+      scriptPath: '$(scriptPath)'
+      scriptLocation: scriptPath
+      scriptArguments: 
+        -PolicyJson '$(policyDetails)'
+        -SchemaFilePath '$(schemaFilePath)'

@@ -1,0 +1,140 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/conditional-access-policy.json",
+    "type": "object",
+    "title": "Conditional Access Policy Schema",
+    "description": "Schema for defining a conditional access policy.",
+    "required": [
+        "displayName",
+        "state",
+        "conditions",
+        "grantControls"
+    ],
+    "properties": {
+        "displayName": {
+            "title": "Policy Display Name",
+            "type": "string",
+            "description": "The name of the conditional access policy.",
+            "examples": [
+                "Block High-Risk Sign-ins"
+            ],
+            "pattern": "^.*$"
+        },
+        "state": {
+            "title": "State",
+            "type": "string",
+            "description": "The state of the policy (enabled or disabled).",
+            "enum": [
+                "enabled",
+                "disabled",
+                "enabledForReportingButNotEnforced"
+            ],
+            "examples": [
+                "enabled"
+            ]
+        },
+        "conditions": {
+            "title": "Conditions",
+            "type": "object",
+            "required": [
+                "signInRiskLevels"
+            ],
+            "properties": {
+                "users": {
+                    "title": "Users",
+                    "type": "object",
+                    "items": {
+                        "type": "string"
+                    },
+                    "examples": [
+                        ["all"],
+                        ["user@domain.ext"]
+                    ]
+                },
+                "applications": {
+                    "title": "Applications",
+                    "type": "object",
+                    "required": [
+                        "includeApplications",
+                        "excludeApplications"
+                    ],
+                    "properties": {
+                        "includeApplications": {
+                            "title": "Include Applications",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "examples": [
+                                ["all"],
+                                ["Office365", "MicrosoftAdminPortals", "499b84ac-1321-427f-aa17-267ca6975798"]
+                            ]
+                        },
+                        "excludeApplications": {
+                            "title": "Exclude Applications",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "examples": [
+                                ["none", "Office365", "MicrosoftAdminPortals", "499b84ac-1321-427f-aa17-267ca6975798"]
+                            ]
+                        }
+                    }
+                },
+                "signInRiskLevels": {
+                    "title": "Sign-In Risk Levels",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "none",
+                            "low",
+                            "medium",
+                            "high"
+                        ]
+                    },
+                    "examples": [
+                        ["high", "medium"]
+                    ]
+                }
+            }
+        },
+        "grantControls": {
+            "title": "Grant Controls",
+            "type": "object",
+            "required": [
+                "operator",
+                "builtInControls"
+            ],
+            "properties": {
+                "operator": {
+                    "title": "Operator",
+                    "type": "string",
+                    "enum": [
+                        "OR",
+                        "AND"
+                    ],
+                    "examples": [
+                        "OR"
+                    ]
+                },
+                "builtInControls": {
+                    "title": "Built-In Controls",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "block",
+                            "mfa",
+                            "passwordChange"
+                        ]
+                    },
+                    "examples": [
+                        ["block"]
+                    ]
+                }
+            }
+        }
+    }
+}

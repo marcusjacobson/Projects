@@ -1,0 +1,142 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/conditional-access-policy.json",
+    "type": "object",
+    "title": "Conditional Access Policy Schema",
+    "description": "Schema for defining a conditional access policy.",
+    "required": [
+        "displayName",
+        "state",
+        "conditions",
+        "grantControls"
+    ],
+    "properties": {
+        "displayName": {
+            "title": "Policy Display Name",
+            "type": "string",
+            "description": "The name of the conditional access policy.",
+            "examples": [
+                "Block High-Risk Sign-ins"
+            ],
+            "pattern": "^.*$"
+        },
+        "state": {
+            "title": "State",
+            "type": "string",
+            "description": "The state of the policy (enabled or disabled).",
+            "enum": [
+                "enabled",
+                "disabled",
+                "enabledForReportingButNotEnforced"
+            ],
+            "examples": [
+                "enabled"
+            ]
+        },
+        "conditions": {
+            "title": "Conditions",
+            "type": "object",
+            "required": [
+                "servicePrincipalRiskLevels"
+            ],
+            "properties": {
+                "workloadIdentities": {
+                    "title": "Workload Identities",
+                    "type": "object",
+                    "items": {
+                        "type": "string"
+                    },
+                    "examples": [
+                        ["all"]
+                    ]
+                },
+                "applications": {
+                    "title": "Applications",
+                    "type": "object",
+                    "required": [
+                        "includeApplications"
+                    ],
+                    "properties": {
+                        "includeApplications": {
+                            "title": "Include Applications",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "examples": [
+                                ["all"]
+                            ]
+                        }
+                    }
+                },
+                "servicePrincipalRiskLevels": {
+                    "title": "Service Principal Risk Levels",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "low",
+                            "medium",
+                            "high"
+                        ]
+                    },
+                    "examples": [
+                        ["high", "medium"]
+                    ]
+                },
+                "locations": {
+                    "title": "Locations",
+                    "type": "object",
+                    "properties": {
+                        "includeLocations": {
+                            "title": "Include Locations",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "examples": [
+                                ["trustedLocation1", "trustedLocation2"],
+                                ["allTrustedLocations"],
+                                ["all"]
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "grantControls": {
+            "title": "Grant Controls",
+            "type": "object",
+            "required": [
+                "operator",
+                "builtInControls"
+            ],
+            "properties": {
+                "operator": {
+                    "title": "Operator",
+                    "type": "string",
+                    "enum": [
+                        "OR",
+                        "AND"
+                    ],
+                    "examples": [
+                        "OR"
+                    ]
+                },
+                "builtInControls": {
+                    "title": "Built-In Controls",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "block"
+                        ]
+                    },
+                    "examples": [
+                        ["block"]
+                    ]
+                }
+            }
+        }
+    }
+}

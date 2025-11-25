@@ -1,0 +1,89 @@
+variables:
+########################################################################################################
+  # Environment - general. 
+  # REQUIRED: Update the serviceConnection value to match your Azure DevOps service connection name.
+########################################################################################################
+  serviceConnection: '<YOUR-SERVICE-CONNECTION-NAME>'
+  scriptPath: "$(Build.SourcesDirectory)/Entra/Conditional-Access/Risky-Workload-Identities-Create/Scripts/risky-workload-id-policy-create.ps1"
+  schemaFilePath: "$(Build.SourcesDirectory)/Entra/Conditional-Access/Risky-Workload-Identities-Create/Template/ca-policy.schema.json"
+
+########################################################################################################
+  # Named Conditional Access Properties - Risky Workload Identities Properties.
+  # REQUIRED: Update the policyDetails below to match your organization's requirements.
+  # All provided values are validated against the schema file located in the Template folder.
+  # The provided properties are checked for conflicting values within the script. 
+  # Variable values:
+  #   - displayName: The name of the policy to be created.
+  #   - state: The state of the policy. Valid values are "enabled", "disabled" or "enabledForReportingButNotEnforced".
+  #   - conditions:
+  #      - clientApplications: The service principals to be included or excluded from the policy.
+  #           - includeServicePrincipals: Valid values are "ServicePrincipalsInMyTenant", "none" or an array of specific service principals, separated by a comma.
+  #                 Note: The value "all" for includeServicePrincipals is also a valid entry, as it will convert to "ServicePrincipalsInMyTenant" when the script is run.
+  #           - excludeServicePrincipals: Valid values are "none" (or an empty array), or an array of specific service principals, separated by a comma.
+  #                 Note: The value "all" for excludeServicePrincipals is not a valid entry for a Risky Workload Identities policy.
+  #      - applications: The applications to be included in the policy.
+  #           - includeApplications: Valid values are "none" (or an empty array) or "all".
+  #               Including specific application IDs is not supported for a Risky Workload ID policy.
+  #               Note: excludeApplications is not supported for a Risky Workload ID policy, and is therefore not included in this pipeline.  
+  #      - servicePrincipalRiskLevels: The service principal risk levels to be included in the policy. 
+  #           Valid values are "high", "medium" or "low". Separate multiple values with a comma.
+  #      - locations: The locations to be included or excluded from the policy.
+  #           - includeLocations: Valid values are "all", "allTrusted" or an array of display names for specific named locations lists.
+  #               Note: The value "none" (or an empty array) is not a valid entry for a Risky Workload Identities policy.
+  #           - excludeLocations: Valid values are "allTrusted", an array of specific named locations lists, or "none" (or an empty array).
+  #               Note: The value "all" is not a valid entry for a Risky Workload Identities policy.
+  #   grantControls:
+  #      - operator: The operator to be used for the policy. Valid values are "OR" or "AND".
+  #      - builtInControls: The built-in controls to be applied to the policy. 
+  #           The only valid value for a Risky Workload Identity policy is "block".
+  #             Any other value will fail the validation of the schema file.        
+  #
+  # Best Practice example:
+  #   {
+  #     "displayName": "ca-workload-id-risk-policy",
+  #     "state": "enabledForReportingButNotEnforced",
+  #     "conditions": {
+  #       "clientApplications": {
+  #         "includeServicePrincipals": ["all"],
+  #         "excludeServicePrincipals": []
+  #       },
+  #       "applications": {
+  #         "includeApplications": ["All"]
+  #       },
+  #       "servicePrincipalRiskLevels": ["high", "medium"]
+  #       "locations": {
+  #         "includeLocations": ["<YOUR-INCLUDED-NAMED-LOCATION>"], 
+  #         "excludeLocations": []
+  #       }
+  #     },
+  #     "grantControls": {
+  #       "operator": "OR",
+  #       "builtInControls": ["block"]
+  #     } 
+  #  }
+########################################################################################################
+
+  # JSON definition for the new workload identity risk policy
+  policyDetails: >
+    {
+      "displayName": "ca-workload-id-risk-policy",
+      "state": "enabledForReportingButNotEnforced",
+      "conditions": {
+        "clientApplications": {
+          "includeServicePrincipals": ["all"],
+          "excludeServicePrincipals": []
+        },
+        "applications": {
+          "includeApplications": ["All"]
+        },
+        "servicePrincipalRiskLevels": ["high", "medium"],
+        "locations": {
+          "includeLocations": ["all"],
+          "excludeLocations": []
+        }
+      },
+      "grantControls": {
+        "operator": "OR",
+        "builtInControls": ["block"]
+      } 
+    }

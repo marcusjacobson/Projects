@@ -1,0 +1,89 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "state": {
+            "type": "string",
+            "enum": ["enabled", "disabled"],
+            "description": "The state of the Passkey (FIDO2) authentication method."
+        },
+        "isSelfServiceRegistrationAllowed": {
+            "type": "boolean",
+            "description": "Indicates whether users can perform self-service registration for FIDO2 keys. Must be set to true.",
+            "const": true
+        },
+        "isAttestationEnforced": {
+            "type": "boolean",
+            "description": "Indicates whether attestation must be enforced for FIDO2 key registration."
+        },
+        "keyRestrictions": {
+            "type": "object",
+            "properties": {
+                "isEnforced": {
+                    "type": "boolean",
+                    "description": "Indicates whether key restrictions are enforced."
+                },
+                "enforcementType": {
+                    "type": "string",
+                    "enum": ["allow", "block"],
+                    "description": "The enforcement type for key restrictions (allow or block)."
+                },
+                "aaGuids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+                        "description": "Authenticator Attestation GUID (AAGUID) in standard GUID format."
+                    },
+                    "description": "List of Authenticator Attestation GUIDs (AAGUIDs) for allowed or blocked FIDO2 authenticators."
+                }
+            },
+            "required": ["isEnforced", "enforcementType", "aaGuids"],
+            "description": "Key restrictions configuration for FIDO2 authenticators."
+        },
+        "includeTargets": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "targetType": {
+                        "type": "string",
+                        "enum": ["group"],
+                        "description": "The type of target (group). User type is not supported for FIDO2 policies."
+                    },
+                    "displayName": {
+                        "type": "string",
+                        "description": "The display name of the target group or 'all_users'. Note: 'all_users' cannot be combined with additional groups for includeTargets."
+                    },
+                    "isRegistrationRequired": {
+                        "type": "boolean",
+                        "description": "Indicates whether registration is required for the target. Must be set to false for includeTargets in FIDO2 policies.",
+                        "const": false
+                    }
+                },
+                "required": ["targetType", "displayName", "isRegistrationRequired"]
+            },
+            "description": "A list of targets to include for the Passkey (FIDO2) authentication method. Only 'all_users' or specific groups are allowed."
+        },
+        "excludeTargets": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "targetType": {
+                        "type": "string",
+                        "enum": ["group"],
+                        "description": "The type of target (group)."
+                    },
+                    "displayName": {
+                        "type": "string",
+                        "description": "The display name of the target group to exclude. 'all_users' is treated as a group name for excludeTargets."
+                    }
+                },
+                "required": ["targetType", "displayName"]
+            },
+            "description": "A list of targets to exclude for the Passkey (FIDO2) authentication method."
+        }
+    },
+    "required": ["state", "isSelfServiceRegistrationAllowed", "isAttestationEnforced", "keyRestrictions", "includeTargets", "excludeTargets"]
+}

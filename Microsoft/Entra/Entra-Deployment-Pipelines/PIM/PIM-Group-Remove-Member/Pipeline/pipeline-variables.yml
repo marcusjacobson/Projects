@@ -1,0 +1,41 @@
+variables:
+########################################################################################################
+  # Environment - general. 
+  # REQUIRED: Update the serviceConnection value to match your Azure DevOps service connection name.
+########################################################################################################
+  serviceConnection: '<YOUR-SERVICE-CONNECTION-NAME>'
+  scriptPath: "$(Build.SourcesDirectory)/Entra/PIM/PIM-Group-Remove-Member/Scripts/Remove-Member-from-PIM-Group.ps1"
+
+########################################################################################################
+  # PIM Group Properties. 
+  # REQUIRED: Edit the groupName variable to use the display name for the group you want to remove PIM user assignments.
+  # REQUIRED: Edit the users variable to use the userPrincipalName for the users you want to remove access to the PIM group.
+  # The users variable must maintain the provided JSON format.
+  # Users Example:
+  #   {
+  #     "users": [
+  #       {
+  #         "userPrincipalName": "user@yourcompany.com"
+  #       },
+  #       {
+  #         "userPrincipalName": "user@yourcompany.com"
+  #       }
+  #     ]
+  #   }
+########################################################################################################
+
+  # Group to remove user(s)
+  groupName: "<YOUR-GROUP-NAME>"
+
+  # User(s) to remove to group
+  users: >
+    {
+      "users": [  
+        {
+            "userPrincipalName": "user1@yourcompany.com"
+        },
+        {
+            "userPrincipalName": "user2@yourcompany.com"
+        }
+      ]
+    }

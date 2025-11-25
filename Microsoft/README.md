@@ -10,7 +10,7 @@ The portfolio is organized by technology domain, with each section containing ha
 
 ## 📚 Project Portfolio
 
-### [Azure AI Security Skills Challenge](./Azure%20Ai%20Security%20Skills%20Challenge/)
+### [Azure AI Security Skills Challenge](./Multi-Discipline-Projects/Azure%20Ai%20Security%20Skills%20Challenge/)
 
 **Focus**: End-to-end security for AI workloads, combining Azure AI, Defender for Cloud, and Security Copilot.
 

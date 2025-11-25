@@ -1,0 +1,69 @@
+variables:
+########################################################################################################
+  # Environment - general. 
+  # REQUIRED: Update the serviceConnection value to match your Azure DevOps service connection name.
+########################################################################################################
+  serviceConnection: '<YOUR-SERVICE-CONNECTION-NAME>'
+  scriptPath: "$(Build.SourcesDirectory)/Entra/Groups/Group-Assign-Member/Scripts/Add-Member-to-Group.ps1"
+
+########################################################################################################
+  # Group & user Properties. 
+  # REQUIRED: Update the groupName, users, and groups values below to match your requirements.
+  # Edit the groupName variable to use the display name for the group you want to add users to.
+  # Edit the users variable to use the userPrincipalName for the users you want to add to the group.
+  # Edit the groups variable to use the displayName for the groups you want to add as members of the target group.
+  # The users and groups variable must maintain the provided JSON format.
+  # 
+  # Users Example:
+  #   {
+  #     "users": [
+  #       {
+  #         "userPrincipalName": "user1@yourcompany.com"
+  #       },
+  #       {
+  #         "userPrincipalName": "user2@yourcompany.com"
+  #       }
+  #     ]
+  #   }
+  #
+  # Groups Example:
+  #   {
+  #     "groups": [
+  #       {
+  #         "displayName": "<CHILD-GROUP-1>"
+  #       },
+  #       {
+  #         "displayName": "<CHILD-GROUP-2>"
+  #       }
+  #     ]
+  #   }
+########################################################################################################
+
+  # Group to add members(s)
+  groupName: "<YOUR-TARGET-GROUP-NAME>"
+
+  # User(s) to add to group
+  users: >
+    {
+      "users": [  
+        {
+            "userPrincipalName": "user1@yourcompany.com"
+        },
+        {
+            "userPrincipalName": "user2@yourcompany.com"
+        }
+      ]
+    }
+
+  # Group(s) to add as members(s) of the group
+  groups: >
+    {
+      "groups": [  
+        {
+            "displayName": "<YOUR-CHILD-GROUP-1>"
+        },
+        {
+            "displayName": "<YOUR-CHILD-GROUP-2>"
+        }
+      ]
+    }

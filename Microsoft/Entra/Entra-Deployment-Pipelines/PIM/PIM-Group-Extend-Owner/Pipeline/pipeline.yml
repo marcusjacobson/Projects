@@ -1,0 +1,31 @@
+trigger:
+- none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - template: pipeline-variables.yml
+
+resources:
+  repositories:
+    - repository: <YOUR-REPOSITORY-NAME>
+      type: git
+      name: '<YOUR-PROJECT-NAME>/<YOUR-REPOSITORY-NAME>'
+
+jobs:
+- job: 'AddUserToGroup'
+  displayName: 'Extending user(s) ownership to a PIM group, using Pipeline variables'
+  steps:
+  - checkout: self
+    persistCredentials: true
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: '$(serviceConnection)'
+      addSpnToEnvironment: true
+      scriptType: pscore
+      scriptPath: '$(scriptPath)'
+      scriptLocation: scriptPath
+      scriptArguments: 
+        -UsersJson '$(users)'
+        -GroupName '$(groupName)'

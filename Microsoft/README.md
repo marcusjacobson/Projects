@@ -29,6 +29,17 @@ The portfolio is organized by technology domain, with each section containing ha
 - **Security Operations**: Integration with Defender XDR and Security Copilot.
 - **Responsible AI**: Implementation of content safety and responsible AI frameworks.
 
+### [Microsoft Entra](./Entra/)
+
+**Focus**: Identity and Access Management (IAM), Zero Trust security, and Identity Governance.
+
+**Key Capabilities**:
+
+- **Identity as Code**: Automated pipeline deployment of users, groups, and policies.
+- **Zero Trust Architecture**: Conditional Access, MFA, and Phishing-Resistant Auth (FIDO2).
+- **Identity Governance**: Access Reviews, Entitlement Management, and Lifecycle Workflows.
+- **Privileged Access**: PIM for Groups and Roles, Break Glass account management.
+
 ### [Microsoft Purview](./Purview/)
 
 **Focus**: Comprehensive data governance, risk, and compliance implementation.
@@ -61,10 +72,10 @@ This assessment serves as a **living roadmap** of demonstrated technical compete
 | Capability Area | Specific Skill | Status | Project Reference |
 |-----------------|----------------|--------|-------------------|
 | **Identity Fundamentals** | Users, Groups, & Licensing | ✅ Implemented | All Projects |
-| **Authentication** | MFA, Passwordless, FIDO2 | 📅 Planned | - |
-| **Access Control** | Conditional Access Policies | 📅 Planned | - |
-| **Identity Governance** | Privileged Identity Mgmt (PIM) | 📅 Planned | - |
-| **Identity Governance** | Access Reviews & Lifecycle | 📅 Planned | - |
+| **Authentication** | MFA, Passwordless, FIDO2 | ✅ Implemented | Entra Zero Trust RBAC |
+| **Access Control** | Conditional Access Policies | ✅ Implemented | Entra Deployment Pipelines / RBAC |
+| **Identity Governance** | Privileged Identity Mgmt (PIM) | ✅ Implemented | Entra Deployment Pipelines |
+| **Identity Governance** | Access Reviews & Lifecycle | ✅ Implemented | Entra Zero Trust RBAC |
 | **Workload Identities** | Service Principals & Managed Identities | ✅ Implemented | Sentinel-as-Code / AI Challenge |
 | **External Identities** | B2B Collaboration & B2C | 📅 Planned | - |
 | **Application Identity** | App Registrations & SSO | ✅ Implemented | Azure AI Security Challenge |
@@ -141,7 +152,6 @@ This portfolio is continuously evolving. Upcoming focus areas include:
 - **Microsoft Fabric**: Secure analytics and data engineering.
 - **Microsoft Priva**: Privacy risk management.
 - **External Attack Surface Management (EASM)**: Discovery and inventory.
-- **Entra ID Governance**: Advanced identity lifecycle workflows.
 
 ---
 

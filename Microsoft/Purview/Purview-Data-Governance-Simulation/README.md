@@ -667,7 +667,7 @@ Built-in SITs are immediately available in any M365 E5 tenant. For custom SIT cr
 
 **Related Projects**: [Classification-Lifecycle-Labs](../Purview-Classification-Lifecycle-Labs/) (custom SITs, retention labels) • [Skills-Ramp-OnPrem-and-Cloud](../Purview-Skills-Ramp-OnPrem-and-Cloud/) (hybrid scanning)
 
-**Repository Style Guides**: [PowerShell](../../Style%20Guides/powershell-style-guide.md) • [Markdown](../../Style%20Guides/markdown-style-guide.md) • [Parameters](../../Style%20Guides/parameters-file-style-guide.md)
+**Repository Style-Guides**: [PowerShell](../../Style-Guides/powershell-style-guide.md) • [Markdown](../../Style-Guides/markdown-style-guide.md) • [Parameters](../../Style-Guides/parameters-file-style-guide.md)
 
 **Advanced Scenarios**: [Future Enhancements & Integrations](FUTURE-ENHANCEMENTS.md) - Enterprise integrations (SIEM, ITSM, AI/ML), operational automation, compliance extensions, and advanced analytics beyond core simulation capabilities
 

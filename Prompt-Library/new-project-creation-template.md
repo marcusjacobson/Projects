@@ -76,10 +76,10 @@ This is a "from scratch" setup - do not assume any prior Purview configuration o
 
 Before creating any content, you MUST:
 
-1. **Review Repository Style Guides:**
-   - Read and understand the Markdown Style Guide (Style Guides/markdown-style-guide.md)
-   - Read and understand the PowerShell Style Guide (Style Guides/powershell-style-guide.md) if applicable
-   - Read and understand the Parameters File Style Guide (Style Guides/parameters-file-style-guide.md) if applicable
+1. **Review Repository Style-Guides:**
+   - Read and understand the Markdown Style Guide (Style-Guides/markdown-style-guide.md)
+   - Read and understand the PowerShell Style Guide (Style-Guides/powershell-style-guide.md) if applicable
+   - Read and understand the Parameters File Style Guide (Style-Guides/parameters-file-style-guide.md) if applicable
    - Follow any other relevant style guides in the repository
 
 2. **Review Existing Reference Projects:**
@@ -387,7 +387,7 @@ This project assumes no prior Purview configuration or existing deployment. All 
 
 Before implementing, verify:
 
-- [ ] Reviewed applicable style guides from Style Guides/ directory
+- [ ] Reviewed applicable style guides from Style-Guides/ directory
 - [ ] Reviewed existing Purview-Skills-Ramp-OnPrem-and-Cloud project for reusable patterns
 - [ ] Identified PowerShell scripts, documentation templates, and configuration files to duplicate
 - [ ] Planned content extraction strategy - no links or references, only embedded duplicated content

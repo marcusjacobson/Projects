@@ -68,7 +68,7 @@ Once all bridge steps are completed successfully, your environment is ready for 
 
 > **Note:** Advanced security configurations and feature enablement are covered in Week 2 guides. The bridge validation confirms your environment is *ready* for these configurations, but they are not required to complete Week 1 or start Week 2.
 
-**Continue to:** [Week 2: AI Foundation & Secure Model Deployment](../../02-AI-Foundation-&-Secure-Model-Deployment/README.md)
+**Continue to:** [Week 2: AI Foundation & Secure Model Deployment](../../02-AI-Foundation-and-Secure-Model-Deployment/README.md)
 
 ---
 

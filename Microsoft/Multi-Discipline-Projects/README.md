@@ -2,11 +2,19 @@
 
 **A portfolio of advanced technical projects integrating multiple Microsoft disciplines including AI, Security, Identity, and Governance.**
 
+**Keywords:** Cross-Domain Integration, AI Security, Unified SecOps, Zero Trust, Data Governance, Identity Management, Solution Architecture, Enterprise Scale.
+
+**Problem Statement:**
+Modern enterprise challenges rarely fit neatly into a single technology silo. Securing AI workloads, for example, requires a coordinated effort across Infrastructure, Identity, Data Security, and Threat Protection. Isolated solutions fail to address the complexity of these interconnected risks.
+
+**Solution:**
+This section showcases complex, cross-domain projects that break down silos. By integrating technologies like Azure OpenAI, Defender XDR, Microsoft Purview, and Entra ID, these projects demonstrate how to build holistic, resilient architectures that solve multifaceted business problems.
+
 This directory contains complex, cross-domain projects that demonstrate the integration of various Microsoft technologies to solve enterprise-scale challenges. These projects go beyond single-product implementations to showcase real-world architectural patterns and unified security operations.
 
 ## 📂 Project Portfolio
 
-### [Azure AI Security Skills Challenge](./Azure%20Ai%20Security%20Skills%20Challenge/README.md)
+### [Azure AI Security Skills Challenge](./Azure-Ai-Security-Skills-Challenge/README.md)
 
 **A comprehensive 10-week journey to master secure AI deployment, Microsoft Security tools, and Copilot integration.**
 

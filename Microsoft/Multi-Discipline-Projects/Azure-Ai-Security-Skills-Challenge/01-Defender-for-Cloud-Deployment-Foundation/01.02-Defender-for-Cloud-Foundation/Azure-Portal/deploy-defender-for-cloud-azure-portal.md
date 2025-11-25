@@ -1927,7 +1927,7 @@ After successful Defender for Cloud deployment via Azure Portal:
 
 ### Resources for Continuation
 
-- [Week 2: AI Foundation & Secure Model Deployment](../../../../02-AI-Foundation-&-Secure-Model-Deployment/README.md)
+- [Week 2: AI Foundation & Secure Model Deployment](../../../../02-AI-Foundation-and-Secure-Model-Deployment/README.md)
 - [Main Project Roadmap](../../../../README.md)
 - [Prompt Library Template](../../../../Prompt-Library/README.md)
 

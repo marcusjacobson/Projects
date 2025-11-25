@@ -2,11 +2,13 @@
 
 **A comprehensive 10-week journey to master secure AI deployment, Microsoft Security tools, and Copilot integration.**
 
+**Keywords:** Azure OpenAI, AI Security, Defender for Cloud, Security Copilot, Microsoft Purview, Prompt Engineering, LLM Security, DevSecOps, Governance, Responsible AI.
+
 This project aligns with Microsoft's AI Transformation strategy and provides a hands-on roadmap for building enterprise-grade AI security skills. It covers the full spectrum of AI security, from foundational infrastructure to advanced generative AI governance.
 
 ## 🎯 Strategic Value
 
-The **Azure AI Security Skills Challenge** is designed to bridge the gap between traditional security operations and the emerging world of AI engineering. By completing this roadmap, you will build:
+**The Azure AI Security Skills Challenge is designed to bridge the gap between traditional security operations and the emerging world of AI engineering.** By completing this roadmap, you will build:
 
 - **Enterprise-Ready AI Security**: Practical experience deploying and securing Azure OpenAI, Copilot, and custom AI models.
 - **Unified Security Operations**: Deep integration of Defender XDR, Sentinel, and Security Copilot for modern SOC capabilities.
@@ -45,7 +47,7 @@ This project builds a complete **AI Security Ecosystem** integrating core Micros
 
 ---
 
-## 🌍 **Important: Regional Deployment Guidance**
+## 🌍 Regional Deployment Guidance
 
 **⚠️ CRITICAL**: This project deploys infrastructure to **East US** region for complete AI security coverage and curriculum compliance.
 
@@ -59,19 +61,6 @@ This project builds a complete **AI Security Ecosystem** integrating core Micros
 **Regional Impact**: Deploying in regions with limited modern security operations features would create a curriculum compliance gap and prevent completion of required Week 2 deliverables.
 
 📖 **Learn More**: [Microsoft Defender XDR unified security operations platform](https://learn.microsoft.com/en-us/defender-xdr/)
-
----
-
-## 🎓 Skills & Certification Alignment
-
-This roadmap is mapped to key Microsoft certifications and job roles, ensuring that your practical work translates directly to professional growth.
-
-| Phase | Weeks | Focus Area | Aligned Certifications | Key Skills |
-|-------|-------|------------|------------------------|------------|
-| **1** | 00-01 | **Security Foundations** | **AZ-500**, **SC-200** | Azure Security, Defender for Cloud, IaC (Bicep/PowerShell) |
-| **2** | 02-03 | **AI Engineering & Ops** | **AI-102**, **AZ-400** | Azure OpenAI, Prompt Engineering, Logic Apps Automation, Cost Mgmt |
-| **3** | 04-06 | **Advanced SecOps & Gov** | **SC-100**, **DP-600** | Security Copilot, Purview, Priva, Data Governance |
-| **4** | 07-10 | **Applied AI & Delivery** | **AI-102**, **PL-200** | Fabric, AI Foundry, Copilot Studio, Secure Delivery |
 
 ---
 
@@ -105,11 +94,11 @@ This roadmap has been optimized for working professionals with a logical progres
 
 ## ⚡ **Key Benefits of This Structure**
 
-- **Realistic Time Investment**: Each week designed for 8-12 hours total (manageable with full-time work)
-- **Logical Learning Flow**: Each phase builds methodically on previous knowledge
-- **Balanced Workload**: Complex deployment work separated from AI integration
-- **Practical Outcomes**: Every week delivers deployable solutions and reusable assets
-- **Enterprise Ready**: Progresses from foundational skills to customer-facing delivery capability
+- **Realistic Time Investment**: Each week is designed for 8-12 hours total (manageable with full-time work).
+- **Logical Learning Flow**: Each phase builds methodically on previous knowledge.
+- **Balanced Workload**: Complex deployment work is separated from AI integration.
+- **Practical Outcomes**: Every week delivers deployable solutions and reusable assets.
+- **Enterprise Ready**: Progresses from foundational skills to customer-facing delivery capability.
 
 ---
 
@@ -129,17 +118,17 @@ As project weeks are completed, the **Completed** checkbox will be marked.
 
 | Week | Focus Area | Status | Key Deliverables |
 |------|------------|--------|------------------|
-| 0 | [Project Setup & Admin](./00%20-%20Project%20Setup%20&%20Admin/README.md) | [x] | Environment Validation Script, Dev Setup |
-| 1 | [Defender for Cloud Deployment Foundation](./01%20-%20Defender%20for%20Cloud%20Deployment%20Foundation/README.md) | [x] | MDC Deployment, Unified SecOps Integration |
-| 2 | [AI Foundation & Secure Model Deployment](./02%20-%20AI%20Foundation%20&%20Secure%20Model%20Deployment/README.md) | [🔄] | Azure OpenAI, Cost Mgmt, Prompt Library |
+| 0 | [Project Setup & Admin](./00-Project-Setup-and-Admin/README.md) | [x] | Environment Validation Script, Dev Setup |
+| 1 | [Defender for Cloud Deployment Foundation](./01-Defender-for-Cloud-Deployment-Foundation/README.md) | [x] | MDC Deployment, Unified SecOps Integration |
+| 2 | [AI Foundation & Secure Model Deployment](./02-AI-Foundation-and-Secure-Model-Deployment/README.md) | [🔄] | Azure OpenAI, Cost Mgmt, Prompt Library |
 | 3 | [AI-Driven Security Operations Automation](./03-AI-SecOps/README.md) | [🔄] | Logic Apps Automation, Incident Enrichment |
-| 4 | [Advanced XDR + Security Copilot Integration](./04%20-%20Defender%20XDR%20+%20Security%20Copilot%20Integration/README.md) | [ ] | Security Copilot Plugin, Advanced Hunting |
-| 5 | [Microsoft Purview for Data Governance](./05%20-%20Microsoft%20Purview%20for%20Data%20Governance/README.md) | [ ] | Data Map, Classification, Sensitivity Labels |
-| 6 | [Microsoft Priva and Responsible AI](./06%20-%20Microsoft%20Priva%20and%20Responsible%20AI/README.md) | [ ] | Privacy Risk Mgmt, Subject Rights Requests |
-| 7 | [Microsoft Fabric for Secure Analytics](./07%20-%20Microsoft%20Fabric%20for%20Secure%20Analytics/README.md) | [ ] | Fabric Capacity, OneLake Security |
-| 8 | [Azure AI Foundry & Secure AI Workloads](./08%20-%20Azure%20AI%20Foundry%20&%20Secure%20AI%20Workloads/README.md) | [ ] | AI Studio, Content Safety, Model Catalog |
-| 9 | [Copilot Studio for Security Agents](./09%20-%20Copilot%20Studio%20for%20Security%20Agents/README.md) | [ ] | Custom Copilots, Plugin Development |
-| 10 | [Secure Copilot Deployment & Delivery Practices](./10%20-%20Secure%20Copilot%20Deployment%20&%20Delivery%20Practices/README.md) | [ ] | Production Readiness, Adoption Framework |
+| 4 | [Advanced XDR + Security Copilot Integration](./04-Defender-XDR-and-Security-Copilot-Integration-COMING-SOON/README.md) | [ ] | Security Copilot Plugin, Advanced Hunting |
+| 5 | [Microsoft Purview for Data Governance](./05-Microsoft-Purview-for-Data-Governance-COMING-SOON/README.md) | [ ] | Data Map, Classification, Sensitivity Labels |
+| 6 | [Microsoft Priva and Responsible AI](./06-Microsoft-Priva-and-Responsible-AI-COMING-SOON/README.md) | [ ] | Privacy Risk Mgmt, Subject Rights Requests |
+| 7 | [Microsoft Fabric for Secure Analytics](./07-Microsoft-Fabric-for-Secure-Analytics-COMING-SOON/README.md) | [ ] | Fabric Capacity, OneLake Security |
+| 8 | [Azure AI Foundry & Secure AI Workloads](./08-Azure-AI-Foundry-and-Secure-AI-Workloads-COMING-SOON/README.md) | [ ] | AI Studio, Content Safety, Model Catalog |
+| 9 | [Copilot Studio for Security Agents](./09-Copilot-Studio-for-Security-Agents-COMING-SOON/README.md) | [ ] | Custom Copilots, Plugin Development |
+| 10 | [Secure Copilot Deployment & Delivery Practices](./10-Secure-Copilot-Deployment-and-Delivery-Practices-COMING-SOON/README.md) | [ ] | Production Readiness, Adoption Framework |
 
 ## 📊 Comprehensive AI Security Capability Coverage
 
@@ -217,7 +206,7 @@ The project includes comprehensive automation and validation tools to ensure rel
 
 #### Comprehensive Environment Validation
 
-- **[Test-EnvironmentValidation.ps1](./00%20-%20Project%20Setup%20&%20Admin/scripts/Test-EnvironmentValidation.ps1)** - Advanced 9-step environment validation script that checks:
+- **[Test-EnvironmentValidation.ps1](./00-Project-Setup-and-Admin/scripts/Test-EnvironmentValidation.ps1)** - Advanced 9-step environment validation script that checks:
   - Azure CLI installation and authentication
   - PowerShell Az module configuration
   - Subscription permissions (Owner/Contributor validation)
@@ -228,7 +217,7 @@ The project includes comprehensive automation and validation tools to ensure rel
 
 #### Automated Development Environment Installation
 
-- **[Install-DevelopmentEnvironment.ps1](./00%20-%20Project%20Setup%20&%20Admin/scripts/Install-DevelopmentEnvironment.ps1)** - Complete 7-step automated installation covering:
+- **[Install-DevelopmentEnvironment.ps1](./00-Project-Setup-and-Admin/scripts/Install-DevelopmentEnvironment.ps1)** - Complete 7-step automated installation covering:
   - Azure CLI latest version installation
   - PowerShell Az module setup
   - Visual Studio Code with Azure extensions
@@ -279,9 +268,9 @@ The project includes comprehensive automation and validation tools to ensure rel
 
 #### Documentation Excellence
 
-- **[Markdown Style Guide](../../Style%20Guides/markdown-style-guide.md)** compliance across all documentation
-- **[PowerShell Style Guide](../../Style%20Guides/powershell-style-guide.md)** implementation in all automation scripts
-- **[Parameters File Style Guide](../../Style%20Guides/parameters-file-style-guide.md)** standardization for Infrastructure-as-Code configuration
+- **[Markdown Style Guide](../../../Style-Guides/markdown-style-guide.md)** compliance across all documentation
+- **[PowerShell Style Guide](../../../Style-Guides/powershell-style-guide.md)** implementation in all automation scripts
+- **[Parameters File Style Guide](../../../Style-Guides/parameters-file-style-guide.md)** standardization for Infrastructure-as-Code configuration
 - **Comprehensive AI-Assisted Content Attribution** - Transparency in AI tool usage for content generation
 
 This enhanced tooling ensures reliable setup, deployment success, and professional-grade automation throughout the 10-week learning journey.
@@ -298,7 +287,7 @@ This enhanced tooling ensures reliable setup, deployment success, and profession
 
 ### Technical Excellence Standards
 
-- **Style Guide Compliance**: All documentation follows centralized [Markdown](../../Style%20Guides/markdown-style-guide.md), [PowerShell](../../Style%20Guides/powershell-style-guide.md), and [Parameters File](../../Style%20Guides/parameters-file-style-guide.md) style guides
+- **Style Guide Compliance**: All documentation follows centralized [Markdown](../../../Style-Guides/markdown-style-guide.md), [PowerShell](../../../Style-Guides/powershell-style-guide.md), and [Parameters File](../../../Style-Guides/parameters-file-style-guide.md) style guides
 - **AI-Assisted Development**: Transparent acknowledgment of GitHub Copilot usage in content generation and script development
 - **Enterprise Deployment Readiness**: Production-ready automation with comprehensive error handling and validation
 - **Modern Security Integration**: Complete unified security operations platform foundation for Weeks 1-2
@@ -307,9 +296,9 @@ This enhanced tooling ensures reliable setup, deployment success, and profession
 
 This project follows established style guides to ensure consistency and professionalism across all documentation and code:
 
-- **[Markdown Style Guide](../../Style%20Guides/markdown-style-guide.md)** - Formatting, punctuation, and tone standards for all markdown documentation
-- **[PowerShell Style Guide](../../Style%20Guides/powershell-style-guide.md)** - Consistent visual and organizational patterns for PowerShell scripts
-- **[Parameters File Style Guide](../../Style%20Guides/parameters-file-style-guide.md)** - Configuration standards for Azure parameters files
+- **[Markdown Style Guide](../../../Style-Guides/markdown-style-guide.md)** - Formatting, punctuation, and tone standards for all markdown documentation
+- **[PowerShell Style Guide](../../../Style-Guides/powershell-style-guide.md)** - Consistent visual and organizational patterns for PowerShell scripts
+- **[Parameters File Style Guide](../../../Style-Guides/parameters-file-style-guide.md)** - Configuration standards for Azure parameters files
 
 These guides define comprehensive standards for headers, lists, code blocks, interface elements, professional documentation practices, and Infrastructure-as-Code configuration patterns.
 

@@ -281,7 +281,7 @@ To proceed to Week 3 AI-Driven Security Operations Automation:
 ## 🔗 Related Resources
 
 - [Week 3: AI-Driven Security Operations Automation](../README.md)
-- [Week 4: Advanced XDR + Security Copilot Integration](../../04-Defender-XDR-+-Security-Copilot-Integration/README.md)
+- [Week 4: Advanced XDR + Security Copilot Integration](../../04-Defender-XDR-and-Security-Copilot-Integration/README.md)
 - [Project Root](../../README.md)
 
 ---

@@ -1,0 +1,77 @@
+<#
+.SYNOPSIS
+    Deploys a Custom Role Definition.
+
+.DESCRIPTION
+    Creates 'ROLE-Tier1-Helpdesk' with permissions to reset passwords and invalidate tokens.
+    This role is designed for Level 1 support staff.
+
+.EXAMPLE
+    .\Deploy-CustomRoles.ps1
+
+.NOTES
+    Author: Marcus Jacobson
+    Version: 1.0.0
+    Created: 2025-11-24
+    Last Modified: 2025-11-24
+    
+    Copyright (c) 2025 Marcus Jacobson. All rights reserved.
+    Licensed under the MIT License.
+    
+    Requirements:
+    - Microsoft Graph PowerShell SDK
+    
+    Script development orchestrated using GitHub Copilot.
+
+.SPECIALIZED_SECTION
+    ROLE DEFINITION
+    - Name: ROLE-Tier1-Helpdesk
+    - Permissions: password/update, invalidateAllRefreshTokens
+    - Scope: Directory-wide (can be scoped to AU)
+#>
+
+[CmdletBinding()]
+param()
+
+process {
+    . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
+
+    $roleName = "ROLE-Tier1-Helpdesk"
+    
+    Write-Host "🚀 Deploying Custom Role..." -ForegroundColor Cyan
+
+    try {
+        # Check existence via REST
+        $uri = "https://graph.microsoft.com/v1.0/roleManagement/directory/roleDefinitions?`$filter=displayName eq '$roleName'"
+        $existingResponse = Invoke-MgGraphRequest -Method GET -Uri $uri
+        $existing = $existingResponse.value | Select-Object -First 1
+
+        if ($existing) {
+            Write-Host "   ⚠️  Role '$roleName' already exists." -ForegroundColor Yellow
+        }
+        else {
+            $perms = @(
+                @{
+                    allowedResourceActions = @(
+                        "microsoft.directory/users/password/update",
+                        "microsoft.directory/users/invalidateAllRefreshTokens"
+                    )
+                }
+            )
+
+            $params = @{
+                displayName = $roleName
+                description = "Can reset passwords and invalidate tokens for non-admins."
+                rolePermissions = $perms
+                isEnabled = $true
+                templateId = [Guid]::NewGuid().ToString() # Required for custom roles
+            }
+
+            $null = Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/roleManagement/directory/roleDefinitions" -Body $params
+            Write-Host "   ✅ Created Custom Role '$roleName'" -ForegroundColor Green
+        }
+    }
+    catch {
+        Write-Error "Failed to create custom role: $_"
+    }
+}

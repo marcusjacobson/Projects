@@ -468,13 +468,16 @@ try {
 
 ### Preferred Azure Operation Methods
 
-**Always prefer REST API calls via `az rest` commands** over direct Azure PowerShell cmdlets or standard Azure CLI commands when possible. This approach provides enhanced control, better error handling, and more precise resource management.
+**Always prefer REST API calls** over direct PowerShell cmdlets or standard CLI commands when possible. This approach provides enhanced control, better error handling, and more precise resource management.
+
+- **For Azure Resources (ARM)**: Use `az rest` commands.
+- **For Microsoft Entra ID (Graph)**: Use `Invoke-MgGraphRequest` (Microsoft Graph PowerShell SDK).
 
 ### REST API Method Hierarchy
 
 **Recommended Order of Operations:**
 
-1. **Primary**: `az rest` commands for direct REST API calls
+1. **Primary**: Direct REST API calls (`az rest` or `Invoke-MgGraphRequest`)
 2. **Secondary**: Azure CLI commands (`az resource`, `az group`, etc.)
 3. **Tertiary**: Azure PowerShell cmdlets (only when REST API unavailable)
 

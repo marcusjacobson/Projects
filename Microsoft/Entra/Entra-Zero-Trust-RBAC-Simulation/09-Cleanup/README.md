@@ -22,7 +22,18 @@ It is designed to target *only* resources with the specific prefixes used in thi
 
 ## 📝 Lab Steps
 
-### Step 1: Execute Cleanup
+### Step 1: Configure Parameters File
+
+Before deploying resources, you must configure the environment parameters.
+
+**Context**: This project uses a centralized JSON configuration file to manage deployment settings. This ensures consistency across all scripts.
+
+1. Navigate to the `infra` directory.
+2. Open `module.parameters.json`.
+3. Review the default settings.
+4. Save the file.
+
+### Step 2: Execute Cleanup
 
 We will run the master cleanup script.
 
@@ -30,17 +41,27 @@ We will run the master cleanup script.
 
 1. Open a PowerShell terminal.
 2. Navigate to the `scripts` directory.
-3. Run `Nuke-Simulation.ps1`.
+3. Run the following command:
+
+   ```powershell
+   .\Nuke-Simulation.ps1 -UseParametersFile
+   ```
+
 4. **Confirmation**: You will be prompted to confirm the deletion. Type `Y` to proceed.
 
-### Step 2: Verify Removal
+### Step 3: Verify Removal
 
 We will use the validation script from Lab 08 to confirm everything is gone.
 
 **Context**: In this specific case, we *want* the validation to fail. If the validation script says "User USR-CEO not found," that means the cleanup was successful.
 
 1. Navigate to `../08-Validation-and-Reporting/scripts/`.
-2. Run `Validate-AllLabs.ps1`.
+2. Run the following command:
+
+   ```powershell
+   .\Validate-AllLabs.ps1 -UseParametersFile
+   ```
+
 3. You should see a sea of **RED** (Failures), indicating the resources no longer exist.
 
 ## ✅ Validation

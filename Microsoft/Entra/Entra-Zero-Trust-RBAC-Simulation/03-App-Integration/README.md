@@ -28,23 +28,44 @@ This lab secures the application layer of the tenant. We will implement governan
 
 ## 📝 Lab Steps
 
-### Step 1: Configure App Consent Governance
+### Step 1: Configure Parameters File
+
+Before deploying resources, you must configure the environment parameters.
+
+**Context**: This project uses a centralized JSON configuration file to manage deployment settings. This ensures consistency across all scripts.
+
+1. Navigate to the `infra` directory.
+2. Open `module.parameters.json`.
+3. Review the default settings.
+4. Save the file.
+
+### Step 2: Configure App Consent Governance
 
 We will restrict user consent to only apps from verified publishers that require low-impact permissions.
 
 **Context**: Attackers often use "Illicit Consent Grants" (fake apps asking for "Read your email") to bypass MFA. By restricting consent, we stop users from accidentally handing over the keys to their data. The Admin Consent Workflow ensures productivity isn't blocked, just governed.
 
-1. Run `Configure-AppConsentGovernance.ps1`.
+1. Run the following command:
+
+   ```powershell
+   .\Configure-AppConsentGovernance.ps1 -UseParametersFile
+   ```
+
 2. This sets "Users can consent to apps" to **No** (or restricted).
 3. It enables the **Admin Consent Workflow**, allowing users to request approval.
 
-### Step 2: Deploy Reporting Service Principal
+### Step 3: Deploy Reporting Service Principal
 
 We will create an identity for a hypothetical "Daily Reporting Job". Instead of a password (client secret), we will use a certificate.
 
 **Context**: Hard-coded passwords (Client Secrets) in scripts are a major security risk. Certificates are more secure because they are harder to steal and easier to manage. We also apply "Least Privilege" here—this bot only needs to read logs, so that's all we give it.
 
-1. Run `Deploy-ReportingServicePrincipal.ps1`.
+1. Run the following command:
+
+   ```powershell
+   .\Deploy-ReportingServicePrincipal.ps1 -UseParametersFile
+   ```
+
 2. This script will:
     - Generate a self-signed certificate.
     - Create an App Registration (`APP-Reporting-Automation`).

@@ -15,80 +15,87 @@
 #>
 
 [CmdletBinding()]
-param()
+param(
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile
+)
 
 process {
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
 
+    # Load Parameters
+    $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"
+    if ($UseParametersFile -or (Test-Path $paramsPath)) {
+        if (Test-Path $paramsPath) {
+            Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
+            $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
+            
+            $TargetGroupName = $jsonParams."Configure-AuthMethods".targetGroupName
+            $EnableFido2 = $jsonParams."Configure-AuthMethods".enableFido2
+            $EnableMicrosoftAuthenticator = $jsonParams."Configure-AuthMethods".enableMicrosoftAuthenticator
+        } else {
+            Throw "Parameters file not found at $paramsPath"
+        }
+    } else {
+        Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
+    }
+
     Write-Host "🚀 Configuring Authentication Methods..." -ForegroundColor Cyan
 
-    # 1. Enable FIDO2
-    Write-Host "   Configuring FIDO2..." -ForegroundColor Gray
-    try {
-        $fidoParams = @{
-            State = "enabled"
-            ExcludeTargets = @()
-            IncludeTargets = @(
-                @{
-                    TargetType = "group"
-                    Id = "all_users" # Virtual group 'all_users' often works in policy, or we need a real group.
-                    # Actually, for Auth Methods, we usually target a specific group or 'all_users' isn't a valid GUID.
-                    # We should use 'All Users' target type if available, or a specific group.
-                    # Let's use the 'All Users' dynamic group if we have one, or just a static group 'GRP-SEC-AllUsers' created in Lab 01?
-                    # Lab 01 created 'GRP-SEC-AllUsers' (Dynamic). Let's use that.
-                }
-            )
-        }
-        
-        # Fetch GRP-SEC-AllUsers
-        $allUsersGroup = Get-MgGroup -Filter "DisplayName eq 'GRP-SEC-AllUsers'" -ErrorAction SilentlyContinue
-        if ($allUsersGroup) {
-            $target = @{
-                TargetType = "group"
-                Id = $allUsersGroup.Id
-                IsRegistrationRequired = $false
-                KeyRestrictions = $null
-            }
-            
-            # Update FIDO2 Policy
-            # Note: Graph API for Auth Methods is specific.
-            # PATCH /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/fido2
-            
-            $params = @{
-                State = "enabled"
-                IncludeTargets = @($target)
-            }
-            
-            Update-MgPolicyAuthenticationMethodPolicyAuthenticationMethodConfiguration -AuthenticationMethodConfigurationId "fido2" -BodyParameter $params
-            Write-Host "   ✅ Enabled FIDO2 for 'GRP-SEC-AllUsers'" -ForegroundColor Green
-        } else {
-            Write-Warning "   ⚠️ 'GRP-SEC-AllUsers' not found. Skipping FIDO2 config."
-        }
+    # Fetch Target Group
+    $groupUri = "https://graph.microsoft.com/v1.0/groups?`$filter=displayName eq '$TargetGroupName'"
+    $groupResponse = Invoke-MgGraphRequest -Method GET -Uri $groupUri
+    $allUsersGroup = $groupResponse.value | Select-Object -First 1
+
+    if (-not $allUsersGroup) {
+        Write-Warning "   ⚠️ '$TargetGroupName' not found. Skipping configuration."
+        return
     }
-    catch {
-        Write-Warning "   ⚠️ Failed to configure FIDO2: $_"
+
+    # 1. Enable FIDO2
+    if ($EnableFido2) {
+        Write-Host "   Configuring FIDO2..." -ForegroundColor Gray
+        try {
+            $target = @{
+                targetType = "group"
+                id = $allUsersGroup.id
+                isRegistrationRequired = $false
+                keyRestrictions = $null
+            }
+            
+            $body = @{
+                state = "enabled"
+                includeTargets = @($target)
+            }
+            
+            Invoke-MgGraphRequest -Method PATCH -Uri "https://graph.microsoft.com/v1.0/policies/authenticationMethodsPolicy/authenticationMethodConfigurations/fido2" -Body $body
+            Write-Host "   ✅ Enabled FIDO2 for '$TargetGroupName'" -ForegroundColor Green
+        }
+        catch {
+            Write-Warning "   ⚠️ Failed to configure FIDO2: $_"
+        }
     }
 
     # 2. Enable Microsoft Authenticator
-    Write-Host "   Configuring Microsoft Authenticator..." -ForegroundColor Gray
-    try {
-        if ($allUsersGroup) {
+    if ($EnableMicrosoftAuthenticator) {
+        Write-Host "   Configuring Microsoft Authenticator..." -ForegroundColor Gray
+        try {
             $target = @{
-                TargetType = "group"
-                Id = $allUsersGroup.Id
-                AuthenticationMode = "any" # Push, Passwordless, etc.
+                targetType = "group"
+                id = $allUsersGroup.id
+                authenticationMode = "any"
             }
             
-            $params = @{
-                State = "enabled"
-                IncludeTargets = @($target)
+            $body = @{
+                state = "enabled"
+                includeTargets = @($target)
             }
             
-            Update-MgPolicyAuthenticationMethodPolicyAuthenticationMethodConfiguration -AuthenticationMethodConfigurationId "microsoftAuthenticator" -BodyParameter $params
-            Write-Host "   ✅ Enabled Microsoft Authenticator for 'GRP-SEC-AllUsers'" -ForegroundColor Green
+            Invoke-MgGraphRequest -Method PATCH -Uri "https://graph.microsoft.com/v1.0/policies/authenticationMethodsPolicy/authenticationMethodConfigurations/microsoftAuthenticator" -Body $body
+            Write-Host "   ✅ Enabled Microsoft Authenticator for '$TargetGroupName'" -ForegroundColor Green
         }
-    }
-    catch {
-        Write-Warning "   ⚠️ Failed to configure Microsoft Authenticator: $_"
+        catch {
+            Write-Warning "   ⚠️ Failed to configure Microsoft Authenticator: $_"
+        }
     }
 }

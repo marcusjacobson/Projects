@@ -1,0 +1,28 @@
+{
+    "global": {
+        "location": "US"
+    },
+    "Configure-PIM-Groups": {
+        "groupName": "GRP-SEC-IT",
+        "roleName": "Exchange Administrator",
+        "eligibleUser": "USR-IT-Admin"
+    },
+    "Configure-PIM-Roles": {
+        "roleName": "Global Administrator",
+        "approverUser": "USR-CISO",
+        "maxDuration": "PT4H",
+        "requireMfa": true,
+        "requireJustification": true
+    },
+    "Deploy-CustomRoles": {
+        "roleName": "ROLE-Tier1-Helpdesk",
+        "description": "Can reset passwords and invalidate tokens for non-admins.",
+        "permissions": [
+            "microsoft.directory/users/password/update",
+            "microsoft.directory/users/invalidateAllRefreshTokens"
+        ]
+    },
+    "Remove-RBAC-PIM": {
+        "roleName": "ROLE-Tier1-Helpdesk"
+    }
+}

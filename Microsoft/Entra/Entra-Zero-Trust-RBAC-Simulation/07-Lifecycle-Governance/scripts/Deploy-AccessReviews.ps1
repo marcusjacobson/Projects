@@ -34,17 +34,36 @@
 #>
 
 [CmdletBinding()]
-param()
+param(
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile
+)
 
 process {
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
 
+    # Load Parameters
+    $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"
+    if ($UseParametersFile -or (Test-Path $paramsPath)) {
+        if (Test-Path $paramsPath) {
+            Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
+            $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
+            
+            $ReviewName = $jsonParams."Deploy-AccessReviews".reviewName
+            $ReviewDescription = $jsonParams."Deploy-AccessReviews".reviewDescription
+            $ReviewDurationDays = $jsonParams."Deploy-AccessReviews".reviewDurationDays
+            $ReviewIntervalMonths = $jsonParams."Deploy-AccessReviews".reviewIntervalMonths
+        } else {
+            Throw "Parameters file not found at $paramsPath"
+        }
+    } else {
+        Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
+    }
+
     Write-Host "🚀 Deploying Access Reviews..." -ForegroundColor Cyan
 
-    $reviewName = "AR-Quarterly-Guests"
-    
     # Check if exists
-    $arUri = "https://graph.microsoft.com/v1.0/identityGovernance/accessReviews/definitions?`$filter=displayName eq '$reviewName'"
+    $arUri = "https://graph.microsoft.com/v1.0/identityGovernance/accessReviews/definitions?`$filter=displayName eq '$ReviewName'"
     $arResponse = Invoke-MgGraphRequest -Method GET -Uri $arUri
     $existing = $arResponse.value | Select-Object -First 1
     
@@ -61,9 +80,9 @@ process {
             }
 
             $body = @{
-                displayName = $reviewName
-                descriptionForAdmins = "Quarterly review of all guest users"
-                descriptionForReviewers = "Quarterly review of all guest users"
+                displayName = $ReviewName
+                descriptionForAdmins = $ReviewDescription
+                descriptionForReviewers = $ReviewDescription
                 scope = @{
                     "@odata.type" = "#microsoft.graph.accessReviewQueryScope"
                     query = "/users/?`$filter=(userType eq 'Guest')"
@@ -83,11 +102,11 @@ process {
                     justificationRequiredOnApproval = $true
                     defaultDecisionEnabled = $true
                     defaultDecision = "Deny"
-                    instanceDurationInDays = 14
+                    instanceDurationInDays = $ReviewDurationDays
                     recurrence = @{
                         pattern = @{
                             type = "absoluteMonthly"
-                            interval = 3
+                            interval = $ReviewIntervalMonths
                         }
                         range = @{
                             type = "noEnd"
@@ -98,12 +117,12 @@ process {
             }
 
             Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identityGovernance/accessReviews/definitions" -Body $body
-            Write-Host "   ✅ Created Access Review '$reviewName'" -ForegroundColor Green
+            Write-Host "   ✅ Created Access Review '$ReviewName'" -ForegroundColor Green
         }
         catch {
             Write-Warning "   ⚠️ Failed to create Access Review: $_"
         }
     } else {
-        Write-Host "   ℹ️ Access Review '$reviewName' already exists." -ForegroundColor Gray
+        Write-Host "   ℹ️ Access Review '$ReviewName' already exists." -ForegroundColor Gray
     }
 }

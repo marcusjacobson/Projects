@@ -16,47 +16,46 @@
 #>
 
 [CmdletBinding()]
-param()
+param(
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile
+)
 
 process {
+    # Connect to Graph
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
+
+    # Load Parameters
+    $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"
+    if ($UseParametersFile -or (Test-Path $paramsPath)) {
+        if (Test-Path $paramsPath) {
+            Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
+            $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
+            
+            # Currently no specific parameters for hardening in the JSON other than generic ones, 
+            # but we prepare the structure for future expansion.
+            # $AllowedExtensions = $jsonParams."Configure-TenantHardening".allowedExtensions
+        } else {
+            Throw "Parameters file not found at $paramsPath"
+        }
+    } else {
+        Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
+    }
 
     Write-Host "🚀 Configuring Tenant Hardening..." -ForegroundColor Cyan
 
     # 1. Authorization Policy (Portal Access & Guest Invites)
     try {
-        $authPolicy = Get-MgPolicyAuthorizationPolicy
-        
-        $params = @{
-            # "Yes" in portal = $false here (Restrict access? No = $false)
-            # Wait, logic check:
-            # Portal: "Restrict access to Entra administration portal" -> Yes/No
-            # Graph: BlockMsolPowerShell = $true? No, that's different.
-            # Graph: DefaultUserRolePermissions.AllowedToReadOtherUsers
-            
-            # Actually, the "Restrict access to Entra admin portal" is often 'BlockMsolPowerShell' legacy or 
-            # controlled via 'GuestUserRoleId'.
-            
-            # Let's look at standard hardening:
-            # 1. Users can invite guests = No
-            AllowInvitesFrom = "adminsAndGuestInviters"
-            
-            # 2. Restrict non-admin access to portal
-            # This is actually NOT directly exposed in v1.0 AuthorizationPolicy easily for the "Portal" toggle specifically 
-            # in the same way it appears in GUI. 
-            # However, we can restrict 'AllowedToReadOtherUsers' which hardens enumeration.
-            # But the specific "Restrict Access to Portal" toggle is often:
-            # Set-MsolCompanySettings -UsersPermissionToReadOtherUsersEnabled $false
-            
-            # In Graph, it is:
-            DefaultUserRolePermissions = @{
-                AllowedToCreateApps = $false
-                AllowedToCreateSecurityGroups = $false
-                AllowedToReadOtherUsers = $false # This is the big one
+        $body = @{
+            allowInvitesFrom = "adminsAndGuestInviters"
+            defaultUserRolePermissions = @{
+                allowedToCreateApps = $false
+                allowedToCreateSecurityGroups = $false
+                allowedToReadOtherUsers = $false # Restrict user enumeration
             }
         }
 
-        Update-MgPolicyAuthorizationPolicy -AuthorizationPolicyId $authPolicy.Id -BodyParameter $params
+        Invoke-MgGraphRequest -Method PATCH -Uri "https://graph.microsoft.com/v1.0/policies/authorizationPolicy" -Body $body
         Write-Host "   ✅ Updated Authorization Policy (Restricted App/Group creation & User Enumeration)." -ForegroundColor Green
     }
     catch {
@@ -64,23 +63,9 @@ process {
     }
 
     # 2. Device Registration Policy
-    # "Users may join devices to Entra ID" -> Selected (None)
     try {
-        $devicePolicy = Get-MgPolicyDeviceRegistrationPolicy
-        
-        # To restrict to "None", we set MultiFactorAuthConfiguration to 0? No.
-        # We set 'AzureADJoin' -> 'AllowedToJoin' -> 'None'
-        
         # Note: DeviceRegistrationPolicy is often read-only in v1.0 or requires specific permissions.
-        # If this fails, we log a warning.
-        
-        # Actually, the standard way via Graph is tricky. 
-        # Let's try to set it to specific users (empty list) if possible, or just log that this is a manual step if API is limited.
-        # For simulation, we will try.
-        
-        # Update-MgPolicyDeviceRegistrationPolicy is not always available/working as expected for 'All' vs 'None'.
-        # We will skip strict device hardening via script if complex, but let's try restricting app registration which we did above.
-        
+        # We log a warning if we can't access it, but we don't fail the script.
         Write-Host "   ℹ️  Device Join restriction is complex via Graph v1.0. Please verify in portal if needed." -ForegroundColor Cyan
     }
     catch {

@@ -16,10 +16,13 @@
 
 [CmdletBinding()]
 param(
-    [switch]$Force
+    [switch]$Force,
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile
 )
 
 process {
+    # Connect to Graph
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
 
     if (-not $Force) {
@@ -30,17 +33,48 @@ process {
     Write-Host "🚀 Starting Cleanup..." -ForegroundColor Cyan
 
     # 1. Remove Users
-    $users = Get-MgUser -Filter "startsWith(userPrincipalName, 'USR-') or startsWith(userPrincipalName, 'ADM-BG-')" -All
+    # Filter: startsWith 'USR-' OR 'ADM-BG-'
+    # Note: OData filter syntax for OR with startsWith
+    $uri = "https://graph.microsoft.com/v1.0/users?`$filter=startsWith(userPrincipalName, 'USR-') or startsWith(userPrincipalName, 'ADM-BG-')"
+    $usersResponse = Invoke-MgGraphRequest -Method GET -Uri $uri
+    $users = $usersResponse.value
+
     foreach ($u in $users) {
-        Write-Host "   Removing User: $($u.UserPrincipalName)"
-        Remove-MgUser -UserId $u.Id -ErrorAction SilentlyContinue
+        Write-Host "   Removing User: $($u.userPrincipalName)"
+        try {
+            Invoke-MgGraphRequest -Method DELETE -Uri "https://graph.microsoft.com/v1.0/users/$($u.id)"
+        } catch {
+            Write-Warning "Failed to remove user $($u.userPrincipalName): $_"
+        }
     }
 
     # 2. Remove Groups
-    $groups = Get-MgGroup -Filter "startsWith(displayName, 'GRP-SEC-')" -All
+    # We select assignedLicenses to check if we need to remove them before deleting the group
+    $uri = "https://graph.microsoft.com/v1.0/groups?`$filter=startsWith(displayName, 'GRP-SEC-')&`$select=id,displayName,assignedLicenses"
+    $groupsResponse = Invoke-MgGraphRequest -Method GET -Uri $uri
+    $groups = $groupsResponse.value
+
     foreach ($g in $groups) {
-        Write-Host "   Removing Group: $($g.DisplayName)"
-        Remove-MgGroup -GroupId $g.Id -ErrorAction SilentlyContinue
+        Write-Host "   Removing Group: $($g.displayName)"
+        try {
+            # Check for licenses and remove if present
+            if ($g.assignedLicenses.Count -gt 0) {
+                Write-Host "      ⚠️  Removing assigned licenses first..." -ForegroundColor Yellow
+                # Force array type for JSON serialization
+                $skuIdsToRemove = @($g.assignedLicenses | ForEach-Object { $_.skuId })
+                
+                $body = @{
+                    addLicenses = @()
+                    removeLicenses = $skuIdsToRemove
+                }
+                
+                Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/groups/$($g.id)/assignLicense" -Body $body
+            }
+
+            Invoke-MgGraphRequest -Method DELETE -Uri "https://graph.microsoft.com/v1.0/groups/$($g.id)"
+        } catch {
+            Write-Warning "Failed to remove group $($g.displayName): $_"
+        }
     }
 
     Write-Host "✅ Cleanup Complete." -ForegroundColor Green

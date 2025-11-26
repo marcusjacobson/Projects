@@ -17,36 +17,56 @@
 #>
 
 [CmdletBinding()]
-param()
+param(
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile
+)
 
 process {
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
 
+    # Load Parameters
+    $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"
+    if ($UseParametersFile -or (Test-Path $paramsPath)) {
+        if (Test-Path $paramsPath) {
+            Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
+            $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
+            
+            $OrgName = $jsonParams."Configure-ExternalGovernance".orgName
+            $Domain = $jsonParams."Configure-ExternalGovernance".domain
+            $CatName = $jsonParams."Configure-ExternalGovernance".catalogName
+            $PkgName = $jsonParams."Configure-ExternalGovernance".packageName
+            $PolicyName = $jsonParams."Configure-ExternalGovernance".policyName
+        } else {
+            Throw "Parameters file not found at $paramsPath"
+        }
+    } else {
+        Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
+    }
+
     Write-Host "🚀 Configuring External Governance..." -ForegroundColor Cyan
 
     # 1. Create Connected Organization
-    $orgName = "Partner Corp"
-    $domain = "partner.example.com"
+    $orgUri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/connectedOrganizations?`$filter=displayName eq '$OrgName'"
+    $orgResponse = Invoke-MgGraphRequest -Method GET -Uri $orgUri
+    $connectedOrg = $orgResponse.value | Select-Object -First 1
     
-    $connectedOrg = Get-MgEntitlementManagementConnectedOrganization -Filter "DisplayName eq '$orgName'" -ErrorAction SilentlyContinue
     if (-not $connectedOrg) {
-        # Note: In a real scenario, this validates the domain. In simulation, it might fail if domain is unreachable or invalid.
-        # We will try to create it with a 'Proposed' state if possible, or just skip if it fails validation.
         try {
-            $params = @{
-                DisplayName = $orgName
-                Description = "Simulated Partner Organization"
-                IdentitySources = @(
+            $body = @{
+                displayName = $OrgName
+                description = "Simulated Partner Organization"
+                identitySources = @(
                     @{
                         "@odata.type" = "#microsoft.graph.domainIdentitySource"
-                        DisplayName = $domain
-                        DomainName = $domain
+                        displayName = $Domain
+                        domainName = $Domain
                     }
                 )
-                State = "Proposed" # Proposed allows creation without full validation sometimes, or just logical representation
+                state = "Proposed"
             }
-            $connectedOrg = New-MgEntitlementManagementConnectedOrganization -BodyParameter $params -ErrorAction Stop
-            Write-Host "   ✅ Created Connected Org '$orgName'" -ForegroundColor Green
+            $connectedOrg = Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/connectedOrganizations" -Body $body
+            Write-Host "   ✅ Created Connected Org '$OrgName'" -ForegroundColor Green
         }
         catch {
             Write-Warning "   ⚠️ Could not create Connected Org (Domain validation likely failed). Skipping policy creation for it."
@@ -54,55 +74,65 @@ process {
             return
         }
     } else {
-        Write-Host "   ℹ️ Connected Org '$orgName' already exists." -ForegroundColor Gray
+        Write-Host "   ℹ️ Connected Org '$OrgName' already exists." -ForegroundColor Gray
     }
 
     # 2. Create Access Package for External
-    $catName = "CAT-Marketing" # Reuse catalog
-    $cat = Get-MgEntitlementManagementAccessPackageCatalog -Filter "DisplayName eq '$catName'"
-    if (-not $cat) { Write-Error "Catalog not found. Run Deploy-AccessPackages.ps1 first."; return }
+    $catUri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/catalogs?`$filter=displayName eq '$CatName'"
+    $catResponse = Invoke-MgGraphRequest -Method GET -Uri $catUri
+    $cat = $catResponse.value | Select-Object -First 1
+    if (-not $cat) { Write-Error "Catalog '$CatName' not found. Run Deploy-AccessPackages.ps1 first."; return }
 
-    $pkgName = "PKG-Partner-Collab"
-    $pkg = Get-MgEntitlementManagementAccessPackage -Filter "DisplayName eq '$pkgName'" -ErrorAction SilentlyContinue
+    $pkgUri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/accessPackages?`$filter=displayName eq '$PkgName' and catalog/id eq '$($cat.id)'"
+    $pkgResponse = Invoke-MgGraphRequest -Method GET -Uri $pkgUri
+    $pkg = $pkgResponse.value | Select-Object -First 1
+    
     if (-not $pkg) {
-        $pkg = New-MgEntitlementManagementAccessPackage -DisplayName $pkgName -Description "External Collaboration" -CatalogId $cat.Id
-        Write-Host "   ✅ Created Access Package '$pkgName'" -ForegroundColor Green
+        $body = @{
+            displayName = $PkgName
+            description = "External Collaboration"
+            catalogId = $cat.id
+        }
+        $pkg = Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/accessPackages" -Body $body
+        Write-Host "   ✅ Created Access Package '$PkgName'" -ForegroundColor Green
     }
 
     # 3. Create Policy for Connected Org
-    $policyName = "Partner Access Policy"
+    # Get Current User for Approver
+    $me = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/me"
+    
     try {
-        $params = @{
-            AccessPackageId = $pkg.Id
-            DisplayName = $policyName
-            Description = "Allow partner users to request"
-            RequestorSettings = @{
-                ScopeType = "SpecificConnectedOrganizationSubjects"
-                ConnectedOrganizationId = $connectedOrg.Id
-                AcceptRequests = $true
+        $body = @{
+            accessPackageId = $pkg.id
+            displayName = $PolicyName
+            description = "Allow partner users to request"
+            requestorSettings = @{
+                scopeType = "SpecificConnectedOrganizationSubjects"
+                connectedOrganizationId = $connectedOrg.id
+                acceptRequests = $true
             }
-            RequestApprovalSettings = @{
-                IsApprovalRequired = $true
-                ApprovalStages = @(
+            requestApprovalSettings = @{
+                isApprovalRequired = $true
+                approvalStages = @(
                     @{
-                        ApprovalStageTimeOutInDays = 14
-                        IsApproverJustificationRequired = $true
-                        IsEscalationEnabled = $false
-                        PrimaryApprover = @{
+                        approvalStageTimeOutInDays = 14
+                        isApproverJustificationRequired = $true
+                        isEscalationEnabled = $false
+                        primaryApprover = @{
                             "@odata.type" = "#microsoft.graph.singleUser"
-                            UserId = (Get-MgContext).Account # Self-approval for simulation
+                            userId = $me.id
                         }
                     }
                 )
             }
-            Expiration = @{
-                Type = "AfterDuration"
-                Duration = "P30D"
+            expiration = @{
+                type = "AfterDuration"
+                duration = "P30D"
             }
         }
         
-        New-MgEntitlementManagementAccessPackageAssignmentPolicy -BodyParameter $params
-        Write-Host "   ✅ Created Policy '$policyName' with Approval." -ForegroundColor Green
+        Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/assignmentPolicies" -Body $body
+        Write-Host "   ✅ Created Policy '$PolicyName' with Approval." -ForegroundColor Green
     }
     catch {
         Write-Verbose "Policy creation failed: $_"

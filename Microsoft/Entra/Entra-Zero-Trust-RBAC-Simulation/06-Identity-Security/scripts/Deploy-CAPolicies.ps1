@@ -33,15 +33,36 @@
 #>
 
 [CmdletBinding()]
-param()
+param(
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile
+)
 
 process {
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
 
+    # Load Parameters
+    $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"
+    if ($UseParametersFile -or (Test-Path $paramsPath)) {
+        if (Test-Path $paramsPath) {
+            Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
+            $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
+            
+            $PolicyNameMfaAdmins = $jsonParams."Deploy-CAPolicies".policyNameMfaAdmins
+            $PolicyNameBlockLegacy = $jsonParams."Deploy-CAPolicies".policyNameBlockLegacy
+            $BreakGlassPrefix = $jsonParams."Deploy-CAPolicies".breakGlassPrefix
+            $GlobalAdminRoleId = $jsonParams."Deploy-CAPolicies".globalAdminRoleId
+        } else {
+            Throw "Parameters file not found at $paramsPath"
+        }
+    } else {
+        Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
+    }
+
     Write-Host "🚀 Deploying Conditional Access Policies..." -ForegroundColor Cyan
 
     # Get Break Glass Account to exclude
-    $bgUri = "https://graph.microsoft.com/v1.0/users?`$filter=startsWith(userPrincipalName, 'breakglass')"
+    $bgUri = "https://graph.microsoft.com/v1.0/users?`$filter=startsWith(userPrincipalName, '$BreakGlassPrefix')"
     $bgResponse = Invoke-MgGraphRequest -Method GET -Uri $bgUri
     $bgUser = $bgResponse.value | Select-Object -First 1
     
@@ -54,8 +75,7 @@ process {
     }
 
     # Policy 1: Require MFA for Admins
-    $polName1 = "CA-01-RequireMFA-Admins"
-    $pol1Uri = "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies?`$filter=displayName eq '$polName1'"
+    $pol1Uri = "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies?`$filter=displayName eq '$PolicyNameMfaAdmins'"
     $pol1Response = Invoke-MgGraphRequest -Method GET -Uri $pol1Uri
     $pol1 = $pol1Response.value | Select-Object -First 1
     
@@ -63,7 +83,7 @@ process {
         $conditions1 = @{
             applications = @{ includeApplications = @("All") }
             users = @{
-                includeRoles = @("62e90394-69f5-4237-9190-012177145e10") # Global Admin Template ID
+                includeRoles = @($GlobalAdminRoleId)
                 excludeUsers = $excludeUsers
             }
             clientAppTypes = @("all")
@@ -75,19 +95,18 @@ process {
         }
 
         $body = @{
-            displayName = $polName1
+            displayName = $PolicyNameMfaAdmins
             state = "ReportOnly"
             conditions = $conditions1
             grantControls = $grant1
         }
 
         Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies" -Body $body
-        Write-Host "   ✅ Created Policy '$polName1' (Report-Only)" -ForegroundColor Green
+        Write-Host "   ✅ Created Policy '$PolicyNameMfaAdmins' (Report-Only)" -ForegroundColor Green
     }
 
     # Policy 2: Block Legacy Auth
-    $polName2 = "CA-02-BlockLegacyAuth"
-    $pol2Uri = "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies?`$filter=displayName eq '$polName2'"
+    $pol2Uri = "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies?`$filter=displayName eq '$PolicyNameBlockLegacy'"
     $pol2Response = Invoke-MgGraphRequest -Method GET -Uri $pol2Uri
     $pol2 = $pol2Response.value | Select-Object -First 1
     
@@ -107,13 +126,13 @@ process {
         }
 
         $body = @{
-            displayName = $polName2
+            displayName = $PolicyNameBlockLegacy
             state = "ReportOnly"
             conditions = $conditions2
             grantControls = $grant2
         }
 
         Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies" -Body $body
-        Write-Host "   ✅ Created Policy '$polName2' (Report-Only)" -ForegroundColor Green
+        Write-Host "   ✅ Created Policy '$PolicyNameBlockLegacy' (Report-Only)" -ForegroundColor Green
     }
 }

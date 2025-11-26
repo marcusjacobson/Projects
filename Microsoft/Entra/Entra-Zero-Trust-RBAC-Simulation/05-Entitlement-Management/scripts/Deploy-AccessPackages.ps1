@@ -34,31 +34,50 @@
 #>
 
 [CmdletBinding()]
-param()
+param(
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile
+)
 
 process {
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
 
+    # Load Parameters
+    $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"
+    if ($UseParametersFile -or (Test-Path $paramsPath)) {
+        if (Test-Path $paramsPath) {
+            Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
+            $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
+            
+            $CatName = $jsonParams."Deploy-AccessPackages".catalogName
+            $GroupName = $jsonParams."Deploy-AccessPackages".groupName
+            $PkgName = $jsonParams."Deploy-AccessPackages".packageName
+            $PolicyName = $jsonParams."Deploy-AccessPackages".policyName
+        } else {
+            Throw "Parameters file not found at $paramsPath"
+        }
+    } else {
+        Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
+    }
+
     Write-Host "🚀 Deploying Access Packages..." -ForegroundColor Cyan
 
     # 1. Create Catalog
-    $catName = "CAT-Marketing"
-    $catUri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/catalogs?`$filter=displayName eq '$catName'"
+    $catUri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/catalogs?`$filter=displayName eq '$CatName'"
     $catResponse = Invoke-MgGraphRequest -Method GET -Uri $catUri
     $cat = $catResponse.value | Select-Object -First 1
     
     if (-not $cat) {
         $body = @{
-            displayName = $catName
+            displayName = $CatName
             description = "Marketing Resources"
         }
         $cat = Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/catalogs" -Body $body
-        Write-Host "   ✅ Created Catalog '$catName'" -ForegroundColor Green
+        Write-Host "   ✅ Created Catalog '$CatName'" -ForegroundColor Green
     }
 
     # 2. Add Resource (Group) to Catalog
-    $groupName = "GRP-SEC-Marketing"
-    $groupUri = "https://graph.microsoft.com/v1.0/groups?`$filter=displayName eq '$groupName'"
+    $groupUri = "https://graph.microsoft.com/v1.0/groups?`$filter=displayName eq '$GroupName'"
     $groupResponse = Invoke-MgGraphRequest -Method GET -Uri $groupUri
     $group = $groupResponse.value | Select-Object -First 1
     
@@ -72,26 +91,25 @@ process {
             }
         }
         Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/accessPackageResourceRequests" -Body $params
-        Write-Host "   ✅ Added '$groupName' to Catalog." -ForegroundColor Green
+        Write-Host "   ✅ Added '$GroupName' to Catalog." -ForegroundColor Green
     }
     catch {
         Write-Verbose "Resource likely already in catalog: $_"
     }
 
     # 3. Create Access Package
-    $pkgName = "PKG-Marketing-Campaign"
-    $pkgUri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/accessPackages?`$filter=displayName eq '$pkgName' and catalog/id eq '$($cat.id)'"
+    $pkgUri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/accessPackages?`$filter=displayName eq '$PkgName' and catalog/id eq '$($cat.id)'"
     $pkgResponse = Invoke-MgGraphRequest -Method GET -Uri $pkgUri
     $pkg = $pkgResponse.value | Select-Object -First 1
     
     if (-not $pkg) {
         $body = @{
-            displayName = $pkgName
+            displayName = $PkgName
             description = "Access to Marketing Campaign Resources"
             catalogId = $cat.id
         }
         $pkg = Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/accessPackages" -Body $body
-        Write-Host "   ✅ Created Access Package '$pkgName'" -ForegroundColor Green
+        Write-Host "   ✅ Created Access Package '$PkgName'" -ForegroundColor Green
     }
 
     # 4. Add Resource Role to Package
@@ -129,12 +147,11 @@ process {
     }
 
     # 5. Create Assignment Policy
-    $policyName = "Internal Users Policy"
     
     try {
         $params = @{
             accessPackageId = $pkg.id
-            displayName = $policyName
+            displayName = $PolicyName
             description = "Allow internal users to request"
             accessReviewSettings = $null
             requestorSettings = @{
@@ -150,7 +167,7 @@ process {
         }
         
         Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/assignmentPolicies" -Body $params
-        Write-Host "   ✅ Created Assignment Policy '$policyName'." -ForegroundColor Green
+        Write-Host "   ✅ Created Assignment Policy '$PolicyName'." -ForegroundColor Green
     }
     catch {
         Write-Verbose "Policy creation failed (might exist): $_"

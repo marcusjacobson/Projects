@@ -32,30 +32,82 @@
 #>
 
 [CmdletBinding()]
-param()
+param(
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile
+)
+
+begin {
+    function New-RandomPassword {
+        $upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        $lower = "abcdefghijklmnopqrstuvwxyz"
+        $digits = "0123456789"
+        $special = "!@#$%^&*"
+        
+        $password = @()
+        $password += $upper[(Get-Random -Maximum $upper.Length)]
+        $password += $lower[(Get-Random -Maximum $lower.Length)]
+        $password += $digits[(Get-Random -Maximum $digits.Length)]
+        $password += $special[(Get-Random -Maximum $special.Length)]
+        
+        $allChars = $upper + $lower + $digits + $special
+        for ($i = 0; $i -lt 8; $i++) {
+            $password += $allChars[(Get-Random -Maximum $allChars.Length)]
+        }
+        
+        return ($password | Sort-Object { Get-Random }) -join ''
+    }
+}
 
 process {
     # Connect to Graph
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
 
-    # Get Domain via REST
-    $domains = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/domains"
-    $Domain = ($domains.value | Where-Object { $_.isInitial }).id
-    
-    $PasswordProfile = @{
-        password = "P@ssword123!"
-        forceChangePasswordNextSignIn = $true
+    # Load Parameters
+    $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"
+    if ($UseParametersFile -or (Test-Path $paramsPath)) {
+        if (Test-Path $paramsPath) {
+            Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
+            $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
+            
+            $Departments = $jsonParams."Deploy-IdentityHierarchy".departments
+            $Users = $jsonParams."Deploy-IdentityHierarchy".users
+            $UsageLocation = $jsonParams.global.location
+            $CustomDomain = $jsonParams.global.customDomain
+        } else {
+            Throw "Parameters file not found at $paramsPath"
+        }
+    } else {
+        Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
     }
 
-    # 1. Define Departments and Groups
-    $Departments = @("IT", "HR", "Finance", "Marketing", "Executive")
+    # Get Domain via REST
+    $domainsResponse = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/domains"
+    $verifiedDomains = $domainsResponse.value | Where-Object { $_.isVerified }
+    $initialDomain = ($domainsResponse.value | Where-Object { $_.isInitial }).id
     
+    $Domain = $initialDomain # Default
+    
+    if (-not [string]::IsNullOrWhiteSpace($CustomDomain)) {
+        $found = $verifiedDomains | Where-Object { $_.id -eq $CustomDomain }
+        if ($found) {
+            $Domain = $CustomDomain
+            Write-Host "   ✅ Using Custom Domain: $Domain" -ForegroundColor Green
+        } else {
+            Write-Warning "   ⚠️  Custom domain '$CustomDomain' not found or not verified. Falling back to $initialDomain"
+        }
+    } else {
+        Write-Host "   ℹ️  Using Initial Domain: $Domain" -ForegroundColor Cyan
+    }
+    
+    # 1. Define Departments and Groups
     Write-Host "🚀 Creating Departmental Groups..." -ForegroundColor Cyan
     
     $GroupMap = @{} # To store Group IDs
 
     foreach ($dept in $Departments) {
         $groupName = "GRP-SEC-$dept"
+        $cleanNickname = $groupName -replace '\s+',''
         $desc = "Security Group for $dept Department"
         
         try {
@@ -73,7 +125,7 @@ process {
                 $body = @{
                     displayName = $groupName
                     mailEnabled = $false
-                    mailNickname = $groupName
+                    mailNickname = $cleanNickname
                     securityEnabled = $true
                     description = $desc
                 }
@@ -88,24 +140,20 @@ process {
     }
 
     # 2. Define Users
-    $Users = @(
-        @{ Name = "USR-CEO"; Title = "CEO"; Dept = "Executive" },
-        @{ Name = "USR-CISO"; Title = "CISO"; Dept = "Executive" },
-        @{ Name = "USR-IT-Director"; Title = "IT Director"; Dept = "IT" },
-        @{ Name = "USR-IT-Admin"; Title = "System Administrator"; Dept = "IT" },
-        @{ Name = "USR-IT-Helpdesk"; Title = "Helpdesk Technician"; Dept = "IT" },
-        @{ Name = "USR-HR-Director"; Title = "HR Director"; Dept = "HR" },
-        @{ Name = "USR-HR-Manager"; Title = "HR Manager"; Dept = "HR" },
-        @{ Name = "USR-Fin-Director"; Title = "Finance Director"; Dept = "Finance" },
-        @{ Name = "USR-Fin-Analyst"; Title = "Financial Analyst"; Dept = "Finance" },
-        @{ Name = "USR-Mkt-Director"; Title = "Marketing Director"; Dept = "Marketing" },
-        @{ Name = "USR-Mkt-Specialist"; Title = "Marketing Specialist"; Dept = "Marketing" }
-    )
-
     Write-Host "`n🚀 Creating Users..." -ForegroundColor Cyan
 
     foreach ($u in $Users) {
-        $upn = "$($u.Name)@$Domain"
+        $cleanName = $u.name -replace '\s+',''
+        $upn = "$($cleanName)@$Domain"
+        $nickname = $cleanName.ToLower()
+        
+        # Generate Random Password
+        $randomPassword = New-RandomPassword
+        
+        $PasswordProfile = @{
+            password = $randomPassword
+            forceChangePasswordNextSignIn = $true
+        }
         
         try {
             # Check existence via REST
@@ -120,14 +168,14 @@ process {
             else {
                 # Create via REST
                 $userParams = @{
-                    displayName = $u.Name
+                    displayName = $u.name
                     userPrincipalName = $upn
-                    mailNickname = $u.Name
+                    mailNickname = $nickname
                     accountEnabled = $true
                     passwordProfile = $PasswordProfile
-                    jobTitle = $u.Title
-                    department = $u.Dept
-                    usageLocation = "US"
+                    jobTitle = $u.title
+                    department = $u.dept
+                    usageLocation = $UsageLocation
                 }
                 
                 $newUser = Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/users" -Body $userParams
@@ -136,7 +184,7 @@ process {
             }
 
             # Add to Department Group
-            $groupId = $GroupMap[$u.Dept]
+            $groupId = $GroupMap[$u.dept]
             if ($groupId) {
                 try {
                     # Add member via REST ($ref)
@@ -144,7 +192,6 @@ process {
                         "@odata.id" = "https://graph.microsoft.com/v1.0/directoryObjects/$userId"
                     }
                     Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/groups/$groupId/members/`$ref" -Body $memberBody -ErrorAction SilentlyContinue
-                    Write-Verbose "Added $upn to $($u.Dept) group."
                 }
                 catch {
                     # Ignore if already member
@@ -157,5 +204,4 @@ process {
     }
     
     Write-Host "`n✅ Identity Hierarchy Deployment Complete." -ForegroundColor Green
-    Write-Host "   Default Password: P@ssword123!" -ForegroundColor Yellow
 }

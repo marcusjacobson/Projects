@@ -26,7 +26,18 @@ This lab automates the "Joiner, Mover, Leaver" (JML) process and ensures access 
 
 ## 📝 Lab Steps
 
-### Step 1: Deploy Access Reviews
+### Step 1: Configure Parameters File
+
+Before deploying resources, you must configure the environment parameters.
+
+**Context**: This project uses a centralized JSON configuration file to manage deployment settings. This ensures consistency across all scripts.
+
+1. Navigate to the `infra` directory.
+2. Open `module.parameters.json`.
+3. Review the default settings.
+4. Save the file.
+
+### Step 2: Deploy Access Reviews
 
 We will create two critical reviews: one for external guests and one for Global Administrators.
 
@@ -37,18 +48,28 @@ We will create two critical reviews: one for external guests and one for Global 
 
 1. Open a PowerShell terminal.
 2. Navigate to the `scripts` directory.
-3. Run `Deploy-AccessReviews.ps1`.
+3. Run the following command:
+
+   ```powershell
+   .\Deploy-AccessReviews.ps1 -UseParametersFile
+   ```
+
 4. Creates:
     - `REV-Guest-Access`: Quarterly review of all guests.
     - `REV-Global-Admins`: Quarterly review of the Global Admin role.
 
-### Step 2: Configure Lifecycle Workflows
+### Step 3: Configure Lifecycle Workflows
 
 We will automate the "Leaver" process to ensure immediate security upon termination.
 
 **Context**: Manual offboarding is slow and risky. If HR terminates an employee on Friday, but IT doesn't disable the account until Monday, that's a 3-day window for data theft. Lifecycle Workflows listen to the "EmployeeLeaveDateTime" attribute and execute actions automatically.
 
-1. Run `Configure-LifecycleWorkflows.ps1`.
+1. Run the following command:
+
+   ```powershell
+   .\Configure-LifecycleWorkflows.ps1 -UseParametersFile
+   ```
+
 2. Creates a workflow `LCW-RealTime-Leaver` that triggers when a user's `employeeLeaveDateTime` is reached.
 3. **Actions**:
     - Disable User Account.

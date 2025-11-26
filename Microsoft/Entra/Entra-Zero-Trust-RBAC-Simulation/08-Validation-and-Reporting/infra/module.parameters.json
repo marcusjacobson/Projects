@@ -1,0 +1,20 @@
+{
+    "global": {
+        "location": "US"
+    },
+    "Generate-ConfigurationReport": {
+        "reportPath": "../reports",
+        "groupFilter": "startsWith(DisplayName, \"GRP-SEC-\")",
+        "userFilter": "startsWith(UserPrincipalName, \"breakglass\")"
+    },
+    "Validate-AllLabs": {
+        "groupName": "GRP-SEC-Admins",
+        "breakGlassPrefix": "breakglass",
+        "adminUnitName": "AU-Marketing",
+        "servicePrincipalName": "SP-App-Finance",
+        "roleName": "Role-Custom-AppAdmin",
+        "catalogName": "CAT-Marketing",
+        "policyName": "CA-01-RequireMFA-Admins",
+        "reviewName": "AR-Quarterly-Guests"
+    }
+}

@@ -25,7 +25,18 @@ This lab serves as the "Quality Assurance" phase. We will run a comprehensive va
 
 ## 📝 Lab Steps
 
-### Step 1: Run Full Validation
+### Step 1: Configure Parameters File
+
+Before deploying resources, you must configure the environment parameters.
+
+**Context**: This project uses a centralized JSON configuration file to manage deployment settings. This ensures consistency across all scripts.
+
+1. Navigate to the `infra` directory.
+2. Open `module.parameters.json`.
+3. Review the default settings.
+4. Save the file.
+
+### Step 2: Run Full Validation
 
 We will execute a master validation script that checks every resource created in this project.
 
@@ -33,16 +44,26 @@ We will execute a master validation script that checks every resource created in
 
 1. Open a PowerShell terminal.
 2. Navigate to the `scripts` directory.
-3. Run `Validate-AllLabs.ps1`.
+3. Run the following command:
+
+   ```powershell
+   .\Validate-AllLabs.ps1 -UseParametersFile
+   ```
+
 4. Review the console output. Green means **PASS**, Red means **FAIL**.
 
-### Step 2: Generate Configuration Report
+### Step 3: Generate Configuration Report
 
 We will export the current configuration into a readable format.
 
 **Context**: Auditors often ask for "As-Built" documentation. Instead of taking screenshots, we generate a report that lists every policy, role assignment, and group setting. This provides a point-in-time snapshot of your security posture.
 
-1. Run `Generate-ConfigurationReport.ps1`.
+1. Run the following command:
+
+   ```powershell
+   .\Generate-ConfigurationReport.ps1 -UseParametersFile
+   ```
+
 2. The script will export data to the `reports/` folder (created automatically).
 3. Open the generated HTML/JSON file to view your tenant's configuration.
 

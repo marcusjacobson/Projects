@@ -32,11 +32,35 @@
 
 [CmdletBinding()]
 param(
-    [Switch]$Force
+    [Switch]$Force,
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile
 )
 
 process {
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
+
+    # Load Parameters
+    $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"
+    if ($UseParametersFile -or (Test-Path $paramsPath)) {
+        if (Test-Path $paramsPath) {
+            Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
+            $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
+            
+            $CaPolicyFilter = $jsonParams."Nuke-Simulation".caPolicyFilter
+            $WorkflowFilter = $jsonParams."Nuke-Simulation".workflowFilter
+            $AccessReviewFilter = $jsonParams."Nuke-Simulation".accessReviewFilter
+            $CustomRoleFilter = $jsonParams."Nuke-Simulation".customRoleFilter
+            $AdminUnitFilter = $jsonParams."Nuke-Simulation".adminUnitFilter
+            $ServicePrincipalFilter = $jsonParams."Nuke-Simulation".servicePrincipalFilter
+            $GroupFilter = $jsonParams."Nuke-Simulation".groupFilter
+            $UserFilter = $jsonParams."Nuke-Simulation".userFilter
+        } else {
+            Throw "Parameters file not found at $paramsPath"
+        }
+    } else {
+        Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
+    }
 
     Write-Host "⚠️  WARNING: This script will delete ALL resources created by the simulation." -ForegroundColor Red
     Write-Host "   - Users (breakglass*, admin-*, user-*)"
@@ -86,15 +110,15 @@ process {
     }
 
     # 1. CA Policies
-    Remove-Resource "CA Policies" "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies?`$filter=startsWith(displayName, 'CA-0')" "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies/{0}"
+    Remove-Resource "CA Policies" "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies?`$filter=$CaPolicyFilter" "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies/{0}"
 
     # 2. Lifecycle Workflows
-    Remove-Resource "Lifecycle Workflows" "https://graph.microsoft.com/v1.0/identityGovernance/lifecycleWorkflows/workflows?`$filter=startsWith(displayName, 'WF-')" "https://graph.microsoft.com/v1.0/identityGovernance/lifecycleWorkflows/workflows/{0}"
+    Remove-Resource "Lifecycle Workflows" "https://graph.microsoft.com/v1.0/identityGovernance/lifecycleWorkflows/workflows?`$filter=$WorkflowFilter" "https://graph.microsoft.com/v1.0/identityGovernance/lifecycleWorkflows/workflows/{0}"
 
     # 3. Access Reviews
     # Need to stop first?
     Write-Host "   Scanning for Access Reviews..." -NoNewline
-    $arUri = "https://graph.microsoft.com/v1.0/identityGovernance/accessReviews/definitions?`$filter=startsWith(displayName, 'AR-')"
+    $arUri = "https://graph.microsoft.com/v1.0/identityGovernance/accessReviews/definitions?`$filter=$AccessReviewFilter"
     $arRes = Invoke-MgGraphRequest -Method GET -Uri $arUri
     $ars = $arRes.value
     if ($ars) {
@@ -117,23 +141,23 @@ process {
     $lab05Script = "$PSScriptRoot\..\..\05-Entitlement-Management\scripts\Remove-EntitlementMgmt.ps1"
     if (Test-Path $lab05Script) {
         Write-Host "   Calling Lab 05 Cleanup..." -ForegroundColor Yellow
-        & $lab05Script
+        & $lab05Script -UseParametersFile
     }
 
     # 5. Custom Roles
-    Remove-Resource "Custom Roles" "https://graph.microsoft.com/v1.0/roleManagement/directory/roleDefinitions?`$filter=startsWith(displayName, 'Role-Custom-')" "https://graph.microsoft.com/v1.0/roleManagement/directory/roleDefinitions/{0}"
+    Remove-Resource "Custom Roles" "https://graph.microsoft.com/v1.0/roleManagement/directory/roleDefinitions?`$filter=$CustomRoleFilter" "https://graph.microsoft.com/v1.0/roleManagement/directory/roleDefinitions/{0}"
 
     # 6. Admin Units
-    Remove-Resource "Admin Units" "https://graph.microsoft.com/v1.0/directory/administrativeUnits?`$filter=startsWith(displayName, 'AU-')" "https://graph.microsoft.com/v1.0/directory/administrativeUnits/{0}"
+    Remove-Resource "Admin Units" "https://graph.microsoft.com/v1.0/directory/administrativeUnits?`$filter=$AdminUnitFilter" "https://graph.microsoft.com/v1.0/directory/administrativeUnits/{0}"
 
     # 7. Service Principals
-    Remove-Resource "Service Principals" "https://graph.microsoft.com/v1.0/servicePrincipals?`$filter=startsWith(displayName, 'SP-App-')" "https://graph.microsoft.com/v1.0/servicePrincipals/{0}"
+    Remove-Resource "Service Principals" "https://graph.microsoft.com/v1.0/servicePrincipals?`$filter=$ServicePrincipalFilter" "https://graph.microsoft.com/v1.0/servicePrincipals/{0}"
 
     # 8. Groups
-    Remove-Resource "Groups" "https://graph.microsoft.com/v1.0/groups?`$filter=startsWith(displayName, 'GRP-SEC-') or startsWith(displayName, 'GRP-M365-')" "https://graph.microsoft.com/v1.0/groups/{0}"
+    Remove-Resource "Groups" "https://graph.microsoft.com/v1.0/groups?`$filter=$GroupFilter" "https://graph.microsoft.com/v1.0/groups/{0}"
 
     # 9. Users
-    Remove-Resource "Users" "https://graph.microsoft.com/v1.0/users?`$filter=startsWith(userPrincipalName, 'breakglass') or startsWith(userPrincipalName, 'admin-') or startsWith(userPrincipalName, 'user-')" "https://graph.microsoft.com/v1.0/users/{0}"
+    Remove-Resource "Users" "https://graph.microsoft.com/v1.0/users?`$filter=$UserFilter" "https://graph.microsoft.com/v1.0/users/{0}"
 
     Write-Host "✅ Cleanup Complete." -ForegroundColor Green
 }

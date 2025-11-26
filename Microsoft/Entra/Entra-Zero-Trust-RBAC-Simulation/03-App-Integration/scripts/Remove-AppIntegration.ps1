@@ -12,28 +12,46 @@
 
 [CmdletBinding()]
 param(
-    [switch]$Force
+    [switch]$Force,
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile
 )
 
 process {
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
 
+    # Load Parameters
+    $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"
+    if ($UseParametersFile -or (Test-Path $paramsPath)) {
+        if (Test-Path $paramsPath) {
+            Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
+            $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
+            $AppName = $jsonParams."Remove-AppIntegration".appName
+        } else {
+            Throw "Parameters file not found at $paramsPath"
+        }
+    } else {
+        Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
+    }
+
     if (-not $Force) {
-        $confirm = Read-Host "⚠️  Are you sure you want to delete the Reporting App? (y/n)"
+        $confirm = Read-Host "⚠️  Are you sure you want to delete the Reporting App '$AppName'? (y/n)"
         if ($confirm -ne 'y') { return }
     }
 
     Write-Host "🚀 Removing App Integration..." -ForegroundColor Cyan
 
-    $appName = "APP-Reporting-Automation"
-    $app = Get-MgApplication -Filter "DisplayName eq '$appName'" -ErrorAction SilentlyContinue
+    $uri = "https://graph.microsoft.com/v1.0/applications?`$filter=displayName eq '$AppName'"
+    $appResponse = Invoke-MgGraphRequest -Method GET -Uri $uri
+    $app = $appResponse.value | Select-Object -First 1
     
     if ($app) {
-        Remove-MgApplication -ApplicationId $app.Id
-        Write-Host "   ✅ Removed App '$appName'" -ForegroundColor Green
+        $deleteUri = "https://graph.microsoft.com/v1.0/applications/$($app.id)"
+        Invoke-MgGraphRequest -Method DELETE -Uri $deleteUri
+        Write-Host "   ✅ Removed App '$AppName'" -ForegroundColor Green
     }
     else {
-        Write-Host "   ℹ️  App '$appName' not found." -ForegroundColor Yellow
+        Write-Host "   ℹ️  App '$AppName' not found." -ForegroundColor Yellow
     }
     
     # Note: We don't revert the Consent Policy settings automatically as they are tenant-wide and might affect other things.

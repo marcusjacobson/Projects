@@ -31,10 +31,35 @@
 #>
 
 [CmdletBinding()]
-param()
+param(
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile
+)
 
 process {
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
+
+    # Load Parameters
+    $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"
+    if ($UseParametersFile -or (Test-Path $paramsPath)) {
+        if (Test-Path $paramsPath) {
+            Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
+            $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
+            
+            $GroupName = $jsonParams."Validate-AllLabs".groupName
+            $BreakGlassPrefix = $jsonParams."Validate-AllLabs".breakGlassPrefix
+            $AdminUnitName = $jsonParams."Validate-AllLabs".adminUnitName
+            $ServicePrincipalName = $jsonParams."Validate-AllLabs".servicePrincipalName
+            $RoleName = $jsonParams."Validate-AllLabs".roleName
+            $CatalogName = $jsonParams."Validate-AllLabs".catalogName
+            $PolicyName = $jsonParams."Validate-AllLabs".policyName
+            $ReviewName = $jsonParams."Validate-AllLabs".reviewName
+        } else {
+            Throw "Parameters file not found at $paramsPath"
+        }
+    } else {
+        Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
+    }
 
     Write-Host "🚀 Starting Validation for All Labs..." -ForegroundColor Cyan
     $results = @()
@@ -57,58 +82,58 @@ process {
     }
 
     # Lab 00
-    $results += Test-Resource "Log Analytics Workspace" "Resource" { $true } # Placeholder, hard to check via Graph alone without sub ID
+    $results += Test-Resource "Log Analytics Workspace" "Resource" { $true } # Placeholder
 
     # Lab 01
-    $results += Test-Resource "GRP-SEC-Admins" "Group" { 
-        $uri = "https://graph.microsoft.com/v1.0/groups?`$filter=displayName eq 'GRP-SEC-Admins'"
+    $results += Test-Resource $GroupName "Group" { 
+        $uri = "https://graph.microsoft.com/v1.0/groups?`$filter=displayName eq '$GroupName'"
         $res = Invoke-MgGraphRequest -Method GET -Uri $uri
         [bool]($res.value)
     }
     $results += Test-Resource "Break Glass Account" "User" { 
-        $uri = "https://graph.microsoft.com/v1.0/users?`$filter=startsWith(userPrincipalName, 'breakglass')"
+        $uri = "https://graph.microsoft.com/v1.0/users?`$filter=startsWith(userPrincipalName, '$BreakGlassPrefix')"
         $res = Invoke-MgGraphRequest -Method GET -Uri $uri
         [bool]($res.value)
     }
 
     # Lab 02
-    $results += Test-Resource "AU-Marketing" "Admin Unit" { 
-        $uri = "https://graph.microsoft.com/v1.0/directory/administrativeUnits?`$filter=displayName eq 'AU-Marketing'"
+    $results += Test-Resource $AdminUnitName "Admin Unit" { 
+        $uri = "https://graph.microsoft.com/v1.0/directory/administrativeUnits?`$filter=displayName eq '$AdminUnitName'"
         $res = Invoke-MgGraphRequest -Method GET -Uri $uri
         [bool]($res.value)
     }
 
     # Lab 03
-    $results += Test-Resource "SP-App-Finance" "Service Principal" { 
-        $uri = "https://graph.microsoft.com/v1.0/servicePrincipals?`$filter=displayName eq 'SP-App-Finance'"
+    $results += Test-Resource $ServicePrincipalName "Service Principal" { 
+        $uri = "https://graph.microsoft.com/v1.0/servicePrincipals?`$filter=displayName eq '$ServicePrincipalName'"
         $res = Invoke-MgGraphRequest -Method GET -Uri $uri
         [bool]($res.value)
     }
 
     # Lab 04
-    $results += Test-Resource "Role-Custom-AppAdmin" "Role Def" { 
-        $uri = "https://graph.microsoft.com/v1.0/roleManagement/directory/roleDefinitions?`$filter=displayName eq 'Role-Custom-AppAdmin'"
+    $results += Test-Resource $RoleName "Role Def" { 
+        $uri = "https://graph.microsoft.com/v1.0/roleManagement/directory/roleDefinitions?`$filter=displayName eq '$RoleName'"
         $res = Invoke-MgGraphRequest -Method GET -Uri $uri
         [bool]($res.value)
     }
 
     # Lab 05
-    $results += Test-Resource "CAT-Marketing" "Catalog" { 
-        $uri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/catalogs?`$filter=displayName eq 'CAT-Marketing'"
+    $results += Test-Resource $CatalogName "Catalog" { 
+        $uri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/catalogs?`$filter=displayName eq '$CatalogName'"
         $res = Invoke-MgGraphRequest -Method GET -Uri $uri
         [bool]($res.value)
     }
 
     # Lab 06
-    $results += Test-Resource "CA-01-RequireMFA-Admins" "CA Policy" { 
-        $uri = "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies?`$filter=displayName eq 'CA-01-RequireMFA-Admins'"
+    $results += Test-Resource $PolicyName "CA Policy" { 
+        $uri = "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies?`$filter=displayName eq '$PolicyName'"
         $res = Invoke-MgGraphRequest -Method GET -Uri $uri
         [bool]($res.value)
     }
 
     # Lab 07
-    $results += Test-Resource "AR-Quarterly-Guests" "Access Review" { 
-        $uri = "https://graph.microsoft.com/v1.0/identityGovernance/accessReviews/definitions?`$filter=displayName eq 'AR-Quarterly-Guests'"
+    $results += Test-Resource $ReviewName "Access Review" { 
+        $uri = "https://graph.microsoft.com/v1.0/identityGovernance/accessReviews/definitions?`$filter=displayName eq '$ReviewName'"
         $res = Invoke-MgGraphRequest -Method GET -Uri $uri
         [bool]($res.value)
     }

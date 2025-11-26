@@ -18,103 +18,103 @@
 #>
 
 [CmdletBinding()]
-param()
+param(
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile
+)
 
 process {
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
 
-    Write-Host "🚀 Configuring PIM for Global Administrator..." -ForegroundColor Cyan
+    # Load Parameters
+    $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"
+    if ($UseParametersFile -or (Test-Path $paramsPath)) {
+        if (Test-Path $paramsPath) {
+            Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
+            $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
+            
+            $RoleName = $jsonParams."Configure-PIM-Roles".roleName
+            $ApproverUser = $jsonParams."Configure-PIM-Roles".approverUser
+            $MaxDuration = $jsonParams."Configure-PIM-Roles".maxDuration
+            $RequireMfa = $jsonParams."Configure-PIM-Roles".requireMfa
+            $RequireJustification = $jsonParams."Configure-PIM-Roles".requireJustification
+        } else {
+            Throw "Parameters file not found at $paramsPath"
+        }
+    } else {
+        Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
+    }
 
-    # 1. Get Global Admin Role Definition
-    $roleDef = Get-MgRoleManagementDirectoryRoleDefinition -Filter "DisplayName eq 'Global Administrator'"
-    if (-not $roleDef) { Throw "Global Admin role not found." }
+    Write-Host "🚀 Configuring PIM for '$RoleName'..." -ForegroundColor Cyan
+
+    # 1. Get Role Definition
+    $roleUri = "https://graph.microsoft.com/v1.0/roleManagement/directory/roleDefinitions?`$filter=displayName eq '$RoleName'"
+    $roleResponse = Invoke-MgGraphRequest -Method GET -Uri $roleUri
+    $roleDef = $roleResponse.value | Select-Object -First 1
+    if (-not $roleDef) { Throw "Role '$RoleName' not found." }
 
     # 2. Get the PIM Policy for this Role
-    # We filter policies by the role definition ID
-    $policies = Get-MgRoleManagementDirectoryRoleManagementPolicy -Filter "ScopeId eq '/' and ScopeType eq 'Directory'"
-    # The filtering logic for specific role policy is tricky in v1.0. 
-    # Usually, we iterate or filter by 'Rules' containing the role? No.
-    # The policy ID is usually tied to the role definition ID in a specific way or we look it up.
-    
-    # Let's try to find the policy that applies to this role.
-    # In PIM v3 (current Graph), there is one policy per role.
-    
-    # We can use the 'roleDefinitionId' property if available, or we have to list all and find match.
-    # Actually, Get-MgRoleManagementDirectoryRoleManagementPolicy doesn't easily filter by RoleDefId in basic syntax.
-    # But we can try to find it.
-    
-    $targetPolicy = $null
-    foreach ($p in $policies) {
-        # The policy ID often contains the RoleDefId or we check rules?
-        # Actually, let's check if we can get it directly.
-        # No direct cmdlet.
-        
-        # Let's assume we need to find the policy where the rule applies to this role.
-        # Wait, simpler way:
-        # Get-MgRoleManagementDirectoryRoleManagementPolicy -Filter "IsOrganizationDefault eq true" ? No.
-        
-        # Let's try to get the specific policy for the role.
-        # URI: /policies?$filter=scopeId eq '/' and scopeType eq 'Directory' and id eq '...'
-        
-        # Workaround: We will skip the complex filter and just iterate.
-        if ($p.Id -like "*$($roleDef.Id)*") {
-            $targetPolicy = $p
-            break
-        }
-    }
+    # Filter by roleDefinitionId
+    $policyUri = "https://graph.microsoft.com/v1.0/roleManagement/directory/roleManagementPolicies?`$filter=scopeId eq '/' and scopeType eq 'Directory' and roleDefinitionId eq '$($roleDef.id)'"
+    $policyResponse = Invoke-MgGraphRequest -Method GET -Uri $policyUri
+    $targetPolicy = $policyResponse.value | Select-Object -First 1
     
     if (-not $targetPolicy) {
-        Write-Warning "Could not find PIM policy for Global Admin. PIM might not be initialized."
+        Write-Warning "Could not find PIM policy for '$RoleName'. PIM might not be initialized."
         return
     }
 
-    Write-Host "   Found Policy: $($targetPolicy.DisplayName)"
+    Write-Host "   Found Policy: $($targetPolicy.displayName)"
 
     # 3. Update Rules
-    # We need to update the 'Rules' property.
-    # Rules include: Expiration, MFA, Approval, etc.
-    
-    $rules = Get-MgRoleManagementDirectoryRoleManagementPolicyRule -UnifiedRoleManagementPolicyId $targetPolicy.Id
+    $rulesUri = "https://graph.microsoft.com/v1.0/roleManagement/directory/roleManagementPolicies/$($targetPolicy.id)/rules"
+    $rulesResponse = Invoke-MgGraphRequest -Method GET -Uri $rulesUri
+    $rules = $rulesResponse.value
     
     foreach ($rule in $rules) {
         # A. Activation Rule (MFA, Justification)
-        if ($rule.Target.Caller -eq "EndUser" -and $rule.Target.Operations -contains "All") {
-            # This is likely the activation rule (UnifiedRoleManagementPolicyAuthenticationContextRule or EnablementRule)
-            # Actually, let's look at the @odata.type
+        if ($rule.target.caller -eq "EndUser" -and $rule.target.operations -contains "All") {
             
-            if ($rule.AdditionalProperties["@odata.type"] -eq "#microsoft.graph.unifiedRoleManagementPolicyEnablementRule") {
-                # Update Enablement Rule (MFA, Justification)
-                $params = @{
-                    EnabledRules = @("MultiFactorAuthentication", "Justification")
+            if ($rule."@odata.type" -eq "#microsoft.graph.unifiedRoleManagementPolicyEnablementRule") {
+                # Update Enablement Rule
+                $enabledRules = @()
+                if ($RequireMfa) { $enabledRules += "MultiFactorAuthentication" }
+                if ($RequireJustification) { $enabledRules += "Justification" }
+
+                $body = @{
+                    enabledRules = $enabledRules
                 }
-                Update-MgRoleManagementDirectoryRoleManagementPolicyRule -UnifiedRoleManagementPolicyId $targetPolicy.Id -UnifiedRoleManagementPolicyRuleId $rule.Id -BodyParameter $params
-                Write-Host "   ✅ Updated Activation Rule (MFA + Justification)." -ForegroundColor Green
+                
+                Invoke-MgGraphRequest -Method PATCH -Uri "https://graph.microsoft.com/v1.0/roleManagement/directory/roleManagementPolicies/$($targetPolicy.id)/rules/$($rule.id)" -Body $body
+                Write-Host "   ✅ Updated Activation Rule (MFA: $RequireMfa, Justification: $RequireJustification)." -ForegroundColor Green
             }
             
-            if ($rule.AdditionalProperties["@odata.type"] -eq "#microsoft.graph.unifiedRoleManagementPolicyExpirationRule") {
+            if ($rule."@odata.type" -eq "#microsoft.graph.unifiedRoleManagementPolicyExpirationRule") {
                 # Update Expiration (Max Duration)
-                $params = @{
-                    MaximumDuration = "PT4H"
+                $body = @{
+                    maximumDuration = $MaxDuration
                 }
-                Update-MgRoleManagementDirectoryRoleManagementPolicyRule -UnifiedRoleManagementPolicyId $targetPolicy.Id -UnifiedRoleManagementPolicyRuleId $rule.Id -BodyParameter $params
-                Write-Host "   ✅ Updated Expiration Rule (4 Hours)." -ForegroundColor Green
+                Invoke-MgGraphRequest -Method PATCH -Uri "https://graph.microsoft.com/v1.0/roleManagement/directory/roleManagementPolicies/$($targetPolicy.id)/rules/$($rule.id)" -Body $body
+                Write-Host "   ✅ Updated Expiration Rule ($MaxDuration)." -ForegroundColor Green
             }
             
-            if ($rule.AdditionalProperties["@odata.type"] -eq "#microsoft.graph.unifiedRoleManagementPolicyApprovalRule") {
+            if ($rule."@odata.type" -eq "#microsoft.graph.unifiedRoleManagementPolicyApprovalRule") {
                 # Update Approval (Add Approver)
-                # Find USR-CISO
-                $approver = Get-MgUser -Filter "UserPrincipalName eq 'USR-CISO@$((Get-MgDomain | Where-Object IsInitial).Id)'"
+                # Find Approver User
+                $userUri = "https://graph.microsoft.com/v1.0/users?`$filter=userPrincipalName startswith '$ApproverUser'"
+                $userResponse = Invoke-MgGraphRequest -Method GET -Uri $userUri
+                $approver = $userResponse.value | Select-Object -First 1
                 
                 if ($approver) {
                     $setting = @{
-                        IsApprovalRequired = $true
-                        IsEntityGroup = $false
-                        Steps = @(
+                        isApprovalRequired = $true
+                        isEntityGroup = $false
+                        steps = @(
                             @{
-                                AssignedToMe = $true
-                                PrimaryApprovers = @(
+                                assignedToMe = $true
+                                primaryApprovers = @(
                                     @{
-                                        Id = $approver.Id
+                                        id = $approver.id
                                         "@odata.type" = "#microsoft.graph.directoryObject"
                                     }
                                 )
@@ -122,17 +122,17 @@ process {
                         )
                     }
                     
-                    $params = @{ Setting = $setting }
+                    $body = @{ setting = $setting }
                     
-                    # Note: Updating approval rules is complex and structure sensitive.
-                    # We'll attempt it, but wrap in try/catch.
                     try {
-                        Update-MgRoleManagementDirectoryRoleManagementPolicyRule -UnifiedRoleManagementPolicyId $targetPolicy.Id -UnifiedRoleManagementPolicyRuleId $rule.Id -BodyParameter $params
-                        Write-Host "   ✅ Updated Approval Rule (Approver: USR-CISO)." -ForegroundColor Green
+                        Invoke-MgGraphRequest -Method PATCH -Uri "https://graph.microsoft.com/v1.0/roleManagement/directory/roleManagementPolicies/$($targetPolicy.id)/rules/$($rule.id)" -Body $body
+                        Write-Host "   ✅ Updated Approval Rule (Approver: $ApproverUser)." -ForegroundColor Green
                     }
                     catch {
                         Write-Warning "Failed to update Approval Rule: $_"
                     }
+                } else {
+                    Write-Warning "Approver user '$ApproverUser' not found."
                 }
             }
         }

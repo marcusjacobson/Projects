@@ -1,0 +1,26 @@
+{
+    "global": {
+        "location": "US"
+    },
+    "Configure-ExternalGovernance": {
+        "orgName": "Partner Corp",
+        "domain": "partner.example.com",
+        "catalogName": "CAT-Marketing",
+        "packageName": "PKG-Partner-Collab",
+        "policyName": "Partner Access Policy"
+    },
+    "Deploy-AccessPackages": {
+        "catalogName": "CAT-Marketing",
+        "groupName": "GRP-SEC-Marketing",
+        "packageName": "PKG-Marketing-Campaign",
+        "policyName": "Internal Users Policy"
+    },
+    "Remove-EntitlementMgmt": {
+        "catalogName": "CAT-Marketing",
+        "orgName": "Partner Corp",
+        "packages": [
+            "PKG-Marketing-Campaign",
+            "PKG-Partner-Collab"
+        ]
+    }
+}

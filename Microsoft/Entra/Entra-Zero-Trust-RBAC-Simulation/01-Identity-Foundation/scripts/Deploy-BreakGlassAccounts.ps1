@@ -16,69 +16,151 @@
 #>
 
 [CmdletBinding()]
-param()
+param(
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile
+)
+
+begin {
+    function New-RandomPassword {
+        $upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        $lower = "abcdefghijklmnopqrstuvwxyz"
+        $digits = "0123456789"
+        $special = "!@#$%^&*"
+        
+        $password = @()
+        $password += $upper[(Get-Random -Maximum $upper.Length)]
+        $password += $lower[(Get-Random -Maximum $lower.Length)]
+        $password += $digits[(Get-Random -Maximum $digits.Length)]
+        $password += $special[(Get-Random -Maximum $special.Length)]
+        
+        $allChars = $upper + $lower + $digits + $special
+        for ($i = 0; $i -lt 12; $i++) {
+            $password += $allChars[(Get-Random -Maximum $allChars.Length)]
+        }
+        
+        return ($password | Sort-Object { Get-Random }) -join ''
+    }
+}
 
 process {
+    # Connect to Graph
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
 
-    $Domain = (Get-MgDomain | Where-Object { $_.IsInitial }).Id
-    # Generate a complex password (in reality, this should be 16+ chars, random)
-    $PasswordProfile = @{
-        Password = "Emergency!Access!2025!" 
-        ForceChangePasswordNextSignIn = $false # BG accounts usually don't expire/change often
+    # Load Parameters
+    $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"
+    if ($UseParametersFile -or (Test-Path $paramsPath)) {
+        if (Test-Path $paramsPath) {
+            Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
+            $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
+            
+            $Accounts = $jsonParams."Deploy-BreakGlassAccounts".accounts
+            $UsageLocation = $jsonParams.global.location
+            $CustomDomain = $jsonParams.global.customDomain
+        } else {
+            Throw "Parameters file not found at $paramsPath"
+        }
+    } else {
+        Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
     }
 
-    $BGAccounts = @("ADM-BG-01", "ADM-BG-02")
+    # Get Domain via REST
+    $domainsResponse = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/domains"
+    $verifiedDomains = $domainsResponse.value | Where-Object { $_.isVerified }
+    $initialDomain = ($domainsResponse.value | Where-Object { $_.isInitial }).id
     
-    # Get Global Admin Role
-    $roleName = "Global Administrator"
-    $role = Get-MgDirectoryRole | Where-Object { $_.DisplayName -eq $roleName }
-    if (-not $role) {
-        # Activate the role template if it doesn't exist (common in new tenants)
-        $roleTemplate = Get-MgDirectoryRoleTemplate | Where-Object { $_.DisplayName -eq $roleName }
-        $role = New-MgDirectoryRole -RoleTemplateId $roleTemplate.Id
+    $Domain = $initialDomain # Default
+    
+    if (-not [string]::IsNullOrWhiteSpace($CustomDomain)) {
+        $found = $verifiedDomains | Where-Object { $_.id -eq $CustomDomain }
+        if ($found) {
+            $Domain = $CustomDomain
+            Write-Host "   ✅ Using Custom Domain: $Domain" -ForegroundColor Green
+        } else {
+            Write-Warning "   ⚠️  Custom domain '$CustomDomain' not found or not verified. Falling back to $initialDomain"
+        }
+    } else {
+        Write-Host "   ℹ️  Using Initial Domain: $Domain" -ForegroundColor Cyan
     }
 
     Write-Host "🚀 Deploying Break Glass Accounts..." -ForegroundColor Cyan
 
-    foreach ($acc in $BGAccounts) {
-        $upn = "$acc@$Domain"
+    foreach ($acc in $Accounts) {
+        # Handle both string array (from JSON) and object array (if expanded later)
+        if ($acc.PSObject.Properties.Match('name').Count) {
+            $accName = $acc.name
+        } else {
+            $accName = $acc
+        }
+
+        $upn = "$accName@$Domain"
+        
+        # Generate Random Password
+        $randomPassword = New-RandomPassword
+
+        $PasswordProfile = @{
+            password = $randomPassword
+            forceChangePasswordNextSignIn = $false # BG accounts usually don't expire/change often
+        }
         
         try {
-            # 1. Create User
-            $existing = Get-MgUser -UserId $upn -ErrorAction SilentlyContinue
+            # Check existence
+            $uri = "https://graph.microsoft.com/v1.0/users?`$filter=userPrincipalName eq '$upn'"
+            $existingResponse = Invoke-MgGraphRequest -Method GET -Uri $uri
+            $existing = $existingResponse.value | Select-Object -First 1
+
             if ($existing) {
                 Write-Host "   ⚠️  Account '$upn' already exists." -ForegroundColor Yellow
-                $userId = $existing.Id
+                $userId = $existing.id
             }
             else {
+                # Create
                 $userParams = @{
-                    DisplayName = "Emergency Access $acc"
-                    UserPrincipalName = $upn
-                    MailNickname = $acc
-                    AccountEnabled = $true
-                    PasswordProfile = $PasswordProfile
-                    UsageLocation = "US"
+                    displayName = $accName
+                    userPrincipalName = $upn
+                    mailNickname = $accName
+                    accountEnabled = $true
+                    passwordProfile = $PasswordProfile
+                    usageLocation = $UsageLocation
                 }
-                $newUser = New-MgUser -BodyParameter $userParams
+                
+                # Debug
+                # Write-Host "Debug Body: $($userParams | ConvertTo-Json -Depth 5)" -ForegroundColor DarkGray
+
+                $newUser = Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/users" -Body $userParams
                 Write-Host "   ✅ Created Account '$upn'" -ForegroundColor Green
-                $userId = $newUser.Id
+                Write-Host "      🔑 Password: $randomPassword" -ForegroundColor Yellow
+                $userId = $newUser.id
             }
 
-            # 2. Assign Global Admin
-            try {
-                New-MgDirectoryRoleMemberByRef -DirectoryRoleId $role.Id -BodyParameter @{ "@odata.id" = "https://graph.microsoft.com/v1.0/directoryObjects/$userId" } -ErrorAction SilentlyContinue
-                Write-Host "   ✅ Assigned Global Admin to '$upn'" -ForegroundColor Green
-            }
-            catch {
-                # Ignore if already member
+            # Assign Global Admin Role
+            # 1. Get Role Definition
+            $roleUri = "https://graph.microsoft.com/v1.0/roleManagement/directory/roleDefinitions?`$filter=displayName eq 'Global Administrator'"
+            $roleDef = Invoke-MgGraphRequest -Method GET -Uri $roleUri
+            $roleId = $roleDef.value[0].id
+
+            # 2. Assign Role
+            # Check if already assigned
+            $assignmentsUri = "https://graph.microsoft.com/v1.0/roleManagement/directory/roleAssignments?`$filter=principalId eq '$userId' and roleDefinitionId eq '$roleId'"
+            $assignments = Invoke-MgGraphRequest -Method GET -Uri $assignmentsUri
+            
+            if ($assignments.value.Count -eq 0) {
+                $assignmentBody = @{
+                    "@odata.type" = "#microsoft.graph.unifiedRoleAssignment"
+                    principalId = $userId
+                    roleDefinitionId = $roleId
+                    directoryScopeId = "/"
+                }
+                $null = Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/roleManagement/directory/roleAssignments" -Body $assignmentBody
+                Write-Host "      ✅ Assigned Global Admin role to $upn" -ForegroundColor Green
+            } else {
+                Write-Host "      ⚠️  Global Admin role already assigned." -ForegroundColor Yellow
             }
         }
         catch {
-            Write-Error "Failed to process $upn: $_"
+            Write-Error "Failed to process account ${upn}: $_"
         }
     }
 
     Write-Host "`n⚠️  IMPORTANT: Store these credentials securely (e.g., Password Manager, Physical Safe)." -ForegroundColor Red
-    Write-Host "   Password: Emergency!Access!2025!" -ForegroundColor Yellow
 }

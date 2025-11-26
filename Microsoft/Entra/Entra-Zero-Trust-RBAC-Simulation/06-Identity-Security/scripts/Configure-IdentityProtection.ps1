@@ -17,67 +17,98 @@
 #>
 
 [CmdletBinding()]
-param()
+param(
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile
+)
 
 process {
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
 
+    # Load Parameters
+    $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"
+    if ($UseParametersFile -or (Test-Path $paramsPath)) {
+        if (Test-Path $paramsPath) {
+            Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
+            $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
+            
+            $PolicyNameHighRisk = $jsonParams."Configure-IdentityProtection".policyNameHighRisk
+            $PolicyNameMediumRisk = $jsonParams."Configure-IdentityProtection".policyNameMediumRisk
+            $BreakGlassPrefix = $jsonParams."Configure-IdentityProtection".breakGlassPrefix
+        } else {
+            Throw "Parameters file not found at $paramsPath"
+        }
+    } else {
+        Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
+    }
+
     Write-Host "🚀 Configuring Identity Protection Policies..." -ForegroundColor Cyan
 
-    $bgUser = Get-MgUser -Filter "startsWith(UserPrincipalName, 'breakglass')" -ErrorAction SilentlyContinue
-    $excludeUsers = if ($bgUser) { @($bgUser.Id) } else { @() }
+    # Get Break Glass Account to exclude
+    $bgUri = "https://graph.microsoft.com/v1.0/users?`$filter=startsWith(userPrincipalName, '$BreakGlassPrefix')"
+    $bgResponse = Invoke-MgGraphRequest -Method GET -Uri $bgUri
+    $bgUser = $bgResponse.value | Select-Object -First 1
+    $excludeUsers = if ($bgUser) { @($bgUser.id) } else { @() }
 
     # Policy 3: Block High User Risk
-    $polName3 = "CA-03-Block-HighUserRisk"
-    $pol3 = Get-MgIdentityConditionalAccessPolicy -Filter "DisplayName eq '$polName3'" -ErrorAction SilentlyContinue
+    $pol3Uri = "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies?`$filter=displayName eq '$PolicyNameHighRisk'"
+    $pol3Response = Invoke-MgGraphRequest -Method GET -Uri $pol3Uri
+    $pol3 = $pol3Response.value | Select-Object -First 1
     
     if (-not $pol3) {
         $conditions3 = @{
-            Applications = @{ IncludeApplications = @("All") }
-            Users = @{
-                IncludeUsers = @("All")
-                ExcludeUsers = $excludeUsers
+            applications = @{ includeApplications = @("All") }
+            users = @{
+                includeUsers = @("All")
+                excludeUsers = $excludeUsers
             }
-            UserRiskLevels = @("high")
+            userRiskLevels = @("high")
         }
         
         $grant3 = @{
-            BuiltInControls = @("block")
-            Operator = "OR"
+            builtInControls = @("block")
+            operator = "OR"
         }
 
-        New-MgIdentityConditionalAccessPolicy -DisplayName $polName3 `
-            -State "ReportOnly" `
-            -Conditions $conditions3 `
-            -GrantControls $grant3
-            
-        Write-Host "   ✅ Created Policy '$polName3' (Report-Only)" -ForegroundColor Green
+        $body = @{
+            displayName = $PolicyNameHighRisk
+            state = "ReportOnly"
+            conditions = $conditions3
+            grantControls = $grant3
+        }
+
+        Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies" -Body $body
+        Write-Host "   ✅ Created Policy '$PolicyNameHighRisk' (Report-Only)" -ForegroundColor Green
     }
 
     # Policy 4: MFA for Medium+ Sign-in Risk
-    $polName4 = "CA-04-MFA-MediumSigninRisk"
-    $pol4 = Get-MgIdentityConditionalAccessPolicy -Filter "DisplayName eq '$polName4'" -ErrorAction SilentlyContinue
+    $pol4Uri = "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies?`$filter=displayName eq '$PolicyNameMediumRisk'"
+    $pol4Response = Invoke-MgGraphRequest -Method GET -Uri $pol4Uri
+    $pol4 = $pol4Response.value | Select-Object -First 1
     
     if (-not $pol4) {
         $conditions4 = @{
-            Applications = @{ IncludeApplications = @("All") }
-            Users = @{
-                IncludeUsers = @("All")
-                ExcludeUsers = $excludeUsers
+            applications = @{ includeApplications = @("All") }
+            users = @{
+                includeUsers = @("All")
+                excludeUsers = $excludeUsers
             }
-            SignInRiskLevels = @("medium", "high")
+            signInRiskLevels = @("medium", "high")
         }
         
         $grant4 = @{
-            BuiltInControls = @("mfa")
-            Operator = "OR"
+            builtInControls = @("mfa")
+            operator = "OR"
         }
 
-        New-MgIdentityConditionalAccessPolicy -DisplayName $polName4 `
-            -State "ReportOnly" `
-            -Conditions $conditions4 `
-            -GrantControls $grant4
-            
-        Write-Host "   ✅ Created Policy '$polName4' (Report-Only)" -ForegroundColor Green
+        $body = @{
+            displayName = $PolicyNameMediumRisk
+            state = "ReportOnly"
+            conditions = $conditions4
+            grantControls = $grant4
+        }
+
+        Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies" -Body $body
+        Write-Host "   ✅ Created Policy '$PolicyNameMediumRisk' (Report-Only)" -ForegroundColor Green
     }
 }

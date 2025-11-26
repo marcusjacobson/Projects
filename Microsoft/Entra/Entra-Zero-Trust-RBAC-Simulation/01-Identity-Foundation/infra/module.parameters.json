@@ -1,0 +1,35 @@
+{
+    "global": {
+        "location": "US",
+        "breakGlassPassword": "Emergency!Access!2025!",
+        "customDomain": "marcusj-dev.cloud"
+    },
+    "Deploy-IdentityHierarchy": {
+        "departments": ["IT", "HR", "Finance", "Marketing", "Executive"],
+        "users": [
+            { "name": "USR-CEO", "title": "CEO", "dept": "Executive" },
+            { "name": "USR-CISO", "title": "CISO", "dept": "Executive" },
+            { "name": "USR-IT-Director", "title": "IT Director", "dept": "IT" },
+            { "name": "USR-IT-Admin", "title": "System Administrator", "dept": "IT" },
+            { "name": "USR-IT-Helpdesk", "title": "Helpdesk Technician", "dept": "IT" },
+            { "name": "USR-HR-Director", "title": "HR Director", "dept": "HR" },
+            { "name": "USR-HR-Manager", "title": "HR Manager", "dept": "HR" },
+            { "name": "USR-Fin-Director", "title": "Finance Director", "dept": "Finance" },
+            { "name": "USR-Fin-Analyst", "title": "Financial Analyst", "dept": "Finance" },
+            { "name": "USR-Mkt-Director", "title": "Marketing Director", "dept": "Marketing" },
+            { "name": "USR-Mkt-Specialist", "title": "Marketing Specialist", "dept": "Marketing" }
+        ]
+    },
+    "Deploy-BreakGlassAccounts": {
+        "accounts": ["USR-BREAK-GLASS-01", "USR-BREAK-GLASS-02"]
+    },
+    "Configure-GroupBasedLicensing": {
+        "groupName": "GRP-SEC-All-Licensed-Users",
+        "groupDescription": "Group for P2 Licensing",
+        "userFilterPrefix": "USR-"
+    },
+    "Configure-TenantHardening": {
+        "allowInvitesFrom": "adminsAndGuestInviters",
+        "allowedToReadOtherUsers": false
+    }
+}

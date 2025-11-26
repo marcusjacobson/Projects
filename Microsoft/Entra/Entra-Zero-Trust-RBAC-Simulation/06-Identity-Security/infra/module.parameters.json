@@ -1,0 +1,21 @@
+{
+    "global": {
+        "location": "US"
+    },
+    "Configure-AuthMethods": {
+        "targetGroupName": "GRP-SEC-AllUsers",
+        "enableFido2": true,
+        "enableMicrosoftAuthenticator": true
+    },
+    "Configure-IdentityProtection": {
+        "policyNameHighRisk": "CA-03-Block-HighUserRisk",
+        "policyNameMediumRisk": "CA-04-MFA-MediumSigninRisk",
+        "breakGlassPrefix": "breakglass"
+    },
+    "Deploy-CAPolicies": {
+        "policyNameMfaAdmins": "CA-01-RequireMFA-Admins",
+        "policyNameBlockLegacy": "CA-02-BlockLegacyAuth",
+        "breakGlassPrefix": "breakglass",
+        "globalAdminRoleId": "62e90394-69f5-4237-9190-012177145e10"
+    }
+}

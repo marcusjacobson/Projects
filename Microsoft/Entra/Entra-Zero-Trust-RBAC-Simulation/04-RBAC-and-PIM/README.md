@@ -26,36 +26,62 @@ This lab moves us away from permanent standing access. We will implement Just-In
 
 ## 📝 Lab Steps
 
-### Step 1: Deploy Custom Roles
+### Step 1: Configure Parameters File
+
+Before deploying resources, you must configure the environment parameters.
+
+**Context**: This project uses a centralized JSON configuration file to manage deployment settings. This ensures consistency across all scripts.
+
+1. Navigate to the `infra` directory.
+2. Open `module.parameters.json`.
+3. Review the default settings.
+4. Save the file.
+
+### Step 2: Deploy Custom Roles
 
 We will create a role definition that is strictly scoped.
 
 **Context**: Built-in roles like "User Administrator" are often too broad (e.g., they can manage Groups too). Custom roles allow us to follow the "Least Privilege" principle precisely—giving Helpdesk staff exactly the permissions they need to reset passwords, and nothing else.
 
-1. Run `Deploy-CustomRoles.ps1`.
+1. Run the following command:
+
+   ```powershell
+   .\Deploy-CustomRoles.ps1 -UseParametersFile
+   ```
+
 2. Creates `ROLE-Tier1-Helpdesk`.
 3. Permissions: `microsoft.directory/users/password/update`, `microsoft.directory/users/invalidateAllRefreshTokens`.
 
-### Step 2: Configure PIM for Roles
+### Step 3: Configure PIM for Roles
 
 We will protect the **Global Administrator** role.
 
 **Context**: "Standing Access" (permanent admin rights) is a major vulnerability. If an admin is phished, the attacker owns the tenant. PIM reduces this window of exposure to zero. Admins must "activate" their role only when needed, and we can enforce MFA or approval for that activation.
 
-1. Run `Configure-PIM-Roles.ps1`.
+1. Run the following command:
+
+   ```powershell
+   .\Configure-PIM-Roles.ps1 -UseParametersFile
+   ```
+
 2. Sets the PIM policy for Global Admin:
     - **Activation Max Duration**: 4 Hours.
     - **Require MFA**: Yes.
     - **Require Justification**: Yes.
     - **Require Approval**: Yes (Assigns `USR-CISO` as approver).
 
-### Step 3: Configure PIM for Groups
+### Step 4: Configure PIM for Groups
 
 We will use a PIM-enabled group to manage Exchange access.
 
 **Context**: Managing PIM assignments user-by-user is tedious. "PIM for Groups" allows us to assign a role to a group. When a user activates the group membership, they inherit all roles assigned to that group. This scales much better for large teams.
 
-1. Run `Configure-PIM-Groups.ps1`.
+1. Run the following command:
+
+   ```powershell
+   .\Configure-PIM-Groups.ps1 -UseParametersFile
+   ```
+
 2. Onboards `GRP-SEC-IT` to PIM.
 3. Assigns the **Exchange Administrator** role to this group.
 4. Now, `USR-IT-Admin` (a member of the group) is *eligible* to become an Exchange Admin by activating the group membership.

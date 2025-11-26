@@ -16,47 +16,111 @@
 #>
 
 [CmdletBinding()]
-param()
+param(
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile
+)
 
 process {
+    # Connect to Graph
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
 
-    $auName = "AU-SEC-Restricted"
+    # Load Parameters
+    $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"
+    if ($UseParametersFile -or (Test-Path $paramsPath)) {
+        if (Test-Path $paramsPath) {
+            Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
+            $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
+            
+            $AuName = $jsonParams."Configure-RestrictedManagementAUs".auName
+            $Description = $jsonParams."Configure-RestrictedManagementAUs".description
+            $RestrictedAccounts = $jsonParams."Configure-RestrictedManagementAUs".restrictedAccounts
+        } else {
+            Throw "Parameters file not found at $paramsPath"
+        }
+    } else {
+        Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
+    }
     
     Write-Host "🚀 Deploying Restricted Management AU..." -ForegroundColor Cyan
 
+    # Helper function for retries
+    function Invoke-GraphRequestWithRetry {
+        param(
+            [string]$Method,
+            [string]$Uri,
+            [hashtable]$Body,
+            [int]$MaxRetries = 3
+        )
+        
+        $retry = 0
+        $success = $false
+        $response = $null
+        
+        while (-not $success -and $retry -lt $MaxRetries) {
+            try {
+                if ($Body) {
+                    $response = Invoke-MgGraphRequest -Method $Method -Uri $Uri -Body $Body -ErrorAction Stop
+                } else {
+                    $response = Invoke-MgGraphRequest -Method $Method -Uri $Uri -ErrorAction Stop
+                }
+                $success = $true
+            }
+            catch {
+                $retry++
+                if ($retry -eq $MaxRetries) {
+                    throw $_
+                }
+                Write-Warning "   ⚠️  Connection failed. Retrying ($retry/$MaxRetries)..."
+                Start-Sleep -Seconds 2
+            }
+        }
+        return $response
+    }
+
     try {
-        $existing = Get-MgDirectoryAdministrativeUnit -Filter "DisplayName eq '$auName'" -ErrorAction SilentlyContinue
+        # Check existence via REST
+        $uri = "https://graph.microsoft.com/v1.0/directory/administrativeUnits?`$filter=displayName eq '$AuName'"
+        $existingResponse = Invoke-GraphRequestWithRetry -Method GET -Uri $uri
+        $existing = $existingResponse.value | Select-Object -First 1
+
         if ($existing) {
-            Write-Host "   ⚠️  AU '$auName' already exists." -ForegroundColor Yellow
-            $auId = $existing.Id
+            Write-Host "   ⚠️  AU '$AuName' already exists." -ForegroundColor Yellow
+            $auId = $existing.id
         }
         else {
             # Create with IsMemberManagementRestricted = $true
-            # Note: This property might require beta endpoint or specific payload structure depending on SDK version.
-            # v1.0 supports it.
-            
-            $params = @{
-                DisplayName = $auName
-                Description = "Restricted Management for Break Glass Accounts"
-                IsMemberManagementRestricted = $true
+            $body = @{
+                displayName = $AuName
+                description = $Description
+                isMemberManagementRestricted = $true
             }
             
-            $au = New-MgDirectoryAdministrativeUnit -BodyParameter $params
-            Write-Host "   ✅ Created Restricted AU '$auName'" -ForegroundColor Green
-            $auId = $au.Id
+            $au = Invoke-GraphRequestWithRetry -Method POST -Uri "https://graph.microsoft.com/v1.0/directory/administrativeUnits" -Body $body
+            Write-Host "   ✅ Created Restricted AU '$AuName'" -ForegroundColor Green
+            $auId = $au.id
         }
 
         # Add Break Glass Accounts
-        $bgAccounts = Get-MgUser -Filter "startsWith(userPrincipalName, 'ADM-BG-')" -All
-        
-        foreach ($acc in $bgAccounts) {
+        foreach ($accName in $RestrictedAccounts) {
             try {
-                New-MgDirectoryAdministrativeUnitMemberByRef -AdministrativeUnitId $auId -BodyParameter @{ "@odata.id" = "https://graph.microsoft.com/v1.0/directoryObjects/$($acc.Id)" } -ErrorAction SilentlyContinue
-                Write-Host "   ✅ Added '$($acc.UserPrincipalName)' to Restricted AU" -ForegroundColor Green
+                # Find user by mailNickname to be domain-agnostic
+                $userUri = "https://graph.microsoft.com/v1.0/users?`$filter=mailNickname eq '$accName'"
+                $userResponse = Invoke-GraphRequestWithRetry -Method GET -Uri $userUri
+                $user = $userResponse.value | Select-Object -First 1
+
+                if ($user) {
+                    $memberBody = @{
+                        "@odata.id" = "https://graph.microsoft.com/v1.0/directoryObjects/$($user.id)"
+                    }
+                    Invoke-GraphRequestWithRetry -Method POST -Uri "https://graph.microsoft.com/v1.0/directory/administrativeUnits/$auId/members/`$ref" -Body $memberBody
+                    Write-Host "   ✅ Added '$($user.userPrincipalName)' to Restricted AU" -ForegroundColor Green
+                } else {
+                    Write-Warning "User '$accName' not found."
+                }
             }
             catch {
-                Write-Warning "Failed to add $($acc.UserPrincipalName): $_"
+                Write-Warning "Failed to add ${accName}: $_"
             }
         }
     }

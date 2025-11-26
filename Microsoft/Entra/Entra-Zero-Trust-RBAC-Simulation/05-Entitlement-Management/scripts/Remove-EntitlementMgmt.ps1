@@ -14,58 +14,83 @@
 #>
 
 [CmdletBinding()]
-param()
+param(
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile
+)
 
 process {
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
+
+    # Load Parameters
+    $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"
+    if ($UseParametersFile -or (Test-Path $paramsPath)) {
+        if (Test-Path $paramsPath) {
+            Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
+            $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
+            
+            $CatName = $jsonParams."Remove-EntitlementMgmt".catalogName
+            $OrgName = $jsonParams."Remove-EntitlementMgmt".orgName
+            $Packages = $jsonParams."Remove-EntitlementMgmt".packages
+        } else {
+            Throw "Parameters file not found at $paramsPath"
+        }
+    } else {
+        Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
+    }
 
     Write-Host "🗑️ Cleaning up Entitlement Management..." -ForegroundColor Yellow
 
     # Helper to remove package
     function Remove-Package ($pkgName) {
-        $pkg = Get-MgEntitlementManagementAccessPackage -Filter "DisplayName eq '$pkgName'" -ErrorAction SilentlyContinue
+        $pkgUri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/accessPackages?`$filter=displayName eq '$pkgName'"
+        $pkgResponse = Invoke-MgGraphRequest -Method GET -Uri $pkgUri
+        $pkg = $pkgResponse.value | Select-Object -First 1
+        
         if ($pkg) {
             # Remove policies first
-            $policies = Get-MgEntitlementManagementAccessPackageAssignmentPolicy -Filter "AccessPackage/Id eq '$($pkg.Id)'"
+            $polUri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/assignmentPolicies?`$filter=accessPackage/id eq '$($pkg.id)'"
+            $polResponse = Invoke-MgGraphRequest -Method GET -Uri $polUri
+            $policies = $polResponse.value
+            
             foreach ($pol in $policies) {
-                Remove-MgEntitlementManagementAccessPackageAssignmentPolicy -AccessPackageAssignmentPolicyId $pol.Id -ErrorAction SilentlyContinue
-                Write-Host "   - Removed Policy '$($pol.DisplayName)'" -ForegroundColor Gray
+                Invoke-MgGraphRequest -Method DELETE -Uri "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/assignmentPolicies/$($pol.id)" -ErrorAction SilentlyContinue
+                Write-Host "   - Removed Policy '$($pol.displayName)'" -ForegroundColor Gray
             }
             
             # Remove package
-            Remove-MgEntitlementManagementAccessPackage -AccessPackageId $pkg.Id -ErrorAction SilentlyContinue
+            Invoke-MgGraphRequest -Method DELETE -Uri "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/accessPackages/$($pkg.id)" -ErrorAction SilentlyContinue
             Write-Host "   ✅ Removed Package '$pkgName'" -ForegroundColor Green
         }
     }
 
-    Remove-Package "PKG-Marketing-Campaign"
-    Remove-Package "PKG-Partner-Collab"
+    foreach ($pkg in $Packages) {
+        Remove-Package $pkg
+    }
 
     # Remove Catalog
-    $catName = "CAT-Marketing"
-    $cat = Get-MgEntitlementManagementAccessPackageCatalog -Filter "DisplayName eq '$catName'" -ErrorAction SilentlyContinue
+    $catUri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/catalogs?`$filter=displayName eq '$CatName'"
+    $catResponse = Invoke-MgGraphRequest -Method GET -Uri $catUri
+    $cat = $catResponse.value | Select-Object -First 1
+    
     if ($cat) {
-        # Catalog must be empty? Usually packages are gone, but resources might remain.
-        # Resources are linked to catalog.
-        # We might need to remove resource requests?
-        # Deleting catalog usually fails if not empty.
-        
-        # Try force delete or just delete
         try {
-            Remove-MgEntitlementManagementAccessPackageCatalog -AccessPackageCatalogId $cat.Id -ErrorAction Stop
-            Write-Host "   ✅ Removed Catalog '$catName'" -ForegroundColor Green
+            Invoke-MgGraphRequest -Method DELETE -Uri "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/catalogs/$($cat.id)" -ErrorAction Stop
+            Write-Host "   ✅ Removed Catalog '$CatName'" -ForegroundColor Green
         }
         catch {
-            Write-Warning "   ⚠️ Could not remove Catalog '$catName'. It might not be empty."
+            Write-Warning "   ⚠️ Could not remove Catalog '$CatName'. It might not be empty."
             Write-Warning "   $_"
         }
     }
 
     # Remove Connected Org
-    $orgName = "Partner Corp"
-    $org = Get-MgEntitlementManagementConnectedOrganization -Filter "DisplayName eq '$orgName'" -ErrorAction SilentlyContinue
+    $orgUri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/connectedOrganizations?`$filter=displayName eq '$OrgName'"
+    $orgResponse = Invoke-MgGraphRequest -Method GET -Uri $orgUri
+    $org = $orgResponse.value | Select-Object -First 1
+    
     if ($org) {
-        Remove-MgEntitlementManagementConnectedOrganization -ConnectedOrganizationId $org.Id -ErrorAction SilentlyContinue
-        Write-Host "   ✅ Removed Connected Org '$orgName'" -ForegroundColor Green
+        Invoke-MgGraphRequest -Method DELETE -Uri "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/connectedOrganizations/$($org.id)" -ErrorAction SilentlyContinue
+        Write-Host "   ✅ Removed Connected Org '$OrgName'" -ForegroundColor Green
     }
 }

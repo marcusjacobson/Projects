@@ -32,10 +32,31 @@
 #>
 
 [CmdletBinding()]
-param()
+param(
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile
+)
 
 process {
+    # Connect to Graph
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
+
+    # Load Parameters
+    $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"
+    if ($UseParametersFile -or (Test-Path $paramsPath)) {
+        if (Test-Path $paramsPath) {
+            Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
+            $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
+            
+            $ExpirationDays = $jsonParams."Configure-AppConsentGovernance".notifyReviewersExpirationInDays
+            $EnableAdminConsent = $jsonParams."Configure-AppConsentGovernance".enableAdminConsentRequests
+            $BlockRiskyApps = $jsonParams."Configure-AppConsentGovernance".blockUserConsentForRiskyApps
+        } else {
+            Throw "Parameters file not found at $paramsPath"
+        }
+    } else {
+        Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
+    }
 
     Write-Host "🚀 Configuring App Consent Governance..." -ForegroundColor Cyan
 
@@ -83,10 +104,10 @@ process {
             $settings = $settingsResponse.value | Select-Object -First 1
             
             $values = @(
-                @{ name = "EnableAdminConsentRequests"; value = "true" },
+                @{ name = "EnableAdminConsentRequests"; value = $EnableAdminConsent },
                 @{ name = "ConstrainGroupSpecificConsentToMembersOfGroupId"; value = "" },
-                @{ name = "BlockUserConsentForRiskyApps"; value = "true" },
-                @{ name = "NotifyReviewersExpirationInDays"; value = "7" },
+                @{ name = "BlockUserConsentForRiskyApps"; value = $BlockRiskyApps },
+                @{ name = "NotifyReviewersExpirationInDays"; value = $ExpirationDays },
                 @{ name = "NotifyReviewersType"; value = "Role" },
                 @{ name = "PrimaryAdminConsentReviewers"; value = "" }
             )

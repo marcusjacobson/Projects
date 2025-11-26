@@ -26,25 +26,46 @@ This lab automates the request and approval process for accessing resources. We 
 
 ## 📝 Lab Steps
 
-### Step 1: Deploy Access Packages
+### Step 1: Configure Parameters File
+
+Before deploying resources, you must configure the environment parameters.
+
+**Context**: This project uses a centralized JSON configuration file to manage deployment settings. This ensures consistency across all scripts.
+
+1. Navigate to the `infra` directory.
+2. Open `module.parameters.json`.
+3. Review the default settings.
+4. Save the file.
+
+### Step 2: Deploy Access Packages
 
 We will create a catalog and an access package for internal users.
 
 **Context**: Instead of IT manually adding users to groups, we bundle resources (Groups, Apps, SharePoint sites) into an "Access Package." Users request this package like an item in a shopping cart. This shifts the workload from IT to the business owners who actually know who needs access.
 
-1. Run `Deploy-AccessPackages.ps1`.
+1. Run the following command:
+
+   ```powershell
+   .\Deploy-AccessPackages.ps1 -UseParametersFile
+   ```
+
 2. Creates Catalog: `CAT-Marketing`.
 3. Creates Access Package: `PKG-Marketing-Campaign`.
 4. Adds `GRP-SEC-Marketing` to the package.
 5. Creates an Assignment Policy allowing `USR-Mkt-Specialist` to request access.
 
-### Step 2: Configure External Governance
+### Step 3: Configure External Governance
 
 We will create a package for guests.
 
 **Context**: Guest access is often "set and forget," leading to security risks. By wrapping guest access in an Access Package, we enforce a lifecycle. The access expires automatically after 30 days unless renewed, and we can force a monthly review to ensure the guest is still relevant.
 
-1. Run `Configure-ExternalGovernance.ps1`.
+1. Run the following command:
+
+   ```powershell
+   .\Configure-ExternalGovernance.ps1 -UseParametersFile
+   ```
+
 2. Creates Access Package: `PKG-External-Collaboration`.
 3. Configures a policy:
     - **Expiration**: 30 Days.

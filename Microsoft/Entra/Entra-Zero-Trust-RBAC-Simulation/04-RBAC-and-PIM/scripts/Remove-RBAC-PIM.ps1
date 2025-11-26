@@ -12,11 +12,27 @@
 
 [CmdletBinding()]
 param(
-    [switch]$Force
+    [switch]$Force,
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile
 )
 
 process {
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
+
+    # Load Parameters
+    $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"
+    if ($UseParametersFile -or (Test-Path $paramsPath)) {
+        if (Test-Path $paramsPath) {
+            Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
+            $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
+            $RoleName = $jsonParams."Remove-RBAC-PIM".roleName
+        } else {
+            Throw "Parameters file not found at $paramsPath"
+        }
+    } else {
+        Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
+    }
 
     if (-not $Force) {
         $confirm = Read-Host "⚠️  Are you sure you want to remove Custom Roles and PIM settings? (y/n)"
@@ -26,12 +42,16 @@ process {
     Write-Host "🚀 Removing RBAC and PIM Configurations..." -ForegroundColor Cyan
 
     # 1. Remove Custom Role
-    $roleName = "ROLE-Tier1-Helpdesk"
-    $role = Get-MgRoleManagementDirectoryRoleDefinition -Filter "DisplayName eq '$roleName'" -ErrorAction SilentlyContinue
+    $uri = "https://graph.microsoft.com/v1.0/roleManagement/directory/roleDefinitions?`$filter=displayName eq '$RoleName'"
+    $roleResponse = Invoke-MgGraphRequest -Method GET -Uri $uri
+    $role = $roleResponse.value | Select-Object -First 1
     
     if ($role) {
-        Remove-MgRoleManagementDirectoryRoleDefinition -UnifiedRoleDefinitionId $role.Id
-        Write-Host "   ✅ Removed Custom Role '$roleName'" -ForegroundColor Green
+        $deleteUri = "https://graph.microsoft.com/v1.0/roleManagement/directory/roleDefinitions/$($role.id)"
+        Invoke-MgGraphRequest -Method DELETE -Uri $deleteUri
+        Write-Host "   ✅ Removed Custom Role '$RoleName'" -ForegroundColor Green
+    } else {
+        Write-Host "   ℹ️  Custom Role '$RoleName' not found." -ForegroundColor Yellow
     }
 
     # 2. Revert PIM Settings (Optional/Complex)

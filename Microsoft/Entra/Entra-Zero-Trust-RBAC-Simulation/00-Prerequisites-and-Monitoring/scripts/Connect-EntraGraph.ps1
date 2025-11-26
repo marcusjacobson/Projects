@@ -57,21 +57,28 @@ begin {
 process {
     Write-Verbose "Checking for existing Microsoft Graph connection..."
     
-    try {
-        $currentContext = Get-MgContext -ErrorAction Stop
-        Write-Host "✅ Already connected to Microsoft Graph as $($currentContext.Account)" -ForegroundColor Green
+    $currentContext = Get-MgContext
+    
+    if ($currentContext) {
+        $displayAccount = if ([string]::IsNullOrWhiteSpace($currentContext.Account)) { "Client ID: $($currentContext.ClientId)" } else { $currentContext.Account }
+        Write-Host "✅ Already connected to Microsoft Graph as $displayAccount" -ForegroundColor Green
         Write-Verbose "Scopes: $($currentContext.Scopes -join ', ')"
     }
-    catch {
+    else {
         Write-Host "🚀 Connecting to Microsoft Graph..." -ForegroundColor Cyan
-        Connect-MgGraph -Scopes $Scopes -NoWelcome
-        
-        $currentContext = Get-MgContext
-        if ($currentContext) {
-            Write-Host "✅ Successfully connected as $($currentContext.Account)" -ForegroundColor Green
+        try {
+            Connect-MgGraph -Scopes $Scopes -NoWelcome
+            
+            $currentContext = Get-MgContext
+            if ($currentContext) {
+                Write-Host "✅ Successfully connected as $($currentContext.Account)" -ForegroundColor Green
+            }
+            else {
+                Write-Error "Failed to connect to Microsoft Graph."
+            }
         }
-        else {
-            Write-Error "Failed to connect to Microsoft Graph."
+        catch {
+            Write-Error "Failed to connect to Microsoft Graph: $_"
         }
     }
 }

@@ -31,44 +31,59 @@
 #>
 
 [CmdletBinding()]
-param()
+param(
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile
+)
 
 process {
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
 
-    $roleName = "ROLE-Tier1-Helpdesk"
+    # Load Parameters
+    $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"
+    if ($UseParametersFile -or (Test-Path $paramsPath)) {
+        if (Test-Path $paramsPath) {
+            Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
+            $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
+            
+            $RoleName = $jsonParams."Deploy-CustomRoles".roleName
+            $Description = $jsonParams."Deploy-CustomRoles".description
+            $Permissions = $jsonParams."Deploy-CustomRoles".permissions
+        } else {
+            Throw "Parameters file not found at $paramsPath"
+        }
+    } else {
+        Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
+    }
     
-    Write-Host "🚀 Deploying Custom Role..." -ForegroundColor Cyan
+    Write-Host "🚀 Deploying Custom Role '$RoleName'..." -ForegroundColor Cyan
 
     try {
         # Check existence via REST
-        $uri = "https://graph.microsoft.com/v1.0/roleManagement/directory/roleDefinitions?`$filter=displayName eq '$roleName'"
+        $uri = "https://graph.microsoft.com/v1.0/roleManagement/directory/roleDefinitions?`$filter=displayName eq '$RoleName'"
         $existingResponse = Invoke-MgGraphRequest -Method GET -Uri $uri
         $existing = $existingResponse.value | Select-Object -First 1
 
         if ($existing) {
-            Write-Host "   ⚠️  Role '$roleName' already exists." -ForegroundColor Yellow
+            Write-Host "   ⚠️  Role '$RoleName' already exists." -ForegroundColor Yellow
         }
         else {
             $perms = @(
                 @{
-                    allowedResourceActions = @(
-                        "microsoft.directory/users/password/update",
-                        "microsoft.directory/users/invalidateAllRefreshTokens"
-                    )
+                    allowedResourceActions = $Permissions
                 }
             )
 
-            $params = @{
-                displayName = $roleName
-                description = "Can reset passwords and invalidate tokens for non-admins."
+            $body = @{
+                displayName = $RoleName
+                description = $Description
                 rolePermissions = $perms
                 isEnabled = $true
                 templateId = [Guid]::NewGuid().ToString() # Required for custom roles
             }
 
-            $null = Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/roleManagement/directory/roleDefinitions" -Body $params
-            Write-Host "   ✅ Created Custom Role '$roleName'" -ForegroundColor Green
+            $null = Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/roleManagement/directory/roleDefinitions" -Body $body
+            Write-Host "   ✅ Created Custom Role '$RoleName'" -ForegroundColor Green
         }
     }
     catch {

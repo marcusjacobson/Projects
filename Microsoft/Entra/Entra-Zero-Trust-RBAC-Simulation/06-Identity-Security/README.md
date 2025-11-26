@@ -28,7 +28,18 @@ This lab implements the "Verify Explicitly" pillar of Zero Trust. We will deploy
 
 ## 📝 Lab Steps
 
-### Step 1: Deploy Conditional Access Policies
+### Step 1: Configure Parameters File
+
+Before deploying resources, you must configure the environment parameters.
+
+**Context**: This project uses a centralized JSON configuration file to manage deployment settings. This ensures consistency across all scripts.
+
+1. Navigate to the `infra` directory.
+2. Open `module.parameters.json`.
+3. Review the default settings.
+4. Save the file.
+
+### Step 2: Deploy Conditional Access Policies
 
 We will create standard protection policies but keep them in "Report-Only" mode to prevent accidental lockouts.
 
@@ -36,13 +47,18 @@ We will create standard protection policies but keep them in "Report-Only" mode 
 
 1. Open a PowerShell terminal.
 2. Navigate to the `scripts` directory.
-3. Run `Deploy-CAPolicies.ps1`.
+3. Run the following command:
+
+   ```powershell
+   .\Deploy-CAPolicies.ps1 -UseParametersFile
+   ```
+
 4. This creates:
     - `CA001: Require MFA for Admins` (Report-Only)
     - `CA002: Block Legacy Authentication` (Report-Only)
     - `CA003: Require MFA for All Users` (Report-Only)
 
-### Step 2: Configure Identity Protection
+### Step 3: Configure Identity Protection
 
 We will automate the response to compromised accounts.
 
@@ -51,17 +67,27 @@ We will automate the response to compromised accounts.
 - **User Risk**: Indicates the user's credentials might be leaked (e.g., found on the dark web). Response: Force Password Change.
 - **Sign-in Risk**: Indicates a specific login attempt is suspicious (e.g., Impossible Travel). Response: Require MFA.
 
-1. Run `Configure-IdentityProtection.ps1`.
+1. Run the following command:
+
+   ```powershell
+   .\Configure-IdentityProtection.ps1 -UseParametersFile
+   ```
+
 2. Sets the User Risk policy to "High" -> "Block Access" (or "Require Password Change").
 3. Sets the Sign-in Risk policy to "Medium and above" -> "Require MFA".
 
-### Step 3: Configure Authentication Methods
+### Step 4: Configure Authentication Methods
 
 We will enable stronger authentication methods to replace SMS and Voice.
 
 **Context**: SMS and Voice MFA are vulnerable to SIM swapping and interception. We enable **Microsoft Authenticator** (Number Matching) and **FIDO2 Security Keys** (Phishing Resistant) to provide the highest level of security.
 
-1. Run `Configure-AuthMethods.ps1`.
+1. Run the following command:
+
+   ```powershell
+   .\Configure-AuthMethods.ps1 -UseParametersFile
+   ```
+
 2. Enables FIDO2 Security Keys for all users.
 3. Enables Microsoft Authenticator for all users.
 4. Disables SMS/Voice (optional, usually done in a phased approach).

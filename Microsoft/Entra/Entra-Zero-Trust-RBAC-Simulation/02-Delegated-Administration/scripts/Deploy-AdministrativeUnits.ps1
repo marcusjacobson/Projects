@@ -31,23 +31,76 @@
 #>
 
 [CmdletBinding()]
-param()
+param(
+    [Parameter(Mandatory = $false)]
+    [switch]$UseParametersFile
+)
 
 process {
+    # Connect to Graph
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
 
-    $Departments = @("IT", "HR", "Finance", "Marketing")
+    # Load Parameters
+    $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"
+    if ($UseParametersFile -or (Test-Path $paramsPath)) {
+        if (Test-Path $paramsPath) {
+            Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
+            $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
+            
+            $Departments = $jsonParams."Deploy-AdministrativeUnits".departments
+            $AuPrefix = $jsonParams."Deploy-AdministrativeUnits".auPrefix
+            $GroupPrefix = $jsonParams."Deploy-AdministrativeUnits".groupPrefix
+        } else {
+            Throw "Parameters file not found at $paramsPath"
+        }
+    } else {
+        Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
+    }
 
     Write-Host "🚀 Deploying Administrative Units..." -ForegroundColor Cyan
 
+    # Helper function for retries
+    function Invoke-GraphRequestWithRetry {
+        param(
+            [string]$Method,
+            [string]$Uri,
+            [hashtable]$Body,
+            [int]$MaxRetries = 3
+        )
+        
+        $retry = 0
+        $success = $false
+        $response = $null
+        
+        while (-not $success -and $retry -lt $MaxRetries) {
+            try {
+                if ($Body) {
+                    $response = Invoke-MgGraphRequest -Method $Method -Uri $Uri -Body $Body -ErrorAction Stop
+                } else {
+                    $response = Invoke-MgGraphRequest -Method $Method -Uri $Uri -ErrorAction Stop
+                }
+                $success = $true
+            }
+            catch {
+                $retry++
+                if ($retry -eq $MaxRetries) {
+                    throw $_
+                }
+                Write-Warning "   ⚠️  Connection failed. Retrying ($retry/$MaxRetries)..."
+                Start-Sleep -Seconds 2
+            }
+        }
+        return $response
+    }
+
     foreach ($dept in $Departments) {
-        $auName = "AU-$dept"
+        $auName = "$AuPrefix$dept"
         $desc = "Administrative Unit for $dept"
 
         try {
             # 1. Create AU via REST
             $uri = "https://graph.microsoft.com/v1.0/directory/administrativeUnits?`$filter=displayName eq '$auName'"
-            $existingResponse = Invoke-MgGraphRequest -Method GET -Uri $uri
+            $existingResponse = Invoke-GraphRequestWithRetry -Method GET -Uri $uri
             $existing = $existingResponse.value | Select-Object -First 1
 
             if ($existing) {
@@ -59,7 +112,8 @@ process {
                     displayName = $auName
                     description = $desc
                 }
-                $au = Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/directory/administrativeUnits" -Body $body
+
+                $au = Invoke-GraphRequestWithRetry -Method POST -Uri "https://graph.microsoft.com/v1.0/directory/administrativeUnits" -Body $body
                 Write-Host "   ✅ Created AU '$auName'" -ForegroundColor Green
                 $auId = $au.id
             }
@@ -67,7 +121,7 @@ process {
             # 2. Add Users (USR-$dept-*)
             # Filter users by department name via REST
             $usersUri = "https://graph.microsoft.com/v1.0/users?`$filter=department eq '$dept'"
-            $usersResponse = Invoke-MgGraphRequest -Method GET -Uri $usersUri
+            $usersResponse = Invoke-GraphRequestWithRetry -Method GET -Uri $usersUri
             $users = $usersResponse.value
             
             foreach ($u in $users) {
@@ -80,12 +134,14 @@ process {
                 } catch {}
             }
             
-            Write-Host "   ✅ Populated '$auName' with $($users.Count) users." -ForegroundColor Green
+            if ($users.Count -gt 0) {
+                Write-Host "   ✅ Populated '$auName' with $($users.Count) users." -ForegroundColor Green
+            }
 
             # 3. Add Groups (GRP-SEC-$dept)
-            $groupName = "GRP-SEC-$dept"
+            $groupName = "$GroupPrefix$dept"
             $groupUri = "https://graph.microsoft.com/v1.0/groups?`$filter=displayName eq '$groupName'"
-            $groupResponse = Invoke-MgGraphRequest -Method GET -Uri $groupUri
+            $groupResponse = Invoke-GraphRequestWithRetry -Method GET -Uri $groupUri
             $group = $groupResponse.value | Select-Object -First 1
 
             if ($group) {

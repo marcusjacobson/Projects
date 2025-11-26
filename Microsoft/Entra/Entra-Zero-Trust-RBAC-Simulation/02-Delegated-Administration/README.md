@@ -26,26 +26,63 @@ This lab implements the "Least Privilege" principle of Zero Trust by segmenting 
 
 ## 📝 Lab Steps
 
-### Step 1: Deploy Administrative Units
+### Step 1: Configure Parameters File
+
+Before deploying resources, you must configure the environment parameters.
+
+**Context**: This project uses a centralized JSON configuration file to manage deployment settings. This ensures consistency across all scripts.
+
+1. Navigate to the `infra` directory.
+2. Open `module.parameters.json`.
+3. Review the default settings.
+4. Save the file.
+
+### Step 2: Deploy Administrative Units
 
 This script creates AUs for each department and populates them with the corresponding users and groups.
 
 **Context**: In a flat tenant, giving someone "User Administrator" lets them reset the CEO's password. Administrative Units (AUs) allow us to create "virtual tenants" so the HR Helpdesk can only manage HR users, not IT or Executive users.
 
-1. Run `Deploy-AdministrativeUnits.ps1`.
+1. Run the following command:
+
+   ```powershell
+   .\Deploy-AdministrativeUnits.ps1 -UseParametersFile
+   ```
+
 2. It will create `AU-IT`, `AU-HR`, etc.
 3. It will dynamically find `USR-HR-*` and add them to `AU-HR`.
 
-### Step 2: Configure Restricted Management AUs
+#### Validate Administrative Units
+
+1. Go to **Entra Admin Center** > **Identity** > **Roles & admins** > **Admin units**.
+2. Verify Administrative Units like `AU-IT`, `AU-HR`, and `AU-Finance` are listed.
+3. Select `AU-IT` > **Users**.
+4. Confirm that users starting with `USR-IT-` (e.g., `USR-IT-Director`) are listed as members.
+5. Repeat for `AU-HR` to confirm HR users are present.
+
+### Step 3: Configure Restricted Management AUs
 
 We will create a special AU for our Emergency Access accounts.
 
 **Context**: Standard AUs are for delegation. Restricted Management AUs are for *protection*. By putting our Break Glass accounts here, we prevent a compromised Global Admin (or a rogue insider) from tampering with our emergency recovery keys.
 
-1. Run `Configure-RestrictedManagementAUs.ps1`.
+1. Run the following command:
+
+   ```powershell
+   .\Configure-RestrictedManagementAUs.ps1 -UseParametersFile
+   ```
+
 2. This creates `AU-SEC-Restricted`.
-3. It adds `ADM-BG-01` and `ADM-BG-02` to this AU.
+3. It adds the accounts defined in `module.parameters.json` (e.g., `USR-BREAK-GLASS-01`) to this AU.
 4. **Security Note**: Once enabled, even a Global Admin cannot modify these users unless they are explicitly assigned a role *scoped* to this AU.
+
+#### Validate Restricted Management AUs
+
+1. Go to **Entra Admin Center** > **Identity** > **Roles & admins** > **Administrative units**.
+2. Verify `AU-SEC-Restricted` is listed.
+3. Select `AU-SEC-Restricted` > **Properties**.
+4. Verify that **Restricted management administrative unit** is set to **Yes**.
+5. Select **Users** and confirm that your Break Glass accounts (e.g., `USR-BREAK-GLASS-01`) are listed as members.
 
 ## ✅ Validation
 
@@ -62,6 +99,14 @@ We will create a special AU for our Emergency Access accounts.
 
 - **Segmentation**: You learned how to slice a single tenant into manageable virtual containers.
 - **High Security**: You protected your most critical assets (Break Glass accounts) using Restricted Management AUs.
+
+## 🧹 Cleanup
+
+To remove the resources created in this lab (Administrative Units), run the cleanup script:
+
+```powershell
+.\Remove-DelegatedAdmin.ps1
+```
 
 ## 🤖 AI-Assisted Content Generation
 

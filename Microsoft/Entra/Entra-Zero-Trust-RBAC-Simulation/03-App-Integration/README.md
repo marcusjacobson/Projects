@@ -54,6 +54,15 @@ We will restrict user consent to only apps from verified publishers that require
 2. This sets "Users can consent to apps" to **No** (or restricted).
 3. It enables the **Admin Consent Workflow**, allowing users to request approval.
 
+#### Validate App Consent Governance
+
+1. Go to **Entra Admin Center** > **Identity** > **Applications** > **Enterprise applications**.
+2. Under **Security**, select **Consent and permissions**.
+3. Under **User consent for applications**, verify **Do not allow user consent** is selected.
+4. Select **Admin consent settings**.
+5. Verify **Users can request admin consent to apps they are unable to consent to** is set to **Yes**.
+6. Verify your user account is listed under **Who can review admin consent requests**.
+
 ### Step 3: Deploy Reporting Service Principal
 
 We will create an identity for a hypothetical "Daily Reporting Job". Instead of a password (client secret), we will use a certificate.
@@ -73,10 +82,20 @@ We will create an identity for a hypothetical "Daily Reporting Job". Instead of 
     - Create a Service Principal.
     - Assign `AuditLog.Read.All` (Application Permission).
 
+#### Validate Service Principal
+
+1. Go to **Entra Admin Center** > **Identity** > **Applications** > **App registrations**.
+2. Select the **All applications** tab.
+3. Click on `APP-Reporting-Automation`.
+4. Under **Manage**, select **Certificates & secrets**.
+5. Verify a certificate named `Automation Cert` is listed under **Certificates**.
+6. Under **Manage**, select **API permissions**.
+7. Verify `AuditLog.Read.All` is listed with type **Application** and status **Granted for [Tenant Name]**.
+
 ## ✅ Validation
 
 - **Consent**: Try to sign in to a new third-party app (e.g., Graph Explorer) as a standard user. You should see an "Approval Required" screen.
-- **Service Principal**: Verify `APP-Reporting-Automation` exists in **App registrations**. Check **Certificates & secrets** to see the uploaded cert.
+- **Service Principal**: Verify `APP-Reporting-Automation` exists in **App registrations** and has the correct certificate and permissions.
 
 ## 🚧 Troubleshooting
 
@@ -87,6 +106,18 @@ We will create an identity for a hypothetical "Daily Reporting Job". Instead of 
 
 - **Shadow IT Prevention**: You stopped users from blindly granting data access to random apps.
 - **Non-Human Security**: You learned why Certificates > Secrets for Service Principals (they expire, can't be phished easily).
+
+## 🧹 Lab Cleanup
+
+To remove the resources created in this lab and optionally revert the governance settings:
+
+1. Run the following command:
+
+   ```powershell
+   .\Remove-AppIntegration.ps1 -UseParametersFile -RevertGovernance
+   ```
+
+   > **Note**: The `-RevertGovernance` switch will disable the Admin Consent Workflow and allow users to register applications again. It does **not** automatically reset the "User Consent" block to avoid overriding custom tenant configurations.
 
 ## 🤖 AI-Assisted Content Generation
 

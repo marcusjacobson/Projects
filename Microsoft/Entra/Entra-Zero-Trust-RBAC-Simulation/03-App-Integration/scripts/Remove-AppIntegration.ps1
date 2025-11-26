@@ -13,6 +13,7 @@
 [CmdletBinding()]
 param(
     [switch]$Force,
+    [switch]$RevertGovernance,
     [Parameter(Mandatory = $false)]
     [switch]$UseParametersFile
 )
@@ -26,7 +27,7 @@ process {
         if (Test-Path $paramsPath) {
             Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
             $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
-            $AppName = $jsonParams."Remove-AppIntegration".appName
+            $AppName = $jsonParams."Deploy-ReportingServicePrincipal".appName
         } else {
             Throw "Parameters file not found at $paramsPath"
         }
@@ -34,6 +35,7 @@ process {
         Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
     }
 
+    # 1. Remove App Registration
     if (-not $Force) {
         $confirm = Read-Host "⚠️  Are you sure you want to delete the Reporting App '$AppName'? (y/n)"
         if ($confirm -ne 'y') { return }
@@ -54,6 +56,37 @@ process {
         Write-Host "   ℹ️  App '$AppName' not found." -ForegroundColor Yellow
     }
     
-    # Note: We don't revert the Consent Policy settings automatically as they are tenant-wide and might affect other things.
-    Write-Host "   ℹ️  Consent Policy settings were NOT reverted. Please check Authorization Policy manually if needed." -ForegroundColor Cyan
+    # 2. Revert Governance Settings (Optional)
+    if ($RevertGovernance) {
+        Write-Host "   Reverting Governance Settings..." -ForegroundColor Cyan
+        
+        # Disable Admin Consent Workflow
+        try {
+            $body = @{ isEnabled = $false }
+            Invoke-MgGraphRequest -Method PUT -Uri "https://graph.microsoft.com/v1.0/policies/adminConsentRequestPolicy" -Body $body
+            Write-Host "   ✅ Disabled Admin Consent Workflow." -ForegroundColor Green
+        }
+        catch {
+            Write-Warning "Failed to disable Admin Consent Workflow: $_"
+        }
+
+        # Reset App Registration Restriction (Allow users to register apps)
+        try {
+            $params = @{
+                defaultUserRolePermissions = @{
+                    allowedToCreateApps = $true
+                }
+            }
+            Invoke-MgGraphRequest -Method PATCH -Uri "https://graph.microsoft.com/v1.0/policies/authorizationPolicy" -Body $params
+            Write-Host "   ✅ Allowed App Registration for non-admins (Default)." -ForegroundColor Green
+        }
+        catch {
+            Write-Warning "Failed to reset Authorization Policy: $_"
+        }
+        
+        Write-Host "   ℹ️  Note: User Consent settings (permissionGrantPoliciesAssigned) were NOT reset to default as this varies by tenant." -ForegroundColor Yellow
+    }
+    else {
+        Write-Host "   ℹ️  Governance settings were NOT reverted. Use -RevertGovernance to reset them." -ForegroundColor Cyan
+    }
 }

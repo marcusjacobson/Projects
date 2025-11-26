@@ -3,6 +3,8 @@
         "location": "US"
     },
     "Configure-AppConsentGovernance": {
+        "restrictAppRegistration": "true",
+        "blockUserConsent": "true",
         "notifyReviewersExpirationInDays": "7",
         "enableAdminConsentRequests": "true",
         "blockUserConsentForRiskyApps": "true"
@@ -10,9 +12,10 @@
     "Deploy-ReportingServicePrincipal": {
         "appName": "APP-Reporting-Automation",
         "certName": "EntraSimulationCert",
+        "certValidityYears": "1",
+        "keyCredentialDisplayName": "Automation Cert",
         "permissions": ["AuditLog.Read.All"]
     },
     "Remove-AppIntegration": {
-        "appName": "APP-Reporting-Automation"
     }
 }

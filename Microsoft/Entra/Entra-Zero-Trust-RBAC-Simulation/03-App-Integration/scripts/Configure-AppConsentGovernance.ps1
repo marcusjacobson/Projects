@@ -51,6 +51,8 @@ process {
             $ExpirationDays = $jsonParams."Configure-AppConsentGovernance".notifyReviewersExpirationInDays
             $EnableAdminConsent = $jsonParams."Configure-AppConsentGovernance".enableAdminConsentRequests
             $BlockRiskyApps = $jsonParams."Configure-AppConsentGovernance".blockUserConsentForRiskyApps
+            $RestrictAppRegistration = [System.Convert]::ToBoolean($jsonParams."Configure-AppConsentGovernance".restrictAppRegistration)
+            $BlockUserConsent = [System.Convert]::ToBoolean($jsonParams."Configure-AppConsentGovernance".blockUserConsent)
         } else {
             Throw "Parameters file not found at $paramsPath"
         }
@@ -63,68 +65,85 @@ process {
     # 1. Restrict App Registration (Users can register applications = No)
     try {
         # Get Authorization Policy via REST
+        # Note: The endpoint returns a collection, but there is only one policy named 'authorizationPolicy'
         $authPolicyResponse = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/policies/authorizationPolicy"
-        $authPolicy = $authPolicyResponse
+        # The response is the object itself, not a collection wrapper for this specific singleton endpoint in some contexts,
+        # but usually it's a collection. Let's handle both.
+        if ($authPolicyResponse.value) {
+            $authPolicy = $authPolicyResponse.value | Select-Object -First 1
+        } else {
+            $authPolicy = $authPolicyResponse
+        }
         
         $params = @{
             defaultUserRolePermissions = @{
-                allowedToCreateApps = $false
+                allowedToCreateApps = -not $RestrictAppRegistration
             }
         }
         
-        Invoke-MgGraphRequest -Method PATCH -Uri "https://graph.microsoft.com/v1.0/policies/authorizationPolicy/$($authPolicy.id)" -Body $params
-        Write-Host "   ✅ Restricted App Registration for non-admins." -ForegroundColor Green
+        # The endpoint is a singleton, so we patch the base URI directly
+        Invoke-MgGraphRequest -Method PATCH -Uri "https://graph.microsoft.com/v1.0/policies/authorizationPolicy" -Body $params
+        if ($RestrictAppRegistration) {
+            Write-Host "   ✅ Restricted App Registration for non-admins." -ForegroundColor Green
+        } else {
+            Write-Host "   ✅ Allowed App Registration for non-admins." -ForegroundColor Green
+        }
     }
     catch {
         Write-Error "Failed to update Authorization Policy: $_"
     }
 
     # 2. Configure Consent Policy (Users can consent to apps...)
-    try {
-        # Block all user consent via REST
-        $params = @{
-            permissionGrantPolicyIdsAssignedToDefaultUserRole = @()
+    if ($BlockUserConsent) {
+        try {
+            # Get current policy to preserve other permission grants (like Teams/Chat)
+            $currentPolicy = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/policies/authorizationPolicy"
+            $currentGrants = $currentPolicy.defaultUserRolePermissions.permissionGrantPoliciesAssigned
+            
+            # Filter out any 'ManagePermissionGrantsForSelf' policies (which allow user consent)
+            # Keep 'ManagePermissionGrantsForOwnedResource' policies (Teams/Chat)
+            # Explicitly cast to string to avoid serialization issues with PS objects
+            $newGrants = @($currentGrants | Where-Object { $_ -notlike "ManagePermissionGrantsForSelf.*" } | ForEach-Object { "$_" })
+            
+            $params = @{
+                defaultUserRolePermissions = @{
+                    permissionGrantPoliciesAssigned = $newGrants
+                }
+            }
+            
+            Invoke-MgGraphRequest -Method PATCH -Uri "https://graph.microsoft.com/v1.0/policies/authorizationPolicy" -Body $params
+            Write-Host "   ✅ Blocked all user consent (Admin approval required)." -ForegroundColor Green
         }
-        Invoke-MgGraphRequest -Method PATCH -Uri "https://graph.microsoft.com/v1.0/policies/authorizationPolicy/$($authPolicy.id)" -Body $params
-        Write-Host "   ✅ Blocked all user consent (Admin approval required)." -ForegroundColor Green
-    }
-    catch {
-        Write-Warning "Failed to configure Consent Policy: $_"
+        catch {
+            Write-Warning "Failed to configure Consent Policy: $_"
+        }
     }
 
     # 3. Enable Admin Consent Workflow
     try {
-        # Get Template via REST
-        $templatesResponse = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/directorySettingTemplates?`$filter=displayName eq 'Consent Policy Settings'"
-        $template = $templatesResponse.value | Select-Object -First 1
+        # Use the modern adminConsentRequestPolicy API instead of legacy directorySettings
+        # Endpoint: https://graph.microsoft.com/v1.0/policies/adminConsentRequestPolicy
         
-        if ($template) {
-            # Check existing settings via REST
-            $settingsResponse = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/directorySettings?`$filter=templateId eq '$($template.id)'"
-            $settings = $settingsResponse.value | Select-Object -First 1
-            
-            $values = @(
-                @{ name = "EnableAdminConsentRequests"; value = $EnableAdminConsent },
-                @{ name = "ConstrainGroupSpecificConsentToMembersOfGroupId"; value = "" },
-                @{ name = "BlockUserConsentForRiskyApps"; value = $BlockRiskyApps },
-                @{ name = "NotifyReviewersExpirationInDays"; value = $ExpirationDays },
-                @{ name = "NotifyReviewersType"; value = "Role" },
-                @{ name = "PrimaryAdminConsentReviewers"; value = "" }
-            )
-
-            if ($settings) {
-                Write-Host "   ℹ️  Consent Settings already exist. Skipping update to avoid overwrite." -ForegroundColor Yellow
-            }
-            else {
-                # Create via REST
-                $body = @{
-                    templateId = $template.id
-                    values = $values
+        # Get the current user to set as the reviewer (Safe fallback for lab environments)
+        # The API is strict about role queries, so assigning the current admin user is more reliable for simulation.
+        $meResponse = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/me"
+        $userId = $meResponse.id
+        
+        $body = @{
+            isEnabled = $EnableAdminConsent
+            notifyReviewers = $true
+            remindersEnabled = $true
+            requestDurationInDays = $ExpirationDays
+            reviewers = @(
+                @{
+                    query = "/users/$userId"
+                    queryType = "MicrosoftGraph"
                 }
-                Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/directorySettings" -Body $body
-                Write-Host "   ✅ Enabled Admin Consent Workflow." -ForegroundColor Green
-            }
+            )
         }
+
+        Invoke-MgGraphRequest -Method PUT -Uri "https://graph.microsoft.com/v1.0/policies/adminConsentRequestPolicy" -Body $body
+        Write-Host "   ✅ Enabled Admin Consent Workflow (Reviewer: Current User)." -ForegroundColor Green
     }
     catch {
         Write-Warning "Failed to configure Admin Consent Workflow: $_"

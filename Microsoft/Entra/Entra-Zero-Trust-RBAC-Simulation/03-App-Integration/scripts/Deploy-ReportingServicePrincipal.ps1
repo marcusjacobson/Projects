@@ -36,6 +36,8 @@ process {
             $AppName = $jsonParams."Deploy-ReportingServicePrincipal".appName
             $CertName = $jsonParams."Deploy-ReportingServicePrincipal".certName
             $Permissions = $jsonParams."Deploy-ReportingServicePrincipal".permissions
+            $CertValidityYears = [int]$jsonParams."Deploy-ReportingServicePrincipal".certValidityYears
+            $KeyDisplayName = $jsonParams."Deploy-ReportingServicePrincipal".keyCredentialDisplayName
         } else {
             Throw "Parameters file not found at $paramsPath"
         }
@@ -47,7 +49,7 @@ process {
 
     # 1. Create Self-Signed Certificate
     $startDate = Get-Date
-    $endDate = $startDate.AddYears(1)
+    $endDate = $startDate.AddYears($CertValidityYears)
     
     Write-Host "   Generating Self-Signed Certificate..."
     $cert = New-SelfSignedCertificate -Subject "CN=$CertName" -CertStoreLocation "Cert:\CurrentUser\My" -KeyExportPolicy Exportable -KeySpec Signature -KeyLength 2048 -KeyAlgorithm RSA -HashAlgorithm SHA256 -NotAfter $endDate
@@ -71,9 +73,9 @@ process {
                 type = "AsymmetricX509Cert"
                 usage = "Verify"
                 key = $certData
-                displayName = "Automation Cert"
-                startDateTime = $startDate
-                endDateTime = $endDate
+                displayName = $KeyDisplayName
+                startDateTime = $startDate.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+                endDateTime = $endDate.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
             }
 
             $body = @{

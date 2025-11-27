@@ -18,7 +18,8 @@ This lab automates the "Joiner, Mover, Leaver" (JML) process and ensures access 
 ## 📋 Prerequisites
 
 - Completion of **Lab 01**.
-- **Entra ID P2 License** (Required for Governance features).
+- **Entra ID P2 License** (Required for Access Reviews).
+- **Entra ID Governance License** (Required for Lifecycle Workflows).
 
 ## ⏱️ Estimated Duration
 
@@ -55,14 +56,28 @@ We will create two critical reviews: one for external guests and one for Global 
    ```
 
 4. Creates:
-    - `REV-Guest-Access`: Quarterly review of all guests.
-    - `REV-Global-Admins`: Quarterly review of the Global Admin role.
+    - `AR-Quarterly-Guests`: Quarterly review of all guests.
+    - `AR-Global-Admins`: Quarterly review of the Global Admin role.
+
+5. **Verify in Portal**:
+   - Navigate to **Identity Governance** > **Access Reviews**.
+   - Confirm `AR-Quarterly-Guests` is listed.
+   - Verify the status is **Active** or **Scheduled**.
+
+   > **💡 Note**: It may take a few minutes for the Access Review status to change from **NotStarted** or **Initializing** to **Active**. Refresh the page periodically.
 
 ### Step 3: Configure Lifecycle Workflows
 
 We will automate the "Leaver" process to ensure immediate security upon termination.
 
-**Context**: Manual offboarding is slow and risky. If HR terminates an employee on Friday, but IT doesn't disable the account until Monday, that's a 3-day window for data theft. Lifecycle Workflows listen to the "EmployeeLeaveDateTime" attribute and execute actions automatically.
+> **⚠️ License Requirement**: This step requires an active **Entra ID Governance** license. If you do not have this license (or a trial), the script will detect this and skip the configuration automatically. You can proceed to the next step.
+
+**Context**: Manual offboarding is slow and risky. If HR terminates an employee on Friday, but IT doesn't disable the account until Monday, that's a 3-day window for data theft.
+
+**Trigger Mechanism**: This workflow is configured to trigger based on the `employeeLeaveDateTime` property of a user account.
+
+- **Production**: This date is usually synced from an HR system.
+- **Simulation**: You can manually set this property on a user, or use the **Run on demand** feature to test the workflow immediately without waiting for the date to arrive.
 
 1. Run the following command:
 
@@ -75,17 +90,36 @@ We will automate the "Leaver" process to ensure immediate security upon terminat
     - Disable User Account.
     - Remove from all Groups.
     - Remove all Licenses.
-    - (Optional) Delete user after X days.
+
+   > **💡 Note**: While account deletion is a common requirement, it typically happens after a retention period (e.g., 30 days). To implement this, you would create a separate workflow triggered X days after the employee leave date.
+
+4. **Verify in Portal**:
+   - Navigate to **Identity Governance** > **Lifecycle Workflows** > **Workflows**.
+   - Confirm `WF-Leaver-Standard` is listed.
+   - Click on the workflow to verify the **Tasks** (Disable account, Remove from groups, Remove licenses).
 
 ## ✅ Validation
 
 - **Access Reviews**: Go to **Identity Governance** > **Access Reviews** and verify the two reviews are "Active" or "Scheduled".
-- **Lifecycle Workflows**: Go to **Identity Governance** > **Lifecycle Workflows** > **Workflows** and verify the Leaver workflow exists.
+- **Lifecycle Workflows**:
+  1. Go to **Identity Governance** > **Lifecycle Workflows** > **Workflows**.
+  2. Verify `WF-Leaver-Standard` is listed.
+  3. **Test the Trigger**: Select the workflow and click **Run on demand**. Select a test user to simulate the offboarding process immediately.
+
+## 🧹 Cleanup
+
+To remove the configurations created in this lab, run the cleanup script. This will delete the Access Reviews and Lifecycle Workflows.
+
+1. Run the following command:
+
+   ```powershell
+   .\Remove-LifecycleGovernance.ps1 -UseParametersFile
+   ```
 
 ## 🚧 Troubleshooting
 
 - **"Workflow creation failed"**: Ensure you have the `LifecycleWorkflows.ReadWrite.All` permission.
-- **"Attribute not found"**: The `employeeLeaveDateTime` attribute must be populated for the workflow to trigger (we simulate this in the script).
+- **"Attribute not found"**: The `employeeLeaveDateTime` attribute must be populated on the user object for the workflow to trigger automatically.
 
 ## 🎓 Learning Objectives Achieved
 

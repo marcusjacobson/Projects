@@ -45,14 +45,27 @@ process {
     Write-Host "🚀 Configuring Lifecycle Workflows..." -ForegroundColor Cyan
 
     # 1. Get Task Definitions via REST
-    $tasksUri = "https://graph.microsoft.com/v1.0/identityGovernance/lifecycleWorkflows/taskDefinitions"
-    $tasksResponse = Invoke-MgGraphRequest -Method GET -Uri $tasksUri
-    $tasks = $tasksResponse.value
+    try {
+        $tasksUri = "https://graph.microsoft.com/v1.0/identityGovernance/lifecycleWorkflows/taskDefinitions"
+        $tasksResponse = Invoke-MgGraphRequest -Method GET -Uri $tasksUri -ErrorAction Stop
+        $tasks = $tasksResponse.value
+    } catch {
+        # Check for 401/403 or specific license messages
+        if ($_.Exception.Message -match "Insufficient license" -or $_.Exception.Message -match "Forbidden" -or $_.Exception.Message -match "401" -or $_.Exception.Message -match "403") {
+            Write-Warning "   ⚠️ LICENSE REQUIRED: Lifecycle Workflows require an 'Entra ID Governance' license."
+            Write-Warning "   ⚠️ Your tenant appears to lack this license (Error: $($_.Exception.Message))."
+            Write-Warning "   ⚠️ Skipping Lifecycle Workflow configuration. This is expected if you only have P2."
+            return
+        } else {
+            Throw $_
+        }
+    }
     
     $disableTask = $tasks | Where-Object { $_.displayName -eq "Disable user account" }
     $removeGroupsTask = $tasks | Where-Object { $_.displayName -eq "Remove user from all groups" }
+    $removeLicensesTask = $tasks | Where-Object { $_.displayName -eq "Remove all licenses for user" }
     
-    if (-not $disableTask -or -not $removeGroupsTask) {
+    if (-not $disableTask -or -not $removeGroupsTask -or -not $removeLicensesTask) {
         Write-Warning "   ⚠️ Could not find required Task Definitions. Lifecycle Workflows might not be enabled or supported in this tenant."
         return
     }
@@ -71,13 +84,13 @@ process {
                 isEnabled = $true
                 isSchedulingEnabled = $true
                 executionConditions = @{
-                    "@odata.type" = "#microsoft.graph.triggerAndScopeBasedConditions"
+                    "@odata.type" = "#microsoft.graph.identityGovernance.triggerAndScopeBasedConditions"
                     scope = @{
-                        "@odata.type" = "#microsoft.graph.subjectSet"
+                        "@odata.type" = "#microsoft.graph.identityGovernance.ruleBasedSubjectSet"
                         rule = $ScopeRule
                     }
                     trigger = @{
-                        "@odata.type" = "#microsoft.graph.timeBasedAttributeTrigger"
+                        "@odata.type" = "#microsoft.graph.identityGovernance.timeBasedAttributeTrigger"
                         timeBasedAttribute = $TriggerAttribute
                         offsetInDays = 0
                     }
@@ -89,7 +102,7 @@ process {
                         description = "Disables the user account"
                         isEnabled = $true
                         continueOnError = $true
-                        order = 1
+                        executionSequence = 1
                         arguments = @()
                     },
                     @{
@@ -98,7 +111,16 @@ process {
                         description = "Removes user from all groups"
                         isEnabled = $true
                         continueOnError = $true
-                        order = 2
+                        executionSequence = 2
+                        arguments = @()
+                    },
+                    @{
+                        taskDefinitionId = $removeLicensesTask.id
+                        displayName = "Remove Licenses"
+                        description = "Removes all licenses from user"
+                        isEnabled = $true
+                        continueOnError = $true
+                        executionSequence = 3
                         arguments = @()
                     }
                 )
@@ -112,5 +134,6 @@ process {
         }
     } else {
         Write-Host "   ℹ️ Workflow '$WorkflowName' already exists." -ForegroundColor Gray
+        Write-Host "   ℹ️ To recreate with updated tasks, please delete the existing workflow first." -ForegroundColor Gray
     }
 }

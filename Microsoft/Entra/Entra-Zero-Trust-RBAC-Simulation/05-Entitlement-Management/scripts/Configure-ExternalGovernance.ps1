@@ -63,7 +63,7 @@ process {
                         domainName = $Domain
                     }
                 )
-                state = "Proposed"
+                state = "proposed"
             }
             $connectedOrg = Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/connectedOrganizations" -Body $body
             Write-Host "   ✅ Created Connected Org '$OrgName'" -ForegroundColor Green
@@ -88,53 +88,78 @@ process {
     $pkg = $pkgResponse.value | Select-Object -First 1
     
     if (-not $pkg) {
-        $body = @{
-            displayName = $PkgName
-            description = "External Collaboration"
-            catalogId = $cat.id
+        try {
+            $body = @{
+                displayName = $PkgName
+                description = "External Collaboration"
+                catalogId = $cat.id
+            }
+            # Use beta endpoint for package creation to avoid potential v1.0 issues
+            $pkg = Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/beta/identityGovernance/entitlementManagement/accessPackages" -Body $body
+            Write-Host "   ✅ Created Access Package '$PkgName'" -ForegroundColor Green
         }
-        $pkg = Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/accessPackages" -Body $body
-        Write-Host "   ✅ Created Access Package '$PkgName'" -ForegroundColor Green
+        catch {
+            Write-Error "Failed to create Access Package: $_"
+            return
+        }
     }
 
     # 3. Create Policy for Connected Org
     # Get Current User for Approver
     $me = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/me"
     
-    try {
-        $body = @{
-            accessPackageId = $pkg.id
-            displayName = $PolicyName
-            description = "Allow partner users to request"
-            requestorSettings = @{
-                scopeType = "SpecificConnectedOrganizationSubjects"
-                connectedOrganizationId = $connectedOrg.id
-                acceptRequests = $true
-            }
-            requestApprovalSettings = @{
-                isApprovalRequired = $true
-                approvalStages = @(
-                    @{
-                        approvalStageTimeOutInDays = 14
-                        isApproverJustificationRequired = $true
-                        isEscalationEnabled = $false
-                        primaryApprover = @{
-                            "@odata.type" = "#microsoft.graph.singleUser"
-                            userId = $me.id
+    $policyUri = "https://graph.microsoft.com/beta/identityGovernance/entitlementManagement/accessPackageAssignmentPolicies?`$filter=accessPackageId eq '$($pkg.id)' and displayName eq '$PolicyName'"
+    $policyResponse = Invoke-MgGraphRequest -Method GET -Uri $policyUri
+    $existingPolicy = $policyResponse.value | Select-Object -First 1
+
+    if ($existingPolicy) {
+        Write-Host "   ℹ️ Assignment Policy '$PolicyName' already exists." -ForegroundColor Gray
+    } else {
+        try {
+            $body = @{
+                accessPackageId = $pkg.id
+                displayName = $PolicyName
+                description = "Allow partner users to request"
+                accessReviewSettings = $null
+                requestorSettings = @{
+                    scopeType = "SpecificConnectedOrganizationSubjects"
+                    acceptRequests = $true
+                    allowedRequestors = @(
+                        @{
+                            "@odata.type" = "#microsoft.graph.connectedOrganizationMembers"
+                            connectedOrganizationId = $connectedOrg.id
+                            description = $connectedOrg.displayName
                         }
-                    }
-                )
+                    )
+                }
+                requestApprovalSettings = @{
+                    isApprovalRequired = $true
+                    approvalStages = @(
+                        @{
+                            approvalStageTimeOutInDays = 14
+                            isApproverJustificationRequired = $true
+                            isEscalationEnabled = $false
+                            primaryApprovers = @(
+                                @{
+                                    "@odata.type" = "#microsoft.graph.singleUser"
+                                    userId = $me.id
+                                }
+                            )
+                        }
+                    )
+                }
+                expiration = @{
+                    type = "AfterDuration"
+                    duration = "P30D"
+                }
             }
-            expiration = @{
-                type = "AfterDuration"
-                duration = "P30D"
-            }
+            
+            # Use beta endpoint for assignment policies (Entity set name is accessPackageAssignmentPolicies)
+            Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/beta/identityGovernance/entitlementManagement/accessPackageAssignmentPolicies" -Body $body
+            Write-Host "   ✅ Created Policy '$PolicyName' with Approval." -ForegroundColor Green
         }
-        
-        Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/assignmentPolicies" -Body $body
-        Write-Host "   ✅ Created Policy '$PolicyName' with Approval." -ForegroundColor Green
-    }
-    catch {
-        Write-Verbose "Policy creation failed: $_"
+        catch {
+            Write-Warning "Policy creation failed: $_"
+        }
     }
 }

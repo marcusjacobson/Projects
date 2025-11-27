@@ -4,7 +4,7 @@
     },
     "Configure-ExternalGovernance": {
         "orgName": "Partner Corp",
-        "domain": "partner.example.com",
+        "domain": "fabrikam.com",
         "catalogName": "CAT-Marketing",
         "packageName": "PKG-Partner-Collab",
         "policyName": "Partner Access Policy"

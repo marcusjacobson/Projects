@@ -62,11 +62,19 @@ process {
 
     Write-Host "🚀 Deploying Access Packages..." -ForegroundColor Cyan
 
+    # DEBUG: Check Scopes and Catalog
+    $ctx = Get-MgContext
+    Write-Host "🔍 Current Scopes: $($ctx.Scopes -join ', ')" -ForegroundColor Gray
+    
     # 1. Create Catalog
     $catUri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/catalogs?`$filter=displayName eq '$CatName'"
     $catResponse = Invoke-MgGraphRequest -Method GET -Uri $catUri
     $cat = $catResponse.value | Select-Object -First 1
     
+    if ($cat) {
+        Write-Host "   ℹ️ Found existing Catalog: '$($cat.displayName)' (ID: $($cat.id))" -ForegroundColor Gray
+    }
+
     if (-not $cat) {
         $body = @{
             displayName = $CatName
@@ -90,11 +98,16 @@ process {
                 originSystem = "AadGroup"
             }
         }
-        Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/accessPackageResourceRequests" -Body $params
+        # Use beta endpoint for resource requests as v1.0 seems to have issues
+        Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/beta/identityGovernance/entitlementManagement/accessPackageResourceRequests" -Body $params
         Write-Host "   ✅ Added '$GroupName' to Catalog." -ForegroundColor Green
     }
     catch {
-        Write-Verbose "Resource likely already in catalog: $_"
+        if ($_ -match "ResourceAlreadyOnboarded" -or $_.Exception.Message -match "ResourceAlreadyOnboarded") {
+            Write-Host "   ℹ️ Resource '$GroupName' is already in the catalog." -ForegroundColor Gray
+        } else {
+            Write-Warning "Failed to add resource to catalog: $_"
+        }
     }
 
     # 3. Create Access Package
@@ -103,73 +116,113 @@ process {
     $pkg = $pkgResponse.value | Select-Object -First 1
     
     if (-not $pkg) {
-        $body = @{
-            displayName = $PkgName
-            description = "Access to Marketing Campaign Resources"
-            catalogId = $cat.id
+        try {
+            $body = @{
+                displayName = $PkgName
+                description = "Access to Marketing Campaign Resources"
+                catalogId = $cat.id
+            }
+            # Use beta endpoint for package creation to avoid potential v1.0 issues
+            $pkg = Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/beta/identityGovernance/entitlementManagement/accessPackages" -Body $body
+            Write-Host "   ✅ Created Access Package '$PkgName'" -ForegroundColor Green
         }
-        $pkg = Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/accessPackages" -Body $body
-        Write-Host "   ✅ Created Access Package '$PkgName'" -ForegroundColor Green
+        catch {
+            Write-Error "Failed to create Access Package: $_"
+            return # Stop execution if package creation fails
+        }
     }
 
     # 4. Add Resource Role to Package
     # Find resource in catalog
-    $resUri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/accessPackageResources?`$filter=originId eq '$($group.id)'"
+    # Use beta endpoint via Catalog relationship (Global filter is 403 Forbidden)
+    $resUri = "https://graph.microsoft.com/beta/identityGovernance/entitlementManagement/accessPackageCatalogs/$($cat.id)/accessPackageResources?`$filter=originId eq '$($group.id)'"
     $resResponse = Invoke-MgGraphRequest -Method GET -Uri $resUri
     $res = $resResponse.value | Select-Object -First 1
     
-    # Find "Member" role
-    $rolesUri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/accessPackageResources/$($res.id)/roles"
-    $rolesResponse = Invoke-MgGraphRequest -Method GET -Uri $rolesUri
-    $role = $rolesResponse.value | Where-Object { $_.displayName -eq "Member" } | Select-Object -First 1
-    
-    if ($role) {
-        try {
-            $params = @{
-                accessPackageId = $pkg.id
-                accessPackageResourceRole = @{
-                    id = $role.id
-                    originId = $role.originId
-                    originSystem = "AadGroup"
-                    accessPackageResource = @{
-                        id = $res.id
-                        originId = $res.originId
-                        originSystem = "AadGroup"
+    if (-not $res) {
+        Write-Warning "Resource not found in catalog. Ensure step 2 completed successfully."
+    } else {
+        # Find "Member" role
+        # Use beta endpoint for roles via Catalog Scope with Filter (The only method that works for this tenant)
+        $rolesUri = "https://graph.microsoft.com/beta/identityGovernance/entitlementManagement/accessPackageCatalogs/$($cat.id)/accessPackageResourceRoles?`$filter=accessPackageResource/originSystem eq 'AadGroup' and accessPackageResource/originId eq '$($group.id)'"
+        $rolesResponse = Invoke-MgGraphRequest -Method GET -Uri $rolesUri
+        $role = $rolesResponse.value | Where-Object { $_.displayName -eq "Member" } | Select-Object -First 1
+        
+        if ($role) {
+            # Check if already linked
+            $existingScopesUri = "https://graph.microsoft.com/beta/identityGovernance/entitlementManagement/accessPackages/$($pkg.id)/accessPackageResourceRoleScopes?`$expand=accessPackageResourceRole"
+            $existingScopesResponse = Invoke-MgGraphRequest -Method GET -Uri $existingScopesUri
+            $existingScope = $existingScopesResponse.value | Where-Object { $_.accessPackageResourceRole.originId -eq $role.originId }
+
+            if ($existingScope) {
+                Write-Host "   ℹ️ Role '$($role.displayName)' is already linked to package." -ForegroundColor Gray
+            } else {
+                try {
+                    $params = @{
+                        accessPackageResourceRole = @{
+                            originId = $role.originId
+                            originSystem = "AadGroup"
+                            accessPackageResource = @{
+                                id = $res.id
+                                originId = $res.originId
+                                originSystem = "AadGroup"
+                            }
+                        }
+                        accessPackageResourceScope = @{
+                            originId = $res.originId
+                            originSystem = "AadGroup"
+                            accessPackageResource = @{
+                                id = $res.id
+                                originId = $res.originId
+                                originSystem = "AadGroup"
+                            }
+                        }
                     }
+                    # Use beta endpoint for role scopes via Package Navigation (Top-level endpoint is missing)
+                    Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/beta/identityGovernance/entitlementManagement/accessPackages/$($pkg.id)/accessPackageResourceRoleScopes" -Body $params
+                    Write-Host "   ✅ Linked Group Member role to Package." -ForegroundColor Green
+                }
+                catch {
+                    Write-Warning "Failed to link resource role: $_"
                 }
             }
-            Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/accessPackageResourceRoleScopes" -Body $params
-            Write-Host "   ✅ Linked Group Member role to Package." -ForegroundColor Green
-        }
-        catch {
-            # Ignore if already linked
+        } else {
+            Write-Warning "Could not find 'Member' role for resource $($res.id)"
         }
     }
 
     # 5. Create Assignment Policy
-    
-    try {
-        $params = @{
-            accessPackageId = $pkg.id
-            displayName = $PolicyName
-            description = "Allow internal users to request"
-            accessReviewSettings = $null
-            requestorSettings = @{
-                scopeType = "AllExistingDirectoryMemberUsers"
-                acceptRequests = $true
+    $policyUri = "https://graph.microsoft.com/beta/identityGovernance/entitlementManagement/accessPackageAssignmentPolicies?`$filter=accessPackageId eq '$($pkg.id)' and displayName eq '$PolicyName'"
+    $policyResponse = Invoke-MgGraphRequest -Method GET -Uri $policyUri
+    $existingPolicy = $policyResponse.value | Select-Object -First 1
+
+    if ($existingPolicy) {
+        Write-Host "   ℹ️ Assignment Policy '$PolicyName' already exists." -ForegroundColor Gray
+    } else {
+        try {
+            $params = @{
+                accessPackageId = $pkg.id
+                displayName = $PolicyName
+                description = "Allow internal users to request"
+                accessReviewSettings = $null
+                requestorSettings = @{
+                    scopeType = "AllExistingDirectoryMemberUsers"
+                    acceptRequests = $true
+                }
+                requestApprovalSettings = @{
+                    isApprovalRequired = $false
+                }
+                expiration = @{
+                    type = "NoExpiration"
+                }
             }
-            requestApprovalSettings = @{
-                isApprovalRequired = $false
-            }
-            expiration = @{
-                type = "NoExpiration"
-            }
+            
+            # Use beta endpoint for assignment policies (Entity set name is accessPackageAssignmentPolicies)
+            Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/beta/identityGovernance/entitlementManagement/accessPackageAssignmentPolicies" -Body $params
+            Write-Host "   ✅ Created Assignment Policy '$PolicyName'." -ForegroundColor Green
         }
-        
-        Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/assignmentPolicies" -Body $params
-        Write-Host "   ✅ Created Assignment Policy '$PolicyName'." -ForegroundColor Green
-    }
-    catch {
-        Write-Verbose "Policy creation failed (might exist): $_"
+        catch {
+            Write-Warning "Policy creation failed: $_"
+        }
     }
 }

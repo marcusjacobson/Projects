@@ -70,12 +70,38 @@ process {
         AdminUnits = $auRes.value
     }
 
-    # Lab 04: RBAC
-    Write-Host "   Gathering Roles..." -ForegroundColor Gray
+    # Lab 03: App Integration
+    Write-Host "   Gathering App Integration data..." -ForegroundColor Gray
+    $spUri = "https://graph.microsoft.com/v1.0/servicePrincipals?`$filter=startsWith(displayName, 'APP-')&`$select=displayName,appId,id"
+    $spRes = Invoke-MgGraphRequest -Method GET -Uri $spUri
+    $report.Modules["03-App-Integration"] = @{
+        ServicePrincipals = $spRes.value
+    }
+
+    # Lab 04: RBAC & PIM
+    Write-Host "   Gathering Roles and PIM Groups..." -ForegroundColor Gray
     $rolesUri = "https://graph.microsoft.com/v1.0/roleManagement/directory/roleDefinitions?`$filter=isBuiltIn eq false&`$select=displayName,id,description"
     $rolesRes = Invoke-MgGraphRequest -Method GET -Uri $rolesUri
+    
+    $pimGroupUri = "https://graph.microsoft.com/v1.0/groups?`$filter=startsWith(displayName, 'GRP-PIM-')&`$select=displayName,id"
+    $pimGroupRes = Invoke-MgGraphRequest -Method GET -Uri $pimGroupUri
+
     $report.Modules["04-RBAC"] = @{
         CustomRoles = $rolesRes.value
+        PIMGroups = $pimGroupRes.value
+    }
+
+    # Lab 05: Entitlement Management
+    Write-Host "   Gathering Entitlement Management data..." -ForegroundColor Gray
+    $catUri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/catalogs?`$select=displayName,id"
+    $catRes = Invoke-MgGraphRequest -Method GET -Uri $catUri
+    
+    $pkgUri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/accessPackages?`$select=displayName,id,description"
+    $pkgRes = Invoke-MgGraphRequest -Method GET -Uri $pkgUri
+
+    $report.Modules["05-Entitlement-Management"] = @{
+        Catalogs = $catRes.value
+        AccessPackages = $pkgRes.value
     }
 
     # Lab 06: Security
@@ -84,6 +110,19 @@ process {
     $caRes = Invoke-MgGraphRequest -Method GET -Uri $caUri
     $report.Modules["06-Identity-Security"] = @{
         CAPolicies = $caRes.value
+    }
+
+    # Lab 07: Lifecycle Governance
+    Write-Host "   Gathering Governance data..." -ForegroundColor Gray
+    $arUri = "https://graph.microsoft.com/v1.0/identityGovernance/accessReviews/definitions?`$select=displayName,id,status"
+    $arRes = Invoke-MgGraphRequest -Method GET -Uri $arUri
+    
+    $wfUri = "https://graph.microsoft.com/v1.0/identityGovernance/lifecycleWorkflows/workflows?`$select=displayName,id,category,isEnabled"
+    $wfRes = Invoke-MgGraphRequest -Method GET -Uri $wfUri
+
+    $report.Modules["07-Lifecycle-Governance"] = @{
+        AccessReviews = $arRes.value
+        LifecycleWorkflows = $wfRes.value
     }
 
     # Export

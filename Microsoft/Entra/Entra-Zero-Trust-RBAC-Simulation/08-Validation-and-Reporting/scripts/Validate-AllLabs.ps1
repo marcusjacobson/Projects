@@ -47,13 +47,21 @@ process {
             $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
             
             $GroupName = $jsonParams."Validate-AllLabs".groupName
+            $TestUser = $jsonParams."Validate-AllLabs".testUser
             $BreakGlassPrefix = $jsonParams."Validate-AllLabs".breakGlassPrefix
             $AdminUnitName = $jsonParams."Validate-AllLabs".adminUnitName
+            $RestrictedAUName = $jsonParams."Validate-AllLabs".restrictedAUName
             $ServicePrincipalName = $jsonParams."Validate-AllLabs".servicePrincipalName
             $RoleName = $jsonParams."Validate-AllLabs".roleName
+            $PimGroupName = $jsonParams."Validate-AllLabs".pimGroupName
             $CatalogName = $jsonParams."Validate-AllLabs".catalogName
+            $AccessPackageName = $jsonParams."Validate-AllLabs".accessPackageName
+            $ConnectedOrgName = $jsonParams."Validate-AllLabs".connectedOrgName
             $PolicyName = $jsonParams."Validate-AllLabs".policyName
+            $PolicyNameBlockLegacy = $jsonParams."Validate-AllLabs".policyNameBlockLegacy
             $ReviewName = $jsonParams."Validate-AllLabs".reviewName
+            $AdminReviewName = $jsonParams."Validate-AllLabs".adminReviewName
+            $WorkflowName = $jsonParams."Validate-AllLabs".workflowName
         } else {
             Throw "Parameters file not found at $paramsPath"
         }
@@ -90,6 +98,14 @@ process {
         $res = Invoke-MgGraphRequest -Method GET -Uri $uri
         [bool]($res.value)
     }
+    $results += Test-Resource $TestUser "User" { 
+        $uri = "https://graph.microsoft.com/v1.0/users?`$filter=userPrincipalName eq '$TestUser@$($jsonParams.global.customDomain)'"
+        # Note: Assuming customDomain is available in global params, otherwise we might need to search by displayName or just startsWith
+        # Let's try displayName for safety if UPN construction is complex
+        $uri = "https://graph.microsoft.com/v1.0/users?`$filter=displayName eq '$TestUser'"
+        $res = Invoke-MgGraphRequest -Method GET -Uri $uri
+        [bool]($res.value)
+    }
     $results += Test-Resource "Break Glass Account" "User" { 
         $uri = "https://graph.microsoft.com/v1.0/users?`$filter=startsWith(userPrincipalName, '$BreakGlassPrefix')"
         $res = Invoke-MgGraphRequest -Method GET -Uri $uri
@@ -99,6 +115,11 @@ process {
     # Lab 02
     $results += Test-Resource $AdminUnitName "Admin Unit" { 
         $uri = "https://graph.microsoft.com/v1.0/directory/administrativeUnits?`$filter=displayName eq '$AdminUnitName'"
+        $res = Invoke-MgGraphRequest -Method GET -Uri $uri
+        [bool]($res.value)
+    }
+    $results += Test-Resource $RestrictedAUName "Restricted AU" { 
+        $uri = "https://graph.microsoft.com/v1.0/directory/administrativeUnits?`$filter=displayName eq '$RestrictedAUName'"
         $res = Invoke-MgGraphRequest -Method GET -Uri $uri
         [bool]($res.value)
     }
@@ -116,10 +137,25 @@ process {
         $res = Invoke-MgGraphRequest -Method GET -Uri $uri
         [bool]($res.value)
     }
+    $results += Test-Resource $PimGroupName "PIM Group" { 
+        $uri = "https://graph.microsoft.com/v1.0/groups?`$filter=displayName eq '$PimGroupName'"
+        $res = Invoke-MgGraphRequest -Method GET -Uri $uri
+        [bool]($res.value)
+    }
 
     # Lab 05
     $results += Test-Resource $CatalogName "Catalog" { 
         $uri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/catalogs?`$filter=displayName eq '$CatalogName'"
+        $res = Invoke-MgGraphRequest -Method GET -Uri $uri
+        [bool]($res.value)
+    }
+    $results += Test-Resource $AccessPackageName "Access Package" { 
+        $uri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/accessPackages?`$filter=displayName eq '$AccessPackageName'"
+        $res = Invoke-MgGraphRequest -Method GET -Uri $uri
+        [bool]($res.value)
+    }
+    $results += Test-Resource $ConnectedOrgName "Connected Org" { 
+        $uri = "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/connectedOrganizations?`$filter=displayName eq '$ConnectedOrgName'"
         $res = Invoke-MgGraphRequest -Method GET -Uri $uri
         [bool]($res.value)
     }
@@ -130,10 +166,25 @@ process {
         $res = Invoke-MgGraphRequest -Method GET -Uri $uri
         [bool]($res.value)
     }
+    $results += Test-Resource $PolicyNameBlockLegacy "CA Policy" { 
+        $uri = "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies?`$filter=displayName eq '$PolicyNameBlockLegacy'"
+        $res = Invoke-MgGraphRequest -Method GET -Uri $uri
+        [bool]($res.value)
+    }
 
     # Lab 07
     $results += Test-Resource $ReviewName "Access Review" { 
         $uri = "https://graph.microsoft.com/v1.0/identityGovernance/accessReviews/definitions?`$filter=displayName eq '$ReviewName'"
+        $res = Invoke-MgGraphRequest -Method GET -Uri $uri
+        [bool]($res.value)
+    }
+    $results += Test-Resource $AdminReviewName "Access Review" { 
+        $uri = "https://graph.microsoft.com/v1.0/identityGovernance/accessReviews/definitions?`$filter=displayName eq '$AdminReviewName'"
+        $res = Invoke-MgGraphRequest -Method GET -Uri $uri
+        [bool]($res.value)
+    }
+    $results += Test-Resource $WorkflowName "Lifecycle Workflow" { 
+        $uri = "https://graph.microsoft.com/v1.0/identityGovernance/lifecycleWorkflows/workflows?`$filter=displayName eq '$WorkflowName'"
         $res = Invoke-MgGraphRequest -Method GET -Uri $uri
         [bool]($res.value)
     }

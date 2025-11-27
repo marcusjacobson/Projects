@@ -10,11 +10,12 @@ This lab provides a "Big Red Button" to reset your tenant. It removes all resour
 ## ⚠️ Critical Warning
 
 **This script deletes data.**
-It is designed to target *only* resources with the specific prefixes used in this project (`USR-`, `GRP-`, `AU-`, `ROLE-`, `CA00X`, etc.). However, you should **always** review the script before running it in a production or shared environment.
+It functions as an orchestrator that executes the cleanup scripts for **Lab 07 down to Lab 01** in sequential order. It relies on the logic defined in each module's `Remove-*.ps1` script to target specific resources. You should **always** review the script before running it in a production or shared environment.
 
 ## 📋 Prerequisites
 
 - **Global Administrator** role (required to delete other admins and policies).
+- **Module Parameter Files**: Ensure the `module.parameters.json` files in Labs 01-07 are still present, as the cleanup scripts rely on them to identify resources.
 
 ## ⏱️ Estimated Duration
 
@@ -22,29 +23,26 @@ It is designed to target *only* resources with the specific prefixes used in thi
 
 ## 📝 Lab Steps
 
-### Step 1: Configure Parameters File
+### Step 1: Verify Module Parameters
 
-Before deploying resources, you must configure the environment parameters.
+The cleanup orchestration relies on the configuration files from the previous labs to know exactly what to delete.
 
-**Context**: This project uses a centralized JSON configuration file to manage deployment settings. This ensures consistency across all scripts.
+**Context**: Instead of maintaining a separate list of resources to delete, this module reuses the logic from each individual lab. This ensures that if you changed a resource name in Lab 03's parameters, the cleanup script will correctly identify and remove it.
 
-1. Navigate to the `infra` directory.
-2. Open `module.parameters.json`.
-3. Review the default settings.
-4. Save the file.
+1. Ensure you have not deleted the `infra/module.parameters.json` files in the previous lab directories.
 
 ### Step 2: Execute Cleanup
 
 We will run the master cleanup script.
 
-**Context**: Cleaning up cloud resources manually is tedious and error-prone. This script reverses the actions of Labs 01-07. It handles dependencies (e.g., you can't delete a group if it's assigned to an Access Package) by deleting resources in the correct order.
+**Context**: Cleaning up cloud resources manually is tedious and error-prone. This script orchestrates the removal process by calling the cleanup scripts for Labs 07, 06, 05, 04, 03, 02, and 01 in reverse order. This handles dependencies (e.g., removing Access Packages before Groups) automatically.
 
 1. Open a PowerShell terminal.
 2. Navigate to the `scripts` directory.
 3. Run the following command:
 
    ```powershell
-   .\Nuke-Simulation.ps1 -UseParametersFile
+   .\Nuke-Simulation.ps1
    ```
 
 4. **Confirmation**: You will be prompted to confirm the deletion. Type `Y` to proceed.

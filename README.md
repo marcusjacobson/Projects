@@ -94,7 +94,7 @@ Across all projects, this portfolio highlights proficiency in the following key 
 | **Data Governance** | Managing data lifecycle, classification, and lineage. | ✅ Implemented |
 | **Regulatory Compliance** | Aligning architectures with standards like NIST, ISO, and GDPR. | ✅ Implemented |
 | **Cost Management** | Implementing FinOps practices for cloud spend optimization. | ✅ Implemented |
-| **Identity Governance (IGA)** | Managing privileged access (PIM) and access reviews. | 📅 Planned |
+| **Identity Governance (IGA)** | Managing privileged access (PIM) and access reviews. | ✅ Implemented |
 | **Privacy Engineering** | Implementing privacy-by-design and subject rights request automation. | 📅 Planned |
 | **Third-Party Risk Management** | Assessing and monitoring vendor security posture. | 📅 Planned |
 

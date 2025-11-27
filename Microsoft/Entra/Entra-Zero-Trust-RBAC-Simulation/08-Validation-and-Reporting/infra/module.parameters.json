@@ -4,17 +4,25 @@
     },
     "Generate-ConfigurationReport": {
         "reportPath": "../reports",
-        "groupFilter": "startsWith(DisplayName, \"GRP-SEC-\")",
-        "userFilter": "startsWith(UserPrincipalName, \"breakglass\")"
+        "groupFilter": "startsWith(DisplayName, 'GRP-SEC-')",
+        "userFilter": "startsWith(UserPrincipalName, 'USR-BREAK-GLASS')"
     },
     "Validate-AllLabs": {
-        "groupName": "GRP-SEC-Admins",
-        "breakGlassPrefix": "breakglass",
+        "groupName": "GRP-SEC-All-Licensed-Users",
+        "testUser": "USR-CEO",
+        "breakGlassPrefix": "USR-BREAK-GLASS",
         "adminUnitName": "AU-Marketing",
-        "servicePrincipalName": "SP-App-Finance",
-        "roleName": "Role-Custom-AppAdmin",
+        "restrictedAUName": "AU-SEC-Restricted",
+        "servicePrincipalName": "APP-Reporting-Automation",
+        "roleName": "ROLE-Tier1-Helpdesk",
+        "pimGroupName": "GRP-PIM-ExchangeAdmins",
         "catalogName": "CAT-Marketing",
+        "accessPackageName": "PKG-Marketing-Campaign",
+        "connectedOrgName": "Partner Corp",
         "policyName": "CA-01-RequireMFA-Admins",
-        "reviewName": "AR-Quarterly-Guests"
+        "policyNameBlockLegacy": "CA-02-BlockLegacyAuth",
+        "reviewName": "AR-Quarterly-Guests",
+        "adminReviewName": "AR-Global-Admins",
+        "workflowName": "WF-Leaver-Standard"
     }
 }

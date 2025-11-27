@@ -30,7 +30,7 @@
     - Method: Forceful deletion
 #>
 
-[CmdletBinding()]
+[CmdletBinding(SupportsShouldProcess=$true)]
 param(
     [Switch]$Force,
     [Parameter(Mandatory = $false)]
@@ -40,39 +40,13 @@ param(
 process {
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
 
-    # Load Parameters
-    $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"
-    if ($UseParametersFile -or (Test-Path $paramsPath)) {
-        if (Test-Path $paramsPath) {
-            Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
-            $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
-            
-            $CaPolicyFilter = $jsonParams."Nuke-Simulation".caPolicyFilter
-            $WorkflowFilter = $jsonParams."Nuke-Simulation".workflowFilter
-            $AccessReviewFilter = $jsonParams."Nuke-Simulation".accessReviewFilter
-            $CustomRoleFilter = $jsonParams."Nuke-Simulation".customRoleFilter
-            $AdminUnitFilter = $jsonParams."Nuke-Simulation".adminUnitFilter
-            $ServicePrincipalFilter = $jsonParams."Nuke-Simulation".servicePrincipalFilter
-            $GroupFilter = $jsonParams."Nuke-Simulation".groupFilter
-            $UserFilter = $jsonParams."Nuke-Simulation".userFilter
-        } else {
-            Throw "Parameters file not found at $paramsPath"
-        }
-    } else {
-        Throw "Please use -UseParametersFile or ensure module.parameters.json exists."
+    Write-Host "⚠️  WARNING: This script will delete ALL resources created by the simulation." -ForegroundColor Red
+    Write-Host "   It will execute the cleanup scripts for Labs 07 down to 01."
+    
+    if (-not $Force -and -not $PSCmdlet.ShouldProcess("All Simulation Resources", "Delete")) {
+        return
     }
 
-    Write-Host "⚠️  WARNING: This script will delete ALL resources created by the simulation." -ForegroundColor Red
-    Write-Host "   - Users (breakglass*, admin-*, user-*)"
-    Write-Host "   - Groups (GRP-SEC-*, GRP-M365-*)"
-    Write-Host "   - Admin Units (AU-*)"
-    Write-Host "   - Custom Roles (Role-Custom-*)"
-    Write-Host "   - CA Policies (CA-0*)"
-    Write-Host "   - Entitlement Mgmt (Catalogs, Packages)"
-    Write-Host "   - Access Reviews (AR-*)"
-    Write-Host "   - Lifecycle Workflows (WF-*)"
-    Write-Host "   - Service Principals (SP-App-*)"
-    
     if (-not $Force) {
         $confirm = Read-Host "Are you sure you want to proceed? (y/n)"
         if ($confirm -ne 'y') {
@@ -83,81 +57,31 @@ process {
 
     Write-Host "🚀 Nuking Simulation Resources..." -ForegroundColor Red
 
-    # Helper
-    function Remove-Resource ($Type, $Uri, $DeleteUriTemplate) {
-        Write-Host "   Scanning for $Type..." -NoNewline
-        try {
-            $response = Invoke-MgGraphRequest -Method GET -Uri $Uri
-            $items = $response.value
-            
-            if ($items) {
-                Write-Host " Found $($items.Count). Deleting..." -ForegroundColor Yellow
-                foreach ($item in $items) {
-                    try {
-                        $delUri = $DeleteUriTemplate -f $item.id
-                        Invoke-MgGraphRequest -Method DELETE -Uri $delUri
-                        Write-Host "     - Deleted '$($item.displayName ?? $item.userPrincipalName)'" -ForegroundColor Gray
-                    } catch {
-                        Write-Host "     ❌ Failed to delete '$($item.displayName ?? $item.userPrincipalName)': $_" -ForegroundColor Red
-                    }
+    $scripts = @(
+        @{ Path = "..\..\07-Lifecycle-Governance\scripts\Remove-LifecycleGovernance.ps1"; Name = "Lab 07: Lifecycle Governance" },
+        @{ Path = "..\..\06-Identity-Security\scripts\Remove-IdentitySecurity.ps1"; Name = "Lab 06: Identity Security" },
+        @{ Path = "..\..\05-Entitlement-Management\scripts\Remove-EntitlementMgmt.ps1"; Name = "Lab 05: Entitlement Management" },
+        @{ Path = "..\..\04-RBAC-and-PIM\scripts\Remove-RBAC-PIM.ps1"; Name = "Lab 04: RBAC & PIM" },
+        @{ Path = "..\..\03-App-Integration\scripts\Remove-AppIntegration.ps1"; Name = "Lab 03: App Integration" },
+        @{ Path = "..\..\02-Delegated-Administration\scripts\Remove-DelegatedAdmin.ps1"; Name = "Lab 02: Delegated Admin" },
+        @{ Path = "..\..\01-Identity-Foundation\scripts\Remove-IdentityFoundation.ps1"; Name = "Lab 01: Identity Foundation" }
+    )
+
+    foreach ($script in $scripts) {
+        $fullPath = Join-Path $PSScriptRoot $script.Path
+        if (Test-Path $fullPath) {
+            Write-Host "   Calling Cleanup for $($script.Name)..." -ForegroundColor Yellow
+            if ($PSCmdlet.ShouldProcess($script.Name, "Execute Cleanup Script")) {
+                try {
+                    & $fullPath -UseParametersFile
+                } catch {
+                    Write-Host "   ❌ Error running $($script.Name): $_" -ForegroundColor Red
                 }
-            } else {
-                Write-Host " None found." -ForegroundColor Green
             }
-        } catch {
-            Write-Host " Error scanning: $_" -ForegroundColor Red
+        } else {
+            Write-Warning "   ⚠️ Script not found: $fullPath"
         }
     }
 
-    # 1. CA Policies
-    Remove-Resource "CA Policies" "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies?`$filter=$CaPolicyFilter" "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies/{0}"
-
-    # 2. Lifecycle Workflows
-    Remove-Resource "Lifecycle Workflows" "https://graph.microsoft.com/v1.0/identityGovernance/lifecycleWorkflows/workflows?`$filter=$WorkflowFilter" "https://graph.microsoft.com/v1.0/identityGovernance/lifecycleWorkflows/workflows/{0}"
-
-    # 3. Access Reviews
-    # Need to stop first?
-    Write-Host "   Scanning for Access Reviews..." -NoNewline
-    $arUri = "https://graph.microsoft.com/v1.0/identityGovernance/accessReviews/definitions?`$filter=$AccessReviewFilter"
-    $arRes = Invoke-MgGraphRequest -Method GET -Uri $arUri
-    $ars = $arRes.value
-    if ($ars) {
-        Write-Host " Found $($ars.Count). Deleting..." -ForegroundColor Yellow
-        foreach ($ar in $ars) {
-            try {
-                Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identityGovernance/accessReviews/definitions/$($ar.id)/stop"
-                Start-Sleep -Seconds 1
-                Invoke-MgGraphRequest -Method DELETE -Uri "https://graph.microsoft.com/v1.0/identityGovernance/accessReviews/definitions/$($ar.id)"
-                Write-Host "     - Deleted '$($ar.displayName)'" -ForegroundColor Gray
-            } catch {
-                Write-Host "     ❌ Failed to delete '$($ar.displayName)': $_" -ForegroundColor Red
-            }
-        }
-    } else {
-        Write-Host " None found." -ForegroundColor Green
-    }
-
-    # 4. Entitlement Mgmt (Call Lab 05 script if exists)
-    $lab05Script = "$PSScriptRoot\..\..\05-Entitlement-Management\scripts\Remove-EntitlementMgmt.ps1"
-    if (Test-Path $lab05Script) {
-        Write-Host "   Calling Lab 05 Cleanup..." -ForegroundColor Yellow
-        & $lab05Script -UseParametersFile
-    }
-
-    # 5. Custom Roles
-    Remove-Resource "Custom Roles" "https://graph.microsoft.com/v1.0/roleManagement/directory/roleDefinitions?`$filter=$CustomRoleFilter" "https://graph.microsoft.com/v1.0/roleManagement/directory/roleDefinitions/{0}"
-
-    # 6. Admin Units
-    Remove-Resource "Admin Units" "https://graph.microsoft.com/v1.0/directory/administrativeUnits?`$filter=$AdminUnitFilter" "https://graph.microsoft.com/v1.0/directory/administrativeUnits/{0}"
-
-    # 7. Service Principals
-    Remove-Resource "Service Principals" "https://graph.microsoft.com/v1.0/servicePrincipals?`$filter=$ServicePrincipalFilter" "https://graph.microsoft.com/v1.0/servicePrincipals/{0}"
-
-    # 8. Groups
-    Remove-Resource "Groups" "https://graph.microsoft.com/v1.0/groups?`$filter=$GroupFilter" "https://graph.microsoft.com/v1.0/groups/{0}"
-
-    # 9. Users
-    Remove-Resource "Users" "https://graph.microsoft.com/v1.0/users?`$filter=$UserFilter" "https://graph.microsoft.com/v1.0/users/{0}"
-
-    Write-Host "✅ Cleanup Complete." -ForegroundColor Green
+    Write-Host "✅ Cleanup Sequence Complete." -ForegroundColor Green
 }

@@ -3,13 +3,5 @@
         "location": "US"
     },
     "Nuke-Simulation": {
-        "caPolicyFilter": "startsWith(displayName, \"CA-0\")",
-        "workflowFilter": "startsWith(displayName, \"WF-\")",
-        "accessReviewFilter": "startsWith(displayName, \"AR-\")",
-        "customRoleFilter": "startsWith(displayName, \"Role-Custom-\")",
-        "adminUnitFilter": "startsWith(displayName, \"AU-\")",
-        "servicePrincipalFilter": "startsWith(displayName, \"SP-App-\")",
-        "groupFilter": "startsWith(displayName, \"GRP-SEC-\") or startsWith(displayName, \"GRP-M365-\")",
-        "userFilter": "startsWith(userPrincipalName, \"breakglass\") or startsWith(userPrincipalName, \"admin-\") or startsWith(userPrincipalName, \"user-\")"
     }
 }

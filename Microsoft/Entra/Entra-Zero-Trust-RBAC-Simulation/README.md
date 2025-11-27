@@ -82,9 +82,9 @@ This project provides **hands-on practical experience with core Microsoft Entra 
 
 | Capability | Coverage Level | Project Section(s) |
 |------------|----------------|-------------------|
-| **Administrative Units (AUs)** | ✅ COMPREHENSIVE | Lab 02 (AU creation, Dynamic membership, Scoped roles) |
+| **Administrative Units (AUs)** | ✅ COMPREHENSIVE | Lab 02 (AU creation, Static membership, Restricted Management AUs) |
 | **Restricted Management AUs** | ✅ DETAILED | Lab 02 (Hardening specific high-value targets) |
-| **Custom RBAC** | ✅ EXTENSIVE | Lab 04 (Creating custom role definitions, Scoped assignments) |
+| **Custom RBAC** | ✅ EXTENSIVE | Lab 04 (Creating custom role definitions, PIM integration) |
 | **Group-Based Licensing** | ✅ DETAILED | Lab 01 (Automated license assignment via groups) |
 
 #### ✅ Application Identity & Security (85% Simulation Features)
@@ -93,7 +93,7 @@ This project provides **hands-on practical experience with core Microsoft Entra 
 |------------|----------------|-------------------|
 | **App Consent Governance** | ✅ COMPREHENSIVE | Lab 03 (Risk-based step-up consent policies) |
 | **Service Principal Management** | ✅ EXTENSIVE | Lab 03 (Creation, Certificate-based auth) |
-| **Enterprise App Config** | ✅ DETAILED | Lab 03 (Assignment requirements, Visibility) |
+| **Enterprise App Config** | ✅ DETAILED | Lab 03 (App Registration, Service Principal creation) |
 | **Workload Identity Basics** | ✅ DETAILED | Lab 03 (Service Principal security) |
 
 #### ✅ Automation & Monitoring (95% Simulation Operations)
@@ -196,6 +196,18 @@ By completing this simulation, you will develop practical skills in:
 - **PowerShell Automation**: Managing Entra ID at scale using the Graph SDK.
 - **Identity Governance**: Designing and implementing automated access lifecycles.
 - **Security Operations**: Configuring audit logging and monitoring for identity threats.
+
+## 🚀 Production Extension Guide
+
+Ready to take these concepts to the real world? Check out the **[Production Extension Guide](./PRODUCTION-EXTENSION-GUIDE.md)**.
+
+This supplemental guide provides actionable, low-level technical guidance on adapting the simulation scripts for production:
+
+- **Parameter Strategy**: Splitting monolithic JSON into environment-specific files (`dev.json`, `prod.json`).
+- **Secret Management**: Replacing cleartext secrets with `SecureString` parameters and CI/CD token replacement.
+- **Script Safety**: Implementing `SupportsShouldProcess` for `-WhatIf` dry runs and `Start-Transcript` for audit logging.
+- **Data Injection**: Refactoring scripts to accept `ValueFromPipeline` for bulk processing from CSV/API sources.
+- **Module-Specific Tips**: Concrete code examples for extending PIM, Administrative Units, and Conditional Access scripts.
 
 ---
 

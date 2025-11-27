@@ -3,9 +3,11 @@
         "location": "US"
     },
     "Configure-PIM-Groups": {
-        "groupName": "GRP-SEC-IT",
+        "groupName": "GRP-PIM-ExchangeAdmins",
         "roleName": "Exchange Administrator",
-        "eligibleUser": "USR-IT-Admin"
+        "eligibleUser": "USR-IT-Admin",
+        "justification": "PIM for Groups Lab Setup",
+        "eligibleAssignmentDurationYears": "1"
     },
     "Configure-PIM-Roles": {
         "roleName": "Global Administrator",
@@ -16,10 +18,10 @@
     },
     "Deploy-CustomRoles": {
         "roleName": "ROLE-Tier1-Helpdesk",
-        "description": "Can reset passwords and invalidate tokens for non-admins.",
+        "description": "Tier 1 Support: Can read user info and retrieve BitLocker recovery keys for device unlock.",
         "permissions": [
-            "microsoft.directory/users/password/update",
-            "microsoft.directory/users/invalidateAllRefreshTokens"
+            "microsoft.directory/users/standard/read",
+            "microsoft.directory/bitlockerKeys/key/read"
         ]
     },
     "Remove-RBAC-PIM": {

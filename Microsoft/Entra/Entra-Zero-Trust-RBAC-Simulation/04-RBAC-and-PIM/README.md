@@ -41,7 +41,7 @@ Before deploying resources, you must configure the environment parameters.
 
 We will create a role definition that is strictly scoped.
 
-**Context**: Built-in roles like "User Administrator" are often too broad (e.g., they can manage Groups too). Custom roles allow us to follow the "Least Privilege" principle precisely—giving Helpdesk staff exactly the permissions they need to reset passwords, and nothing else.
+**Context**: Built-in roles like "User Administrator" are often too broad (e.g., they can manage Groups too). Custom roles allow us to follow the "Least Privilege" principle precisely—giving Helpdesk staff exactly the permissions they need (e.g., viewing BitLocker keys), and nothing else.
 
 1. Run the following command:
 
@@ -50,7 +50,14 @@ We will create a role definition that is strictly scoped.
    ```
 
 2. Creates `ROLE-Tier1-Helpdesk`.
-3. Permissions: `microsoft.directory/users/password/update`, `microsoft.directory/users/invalidateAllRefreshTokens`.
+3. Permissions: `microsoft.directory/users/standard/read`, `microsoft.directory/bitlockerKeys/key/read`.
+
+#### Validate Custom Roles
+
+1. Go to **Entra Admin Center** > **Identity** > **Roles & admins** > **Roles & admins**.
+2. Search for `ROLE-Tier1-Helpdesk`.
+3. Click on the role name to open details.
+4. Select **Description** or **Permissions** to verify it includes `microsoft.directory/bitlockerKeys/key/read`.
 
 ### Step 3: Configure PIM for Roles
 
@@ -70,6 +77,14 @@ We will protect the **Global Administrator** role.
     - **Require Justification**: Yes.
     - **Require Approval**: Yes (Assigns `USR-CISO` as approver).
 
+#### Validate PIM for Roles
+
+1. Go to **Entra Admin Center** > **Identity Governance** > **Privileged Identity Management**.
+2. Select **Entra roles** > **Manage** > **Roles**.
+3. Search for **Global Administrator**.
+4. Click the role, then select **Settings**.
+5. Verify the **Activation maximum duration** is **4 hours** and **On activation, require** includes **MFA** and **Justification**.
+
 ### Step 4: Configure PIM for Groups
 
 We will use a PIM-enabled group to manage Exchange access.
@@ -82,15 +97,33 @@ We will use a PIM-enabled group to manage Exchange access.
    .\Configure-PIM-Groups.ps1 -UseParametersFile
    ```
 
-2. Onboards `GRP-SEC-IT` to PIM.
+2. Onboards `GRP-PIM-ExchangeAdmins` to PIM.
 3. Assigns the **Exchange Administrator** role to this group.
 4. Now, `USR-IT-Admin` (a member of the group) is *eligible* to become an Exchange Admin by activating the group membership.
 
+#### Validate PIM for Groups
+
+1. Go to **Entra Admin Center** > **Identity Governance** > **Privileged Identity Management**.
+2. Select **Groups** > **Discover groups**.
+3. Search for `GRP-PIM-ExchangeAdmins` and ensure it is managed.
+4. Select the group > **Assignments**.
+5. Verify `USR-IT-Admin` is listed as an **Eligible** member.
+
 ## ✅ Validation
 
-- **Custom Role**: Check **Roles & admins** for `ROLE-Tier1-Helpdesk`.
-- **PIM**: Go to **PIM** > **Entra roles** > **Settings** > **Global Administrator** to see the new policy.
-- **Group PIM**: Go to **PIM** > **Groups** and verify `GRP-SEC-IT` is managed.
+- **Custom Role**: Verify `ROLE-Tier1-Helpdesk` exists with BitLocker permissions.
+- **PIM Policy**: Confirm Global Admin requires approval and MFA.
+- **Group PIM**: Verify `GRP-PIM-ExchangeAdmins` is onboarded and `USR-IT-Admin` is eligible.
+
+## 🧹 Cleanup
+
+To remove the resources created in this lab (Custom Roles, PIM Settings), run the cleanup script:
+
+```powershell
+.\Remove-RBAC-PIM.ps1 -UseParametersFile
+```
+
+> **⚠️ Important Cleanup Note**: The cleanup script removes the Custom Role and the PIM Group. However, **PIM Policy settings (MFA, Approval, Duration) for the Global Administrator role are NOT reverted** to their default state. This is a safety measure to avoid disrupting critical tenant configurations. If you wish to revert these settings, you must do so manually in the Entra Portal.
 
 ## 🚧 Troubleshooting
 

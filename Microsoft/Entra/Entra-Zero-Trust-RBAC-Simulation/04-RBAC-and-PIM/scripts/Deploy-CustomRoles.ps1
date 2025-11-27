@@ -3,15 +3,16 @@
     Deploys a Custom Role Definition.
 
 .DESCRIPTION
-    Creates 'ROLE-Tier1-Helpdesk' with permissions to reset passwords and invalidate tokens.
-    This role is designed for Level 1 support staff.
+    Creates 'ROLE-Tier1-Helpdesk' with permissions to read user info and BitLocker keys.
+    This role is designed for Level 1 support staff assisting with device lockouts.
+    Note: Password reset permissions are not currently supported in Custom Roles.
 
 .EXAMPLE
     .\Deploy-CustomRoles.ps1
 
 .NOTES
     Author: Marcus Jacobson
-    Version: 1.0.0
+    Version: 1.0.1
     Created: 2025-11-24
     Last Modified: 2025-11-24
     
@@ -26,7 +27,7 @@
 .SPECIALIZED_SECTION
     ROLE DEFINITION
     - Name: ROLE-Tier1-Helpdesk
-    - Permissions: password/update, invalidateAllRefreshTokens
+    - Permissions: users/standard/read, bitlockerKeys/key/read
     - Scope: Directory-wide (can be scoped to AU)
 #>
 

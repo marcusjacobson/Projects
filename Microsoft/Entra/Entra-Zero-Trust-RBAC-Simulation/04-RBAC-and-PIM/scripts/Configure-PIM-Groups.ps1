@@ -35,6 +35,8 @@ process {
             $GroupName = $jsonParams."Configure-PIM-Groups".groupName
             $RoleName = $jsonParams."Configure-PIM-Groups".roleName
             $EligibleUser = $jsonParams."Configure-PIM-Groups".eligibleUser
+            $Justification = $jsonParams."Configure-PIM-Groups".justification
+            $EligibleAssignmentDurationYears = [int]$jsonParams."Configure-PIM-Groups".eligibleAssignmentDurationYears
         } else {
             Throw "Parameters file not found at $paramsPath"
         }
@@ -44,13 +46,25 @@ process {
 
     Write-Host "🚀 Configuring PIM for Groups..." -ForegroundColor Cyan
 
-    # 1. Get Group
+    # 1. Get or Create Group
     $groupUri = "https://graph.microsoft.com/v1.0/groups?`$filter=displayName eq '$GroupName'"
     $groupResponse = Invoke-MgGraphRequest -Method GET -Uri $groupUri
     $group = $groupResponse.value | Select-Object -First 1
     
     if (-not $group) {
-        Throw "Group '$GroupName' not found."
+        Write-Host "   ℹ️  Group '$GroupName' not found. Creating..." -ForegroundColor Cyan
+        $groupBody = @{
+            displayName = $GroupName
+            mailEnabled = $false
+            mailNickname = $GroupName -replace '\s+',''
+            securityEnabled = $true
+            isAssignableToRole = $true
+            description = "PIM Managed Group for $RoleName"
+        }
+        $group = Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/groups" -Body $groupBody
+        Write-Host "   ✅ Created Role-Assignable Group '$GroupName'" -ForegroundColor Green
+        Write-Host "   ⏳ Waiting 30 seconds for group replication..." -ForegroundColor Cyan
+        Start-Sleep -Seconds 30
     }
 
     # 2. Get Role Definition (Template)
@@ -66,7 +80,7 @@ process {
     try {
         $body = @{
             action = "adminAssign"
-            justification = "PIM for Groups Setup"
+            justification = $Justification
             roleDefinitionId = $roleDef.id
             directoryScopeId = "/"
             principalId = $group.id
@@ -86,12 +100,53 @@ process {
         Write-Error "Failed to assign role to group: $_"
     }
 
-    # 4. Instructions for PIM for Groups (Member Eligibility)
-    Write-Host "`nℹ️  PIM for Groups Configuration:" -ForegroundColor Cyan
-    Write-Host "   The group '$GroupName' now has the '$RoleName' role."
-    Write-Host "   To complete the setup (make users eligible to join the group):"
-    Write-Host "   1. Go to Entra Admin Center > Identity Governance > PIM > Groups"
-    Write-Host "   2. Select '$GroupName'"
-    Write-Host "   3. Add '$EligibleUser' as an 'Eligible' member."
-    Write-Host "   (This step requires P2 and is best done in the portal for this simulation)" -ForegroundColor Yellow
+    # 4. Configure PIM for Groups (Member Eligibility)
+    Write-Host "`n🚀 Configuring PIM Member Eligibility for '$GroupName'..." -ForegroundColor Cyan
+    
+    # Get Eligible User
+    $userUri = "https://graph.microsoft.com/v1.0/users?`$filter=startswith(userPrincipalName, '$EligibleUser')"
+    $userResponse = Invoke-MgGraphRequest -Method GET -Uri $userUri
+    $user = $userResponse.value | Select-Object -First 1
+    
+    if (-not $user) {
+        Write-Error "User '$EligibleUser' not found."
+    }
+    else {
+        try {
+            $pimUri = "https://graph.microsoft.com/v1.0/identityGovernance/privilegedAccess/group/eligibilityScheduleRequests"
+            
+            $startDateTime = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
+            $endDateTime = (Get-Date).AddYears($EligibleAssignmentDurationYears).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
+
+            $memberBody = @{
+                accessId = "member"
+                principalId = $user.id
+                groupId = $group.id
+                action = "AdminAssign"
+                scheduleInfo = @{
+                    startDateTime = $startDateTime
+                    expiration = @{
+                        type = "AfterDateTime"
+                        endDateTime = $endDateTime
+                    }
+                }
+                justification = $Justification
+            }
+
+            Invoke-MgGraphRequest -Method POST -Uri $pimUri -Body $memberBody
+            Write-Host "   ✅ Assigned '$EligibleUser' as Eligible Member of '$GroupName'." -ForegroundColor Green
+        }
+        catch {
+            $err = $_.Exception.Message
+            if ($err -match "Role assignment already exists") {
+                Write-Host "   ℹ️  User '$EligibleUser' is already an eligible member." -ForegroundColor Yellow
+            }
+            elseif ($err -match "Resource type not supported") {
+                Write-Warning "   ⚠️  PIM is not enabled for group '$GroupName'. Please onboard the group in the portal."
+            }
+            else {
+                Write-Error "Failed to assign eligible member: $err"
+            }
+        }
+    }
 }

@@ -30,7 +30,7 @@ process {
             Write-Host "📂 Loading parameters from $paramsPath..." -ForegroundColor Cyan
             $jsonParams = Get-Content $paramsPath | ConvertFrom-Json
             
-            $TargetGroupName = $jsonParams."Configure-AuthMethods".targetGroupName
+            # $TargetGroupName = $jsonParams."Configure-AuthMethods".targetGroupName # Deprecated: Now targeting All Users
             $EnableFido2 = $jsonParams."Configure-AuthMethods".enableFido2
             $EnableMicrosoftAuthenticator = $jsonParams."Configure-AuthMethods".enableMicrosoftAuthenticator
         } else {
@@ -42,15 +42,9 @@ process {
 
     Write-Host "🚀 Configuring Authentication Methods..." -ForegroundColor Cyan
 
-    # Fetch Target Group
-    $groupUri = "https://graph.microsoft.com/v1.0/groups?`$filter=displayName eq '$TargetGroupName'"
-    $groupResponse = Invoke-MgGraphRequest -Method GET -Uri $groupUri
-    $allUsersGroup = $groupResponse.value | Select-Object -First 1
-
-    if (-not $allUsersGroup) {
-        Write-Warning "   ⚠️ '$TargetGroupName' not found. Skipping configuration."
-        return
-    }
+    # Target "All Users" directly (Best Practice: Enable broadly, enforce via CA)
+    $TargetName = "All Users"
+    $TargetId = "all_users"
 
     # 1. Enable FIDO2
     if ($EnableFido2) {
@@ -58,7 +52,7 @@ process {
         try {
             $target = @{
                 targetType = "group"
-                id = $allUsersGroup.id
+                id = $TargetId
                 isRegistrationRequired = $false
                 keyRestrictions = $null
             }
@@ -68,11 +62,12 @@ process {
                 includeTargets = @($target)
             }
             
-            Invoke-MgGraphRequest -Method PATCH -Uri "https://graph.microsoft.com/v1.0/policies/authenticationMethodsPolicy/authenticationMethodConfigurations/fido2" -Body $body
-            Write-Host "   ✅ Enabled FIDO2 for '$TargetGroupName'" -ForegroundColor Green
+            $jsonBody = $body | ConvertTo-Json -Depth 10
+            Invoke-MgGraphRequest -Method PATCH -Uri "https://graph.microsoft.com/v1.0/policies/authenticationMethodsPolicy/authenticationMethodConfigurations/fido2" -Body $jsonBody -ContentType "application/json"
+            Write-Host "   ✅ Enabled FIDO2 for '$TargetName'" -ForegroundColor Green
         }
         catch {
-            Write-Warning "   ⚠️ Failed to configure FIDO2: $_"
+            Write-Error "   ❌ Failed to configure FIDO2: $_"
         }
     }
 
@@ -82,7 +77,7 @@ process {
         try {
             $target = @{
                 targetType = "group"
-                id = $allUsersGroup.id
+                id = $TargetId
                 authenticationMode = "any"
             }
             
@@ -91,11 +86,12 @@ process {
                 includeTargets = @($target)
             }
             
-            Invoke-MgGraphRequest -Method PATCH -Uri "https://graph.microsoft.com/v1.0/policies/authenticationMethodsPolicy/authenticationMethodConfigurations/microsoftAuthenticator" -Body $body
-            Write-Host "   ✅ Enabled Microsoft Authenticator for '$TargetGroupName'" -ForegroundColor Green
+            $jsonBody = $body | ConvertTo-Json -Depth 10
+            Invoke-MgGraphRequest -Method PATCH -Uri "https://graph.microsoft.com/v1.0/policies/authenticationMethodsPolicy/authenticationMethodConfigurations/microsoftAuthenticator" -Body $jsonBody -ContentType "application/json"
+            Write-Host "   ✅ Enabled Microsoft Authenticator for '$TargetName'" -ForegroundColor Green
         }
         catch {
-            Write-Warning "   ⚠️ Failed to configure Microsoft Authenticator: $_"
+            Write-Error "   ❌ Failed to configure Microsoft Authenticator: $_"
         }
     }
 }

@@ -44,71 +44,95 @@ process {
 
     Write-Host "🚀 Configuring Identity Protection Policies..." -ForegroundColor Cyan
 
-    # Get Break Glass Account to exclude
+    # Get Break Glass Accounts to exclude
     $bgUri = "https://graph.microsoft.com/v1.0/users?`$filter=startsWith(userPrincipalName, '$BreakGlassPrefix')"
     $bgResponse = Invoke-MgGraphRequest -Method GET -Uri $bgUri
-    $bgUser = $bgResponse.value | Select-Object -First 1
-    $excludeUsers = if ($bgUser) { @($bgUser.id) } else { @() }
+    $bgUsers = $bgResponse.value
+    $excludeUsers = if ($bgUsers) { @($bgUsers.id) } else { @() }
 
     # Policy 3: Block High User Risk
-    $pol3Uri = "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies?`$filter=displayName eq '$PolicyNameHighRisk'"
-    $pol3Response = Invoke-MgGraphRequest -Method GET -Uri $pol3Uri
-    $pol3 = $pol3Response.value | Select-Object -First 1
-    
-    if (-not $pol3) {
-        $conditions3 = @{
-            applications = @{ includeApplications = @("All") }
-            users = @{
-                includeUsers = @("All")
-                excludeUsers = $excludeUsers
-            }
-            userRiskLevels = @("high")
-        }
+    try {
+        $pol3Uri = "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies?`$filter=displayName eq '$PolicyNameHighRisk'"
+        $pol3Response = Invoke-MgGraphRequest -Method GET -Uri $pol3Uri
+        $pol3 = $pol3Response.value | Select-Object -First 1
         
-        $grant3 = @{
-            builtInControls = @("block")
-            operator = "OR"
-        }
+        if (-not $pol3) {
+            $conditions3 = @{
+                applications = @{ 
+                    includeApplications = @("All")
+                    excludeApplications = @()
+                }
+                users = @{
+                    includeUsers = @("All")
+                    excludeUsers = @($excludeUsers)
+                    includeGroups = @()
+                    excludeGroups = @()
+                }
+                userRiskLevels = @("high")
+            }
+            
+            $grant3 = @{
+                builtInControls = @("block")
+                operator = "OR"
+            }
 
-        $body = @{
-            displayName = $PolicyNameHighRisk
-            state = "ReportOnly"
-            conditions = $conditions3
-            grantControls = $grant3
-        }
+            $body = @{
+                displayName = $PolicyNameHighRisk
+                state = "enabledForReportingButNotEnforced"
+                conditions = $conditions3
+                grantControls = $grant3
+            }
 
-        Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies" -Body $body
-        Write-Host "   ✅ Created Policy '$PolicyNameHighRisk' (Report-Only)" -ForegroundColor Green
+            $jsonBody = $body | ConvertTo-Json -Depth 10
+            Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies" -Body $jsonBody -ContentType "application/json"
+            Write-Host "   ✅ Created Policy '$PolicyNameHighRisk' (Report-Only)" -ForegroundColor Green
+        } else {
+            Write-Host "   ⚠️ Policy '$PolicyNameHighRisk' already exists. Skipping." -ForegroundColor Yellow
+        }
+    } catch {
+        Write-Error "   ❌ Failed to create Policy '$PolicyNameHighRisk': $_"
     }
 
     # Policy 4: MFA for Medium+ Sign-in Risk
-    $pol4Uri = "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies?`$filter=displayName eq '$PolicyNameMediumRisk'"
-    $pol4Response = Invoke-MgGraphRequest -Method GET -Uri $pol4Uri
-    $pol4 = $pol4Response.value | Select-Object -First 1
-    
-    if (-not $pol4) {
-        $conditions4 = @{
-            applications = @{ includeApplications = @("All") }
-            users = @{
-                includeUsers = @("All")
-                excludeUsers = $excludeUsers
-            }
-            signInRiskLevels = @("medium", "high")
-        }
+    try {
+        $pol4Uri = "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies?`$filter=displayName eq '$PolicyNameMediumRisk'"
+        $pol4Response = Invoke-MgGraphRequest -Method GET -Uri $pol4Uri
+        $pol4 = $pol4Response.value | Select-Object -First 1
         
-        $grant4 = @{
-            builtInControls = @("mfa")
-            operator = "OR"
-        }
+        if (-not $pol4) {
+            $conditions4 = @{
+                applications = @{ 
+                    includeApplications = @("All")
+                    excludeApplications = @()
+                }
+                users = @{
+                    includeUsers = @("All")
+                    excludeUsers = @($excludeUsers)
+                    includeGroups = @()
+                    excludeGroups = @()
+                }
+                signInRiskLevels = @("medium", "high")
+            }
+            
+            $grant4 = @{
+                builtInControls = @("mfa")
+                operator = "OR"
+            }
 
-        $body = @{
-            displayName = $PolicyNameMediumRisk
-            state = "ReportOnly"
-            conditions = $conditions4
-            grantControls = $grant4
-        }
+            $body = @{
+                displayName = $PolicyNameMediumRisk
+                state = "enabledForReportingButNotEnforced"
+                conditions = $conditions4
+                grantControls = $grant4
+            }
 
-        Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies" -Body $body
-        Write-Host "   ✅ Created Policy '$PolicyNameMediumRisk' (Report-Only)" -ForegroundColor Green
+            $jsonBody = $body | ConvertTo-Json -Depth 10
+            Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies" -Body $jsonBody -ContentType "application/json"
+            Write-Host "   ✅ Created Policy '$PolicyNameMediumRisk' (Report-Only)" -ForegroundColor Green
+        } else {
+            Write-Host "   ⚠️ Policy '$PolicyNameMediumRisk' already exists. Skipping." -ForegroundColor Yellow
+        }
+    } catch {
+        Write-Error "   ❌ Failed to create Policy '$PolicyNameMediumRisk': $_"
     }
 }

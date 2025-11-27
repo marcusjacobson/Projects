@@ -54,9 +54,14 @@ We will create standard protection policies but keep them in "Report-Only" mode 
    ```
 
 4. This creates:
-    - `CA001: Require MFA for Admins` (Report-Only)
-    - `CA002: Block Legacy Authentication` (Report-Only)
-    - `CA003: Require MFA for All Users` (Report-Only)
+    - `CA-01-RequireMFA-Admins` (Report-Only)
+    - `CA-02-BlockLegacyAuth` (Report-Only)
+
+5. **Verify in Portal**:
+   - Navigate to **Protection** > **Conditional Access** > **Policies**.
+   - Confirm `CA-01-RequireMFA-Admins` and `CA-02-BlockLegacyAuth` exist.
+   - Verify their state is **Report-only**.
+   - Click on `CA-01-RequireMFA-Admins` > **Users** > **Exclude** and confirm your Break Glass account is listed.
 
 ### Step 3: Configure Identity Protection
 
@@ -76,6 +81,12 @@ We will automate the response to compromised accounts.
 2. Sets the User Risk policy to "High" -> "Block Access" (or "Require Password Change").
 3. Sets the Sign-in Risk policy to "Medium and above" -> "Require MFA".
 
+4. **Verify in Portal**:
+   - Navigate to **Protection** > **Conditional Access** > **Policies**.
+   - Confirm `CA-03-Block-HighUserRisk` and `CA-04-MFA-MediumSigninRisk` exist.
+   - Verify their state is **Report-only**.
+   - **Note**: While these are Identity Protection controls, we deployed them as Conditional Access policies for greater flexibility.
+
 ### Step 4: Configure Authentication Methods
 
 We will enable stronger authentication methods to replace SMS and Voice.
@@ -90,13 +101,60 @@ We will enable stronger authentication methods to replace SMS and Voice.
 
 2. Enables FIDO2 Security Keys for all users.
 3. Enables Microsoft Authenticator for all users.
-4. Disables SMS/Voice (optional, usually done in a phased approach).
 
-## ✅ Validation
+4. **Verify in Portal**:
+   - Navigate to **Protection** > **Authentication methods** > **Policies**.
+   - Confirm **FIDO2 security key** is **Enabled** (Target: All users or specific group).
+   - Confirm **Microsoft Authenticator** is **Enabled** (Target: All users or specific group).
 
-- **Conditional Access**: Go to **Protection** > **Conditional Access** and verify the policies exist and are in "Report-Only" state. Check the "Users" assignment to confirm `ADM-BG-01` is excluded.
-- **Identity Protection**: Go to **Protection** > **Identity Protection** > **Risk policies** to verify the configuration.
-- **Auth Methods**: Go to **Protection** > **Authentication methods** > **Policies** to see FIDO2 and Authenticator enabled.
+### Step 5: Enforce Authentication Methods
+
+We will create Conditional Access policies to **enforce** the use of these stronger methods.
+
+**Context**: Enabling a method just makes it *available*. To ensure users actually use it, we use Conditional Access "Authentication Strengths".
+
+- **All Users**: Must use **Multifactor authentication** (includes Authenticator).
+- **Privileged Users**: Must use **Phishing-resistant MFA** (FIDO2).
+
+1. Run the following command:
+
+   ```powershell
+   .\Deploy-AuthEnforcement.ps1 -UseParametersFile
+   ```
+
+2. Creates `CA-05-Enforce-Authenticator-AllUsers` (Report-Only).
+3. Creates `CA-06-Enforce-FIDO2-Privileged` (Report-Only).
+
+4. **Verify in Portal**:
+   - Navigate to **Protection** > **Conditional Access** > **Policies**.
+   - Confirm the new policies exist and are in **Report-only** mode.
+   - Check the **Grant** controls to see the required **Authentication Strength**.
+
+## ✅ Final Verification
+
+- **Conditional Access**: Confirm `CA-01` and `CA-02` are present in **Conditional Access** > **Policies**.
+- **Identity Protection**: Confirm `CA-03` and `CA-04` are present in **Conditional Access** > **Policies** (using Risk conditions).
+- **Auth Methods**: Confirm FIDO2 and Authenticator are enabled in **Authentication methods** > **Policies**.
+- **Enforcement**: Confirm `CA-05` and `CA-06` are present in **Conditional Access** > **Policies**.
+
+## 🧹 Cleanup
+
+To remove the configurations created in this lab, run the cleanup script. This will delete the following Conditional Access policies:
+
+- `CA-01-RequireMFA-Admins`
+- `CA-02-BlockLegacyAuth`
+- `CA-03-Block-HighUserRisk`
+- `CA-04-MFA-MediumSigninRisk`
+- `CA-05-Enforce-Authenticator-AllUsers`
+- `CA-06-Enforce-FIDO2-Privileged`
+
+> **Note**: Authentication Methods (FIDO2, Authenticator) are **not** disabled by the cleanup script to prevent accidental disruption of tenant-wide settings.
+
+1. Run the following command:
+
+   ```powershell
+   .\Remove-IdentitySecurity.ps1 -UseParametersFile
+   ```
 
 ## 🚧 Troubleshooting
 

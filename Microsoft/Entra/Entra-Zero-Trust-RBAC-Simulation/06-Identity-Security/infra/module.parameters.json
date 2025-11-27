@@ -3,19 +3,25 @@
         "location": "US"
     },
     "Configure-AuthMethods": {
-        "targetGroupName": "GRP-SEC-AllUsers",
+        "targetGroupName": "GRP-SEC-All-Licensed-Users",
         "enableFido2": true,
         "enableMicrosoftAuthenticator": true
     },
     "Configure-IdentityProtection": {
         "policyNameHighRisk": "CA-03-Block-HighUserRisk",
         "policyNameMediumRisk": "CA-04-MFA-MediumSigninRisk",
-        "breakGlassPrefix": "breakglass"
+        "breakGlassPrefix": "USR-BREAK-GLASS"
     },
     "Deploy-CAPolicies": {
         "policyNameMfaAdmins": "CA-01-RequireMFA-Admins",
         "policyNameBlockLegacy": "CA-02-BlockLegacyAuth",
-        "breakGlassPrefix": "breakglass",
+        "breakGlassPrefix": "USR-BREAK-GLASS",
+        "globalAdminRoleId": "62e90394-69f5-4237-9190-012177145e10"
+    },
+    "Deploy-AuthEnforcement": {
+        "policyNameEnforceAuthenticator": "CA-05-Enforce-Authenticator-AllUsers",
+        "policyNameEnforceFido2": "CA-06-Enforce-FIDO2-Privileged",
+        "breakGlassPrefix": "USR-BREAK-GLASS",
         "globalAdminRoleId": "62e90394-69f5-4237-9190-012177145e10"
     }
 }

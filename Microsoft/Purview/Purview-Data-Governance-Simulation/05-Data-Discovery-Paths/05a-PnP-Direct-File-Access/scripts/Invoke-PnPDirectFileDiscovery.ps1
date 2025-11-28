@@ -33,6 +33,12 @@
     - SharePoint site read access
     
     Script development orchestrated using GitHub Copilot.
+
+.PNP DISCOVERY OPERATIONS
+    Pattern Retrieval: Fetches official regex from Purview
+    Direct Access: Scans files via PnP PowerShell
+    Content Analysis: Applies patterns to file content
+    Report Generation: Creates detailed CSV of findings
 #>
 
 [CmdletBinding()]

@@ -1,0 +1,15 @@
+{
+    "global": {
+        "subscriptionId": "d7a6da45-0839-4879-aecd-d89fb8178472",
+        "resourceGroupName": "rg-entra-simulation",
+        "location": "EastUS"
+    },
+    "Deploy-LogAnalytics": {
+        "workspaceName": "law-entra-simulation",
+        "sku": "PerGB2018",
+        "retentionInDays": 90
+    },
+    "Configure-DiagnosticSettings": {
+        "settingName": "Entra-Simulation-Diagnostics"
+    }
+}

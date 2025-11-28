@@ -13,8 +13,23 @@
     Author: Marcus Jacobson
     Version: 1.0.0
     Created: 2025-11-16
+    Last Modified: 2025-11-16
+    
+    Copyright (c) 2025 Marcus Jacobson. All rights reserved.
+    Licensed under the MIT License.
+    
+    Requirements:
+    - PowerShell 5.1+ or PowerShell 7+
+    - PnP.PowerShell module v2.0+
+    - Generated documents available locally
     
     Script development orchestrated using GitHub Copilot.
+
+.PHASES
+    - Phase 1: Upload HR Documents (Upload-ToSingleSite.ps1)
+    - Phase 2: Upload Financial Documents (Upload-ToSingleSite.ps1)
+    - Phase 3: Upload Identity Documents (Upload-ToSingleSite.ps1)
+    - Phase 4: Upload Mixed Documents (Optional)
 #>
 
 # =============================================================================

@@ -13,6 +13,11 @@
     Created: 2025-11-22
     
     Script development orchestrated using GitHub Copilot.
+
+.GRAPH API OPERATIONS
+    - Diagnoses SharePoint site existence and accessibility
+    - Verifies Graph API search indexing status
+    - Provides actionable recommendations based on site status
 #>
 
 #Requires -Version 7.0

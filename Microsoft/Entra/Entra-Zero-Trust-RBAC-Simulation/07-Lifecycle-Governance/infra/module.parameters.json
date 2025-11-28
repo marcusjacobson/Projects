@@ -1,0 +1,21 @@
+{
+    "global": {
+        "location": "US"
+    },
+    "Configure-LifecycleWorkflows": {
+        "workflowName": "WF-Leaver-Standard",
+        "workflowDescription": "Standard offboarding workflow",
+        "triggerAttribute": "employeeLeaveDateTime",
+        "scopeRule": "(department eq 'Marketing')"
+    },
+    "Deploy-AccessReviews": {
+        "reviewName": "AR-Quarterly-Guests",
+        "reviewDescription": "Quarterly review of all guest users",
+        "guestGroupName": "GRP-DYN-AllGuests",
+        "reviewDurationDays": 14,
+        "reviewIntervalMonths": 3,
+        "adminReviewName": "AR-Global-Admins",
+        "adminReviewDescription": "Quarterly review of Global Administrators",
+        "adminGroupName": "GRP-GlobalAdmins"
+    }
+}

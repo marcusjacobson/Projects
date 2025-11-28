@@ -44,6 +44,11 @@
     
     Script development orchestrated using GitHub Copilot.
 
+.GRAPH API OPERATIONS
+    - Analyzes SIT detection data from Graph API eDiscovery export
+    - Generates comprehensive statistics and detailed reports
+    - Maps GUID-based SIT types to friendly names
+
 .LAB05C_DATA_FORMAT
     eDiscovery Export CSV Structure (Items_0.csv):
     - One row per file with detected SITs

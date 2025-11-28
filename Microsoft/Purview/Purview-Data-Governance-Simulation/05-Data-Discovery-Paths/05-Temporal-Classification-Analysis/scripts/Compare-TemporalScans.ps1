@@ -53,7 +53,7 @@
     
     Script development orchestrated using GitHub Copilot.
 
-.COMPARISON METRICS
+.TEMPORAL ANALYSIS OPERATIONS
     Detection Count Changes: Total drift between scan intervals
     SIT Type Distribution: Per-SIT classification evolution
     Site-Level Breakdown: Per-site detection pattern changes

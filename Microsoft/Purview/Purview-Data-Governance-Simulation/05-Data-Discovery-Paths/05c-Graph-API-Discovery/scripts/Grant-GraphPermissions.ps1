@@ -30,6 +30,11 @@
     
     Script development orchestrated using GitHub Copilot.
 
+.GRAPH API OPERATIONS
+    - Grants delegated permissions for eDiscovery operations
+    - Establishes authentication foundation for Lab 05c automation
+    - Verifies permission grant status
+
 .PERMISSIONS GRANTED
     - eDiscovery.Read.All (Delegated): Read eDiscovery cases and searches
     - eDiscovery.ReadWrite.All (Delegated): Create and manage eDiscovery cases and searches for SIT discovery

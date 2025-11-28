@@ -49,14 +49,11 @@
     
     Script development orchestrated using GitHub Copilot.
 
-.CONFIGURATION STRUCTURE
-    Required sections in global-config.json:
-    - Environment: TenantUrl, TenantDomain, AdminEmail
-    - Simulation: ScaleLevel, ResourcePrefix, DefaultOwner
-    - SharePointSites: Array of site definitions
-    - BuiltInSITs: Array of SIT selections
-    - Paths: LogDirectory, OutputDirectory, GeneratedDocumentsPath
-    - Logging: LogLevel, RetainLogDays
+.SHARED UTILITY OPERATIONS
+    - JSON Configuration Parsing
+    - Path Resolution and Validation
+    - Configuration Object Creation
+    - Default Value Application
 #>
 #
 # =============================================================================

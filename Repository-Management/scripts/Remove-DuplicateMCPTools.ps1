@@ -30,6 +30,13 @@
     Created: 2025-11-11
     
     Script development orchestrated using GitHub Copilot.
+
+.UTILITY OPERATIONS
+    - VS Code Settings Management
+    - JSON Configuration Parsing
+    - Backup Creation
+    - Tool Disabling Logic
+    - Change Reporting
 #>
 
 param(

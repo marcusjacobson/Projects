@@ -2,6 +2,9 @@
 
 ## 📋 Overview
 
+**Last Updated:** 2025-11-23
+**Status:** Active
+
 The cross-lab analysis orchestrator compares results from multiple Lab 05 discovery methods to understand accuracy differences, detection patterns, and method strengths/weaknesses. This guide explains how to configure and run comprehensive comparisons using the `lab05-comparison-config.json` configuration file.
 
 ---
@@ -89,6 +92,7 @@ Lab 05b and Lab 05c may show different file counts due to review set collection 
 | **Lab 05c** | ~3,200 files | Review set collection may filter duplicates, apply de-duplication |
 
 **Difference**: ~1,200 fewer files in Lab 05c (27% reduction) is typical due to:
+
 - Review set de-duplication logic
 - Collection timing differences (20-30 minute processing window)
 - Advanced indexing filtering
@@ -115,6 +119,7 @@ cd "Microsoft\Purview\Purview-Data-Governance-Simulation\05-Data-Discovery-Paths
 ```
 
 The script automatically:
+
 - Searches for completed lab reports in default locations
 - Compares all available discovery methods
 - Generates console output and CSV summary
@@ -426,6 +431,7 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
 **Purpose**: Focus comparison on specific sensitive information types
 
 **Common SIT Types**:
+
 - `"U.S. Social Security Number (SSN)"`
 - `"Credit Card Number"`
 - `"U.S. Bank Account Number"`
@@ -490,6 +496,7 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
 **Purpose**: Filter to high-confidence detections only
 
 **Confidence Levels**:
+
 - `85-100`: High confidence (strong pattern match with context validation)
 - `75-84`: Medium-high confidence (good pattern match)
 - `60-74`: Medium confidence (pattern match with some ambiguity)
@@ -601,6 +608,7 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
 **Use Case**: Customize if you've modified report CSV structures or column names
 
 **Standard Mappings**:
+
 - `fileNameField`: Column containing file/document name
 - `sitTypeField`: Column containing sensitive information type
 - `locationField`: Column containing SharePoint site/location
@@ -679,6 +687,7 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
 **Cause**: PnP regex patterns missed some SIT variations (false negatives)
 
 **Examples**:
+
 - SSN format variations (with/without dashes, spaces)
 - Credit card numbers with special formatting
 - International variations of common SITs
@@ -694,6 +703,7 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
 **Cause**: PnP regex over-detected patterns without proper validation (false positives)
 
 **Examples**:
+
 - Number sequences that look like SSNs but fail checksum validation
 - Credit card patterns that don't match valid issuer ranges
 - Dates or IDs misidentified as SITs
@@ -709,6 +719,7 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
 **Meaning**: High-confidence sensitive data detections across all approaches
 
 **Characteristics**:
+
 - Clear, unambiguous SIT patterns
 - Standard formatting
 - Strong context indicators
@@ -736,11 +747,14 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
 **Cause**: `lab05-comparison-config.json` not in expected location
 
 **Solution**:
+
 1. Verify config file exists in Lab 05 root directory
 2. Use `-ConfigPath` parameter to specify custom location:
+
    ```powershell
    .\scripts\Invoke-CrossLabAnalysis.ps1 -UseConfig -ConfigPath ".\path\to\config.json"
    ```
+
 3. Run without `-UseConfig` to use command-line parameters instead
 
 ---
@@ -750,6 +764,7 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
 **Cause**: CSV structure doesn't match expected schema mapping
 
 **Solution**:
+
 1. Review CSV file structure (column names)
 2. Update `schemaMapping` in config file to match actual column names
 3. Ensure CSV files are properly exported (not truncated or corrupted)
@@ -761,6 +776,7 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
 **Cause**: Filters too restrictive (no detections match all criteria)
 
 **Solution**:
+
 1. Review filter settings in `filterOptions`
 2. Disable filters one at a time to identify which is too restrictive
 3. Expand SIT type list or location list
@@ -776,6 +792,7 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
 **Location**: `.\reports\`
 
 **Contents**:
+
 - Lab name and detection method
 - Total detections per lab
 - Unique files per lab
@@ -790,6 +807,7 @@ The `lab05-comparison-config.json` file provides advanced control over compariso
 **Location**: `.\reports\`
 
 **Contents** (when `-GenerateHtmlReport` enabled):
+
 - Executive summary with key metrics
 - Detection comparison tables
 - Accuracy statistics (if regex labs included)

@@ -59,6 +59,12 @@
     - Global configuration file properly configured
     
     Script development orchestrated using GitHub Copilot.
+
+.TEST DATA GENERATION OPERATIONS
+    - Passport Number Generation (9-digit and Letter+7-digit formats)
+    - Driver's License Simulation (State-specific formats: CA, TX, NY, FL, etc.)
+    - ITIN Generation (Valid range validation)
+    - Identity Document Creation (Applications, Verifications, Records)
 #>
 
 [CmdletBinding()]

@@ -73,6 +73,12 @@
     - Active connections to services being tested
     
     Script development orchestrated using GitHub Copilot.
+
+.SHARED UTILITY OPERATIONS
+    - Service Connectivity Verification
+    - PnP PowerShell Context Validation
+    - Exchange Online Session Check
+    - Microsoft Graph Token Validation
 #>
 #
 # =============================================================================

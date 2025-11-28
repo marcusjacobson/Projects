@@ -52,6 +52,15 @@
     - Azure CLI (az)
     - PowerShell 5.1 or later
     - Network connectivity to Azure management endpoints
+    
+    Script development orchestrated using GitHub Copilot.
+
+.PIPELINE OPERATIONS
+    - Subscription Validation
+    - Resource Group Existence Check
+    - Resource Group Creation
+    - REST API Integration
+    - Idempotent Execution
 
 .LINK
     https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/manage-resource-groups-portal

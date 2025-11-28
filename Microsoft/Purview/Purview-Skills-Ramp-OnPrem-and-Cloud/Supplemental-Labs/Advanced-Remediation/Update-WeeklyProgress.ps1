@@ -1,3 +1,44 @@
+<#
+.SYNOPSIS
+    Calculates and tracks weekly remediation progress metrics.
+
+.DESCRIPTION
+    This script aggregates data from various remediation steps to generate a weekly progress report.
+    It calculates metrics such as files deleted, storage saved, remediation rate, and estimated cost savings.
+    The script supports data collection from local and remote sources (VM) and maintains a historical
+    CSV log of progress over time.
+    
+    It also generates a visual dashboard of remediation velocity to track team performance.
+
+.PARAMETER None
+    This script does not accept parameters. It prompts for configuration interactively.
+
+.EXAMPLE
+    .\Update-WeeklyProgress.ps1
+    
+    Runs the progress tracking wizard interactively.
+
+.NOTES
+    File Name      : Update-WeeklyProgress.ps1
+    Author         : Marcus Jacobson
+    Prerequisite   : PowerShell 5.1 or later, Network access to VM (optional)
+    Version        : 1.0
+    Last Updated   : July 17, 2025
+    
+    Script development orchestrated using GitHub Copilot.
+
+.REPORTING OPERATIONS
+    - Data Aggregation (Local/Remote)
+    - Metric Calculation (Savings/Rate)
+    - Historical Tracking (CSV)
+    - Velocity Dashboard Generation
+    - Weekly Report Export
+#>
+#
+# =============================================================================
+# Step 5: Weekly Progress Tracking
+# =============================================================================
+
 # Run this weekly to track progress
 $weekNumber = 1  # Increment each week
 

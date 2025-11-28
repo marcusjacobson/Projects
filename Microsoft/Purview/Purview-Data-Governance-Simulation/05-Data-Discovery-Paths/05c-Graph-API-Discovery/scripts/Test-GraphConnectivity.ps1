@@ -28,6 +28,11 @@
     - Graph API permissions granted (run Grant-GraphPermissions.ps1 first)
     
     Script development orchestrated using GitHub Copilot.
+
+.GRAPH API OPERATIONS
+    - Validates Microsoft Graph authentication
+    - Verifies eDiscovery permission scopes
+    - Performs test case creation and deletion to confirm API access
 #>
 
 #Requires -Version 7.0

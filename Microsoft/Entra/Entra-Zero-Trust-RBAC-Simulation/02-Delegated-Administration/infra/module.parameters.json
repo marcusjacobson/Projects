@@ -1,0 +1,18 @@
+{
+    "global": {
+        "location": "US"
+    },
+    "Deploy-AdministrativeUnits": {
+        "departments": ["IT", "HR", "Finance", "Marketing", "Executive"],
+        "auPrefix": "AU-",
+        "groupPrefix": "GRP-SEC-"
+    },
+    "Configure-RestrictedManagementAUs": {
+        "auName": "AU-SEC-Restricted",
+        "description": "Restricted Management for Break Glass Accounts",
+        "restrictedAccounts": ["USR-BREAK-GLASS-01", "USR-BREAK-GLASS-02"]
+    },
+    "Remove-DelegatedAdmin": {
+        "auPrefix": "AU-"
+    }
+}

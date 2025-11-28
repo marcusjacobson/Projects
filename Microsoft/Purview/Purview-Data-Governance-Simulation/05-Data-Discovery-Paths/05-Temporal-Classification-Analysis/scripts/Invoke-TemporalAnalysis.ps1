@@ -49,7 +49,7 @@
     
     Script development orchestrated using GitHub Copilot.
 
-.REPORT SECTIONS
+.TEMPORAL ANALYSIS OPERATIONS
     Executive Summary: Overall classification drift and convergence timeline
     Scan Interval Comparison: Detection counts and percentage changes
     SIT Type Trend Analysis: Per-SIT classification evolution

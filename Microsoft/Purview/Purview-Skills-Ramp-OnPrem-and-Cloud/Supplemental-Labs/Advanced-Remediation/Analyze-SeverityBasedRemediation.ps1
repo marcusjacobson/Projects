@@ -1,3 +1,42 @@
+<#
+.SYNOPSIS
+    Analyzes Purview scanner reports to generate a severity-based remediation plan.
+
+.DESCRIPTION
+    This script imports the latest detailed scanner report, classifies files based on sensitive
+    information types (SITs) and age, and generates a comprehensive remediation plan.
+    It applies a severity matrix (High/Medium/Low) to determine appropriate actions such as
+    manual review, secure archiving, or automated deletion.
+
+.PARAMETER None
+    This script does not accept parameters. It automatically finds the latest scanner report.
+
+.EXAMPLE
+    .\Analyze-SeverityBasedRemediation.ps1
+    
+    Generates a remediation plan based on the most recent scanner report in the default location.
+
+.NOTES
+    File Name      : Analyze-SeverityBasedRemediation.ps1
+    Author         : Marcus Jacobson
+    Prerequisite   : PowerShell 5.1 or later, Completed Purview Scanner run
+    Version        : 1.0
+    Last Updated   : July 17, 2025
+    
+    Script development orchestrated using GitHub Copilot.
+
+.DATA GOVERNANCE OPERATIONS
+    - Scanner Report Import
+    - Severity Classification (High/Medium/Low)
+    - Age-Based Analysis
+    - Remediation Action Determination
+    - Plan Export (CSV)
+#>
+#
+# =============================================================================
+# Step 2: Severity-Based Remediation Analysis
+# =============================================================================
+
 # Create output directory if it doesn't exist
 $outputDir = "C:\PurviewLab"
 if (-not (Test-Path $outputDir)) {

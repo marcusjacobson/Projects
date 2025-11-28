@@ -45,7 +45,7 @@
     
     Script development orchestrated using GitHub Copilot.
 
-.ANALYSIS METRICS
+.EDISCOVERY OPERATIONS
     - Total detections by SIT type
     - Site distribution analysis
     - File-level detection patterns

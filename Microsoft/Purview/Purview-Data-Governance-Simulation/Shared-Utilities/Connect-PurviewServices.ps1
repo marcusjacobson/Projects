@@ -50,10 +50,11 @@
     
     Script development orchestrated using GitHub Copilot.
 
-.AUTHENTICATION
-    - SharePoint: Connect-PnPOnline -Interactive (browser-based)
-    - Security & Compliance: Connect-IPPSSession (browser-based, no credentials)
-    - Session reuse: Checks for existing connections before prompting
+.SHARED UTILITY OPERATIONS
+    - PnP PowerShell Authentication (SharePoint Online)
+    - Exchange Online Authentication (Compliance Center)
+    - Microsoft Graph Authentication (Entra ID)
+    - Session Management and Token Refresh
 #>
 #
 # =============================================================================

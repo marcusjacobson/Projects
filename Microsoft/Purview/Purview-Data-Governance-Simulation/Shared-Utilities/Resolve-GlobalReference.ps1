@@ -44,6 +44,12 @@
     - Configuration objects from Import-GlobalConfig.ps1 or Merge-LabConfig.ps1
     
     Script development orchestrated using GitHub Copilot.
+
+.SHARED UTILITY OPERATIONS
+    - Reference String Parsing ({{Config.Path}})
+    - Dynamic Value Lookup
+    - Recursive Resolution
+    - Error Handling for Invalid References
 #>
 #
 # =============================================================================
@@ -175,8 +181,8 @@ Write-Verbose "   📊 Total `$GLOBAL: references resolved: $resolutionCount" -V
 
 if ($resolutionErrors.Count -gt 0) {
     Write-Verbose "   ⚠️  Resolution errors encountered: $($resolutionErrors.Count)" -Verbose
-    foreach ($error in $resolutionErrors) {
-        Write-Verbose "      • $error" -Verbose
+    foreach ($err in $resolutionErrors) {
+        Write-Verbose "      • $err" -Verbose
     }
     
     # Throw error if any references failed to resolve

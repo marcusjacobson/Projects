@@ -65,6 +65,12 @@
     - Sufficient disk space for configured ScaleLevel
     
     Script development orchestrated using GitHub Copilot.
+
+.PHASES
+    - Phase 1: HR Document Generation (New-SimulatedHRDocuments.ps1)
+    - Phase 2: Financial Document Generation (New-SimulatedFinancialRecords.ps1)
+    - Phase 3: Identity Document Generation (New-SimulatedPIIContent.ps1)
+    - Phase 4: Mixed-Format Document Generation (New-MixedContentDocuments.ps1)
 #>
 #
 # =============================================================================

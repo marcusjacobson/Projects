@@ -72,6 +72,12 @@
     - Write permissions to log directory (from global configuration)
     
     Script development orchestrated using GitHub Copilot.
+
+.SHARED UTILITY OPERATIONS
+    - Centralized Logging Mechanism
+    - Log Level Management (Info, Warning, Error, Success)
+    - Console Output Formatting (Color-Coded)
+    - File-Based Logging (JSON/Text)
 #>
 #
 # =============================================================================

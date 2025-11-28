@@ -68,6 +68,15 @@
     - Bicep CLI (az bicep)
     - PowerShell 5.1 or later
     - Valid Bicep template file
+    
+    Script development orchestrated using GitHub Copilot.
+
+.PIPELINE OPERATIONS
+    - Resource Group Validation
+    - Workspace Existence Check
+    - Bicep Template Compilation
+    - REST API Deployment
+    - Deployment Status Monitoring
 
 .LINK
     https://docs.microsoft.com/en-us/azure/sentinel/

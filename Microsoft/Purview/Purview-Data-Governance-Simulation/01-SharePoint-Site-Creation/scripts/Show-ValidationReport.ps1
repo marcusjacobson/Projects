@@ -43,6 +43,12 @@
 
 .OUTPUTS
     Console output with formatted validation report summary and detailed site results.
+
+.SHAREPOINT PROVISIONING OPERATIONS
+    - Validation Report Parsing
+    - Compliance Metric Calculation
+    - Site-Level Status Categorization
+    - External Sharing Verification
 #>
 #
 # =============================================================================

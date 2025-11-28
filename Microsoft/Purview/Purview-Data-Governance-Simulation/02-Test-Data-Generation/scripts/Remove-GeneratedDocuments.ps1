@@ -48,13 +48,11 @@
     
     Script development orchestrated using GitHub Copilot.
 
-.SAFETY FEATURES
-    - Verifies upload report exists before deletion
-    - Displays upload success rate for confirmation
-    - Requires user confirmation unless -Force specified
-    - Validates deletion completed successfully
-    - Preserves directory structure (only removes files)
-    - Cannot be undone - ensure upload validation passed first
+.TEST DATA GENERATION OPERATIONS
+    - Local Document Cleanup
+    - Upload Verification (Checks success rate before deletion)
+    - Safety Confirmation Prompts
+    - Recursive Directory Cleaning
 #>
 
 [CmdletBinding(SupportsShouldProcess)]

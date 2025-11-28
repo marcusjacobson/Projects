@@ -1,0 +1,28 @@
+{
+    "global": {
+        "location": "US"
+    },
+    "Generate-ConfigurationReport": {
+        "reportPath": "../reports",
+        "groupFilter": "startsWith(DisplayName, 'GRP-SEC-')",
+        "userFilter": "startsWith(UserPrincipalName, 'USR-BREAK-GLASS')"
+    },
+    "Validate-AllLabs": {
+        "groupName": "GRP-SEC-All-Licensed-Users",
+        "testUser": "USR-CEO",
+        "breakGlassPrefix": "USR-BREAK-GLASS",
+        "adminUnitName": "AU-Marketing",
+        "restrictedAUName": "AU-SEC-Restricted",
+        "servicePrincipalName": "APP-Reporting-Automation",
+        "roleName": "ROLE-Tier1-Helpdesk",
+        "pimGroupName": "GRP-PIM-ExchangeAdmins",
+        "catalogName": "CAT-Marketing",
+        "accessPackageName": "PKG-Marketing-Campaign",
+        "connectedOrgName": "Partner Corp",
+        "policyName": "CA-01-RequireMFA-Admins",
+        "policyNameBlockLegacy": "CA-02-BlockLegacyAuth",
+        "reviewName": "AR-Quarterly-Guests",
+        "adminReviewName": "AR-Global-Admins",
+        "workflowName": "WF-Leaver-Standard"
+    }
+}

@@ -1,0 +1,221 @@
+{
+  "TenantId": "a78dfd73-b644-4885-b9a0-6a04756b8eae",
+  "GeneratedAt": "2025-11-26 23:35:51",
+  "Modules": {
+    "01-Identity-Foundation": {
+      "BreakGlass": [
+        {
+          "id": "76ba9ac3-8f70-41fc-8d03-ae34b62ce279",
+          "userPrincipalName": "USR-BREAK-GLASS-01@marcusj-dev.cloud"
+        },
+        {
+          "id": "37a73ff9-f9a1-4aa2-8890-1b7203b3782d",
+          "userPrincipalName": "USR-BREAK-GLASS-02@marcusj-dev.cloud"
+        }
+      ],
+      "Groups": [
+        {
+          "id": "714fb7a9-12f9-43e8-bd20-7c29567799fc",
+          "groupTypes": [],
+          "displayName": "GRP-SEC-All-Licensed-Users"
+        },
+        {
+          "id": "9f372067-1298-4cf2-821e-70f912647328",
+          "groupTypes": [],
+          "displayName": "GRP-SEC-Executive"
+        },
+        {
+          "id": "dac0120b-4115-4315-bcc4-0a2ccdc2256c",
+          "groupTypes": [],
+          "displayName": "GRP-SEC-Finance"
+        },
+        {
+          "id": "f134cd83-df06-41a7-8bf4-b44c30b63c56",
+          "groupTypes": [],
+          "displayName": "GRP-SEC-HR"
+        },
+        {
+          "id": "56cfaaf3-6cc0-401a-b60a-104dc5ba0e08",
+          "groupTypes": [],
+          "displayName": "GRP-SEC-IT"
+        },
+        {
+          "id": "a62941da-cdd6-4b27-b9cb-46ca26302eaf",
+          "groupTypes": [],
+          "displayName": "GRP-SEC-Marketing"
+        }
+      ]
+    },
+    "07-Lifecycle-Governance": {
+      "LifecycleWorkflows": [
+        {
+          "isEnabled": true,
+          "id": "2cc92910-afe2-456b-8ceb-a30adfc79c23",
+          "displayName": "WF-Leaver-Standard",
+          "category": "leaver"
+        }
+      ],
+      "AccessReviews": [
+        {
+          "instances": [],
+          "id": "421c7f53-c411-47c2-98e0-a718c66f15d0",
+          "status": "InProgress",
+          "instances@odata.context": "https://graph.microsoft.com/v1.0/$metadata#identityGovernance/accessReviews/definitions('421c7f53-c411-47c2-98e0-a718c66f15d0')/instances",
+          "displayName": "AR-Global-Admins"
+        },
+        {
+          "instances": [],
+          "id": "31e0b94b-f784-4080-b1c7-f2c7faec438a",
+          "status": "InProgress",
+          "instances@odata.context": "https://graph.microsoft.com/v1.0/$metadata#identityGovernance/accessReviews/definitions('31e0b94b-f784-4080-b1c7-f2c7faec438a')/instances",
+          "displayName": "AR-Quarterly-Guests"
+        },
+        {
+          "instances": [],
+          "id": "764125a5-8786-46a1-84f9-b35545980ec3",
+          "status": "Completed",
+          "instances@odata.context": "https://graph.microsoft.com/v1.0/$metadata#identityGovernance/accessReviews/definitions('764125a5-8786-46a1-84f9-b35545980ec3')/instances",
+          "displayName": "Global Reader Review"
+        }
+      ]
+    },
+    "04-RBAC": {
+      "CustomRoles": [
+        {
+          "inheritsPermissionsFrom@odata.context": "https://graph.microsoft.com/v1.0/$metadata#roleManagement/directory/roleDefinitions('9daad1f7-39bf-43aa-ae5e-407a1aef2318')/inheritsPermissionsFrom",
+          "id": "9daad1f7-39bf-43aa-ae5e-407a1aef2318",
+          "description": "Tier 1 Support: Can read user info and retrieve BitLocker recovery keys for device unlock.",
+          "inheritsPermissionsFrom": [],
+          "displayName": "ROLE-Tier1-Helpdesk"
+        }
+      ],
+      "PIMGroups": [
+        {
+          "displayName": "GRP-PIM-ExchangeAdmins",
+          "id": "224c85db-6d33-4f31-ab54-085ad2aa826d"
+        }
+      ]
+    },
+    "05-Entitlement-Management": {
+      "AccessPackages": [
+        {
+          "id": "c77bdfde-b979-412e-81e3-4dbe29f175ca",
+          "description": "External Collaboration",
+          "displayName": "PKG-Partner-Collab"
+        },
+        {
+          "id": "0cd34be4-ce7f-4082-900c-378760b1c314",
+          "description": "Access to Marketing Campaign Resources",
+          "displayName": "PKG-Marketing-Campaign"
+        }
+      ],
+      "Catalogs": [
+        {
+          "displayName": "CAT-Marketing",
+          "id": "61a01bee-d89b-46e4-82c6-3de8644e565b"
+        },
+        {
+          "displayName": "General",
+          "id": "6d2f067e-c400-44fb-b4ac-2a6f7ca11c4a"
+        }
+      ]
+    },
+    "02-Delegated-Admin": {
+      "AdminUnits": [
+        {
+          "id": "347e3d80-2cbe-48aa-bbfc-7d29331abf50",
+          "description": "Administrative Unit for Executive",
+          "displayName": "AU-Executive"
+        },
+        {
+          "id": "4ae99ab7-84d5-4c6e-982d-550061f16420",
+          "description": "Administrative Unit for Marketing",
+          "displayName": "AU-Marketing"
+        },
+        {
+          "id": "6d20516c-210a-47ad-8de9-61e3fdb7996c",
+          "description": "Administrative Unit for HR",
+          "displayName": "AU-HR"
+        },
+        {
+          "id": "892fcf46-3d0e-4698-93ef-899e94a6ae29",
+          "description": "Administrative Unit for Finance",
+          "displayName": "AU-Finance"
+        },
+        {
+          "id": "a991b0ee-eaaa-4848-b694-0d1bd959d8fb",
+          "description": "Administrative Unit for IT",
+          "displayName": "AU-IT"
+        },
+        {
+          "id": "f4b9b9ae-9ccf-475d-8fba-fd952aa61f18",
+          "description": "Restricted Management for Break Glass Accounts",
+          "displayName": "AU-SEC-Restricted"
+        }
+      ]
+    },
+    "03-App-Integration": {
+      "ServicePrincipals": [
+        {
+          "appId": "107b9ba1-0bef-4fa6-a8d9-e9134bcdc6d4",
+          "id": "7de9ef24-effa-409f-8134-085edc6426ef",
+          "displayName": "APP-Reporting-Automation"
+        }
+      ]
+    },
+    "06-Identity-Security": {
+      "CAPolicies": [
+        {
+          "id": "d92f345a-125e-47d8-944d-aa62b75a16b2",
+          "state": "enabledForReportingButNotEnforced",
+          "displayName": "Allow Passkeys"
+        },
+        {
+          "id": "c29b2f81-2e13-4cca-8b64-2db10d686d41",
+          "state": "enabledForReportingButNotEnforced",
+          "displayName": "ca-user-risk-policy"
+        },
+        {
+          "id": "81d0f1ca-84b1-4bbc-b424-592c4ef711d3",
+          "state": "enabledForReportingButNotEnforced",
+          "displayName": "ca-signin-risk-policy"
+        },
+        {
+          "id": "553bef10-4d60-4a05-9652-30a609fb55d8",
+          "state": "enabledForReportingButNotEnforced",
+          "displayName": "ca-workload-id-risk-policy"
+        },
+        {
+          "id": "2f01d2e2-ba52-4b14-8dc7-97208c7c1ab5",
+          "state": "enabledForReportingButNotEnforced",
+          "displayName": "CA-01-RequireMFA-Admins"
+        },
+        {
+          "id": "30a2a578-ceca-4481-80e7-adafb710def9",
+          "state": "enabledForReportingButNotEnforced",
+          "displayName": "CA-02-BlockLegacyAuth"
+        },
+        {
+          "id": "850fb836-95e0-4ecf-bc82-a4c8dee55314",
+          "state": "enabledForReportingButNotEnforced",
+          "displayName": "CA-03-Block-HighUserRisk"
+        },
+        {
+          "id": "7c5f48d6-c7b7-4c51-bf01-1934ecd3862e",
+          "state": "enabledForReportingButNotEnforced",
+          "displayName": "CA-04-MFA-MediumSigninRisk"
+        },
+        {
+          "id": "268472bb-f9e8-487c-b8bd-07e5e13e318a",
+          "state": "enabledForReportingButNotEnforced",
+          "displayName": "CA-05-Enforce-Authenticator-AllUsers"
+        },
+        {
+          "id": "9a6b4487-16a6-4842-8f2b-5732d7560bcc",
+          "state": "enabledForReportingButNotEnforced",
+          "displayName": "CA-06-Enforce-FIDO2-Privileged"
+        }
+      ]
+    }
+  }
+}

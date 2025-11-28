@@ -2,6 +2,9 @@
 
 ## 🎯 Problem Statement
 
+**Last Updated:** 2025-11-23
+**Status:** Active
+
 **Challenge**: eDiscovery and Content Explorer exports contain Sensitive Information Type (SIT) identifiers as GUIDs, not friendly names. Maintaining hardcoded GUID mapping tables is:
 
 - **Not scalable** - Requires manual updates for each new SIT
@@ -10,6 +13,7 @@
 - **Organization-specific** - Custom SITs unique to each tenant require manual additions
 
 **Current Lab 05b Issue**:
+
 - Hardcoded 8-entry GUID map in analysis script
 - eDiscovery detected 93 unique SIT types (all built-in Purview SITs)
 - 86 SIT types display as "Custom SIT (GUID)" instead of friendly names
@@ -68,6 +72,7 @@ $allSITs | Select-Object Name, Id, Publisher | Format-Table -AutoSize
 **Approach**: Query SIT definitions at script execution and build in-memory mapping hashtable.
 
 **Advantages**:
+
 - Always reflects current tenant configuration
 - Zero maintenance for built-in SITs
 - Automatically includes newly added custom SITs
@@ -181,6 +186,7 @@ if ($sitGuidMap.Count -eq 0) {
 **Approach**: Generate mapping file from tenant, cache locally, refresh periodically.
 
 **Advantages**:
+
 - Reduces API calls during frequent script executions
 - Works offline after initial generation
 - Provides audit trail of SIT definitions over time
@@ -378,6 +384,7 @@ function Get-SITMapping {
 **File**: `Get-SITMapping.psm1` (new module in `scripts/` directory)
 
 **Contents**:
+
 - `Get-SITMapping` function (hybrid approach)
 - `Update-SITMappingCache` function (cache generation)
 - `Resolve-SITName` helper function
@@ -389,12 +396,14 @@ function Get-SITMapping {
 **Changes to `Invoke-eDiscoveryResultsAnalysis.ps1`**:
 
 1. **Add module import** (after parameter block):
+
    ```powershell
    # Import SIT mapping module
    Import-Module "$PSScriptRoot\Get-SITMapping.psm1" -Force
    ```
 
 2. **Replace hardcoded GUID map** (lines 173-181):
+
    ```powershell
    # =============================================================================
    # Dynamic SIT GUID Mapping
@@ -418,11 +427,13 @@ function Get-SITMapping {
 **Changes to `Invoke-CrossLabAnalysis.ps1`**:
 
 1. **Import same module**:
+
    ```powershell
    Import-Module "$PSScriptRoot\Get-SITMapping.psm1" -Force
    ```
 
 2. **Replace static JSON loading** (lines 135-147):
+
    ```powershell
    # Dynamic SIT mapping retrieval
    $sitGuidMapping = Get-SITMapping -CachePath "$PSScriptRoot\..\Purview-SIT-GUID-Mapping.json"

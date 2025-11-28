@@ -95,7 +95,13 @@ process {
             Write-Host "   ✅ Removed." -ForegroundColor Green
         }
         catch {
-            Write-Error "   ❌ Failed to remove $($au.displayName): $_"
+            # Check the full error record string as Invoke-MgGraphRequest errors are verbose
+            $errString = $_.ToString()
+            if ($errString -like "*restricted management administrative unit*" -or $errString -like "*Authorization_RequestDenied*") {
+                Write-Host "      🔒 AU is protected (Restricted Management). Skipping deletion." -ForegroundColor Yellow
+            } else {
+                Write-Error "   ❌ Failed to remove $($au.displayName): $_"
+            }
         }
     }
     

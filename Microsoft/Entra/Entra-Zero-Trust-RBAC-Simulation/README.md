@@ -40,6 +40,45 @@ The project is structured as a sequential series of labs. It is critical to foll
 | **08** | [Validation & Demo](./08-Final-Validation-and-Demo/README.md) | End-to-End Testing, Configuration Reporting |
 | **09** | [Project Cleanup](./09-Project-Cleanup/README.md) | Full Environment Teardown |
 
+## 🗺️ Policy Map
+
+For a detailed visual reference of all RBAC roles, Conditional Access policies, and Governance configurations deployed in this project, see the **[RBAC & Identity Policy Map](./RBAC-AND-IDENTITY-POLICY-MAP.md)**.
+
+## 🛡️ Zero Trust Alignment
+
+This project is designed to align with Microsoft's Zero Trust security model. For a detailed breakdown of how the simulation implements the core principles (Verify Explicitly, Least Privilege, Assume Breach) and pillars (Identity, Devices, etc.), see the **[Zero Trust Alignment Guide](./ZERO-TRUST-ALIGNMENT.md)**.
+
+## 🚀 Quick Start
+
+1. **Clone the repository**:
+
+    ```powershell
+    git clone https://github.com/marcusjacobson/Projects.git
+    cd Projects/Microsoft/Entra/Entra-Zero-Trust-RBAC-Simulation
+    ```
+
+2. **Install Prerequisites**:
+    Ensure you have the Microsoft Graph PowerShell SDK installed:
+
+    ```powershell
+    Install-Module Microsoft.Graph -Scope CurrentUser
+    ```
+
+### Option 1: Step-by-Step (Recommended for Learning)
+
+1. **Start Lab 00**:
+    Navigate to `00-Prerequisites-and-Monitoring` and follow the instructions to initialize your environment.
+
+### Option 2: Full Deployment (Orchestrator)
+
+If you want to deploy the entire simulation in one go (e.g., for a demo or quick setup), use the orchestrator script located in the root of the project:
+
+```powershell
+.\Deploy-EntraSimulation.ps1
+```
+
+This script sequentially runs all labs from 00 to 08, checking for success at each step.
+
 ## 📊 Microsoft Entra Capability Coverage
 
 ### What This Project Covers
@@ -152,25 +191,6 @@ The following capabilities require **hybrid infrastructure**, **external service
 | **Entra Permissions Management (CIEM)** | EXPERT | Separate product requiring distinct licensing and setup |
 | **Workload Identities Premium** | ADVANCED | Advanced Conditional Access for workloads not covered |
 | **Verified ID** | ADVANCED | Decentralized identity infrastructure out of scope |
-
-## 🚀 Quick Start
-
-1. **Clone the repository**:
-
-    ```powershell
-    git clone https://github.com/marcusjacobson/Projects.git
-    cd Projects/Microsoft/Entra/Entra-Zero-Trust-RBAC-Simulation
-    ```
-
-2. **Install Prerequisites**:
-    Ensure you have the Microsoft Graph PowerShell SDK installed:
-
-    ```powershell
-    Install-Module Microsoft.Graph -Scope CurrentUser
-    ```
-
-3. **Start Lab 00**:
-    Navigate to `00-Prerequisites-and-Monitoring` and follow the instructions to initialize your environment.
 
 ## 📁 Project Structure
 

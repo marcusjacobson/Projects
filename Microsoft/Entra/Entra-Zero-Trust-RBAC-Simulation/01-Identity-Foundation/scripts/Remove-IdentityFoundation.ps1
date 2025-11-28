@@ -44,7 +44,13 @@ process {
         try {
             Invoke-MgGraphRequest -Method DELETE -Uri "https://graph.microsoft.com/v1.0/users/$($u.id)"
         } catch {
-            Write-Warning "Failed to remove user $($u.userPrincipalName): $_"
+            # Check the full error record string as Invoke-MgGraphRequest errors are verbose
+            $errString = $_.ToString()
+            if ($errString -like "*restricted management administrative unit*" -or $errString -like "*Authorization_RequestDenied*") {
+                Write-Host "      🔒 User is protected by Restricted Management AU. Skipping deletion." -ForegroundColor Yellow
+            } else {
+                Write-Warning "Failed to remove user $($u.userPrincipalName): $_"
+            }
         }
     }
 

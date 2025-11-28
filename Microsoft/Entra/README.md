@@ -171,7 +171,6 @@ The current portfolio focuses on **Core Identity**, **Automation**, and **Govern
 
 **Best For**: Identity Architects, Security Engineers, Compliance Officers, IAM Administrators
 
-
 ---
 
 ## 💼 Professional Skills Development

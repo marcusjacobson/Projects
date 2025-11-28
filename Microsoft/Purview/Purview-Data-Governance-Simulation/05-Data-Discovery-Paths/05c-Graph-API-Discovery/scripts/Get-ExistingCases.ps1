@@ -24,6 +24,11 @@
     Created: 2025-11-22
     
     Script development orchestrated using GitHub Copilot.
+
+.GRAPH API OPERATIONS
+    - Lists all existing eDiscovery cases in the tenant
+    - Retrieves detailed search status and estimate operation details
+    - Provides cleanup capabilities for old or failed cases
 #>
 
 [CmdletBinding()]

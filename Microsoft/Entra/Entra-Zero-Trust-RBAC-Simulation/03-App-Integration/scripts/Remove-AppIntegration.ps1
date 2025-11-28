@@ -6,9 +6,23 @@
     .\Remove-AppIntegration.ps1
 
 .NOTES
-    Project: Entra-Zero-Trust-RBAC-Simulation
-    Module: 03-App-Integration
+    Author: Marcus Jacobson
+    Version: 1.0.0
+    Created: 2025-11-28
+    Last Modified: 2025-11-28
+    
+    Copyright (c) 2025 Marcus Jacobson. All rights reserved.
+    Licensed under the MIT License.
+    
+    Requirements:
+    - Microsoft Graph PowerShell SDK
+    
+    Script development orchestrated using GitHub Copilot.
 #>
+#
+# =============================================================================
+# Removes resources created in Lab 03.
+# =============================================================================
 
 [CmdletBinding()]
 param(

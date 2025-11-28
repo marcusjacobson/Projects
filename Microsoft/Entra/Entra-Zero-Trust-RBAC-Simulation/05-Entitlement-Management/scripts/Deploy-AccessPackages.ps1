@@ -32,6 +32,10 @@
     - Access Package: PKG-Marketing-Campaign
     - Policy: Internal Users (Auto-approval for simulation)
 #>
+#
+# =============================================================================
+# Step 1: Deploy Access Packages
+# =============================================================================
 
 [CmdletBinding()]
 param(
@@ -41,6 +45,9 @@ param(
 
 process {
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
+
+    Write-Host "🔸 Step 1: Deploy Access Packages" -ForegroundColor Green
+    Write-Host "================================" -ForegroundColor Green
 
     # Load Parameters
     $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"

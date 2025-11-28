@@ -11,9 +11,23 @@
     .\Deploy-BreakGlassAccounts.ps1
 
 .NOTES
-    Project: Entra-Zero-Trust-RBAC-Simulation
-    Module: 01-Identity-Foundation
+    Author: Marcus Jacobson
+    Version: 1.0.0
+    Created: 2025-11-28
+    Last Modified: 2025-11-28
+    
+    Copyright (c) 2025 Marcus Jacobson. All rights reserved.
+    Licensed under the MIT License.
+    
+    Requirements:
+    - Microsoft Graph PowerShell SDK
+    
+    Script development orchestrated using GitHub Copilot.
 #>
+#
+# =============================================================================
+# Creates Emergency Access (Break Glass) accounts.
+# =============================================================================
 
 [CmdletBinding()]
 param(

@@ -1,3 +1,44 @@
+<#
+.SYNOPSIS
+    Automates the deletion of sensitive files from SharePoint Online using PnP PowerShell.
+
+.DESCRIPTION
+    This script connects to a SharePoint Online site and identifies files for deletion based on
+    age and sensitive content criteria. It uses PnP PowerShell to securely remove files
+    and generates an audit log of all deletion actions.
+    
+    The script supports multiple authentication methods including Interactive, Device Code,
+    and App Registration to accommodate different environment configurations.
+
+.PARAMETER None
+    This script does not accept parameters. It prompts for site URL and authentication interactively.
+
+.EXAMPLE
+    .\Remove-SharePointDuplicates.ps1
+    
+    Runs the SharePoint cleanup wizard interactively.
+
+.NOTES
+    File Name      : Remove-SharePointDuplicates.ps1
+    Author         : Marcus Jacobson
+    Prerequisite   : PowerShell 5.1 or later, PnP.PowerShell module
+    Version        : 1.0
+    Last Updated   : July 17, 2025
+    
+    Script development orchestrated using GitHub Copilot.
+
+.CLOUD OPERATIONS
+    - SharePoint Connection (PnP)
+    - Library Query and Filtering
+    - Sensitive Data Identification
+    - Secure Deletion (Recycle Bin)
+    - Audit Logging
+#>
+#
+# =============================================================================
+# Step 3: SharePoint PnP PowerShell Automation
+# =============================================================================
+
 #============================================================================
 # Step 1: Prompt for SharePoint Site URL
 #============================================================================

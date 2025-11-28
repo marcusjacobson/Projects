@@ -19,7 +19,7 @@ This document summarizes the comprehensive enhancements made to `Invoke-CrossLab
 **Location**: Lines ~615-645  
 **Purpose**: Provide real-time contextual interpretation of accuracy metrics during script execution
 
-### What Was Added
+### What Was Added (Console Output)
 
 **Accuracy Interpretation** (3 tiers):
 
@@ -38,7 +38,7 @@ This document summarizes the comprehensive enhancements made to `Invoke-CrossLab
 - **<=12%**: ✅ Low false positive rate - regex precision within acceptable range
 - **>12%**: ⚠️ Elevated false positives - review patterns like SSN/employee ID, bank account/order number
 
-### Example Console Output
+### Example Console Output (Interpretation)
 
 ```text
    True Positives: 4,012 files
@@ -61,7 +61,7 @@ This document summarizes the comprehensive enhancements made to `Invoke-CrossLab
 **Location**: Lines ~719-765  
 **Purpose**: Explain Lab 05b vs Lab 05c differences when both Purview methods are compared
 
-### What Was Added
+### What Was Added (Purview Context)
 
 **File Count Comparison**:
 
@@ -82,7 +82,7 @@ This document summarizes the comprehensive enhancements made to `Invoke-CrossLab
 - Lab 05c: Location URLs (requires regex parsing), SITInstances, Confidence
 - Notes script normalization for accurate comparison
 
-### Example Console Output
+### Example Console Output (Comparison)
 
 ```text
 📊 Files detected by ALL Purview methods: 3,156
@@ -484,7 +484,7 @@ Console interpretation messages appear:
 **Location**: Lines ~1907-2060  
 **Purpose**: Adapt variance threshold explanation and analysis interpretation based on which labs are being compared
 
-### What Was Added
+### What Was Added (Variance Thresholds)
 
 **Conditional Methodology Explanations** (4 scenarios):
 
@@ -512,6 +512,7 @@ Console interpretation messages appear:
 ### Conditional Analysis Interpretation
 
 **Lab 05a vs Lab 05b**:
+
 - 88-95% accuracy range explanation
 - 5-12% false positive rate normalization
 - Common false positive patterns (SSN matches employee IDs, bank accounts match order numbers)
@@ -519,6 +520,7 @@ Console interpretation messages appear:
 - When to use each method based on speed vs. accuracy needs
 
 **Lab 05a vs Lab 05c**:
+
 - 88-95% accuracy plus false negative considerations
 - False negative patterns Lab 05a misses (scanned documents, email threading, compressed content)
 - Lab 05c's OCR processing advantage
@@ -526,6 +528,7 @@ Console interpretation messages appear:
 - When to use for immediate triage vs. recurring automated scans
 
 **Lab 05b vs Lab 05c**:
+
 - **Both achieve 100% SIT accuracy** (no accuracy variance)
 - File count differences explanation (~27% reduction in Lab 05c)
 - Workflow trade-off: fast portal export (5-10 min) vs. advanced review set processing (25-45 min)
@@ -533,6 +536,7 @@ Console interpretation messages appear:
 - When to use for one-time reports vs. recurring automation
 
 **All Three Labs**:
+
 - Complete accuracy progression (88-95% → 100% → 100% with OCR)
 - Accuracy improvement details (5-12% gain from Lab 05a to Lab 05b)
 - Lab 05c's additional false negative elimination through OCR
@@ -572,19 +576,22 @@ Console interpretation messages appear:
 4. **Data Structure Differences**: Lab 05b provides explicit columns (SiteName, LibraryName) while Lab 05c uses Location URLs requiring regex parsing
 ```
 
-### Key Benefits
+### Key Benefits (Variance Methodology)
 
 **Prevents Misinterpretation**:
+
 - Users comparing Lab 05b and Lab 05c won't mistakenly apply accuracy variance thresholds
 - Clarifies that file count differences between Purview methods are intentional features, not errors
 - Distinguishes between accuracy variance (Lab 05a vs Purview) and file count variance (Lab 05b vs Lab 05c)
 
 **Contextual Methodology**:
+
 - Variance thresholds explained only when relevant (Lab 05a comparisons)
 - Purview-to-Purview comparisons focus on workflow and data structure differences
 - Each scenario gets tailored "when to use" guidance based on actual methods compared
 
 **Technical Transparency**:
+
 - Explains why Lab 05c's review set de-duplication reduces file counts (~27% typical)
 - Details false positive patterns specific to Lab 05a vs. each Purview method
 - Clarifies OCR/threading advantages when Lab 05c is compared
@@ -607,7 +614,7 @@ Console interpretation messages appear:
 
 ---
 
-## Key Benefits
+## Overall Key Benefits
 
 ### For End Users
 

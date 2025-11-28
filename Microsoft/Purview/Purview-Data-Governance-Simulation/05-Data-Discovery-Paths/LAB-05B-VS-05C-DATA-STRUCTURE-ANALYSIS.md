@@ -2,6 +2,9 @@
 
 ## 📋 Overview
 
+**Last Updated:** 2025-11-23
+**Status:** Active
+
 This document analyzes the fundamental differences between Lab 05b (eDiscovery UI) and Lab 05c (Graph API Review Set) export formats, explaining how different workflow approaches result in different CSV structures.
 
 **Analysis Date**: November 23, 2025
@@ -24,6 +27,7 @@ This document analyzes the fundamental differences between Lab 05b (eDiscovery U
 ```
 
 **Key Characteristics**:
+
 - **Direct export from search results** (no review set intermediary)
 - **One row per file per SIT type** (file can appear multiple times)
 - **Includes SiteName column** (parsed from export metadata)
@@ -170,7 +174,8 @@ A **review set** is a secure, Microsoft-provided Azure Storage location that ser
 **File**: `eDiscovery-Detailed-Analysis-2025-11-21-121118.csv`
 
 **Column Schema**:
-```
+
+```text
 FileName        : BackgroundCheck_00020_2025-06-24.pdf
 SiteName        : Legal-Simulation
 LibraryName     : Shared Documents
@@ -186,6 +191,7 @@ DetectionMethod : eDiscovery Compliance Search
 ```
 
 **Key Features**:
+
 - ✅ **SiteName column present** - Direct site identification
 - ✅ **LibraryName column** - Document library context
 - ✅ **FileURL** - Local export package path structure
@@ -205,7 +211,8 @@ DetectionMethod : eDiscovery Compliance Search
 **File**: `SIT_Discovery_Summary_2025-11-22_110656.csv`
 
 **Column Schema**:
-```
+
+```text
 FileName     : BenefitsEnrollment_EMP-10001_2025-06-04.xlsx
 Location     : https://marcusjcloud.sharepoint.com/sites/HR-Simulation/_layouts/15/Doc.aspx?sourcedoc=%7B22F9E2D9-FC32-44AC-ACFA-98E5EFF2A2F0%7D&file=BenefitsEnrollment_EMP-10001_2025-06-04.xlsx&action=default&mobileredirect=true
 SITType      : U.S. Social Security Number (SSN)
@@ -217,6 +224,7 @@ Owner        : Marcus Jacobson
 ```
 
 **Key Features**:
+
 - ❌ **No SiteName column** - Must be parsed from Location URL
 - ✅ **Location** - Full SharePoint URL (https://...)
 - ✅ **SITType** - Friendly SIT name (no GUID)
@@ -244,6 +252,7 @@ Owner        : Marcus Jacobson
 | **Reliability** | ✅ High - Explicit | ✅ High - URL structure |
 
 **Lab 05c Site Extraction Pattern**:
+
 ```powershell
 # From: https://marcusjcloud.sharepoint.com/sites/HR-Simulation/_layouts/15/...
 # Extract: "HR-Simulation"
@@ -278,11 +287,13 @@ if ($row.Location -match '/sites/([^/]+)') {
 **Example Comparison**:
 
 **File**: `BenefitsEnrollment_EMP-10001.xlsx` contains:
+
 - 3 SSN detections
 - 1 ITIN detection
 
 **Lab 05b Output** (4 rows):
-```
+
+```text
 Row 1: FileName=EMP-10001.xlsx, SIT_Type=SSN, DetectionCount=1
 Row 2: FileName=EMP-10001.xlsx, SIT_Type=SSN, DetectionCount=1
 Row 3: FileName=EMP-10001.xlsx, SIT_Type=SSN, DetectionCount=1
@@ -290,7 +301,8 @@ Row 4: FileName=EMP-10001.xlsx, SIT_Type=ITIN, DetectionCount=1
 ```
 
 **Lab 05c Output** (2 rows):
-```
+
+```text
 Row 1: FileName=EMP-10001.xlsx, SITType=SSN, SITInstances=3
 Row 2: FileName=EMP-10001.xlsx, SITType=ITIN, SITInstances=1
 ```
@@ -362,22 +374,26 @@ Add site name extraction from Location URL:
 **Root Cause**: Lab 05c CSV is **pre-aggregated** by Graph API export.
 
 **Lab 05b Detailed Structure**:
-```
+
+```text
 4,423 unique files × average 2.3 SIT types per file = ~10,308 CSV rows
 ```
 
 **Lab 05c Aggregated Structure**:
-```
+
+```text
 3,189 CSV rows already represent unique file+SIT combinations
 ```
 
 **Hypothesis**: The 3,189 vs 4,423 discrepancy suggests:
+
 1. Lab 05c export may have filtered some files during review set collection
 2. Timing difference: Lab 05c ran 24+ hours after Lab 05b
 3. Review set export may exclude certain file types or sizes
 4. Export settings may differ between direct search export vs review set export
 
 **Validation Needed**:
+
 ```powershell
 # Count unique files in Lab 05c
 $lab05cFiles = Import-Csv "SIT_Discovery_Summary_*.csv"
@@ -407,6 +423,7 @@ Write-Host "Files in Lab 05b but not Lab 05c: $($missingInLab05c.Count)"
 ### 2. Add Data Structure Validation (Priority: MEDIUM)
 
 Add diagnostic output to show:
+
 - CSV column headers for each lab
 - Row count vs unique file count
 - Aggregation level detection
@@ -414,6 +431,7 @@ Add diagnostic output to show:
 ### 3. Update Documentation (Priority: LOW)
 
 **Files to Update**:
+
 - `CROSS-LAB-ANALYSIS.md` - Add section on data structure differences
 - Lab 05b README - Clarify direct search export workflow
 - Lab 05c README - Clarify review set export workflow
@@ -425,6 +443,7 @@ Add diagnostic output to show:
 ### Workflow Differentiation Benefits
 
 **Lab 05b (Direct Search Export)**:
+
 - ✅ Faster workflow (no review set creation/collection)
 - ✅ Explicit site and library metadata
 - ✅ Lower data volume (direct export)
@@ -432,6 +451,7 @@ Add diagnostic output to show:
 - ❌ Less metadata (no Owner, no LastModified)
 
 **Lab 05c (Review Set Export)**:
+
 - ✅ API automation-friendly (programmatic)
 - ✅ Rich metadata (Owner, LastModified, Size)
 - ✅ Pre-aggregated detection counts

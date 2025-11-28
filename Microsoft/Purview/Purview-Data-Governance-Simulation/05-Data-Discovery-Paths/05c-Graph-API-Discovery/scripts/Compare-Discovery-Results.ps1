@@ -12,6 +12,11 @@
 .NOTES
     Author: Marcus Jacobson
     Script development orchestrated using GitHub Copilot.
+
+.GRAPH API OPERATIONS
+    - Compares Lab 05c (Graph API) results with Lab 05b (Manual) results
+    - Validates parity in file counts and SIT instance detections
+    - Generates variance report for validation
 #>
 
 $ErrorActionPreference = "Stop"

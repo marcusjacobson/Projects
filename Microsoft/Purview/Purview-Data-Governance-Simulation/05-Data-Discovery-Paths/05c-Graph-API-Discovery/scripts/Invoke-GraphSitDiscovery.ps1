@@ -41,6 +41,12 @@
     - Completed Lab 03 (document upload) 24 hours ago (SharePoint Search indexing)
     
     Script development orchestrated using GitHub Copilot.
+
+.GRAPH API OPERATIONS
+    - Creates eDiscovery case and search via Graph API
+    - Configures noncustodial data sources for SharePoint sites
+    - Builds GUID-based SIT queries for accurate detection
+    - Monitors estimate operation progress
 #>
 
 #Requires -Version 7.0

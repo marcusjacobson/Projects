@@ -30,6 +30,10 @@
     - RoleManagement.ReadWrite.Directory (RBAC management)
     - Policy.ReadWrite.ConditionalAccess (Security policies)
 #>
+#
+# =============================================================================
+# Connects to the Microsoft Graph PowerShell SDK with required scopes.
+# =============================================================================
 
 [CmdletBinding()]
 param()

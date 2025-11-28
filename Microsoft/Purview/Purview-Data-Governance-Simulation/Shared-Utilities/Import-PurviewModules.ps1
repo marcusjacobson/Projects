@@ -13,8 +13,24 @@
 .NOTES
     Author: Marcus Jacobson
     Version: 1.0.0
+    Created: 2025-11-16
+    Last Modified: 2025-11-16
+    
+    Copyright (c) 2025 Marcus Jacobson. All rights reserved.
+    Licensed under the MIT License.
+    
+    Requirements:
+    - PowerShell 5.1+ or PowerShell 7+
+    - Internet connection for module installation
+    - Administrative privileges for module installation
     
     Script development orchestrated using GitHub Copilot.
+
+.SHARED UTILITY OPERATIONS
+    - Module Availability Check
+    - Module Installation (PnP.PowerShell, ExchangeOnlineManagement)
+    - Version Validation
+    - Import and Session Loading
 #>
 
 $ErrorActionPreference = "Stop"

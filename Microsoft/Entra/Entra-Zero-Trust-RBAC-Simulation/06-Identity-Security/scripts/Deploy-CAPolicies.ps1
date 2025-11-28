@@ -31,6 +31,10 @@
     - CA-02: Block Legacy Authentication (Report-Only)
     - Safety: Break Glass Account Exclusion
 #>
+#
+# =============================================================================
+# Step 1: Deploy Conditional Access Policies
+# =============================================================================
 
 [CmdletBinding()]
 param(
@@ -40,6 +44,9 @@ param(
 
 process {
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
+
+    Write-Host "🔸 Step 1: Deploy Conditional Access Policies" -ForegroundColor Green
+    Write-Host "=============================================" -ForegroundColor Green
 
     # Load Parameters
     $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"

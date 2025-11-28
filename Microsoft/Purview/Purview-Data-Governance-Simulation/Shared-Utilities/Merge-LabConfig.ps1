@@ -57,6 +57,12 @@
     - Lab-specific configuration file (optional)
     
     Script development orchestrated using GitHub Copilot.
+
+.SHARED UTILITY OPERATIONS
+    - Configuration Object Merging
+    - Lab-Specific Override Application
+    - Deep Object Traversal
+    - Conflict Resolution Strategy
 #>
 #
 # =============================================================================
@@ -236,8 +242,8 @@ if ($resolvedConfig.PSObject.Properties.Name.Contains("Simulation")) {
 # Report validation results
 if ($validationErrors.Count -gt 0) {
     Write-Host "   ❌ Merged configuration validation failed:" -ForegroundColor Red
-    foreach ($error in $validationErrors) {
-        Write-Host "      • $error" -ForegroundColor Red
+    foreach ($err in $validationErrors) {
+        Write-Host "      • $err" -ForegroundColor Red
     }
     throw "Merged configuration validation failed. Lab configuration may have removed required properties."
 } else {

@@ -1,3 +1,43 @@
+<#
+.SYNOPSIS
+    Generates comprehensive test data for Purview remediation labs.
+
+.DESCRIPTION
+    This script creates a diverse set of test files to simulate various data governance scenarios.
+    It generates files with specific sensitive information types (PCI, PHI, PII) and ages to test
+    severity-based remediation, dual-source deduplication, and SharePoint PnP automation.
+    
+    The script creates isolated data sets for each lab scenario to prevent cross-contamination
+    and ensure accurate testing results.
+
+.PARAMETER None
+    This script does not accept parameters. It prompts for configuration interactively.
+
+.EXAMPLE
+    .\Generate-RemediationTestData.ps1
+    
+    Runs the test data generation wizard interactively.
+
+.NOTES
+    File Name      : Generate-RemediationTestData.ps1
+    Author         : Marcus Jacobson
+    Prerequisite   : PowerShell 5.1 or later, Write access to local and network paths
+    Version        : 1.0
+    Last Updated   : July 17, 2025
+    
+    Script development orchestrated using GitHub Copilot.
+
+.TEST DATA SCENARIOS
+    - Severity-Based Remediation (High/Medium/Low)
+    - Dual-Source Deduplication (On-Prem vs Cloud)
+    - SharePoint PnP Automation (Cloud Deletion)
+    - Age Simulation (File Timestamp Modification)
+#>
+#
+# =============================================================================
+# Step 0: Remediation Test Data Generation
+# =============================================================================
+
 # ============================================================================
 # PART 1: STEP 1 - SEVERITY-BASED REMEDIATION TEST DATA (ON-PREM ONLY)
 # ============================================================================

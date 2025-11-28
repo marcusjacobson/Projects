@@ -65,6 +65,13 @@
     - Global configuration file properly configured
     
     Script development orchestrated using GitHub Copilot.
+
+.TEST DATA GENERATION OPERATIONS
+    - Credit Card Number Generation (Visa, Mastercard, Amex, Discover)
+    - Bank Account Number Simulation
+    - ABA Routing Number Simulation
+    - IBAN Generation
+    - Financial Document Creation (Expense Reports, Invoices, Statements)
 #>
 
 [CmdletBinding()]

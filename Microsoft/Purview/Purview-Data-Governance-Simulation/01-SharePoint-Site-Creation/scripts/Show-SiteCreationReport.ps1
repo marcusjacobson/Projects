@@ -26,6 +26,12 @@
     - At least one site creation report must exist
     
     Script development orchestrated using GitHub Copilot.
+
+.SHAREPOINT PROVISIONING OPERATIONS
+    - Report File Discovery
+    - JSON Data Parsing
+    - Formatted Console Output
+    - Summary Statistics Display
 #>
 #
 # =============================================================================

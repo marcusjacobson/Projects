@@ -29,6 +29,10 @@
     - Safety: Confirmation prompt required
     - Method: Forceful deletion
 #>
+#
+# =============================================================================
+# Step 1: Nuke Simulation Resources
+# =============================================================================
 
 [CmdletBinding(SupportsShouldProcess=$true)]
 param(
@@ -39,6 +43,9 @@ param(
 
 process {
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
+
+    Write-Host "🔸 Step 1: Nuke Simulation Resources" -ForegroundColor Green
+    Write-Host "====================================" -ForegroundColor Green
 
     Write-Host "⚠️  WARNING: This script will delete ALL resources created by the simulation." -ForegroundColor Red
     Write-Host "   It will execute the cleanup scripts for Labs 07 down to 01."

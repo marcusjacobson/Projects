@@ -45,7 +45,7 @@
     
     Script development orchestrated using GitHub Copilot.
 
-.INDEXING TIMELINE
+.EDISCOVERY OPERATIONS
     - SharePoint Search indexing: Up to 24 hours for new content
     - Microsoft Search unified index: 7-14 days for Content Explorer
     - eDiscovery uses SharePoint Search (24-hour timeline)

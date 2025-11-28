@@ -17,6 +17,12 @@
     Requirements:
     - Security & Compliance PowerShell module (for live tenant queries)
     - Or: Purview-SIT-GUID-Mapping.json file (for cached fallback)
+
+.DATA DISCOVERY OPERATIONS
+    - SIT GUID resolution and mapping
+    - Tenant SIT definition querying
+    - Cached mapping fallback handling
+    - Dynamic friendly name resolution
 #>
 
 function Get-SITMapping {

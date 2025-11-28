@@ -29,6 +29,10 @@
     - Membership: Static assignment (Simulation limitation)
     - Targets: Users and Groups by department
 #>
+#
+# =============================================================================
+# Deploys Administrative Units and populates them.
+# =============================================================================
 
 [CmdletBinding()]
 param(

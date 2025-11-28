@@ -58,7 +58,7 @@
     
     Script development orchestrated using GitHub Copilot.
 
-.EXPORT PACKAGES
+.GRAPH API OPERATIONS
     - Reports Package: Results.csv, Manifest.xml, Export Summary.csv (required for analysis)
     - Items Package: SharePoint folder structure with actual files (optional for Lab 05c)
 #>

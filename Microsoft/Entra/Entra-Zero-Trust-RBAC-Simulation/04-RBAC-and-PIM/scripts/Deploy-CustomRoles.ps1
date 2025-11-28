@@ -30,6 +30,10 @@
     - Permissions: users/standard/read, bitlockerKeys/key/read
     - Scope: Directory-wide (can be scoped to AU)
 #>
+#
+# =============================================================================
+# Deploys a Custom Role Definition.
+# =============================================================================
 
 [CmdletBinding()]
 param(

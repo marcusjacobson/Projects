@@ -85,6 +85,12 @@
     
     Script development orchestrated using GitHub Copilot.
 
+.DATA DISCOVERY OPERATIONS
+    - Cross-lab analysis and comparison of discovery methods
+    - SIT GUID resolution and mapping
+    - Data anomaly detection and reporting
+    - Comprehensive report generation (CSV/HTML)
+
 .ANALYSIS COMPONENTS
     - Lab completion detection and validation
     - Multi-method accuracy comparison

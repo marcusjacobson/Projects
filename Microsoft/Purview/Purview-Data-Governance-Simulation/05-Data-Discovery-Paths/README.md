@@ -1,6 +1,9 @@
 # Lab 05: Data Discovery Paths
 
-## 📚 Overview
+## 📋 Overview
+
+**Last Updated:** 2025-11-23
+**Status:** Active
 
 After uploading documents in Lab 03, you need to choose how to **discover and report** on sensitive data across your SharePoint environment. This lab provides **three core discovery approaches** plus an **optional temporal analysis lab**, each with different timing characteristics, accuracy levels, and use cases.
 
@@ -38,7 +41,7 @@ Lab 05 offers **three core discovery approaches** plus an **optional temporal an
 | **[05a: PnP Direct File Access](05a-PnP-Direct-File-Access/)** | Direct file enumeration + regex | **Immediate** | PowerShell direct access | 70-90% (regex) | ⚡ Quick but error-prone | Immediate discovery, learning | 5-10 minutes |
 | **[05b: eDiscovery Manual](05b-eDiscovery-Compliance-Search/)** | Portal-based search with Purview SITs | **24 hours** | Portal UI → Direct export (5-10 min) | ~100% (Purview) | ✅ Reliable, manual | One-time compliance searches | 30-45 minutes |
 | **[05c: eDiscovery API](05c-Graph-API-Discovery/)** | Microsoft Graph eDiscovery API | **24 hours** (SharePoint Search) | Graph API → Direct export (5-10 min) | ~100% (Purview) | 🏆 Reliable, automated | Recurring scans, API integration | 2-3 hours setup |
-| **[05-Temporal: Longitudinal Analysis](05-Temporal-Classification-Analysis/)** *(Optional)* | 4-interval temporal tracking (24hr, 7d, 14d, 21d) | **2-3 weeks** | Periodic manual scans | ~100% (Purview) | Classification drift research | 2-4 hours total |
+| **[05-Temporal: Longitudinal Analysis](05-Temporal-Classification-Analysis/)** *(Optional)* | 4-interval temporal tracking (24hr, 7d, 14d, 21d) | **2-3 weeks** | Periodic manual scans | ~100% (Purview) | 🔬 Research focus | Classification drift research | 2-4 hours total |
 
 ---
 
@@ -187,6 +190,7 @@ The following technical analysis documents provide deep dives into the validatio
 - You want programmatic control over eDiscovery workflows (basis for future automation)
 
 > **⏱️ Timing Strategy**: Start Lab 05a for immediate results (minutes). After 24 hours, choose between:
+>
 > - **Lab 05b**: Portal-based, fast direct export (5-10 min total) for simple SIT discovery
 > - **Lab 05c**: Graph API with review sets (25-45 min total) for advanced features (OCR, threading, immutable snapshots)
 >
@@ -422,7 +426,7 @@ If you've created **custom SITs in your Microsoft 365 tenant**, you can add them
 }
 ```
 
-3. **Scripts automatically use it**: Re-run Lab 05b analysis or cross-lab comparison scripts - they will automatically detect and use your custom SIT mappings
+1. **Scripts automatically use it**: Re-run Lab 05b analysis or cross-lab comparison scripts - they will automatically detect and use your custom SIT mappings
 
 **Best Practice**: Add a suffix like "(Custom)" to your friendly names to distinguish them from built-in Purview SITs in reports.
 
@@ -530,6 +534,7 @@ After Phase 1 and Phase 2 regex improvements (ITIN pattern, Credit Card filterin
 | **False Negatives** | 0-2% of true SITs missed | <0.1% of true SITs missed | Regex misses context-dependent SITs |
 
 > **📊 Scale Context**: In a typical Medium scale deployment (Lab 02: ~5,000 files uploaded, ~4,400 contain true SITs):
+>
 > - **Lab 05a** detects ~4,650-5,000 files (4,400 true positives + 250-600 false positives)
 > - **Lab 05b** detects ~4,400 files (4,400 true positives + <10 false positives)
 > - **Difference**: Lab 05a over-detects 250-600 files (6-12% of its detections) and misses 0-50 files (0-1% of true SITs)
@@ -549,6 +554,7 @@ Different Sensitive Information Types show different variance patterns when comp
 | **Passport Number** | 30-50% | ❌ Complex country-specific formats favor ML | Significant variance expected |
 
 **Why These Variances Exist**:
+
 - **Low Variance (5-10%)**: SITs with strong validation rules (checksums, fixed formats) where regex performs well
 - **Medium Variance (15-25%)**: SITs where format helps but context would improve accuracy
 - **High Variance (30-80%)**: SITs where similar formats exist (SSN vs Employee ID) or complex variations exist (international passports) - ML's context awareness and document classification provide significant advantage
@@ -833,6 +839,7 @@ The Lab 05b analysis script uses a **hybrid approach**:
 3. **Both**: Cached mappings supplement tenant query for deprecated/renamed SITs
 
 **Best Practice**: Even with dynamic tenant queries, maintain the JSON mapping file for:
+
 - Historical GUIDs that Microsoft deprecated
 - Consistency across different tenant environments
 - Offline analysis when tenant connection isn't available
@@ -846,6 +853,7 @@ Some GUIDs may be legitimately unmappable:
 - **Data corruption**: GUID was malformed during export process
 
 In these cases:
+
 1. Document the GUID in your analysis notes
 2. Contact Microsoft Support if the GUID appears in large volumes
 3. Consider excluding these detections from compliance reports
@@ -857,4 +865,4 @@ In these cases:
 
 This comprehensive data discovery path guide was created with the assistance of **GitHub Copilot** powered by advanced AI language models. The content was generated, structured, and refined through iterative collaboration between human expertise and AI assistance within **Visual Studio Code**, incorporating Microsoft Purview discovery methodologies, data reporting best practices, and enterprise security operations workflows.
 
-_AI tools were used to enhance productivity and ensure comprehensive coverage of data discovery approaches while maintaining technical accuracy and reflecting enterprise-grade sensitive information reporting standards._
+*AI tools were used to enhance productivity and ensure comprehensive coverage of data discovery approaches while maintaining technical accuracy and reflecting enterprise-grade sensitive information reporting standards.*

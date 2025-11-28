@@ -30,6 +30,10 @@
     - Naming Convention: USR-[Role], GRP-SEC-[Dept]
     - Security: ForceChangePasswordNextSignIn enabled
 #>
+#
+# =============================================================================
+# Deploys the core user and group hierarchy for the simulation.
+# =============================================================================
 
 [CmdletBinding()]
 param(

@@ -9,9 +9,29 @@
     .\Remove-EntitlementMgmt.ps1
 
 .NOTES
-    Project: Entra-Zero-Trust-RBAC-Simulation
-    Module: 05-Entitlement-Management
+    Author: Marcus Jacobson
+    Version: 1.0.0
+    Created: 2025-08-04
+    Last Modified: 2025-08-04
+    
+    Copyright (c) 2025 Marcus Jacobson. All rights reserved.
+    Licensed under the MIT License.
+    
+    Requirements:
+    - Microsoft Graph PowerShell SDK
+    
+    Script development orchestrated using GitHub Copilot.
+
+.SPECIALIZED_SECTION
+    CLEANUP OPERATIONS
+    - Access Package removal
+    - Catalog deletion
+    - Connected Organization cleanup
 #>
+#
+# =============================================================================
+# Step 3: Remove Entitlement Management Resources
+# =============================================================================
 
 [CmdletBinding()]
 param(
@@ -21,6 +41,9 @@ param(
 
 process {
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
+
+    Write-Host "🔸 Step 3: Remove Entitlement Management Resources" -ForegroundColor Green
+    Write-Host "==================================================" -ForegroundColor Green
 
     # Load Parameters
     $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"

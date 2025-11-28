@@ -40,6 +40,11 @@
     - Completed Invoke-GraphSitDiscovery.ps1 (creates case and search)
     
     Script development orchestrated using GitHub Copilot.
+
+.GRAPH API OPERATIONS
+    - Auto-discovers most recent Lab05c case and search
+    - Initiates direct export operation via Graph API
+    - Monitors export status and provides download instructions
 #>
 
 #Requires -Version 7.0

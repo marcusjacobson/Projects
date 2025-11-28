@@ -61,7 +61,7 @@
     
     Script development orchestrated using GitHub Copilot.
 
-.SCAN INTERVALS
+.TEMPORAL ANALYSIS OPERATIONS
     7-Day: First Microsoft Search unified index maturation checkpoint
     14-Day: Secondary index stabilization and ML model application
     21-Day: Final classification convergence validation

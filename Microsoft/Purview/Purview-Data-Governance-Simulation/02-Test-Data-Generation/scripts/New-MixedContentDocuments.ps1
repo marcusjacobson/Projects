@@ -65,6 +65,12 @@
     - Global configuration file properly configured
     
     Script development orchestrated using GitHub Copilot.
+
+.TEST DATA GENERATION OPERATIONS
+    - Mixed PII Content Generation (SSN, Credit Card, Passport, Bank Account)
+    - Multi-Format Document Creation (.docx, .xlsx, .pdf, .txt)
+    - Variable PII Density Simulation (Low, Medium, High)
+    - Cross-Departmental Document Scenarios
 #>
 
 [CmdletBinding()]

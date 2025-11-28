@@ -32,6 +32,10 @@
     - Frequency: Quarterly
     - Auto-Apply: Disabled (for safety)
 #>
+#
+# =============================================================================
+# Step 2: Deploy Access Reviews
+# =============================================================================
 
 [CmdletBinding()]
 param(
@@ -41,6 +45,9 @@ param(
 
 process {
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
+
+    Write-Host "🔸 Step 2: Deploy Access Reviews" -ForegroundColor Green
+    Write-Host "================================" -ForegroundColor Green
 
     # Load Parameters
     $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"

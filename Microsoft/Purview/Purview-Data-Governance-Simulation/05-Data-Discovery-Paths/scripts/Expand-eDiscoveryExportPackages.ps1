@@ -61,6 +61,12 @@
     
     Script development orchestrated using GitHub Copilot.
 
+.DATA DISCOVERY OPERATIONS
+    - eDiscovery export package extraction
+    - Lab context auto-detection (Lab 05b vs 05c)
+    - Security block handling (Windows Defender)
+    - Export package validation and processing
+
 .SUPPORTED LABS
     - Lab 05b: eDiscovery Compliance Search (manual portal workflow)
     - Lab 05c: Graph API Discovery (automated API workflow)

@@ -1,3 +1,44 @@
+<#
+.SYNOPSIS
+    Analyzes file duplication between on-premises storage and Azure Files cloud storage.
+
+.DESCRIPTION
+    This script performs a dual-source analysis to identify duplicate files between a local on-premises
+    path and an Azure Files cloud share. It scans both locations, compares files by name and size,
+    and generates a report of duplicates with recommendations for deletion.
+    
+    The script supports automatic conversion of Azure Portal URLs to UNC paths and includes
+    verification steps to ensure safe deletion of redundant on-premises data.
+
+.PARAMETER None
+    This script does not accept parameters. It prompts for user input interactively.
+
+.EXAMPLE
+    .\Analyze-DualSourceDeduplication.ps1
+    
+    Runs the analysis interactively, prompting for the Azure Files URL.
+
+.NOTES
+    File Name      : Analyze-DualSourceDeduplication.ps1
+    Author         : Marcus Jacobson
+    Prerequisite   : PowerShell 5.1 or later, Network access to Azure Files
+    Version        : 1.0
+    Last Updated   : July 17, 2025
+    
+    Script development orchestrated using GitHub Copilot.
+
+.DATA GOVERNANCE OPERATIONS
+    - Dual-Source File Scanning
+    - Duplicate Identification (Name/Size)
+    - URL to UNC Path Conversion
+    - Safe Deletion Recommendation
+    - Verification Reporting
+#>
+#
+# =============================================================================
+# Step 1: Dual-Source Deduplication Analysis
+# =============================================================================
+
 # Get computer name for UNC paths
 $computerName = $env:COMPUTERNAME
 

@@ -26,6 +26,11 @@
     - PnP Discovery report CSV files in ../reports/ directory
     
     Script development orchestrated using GitHub Copilot.
+
+.PNP DISCOVERY OPERATIONS
+    Report Location: Finds most recent CSV in reports folder
+    File Opening: Launches default CSV handler
+    Summary Display: Shows file stats and detection count
 #>
 #
 # =============================================================================

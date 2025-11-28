@@ -52,11 +52,11 @@
     
     Script development orchestrated using GitHub Copilot.
 
-.VALIDATION CHECKS
-    Document Count Verification: Compare uploaded vs expected counts
-    Document Accessibility: Test random sample document retrieval
-    Metadata Application: Verify metadata fields are populated
-    Site Quota Status: Check storage consumption
+.DOCUMENT UPLOAD OPERATIONS
+    - Document Count Verification (Uploaded vs Expected)
+    - Document Accessibility Testing (Random Sampling)
+    - Metadata Application Validation
+    - Site Quota Status Checks
 #>
 
 [CmdletBinding()]

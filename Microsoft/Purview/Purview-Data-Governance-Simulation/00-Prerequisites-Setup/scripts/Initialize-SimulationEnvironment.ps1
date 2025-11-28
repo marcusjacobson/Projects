@@ -52,6 +52,13 @@
     - Valid global-config.json configuration file
     
     Script development orchestrated using GitHub Copilot.
+
+.INITIALIZATION OPERATIONS
+    - Global Configuration Loading
+    - Directory Structure Creation
+    - Write Permission Validation
+    - Logging Infrastructure Setup
+    - Environment Information Export
 #>
 #
 # =============================================================================

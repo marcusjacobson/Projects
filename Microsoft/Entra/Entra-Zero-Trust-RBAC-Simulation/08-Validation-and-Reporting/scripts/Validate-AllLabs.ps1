@@ -29,6 +29,10 @@
     - Configuration State: Verifies Report-Only mode
     - Coverage: Labs 00 through 07
 #>
+#
+# =============================================================================
+# Step 2: Validate All Labs
+# =============================================================================
 
 [CmdletBinding()]
 param(
@@ -38,6 +42,9 @@ param(
 
 process {
     . "$PSScriptRoot\..\..\00-Prerequisites-and-Monitoring\scripts\Connect-EntraGraph.ps1"
+
+    Write-Host "🔸 Step 2: Validate All Labs" -ForegroundColor Green
+    Write-Host "============================" -ForegroundColor Green
 
     # Load Parameters
     $paramsPath = Join-Path $PSScriptRoot "..\infra\module.parameters.json"

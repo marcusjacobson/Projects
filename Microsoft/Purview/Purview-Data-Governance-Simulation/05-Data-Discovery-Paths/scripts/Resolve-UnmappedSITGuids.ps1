@@ -59,6 +59,12 @@
     
     Script development orchestrated using GitHub Copilot.
 
+.DATA DISCOVERY OPERATIONS
+    - Unmapped SIT GUID identification and analysis
+    - Tenant SIT definition querying and matching
+    - File context and co-occurrence pattern analysis
+    - Mapping suggestion generation and JSON updates
+
 .DIAGNOSTIC APPROACH
     - Extracts all unique GUIDs from eDiscovery export
     - Queries tenant for all available SIT definitions
@@ -160,8 +166,8 @@ if ($usingDetailedCsv) {
     foreach ($item in $eDiscoveryData) {
         $sitData = $item.'Sender/Author'
         if ($sitData) {
-            $matches = [regex]::Matches($sitData, $guidPattern)
-            foreach ($match in $matches) {
+            $guidMatches = [regex]::Matches($sitData, $guidPattern)
+            foreach ($match in $guidMatches) {
                 $guid = $match.Value.ToLower()
                 if ($allGuids.ContainsKey($guid)) {
                     $allGuids[$guid]++
@@ -368,8 +374,8 @@ foreach ($unmappedGuid in $unmappedGuids) {
         foreach ($file in $sampleFiles) {
             $sitData = $file.'Sender/Author'
             if ($sitData) {
-                $matches = [regex]::Matches($sitData, $guidPattern)
-                foreach ($match in $matches) {
+                $guidMatches = [regex]::Matches($sitData, $guidPattern)
+                foreach ($match in $guidMatches) {
                     $guid = $match.Value.ToLower()
                     if ($guid -ne $unmappedGuid.GUID) {
                         if ($coOccurringGuids.ContainsKey($guid)) {

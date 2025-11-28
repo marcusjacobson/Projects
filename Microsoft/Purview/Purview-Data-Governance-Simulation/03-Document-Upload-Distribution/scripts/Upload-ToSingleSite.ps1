@@ -27,8 +27,23 @@
     Author: Marcus Jacobson
     Version: 1.0.0
     Created: 2025-11-16
+    Last Modified: 2025-11-16
+    
+    Copyright (c) 2025 Marcus Jacobson. All rights reserved.
+    Licensed under the MIT License.
+    
+    Requirements:
+    - PowerShell 5.1+ or PowerShell 7+
+    - PnP.PowerShell module v2.0+
+    - Valid SharePoint Site URL
     
     Script development orchestrated using GitHub Copilot.
+
+.DOCUMENT UPLOAD OPERATIONS
+    - Single Site Connection (Interactive Auth)
+    - Bulk File Upload to Document Library
+    - Duplicate File Detection (Skip existing)
+    - Throttle Protection (Pause every 50 files)
 #>
 
 [CmdletBinding()]

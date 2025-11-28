@@ -63,6 +63,12 @@
     - Active SharePoint Online connection
     
     Script development orchestrated using GitHub Copilot.
+
+.SHAREPOINT PROVISIONING OPERATIONS
+    - Site Collection Creation (Team Site)
+    - Metadata Configuration (Property Bag)
+    - Progress Tracking and Reporting
+    - Error Handling and Retry Logic
 #>
 #
 # =============================================================================

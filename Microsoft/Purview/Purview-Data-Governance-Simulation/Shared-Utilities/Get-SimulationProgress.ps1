@@ -91,6 +91,12 @@
     - Console with Write-Progress support (may not work in non-interactive environments)
     
     Script development orchestrated using GitHub Copilot.
+
+.SHARED UTILITY OPERATIONS
+    - Progress Bar Visualization
+    - Time Remaining Calculation
+    - Throughput Metrics (Items/Second)
+    - Completion Summary Reporting
 #>
 #
 # =============================================================================

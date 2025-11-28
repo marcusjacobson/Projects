@@ -70,12 +70,11 @@
     
     Script development orchestrated using GitHub Copilot.
     
-.DOCUMENT PATTERNS
-    - Employee Records: SSN embedded in employee identification sections
-    - Tax Forms: W-4 and I-9 forms with SSN fields
-    - Benefits Enrollment: SSN for benefits account linking
-    - Payroll Documents: SSN for payroll processing identification
-    - Personnel Files: SSN in personnel record headers
+.TEST DATA GENERATION OPERATIONS
+    - SSN Pattern Generation (Valid formats, invalid ranges avoided)
+    - Employee Record Simulation (Names, IDs, Departments)
+    - HR Document Creation (Handbooks, W-4s, I-9s, Payroll)
+    - Multi-Format Output (.docx, .xlsx, .pdf, .txt)
 #>
 #
 # =============================================================================

@@ -22,8 +22,8 @@
 .NOTES
     Author: Marcus Jacobson
     Version: 1.0.0
-    Created: 2025-MM-DD
-    Last Modified: 2025-MM-DD
+    Created: 2025-11-16
+    Last Modified: 2025-11-16
     
     Copyright (c) 2025 Marcus Jacobson. All rights reserved.
     Licensed under the MIT License.
@@ -35,6 +35,12 @@
     - App registration with AllSites.FullControl permissions
     
     Script development orchestrated using GitHub Copilot.
+
+.DOCUMENT UPLOAD OPERATIONS
+    - App Registration Permission Granting
+    - SharePoint Admin Center Connection
+    - Site Collection Permission Management
+    - Service Principal Verification
 #>
 #
 # =============================================================================

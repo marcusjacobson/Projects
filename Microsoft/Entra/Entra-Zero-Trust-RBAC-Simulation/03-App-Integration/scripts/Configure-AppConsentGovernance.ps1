@@ -30,6 +30,10 @@
     - User Consent: Blocked/Restricted
     - Admin Consent Workflow: Enabled (7 day expiration)
 #>
+#
+# =============================================================================
+# Configures Application Consent Governance.
+# =============================================================================
 
 [CmdletBinding()]
 param(

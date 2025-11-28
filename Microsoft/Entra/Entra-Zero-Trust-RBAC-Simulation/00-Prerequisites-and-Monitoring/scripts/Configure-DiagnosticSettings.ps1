@@ -21,9 +21,24 @@
     .\Configure-DiagnosticSettings.ps1 -UseParametersFile
 
 .NOTES
-    Project: Entra-Zero-Trust-RBAC-Simulation
-    Module: 00-Prerequisites-and-Monitoring
+    Author: Marcus Jacobson
+    Version: 1.0.0
+    Created: 2025-11-28
+    Last Modified: 2025-11-28
+    
+    Copyright (c) 2025 Marcus Jacobson. All rights reserved.
+    Licensed under the MIT License.
+    
+    Requirements:
+    - Microsoft Graph PowerShell SDK
+    - Azure CLI (az)
+    
+    Script development orchestrated using GitHub Copilot.
 #>
+#
+# =============================================================================
+# Configures Entra ID Diagnostic Settings to stream logs to Log Analytics.
+# =============================================================================
 
 [CmdletBinding()]
 param(

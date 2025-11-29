@@ -51,8 +51,8 @@ This masterclass guides you through the end-to-end process of setting up a secur
 
 | Capability | Coverage Level | Project Section(s) |
 | :--- | :--- | :--- |
-| **Entitlement Management** | ✅ COMPREHENSIVE | Lab 13 (Catalogs, Access Packages) |
-| **Access Reviews** | ✅ EXTENSIVE | Lab 14 (Guest reviews) |
+| **Entitlement Management** | ✅ COMPREHENSIVE | Lab 14 (Catalogs, Access Packages) |
+| **Access Reviews** | ✅ EXTENSIVE | Lab 13 (Guest reviews) |
 | **Privileged Identity Management** | ✅ COMPREHENSIVE | Lab 12 (PIM for Roles, Activation) |
 | **Administrative Units** | ✅ DETAILED | Lab 03 (Delegation) |
 
@@ -71,14 +71,13 @@ This masterclass guides you through the end-to-end process of setting up a secur
 | :--- | :--- | :--- |
 | **App Registration** | ✅ DETAILED | Lab 09 (App Roles, APIs) |
 | **Enterprise Apps** | ✅ DETAILED | Lab 10 (SSO, Assignment) |
-| **Managed Identities** | ✅ DETAILED | Lab 11 (User-Assigned) |
+| **App Governance** | ✅ DETAILED | Lab 11 (Consent Policies) |
 
 #### ✅ Monitoring & Automation
 
 | Capability | Coverage Level | Project Section(s) |
 | :--- | :--- | :--- |
 | **Log Analytics** | ✅ DETAILED | Lab 15 (Diagnostics) |
-| **KQL Querying** | ✅ DETAILED | Lab 16 (Hunting) |
 | **PowerShell Automation** | ✅ TARGETED | Lab 02, Lab 11 (Bulk Ops) |
 
 ### What This Project Does NOT Cover
@@ -100,6 +99,13 @@ The following capabilities require **hybrid infrastructure**, **external service
 | :--- | :--- |
 | **Intune Device Compliance** | Requires Intune license and physical/VM devices to enroll |
 | **Windows Hello for Business** | Requires device enrollment and TPM hardware |
+
+#### ❌ Advanced Monitoring (Requires KQL/Sentinel)
+
+| Capability | Why Not Covered |
+| :--- | :--- |
+| **KQL Querying** | Focus is on GUI-based monitoring and configuration |
+| **Microsoft Sentinel** | Requires separate Sentinel deployment (See Sentinel projects) |
 
 ## 🤖 AI-Assisted Content Generation
 

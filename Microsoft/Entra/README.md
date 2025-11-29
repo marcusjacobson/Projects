@@ -63,6 +63,30 @@ This directory contains **comprehensive hands-on lab projects** designed to buil
 
 **Coverage Depth**: ~45% of Entra landscape (Governance & Security focus)
 
+### [SC-300 Identity & Access Masterclass](./SC-300-Identity-Access-Masterclass/)
+
+**Focus**: Certification Preparation, Comprehensive Tenant Setup, and GUI-based Administration
+
+**Target Audience**: Certification Candidates, Junior Identity Admins, IT Support Specialists
+
+**Duration**: 8-10 hours | **Cost**: $0 (M365 Developer Tenant)
+
+**Key Capabilities**:
+
+- **Identity Foundation**: Tenant configuration, custom domains, and user lifecycle
+- **Secure Authentication**: MFA, Conditional Access, and Identity Protection
+- **Workload Identities**: App registration, Enterprise Apps, and Consent governance
+- **Governance**: PIM, Access Reviews, and Entitlement Management
+- **Monitoring**: Sign-in and Audit log analysis
+
+**Learning Paths**:
+
+- **Exam Prep**: Aligned directly with SC-300 exam objectives
+- **Hands-On**: "Click-ops" focus for understanding the Azure Portal interface
+- **Scenario-Based**: Real-world "Contoso" simulation from greenfield to governed
+
+**Coverage Depth**: ~60% of Entra landscape (Broad exam-focused coverage)
+
 ---
 
 ## 📊 Comprehensive Microsoft Entra Capability Coverage
@@ -73,55 +97,55 @@ This matrix shows which project covers each Entra capability, highlighting the v
 
 #### ✅ Identity Administration & Lifecycle
 
-| Capability | Complexity | Entra-Deployment-Pipelines Coverage | Entra-Zero-Trust-RBAC-Simulation Coverage |
-|------------|------------|-------------------------------------|-------------------------------------------|
-| **User Provisioning** | INTERMEDIATE | ✅ COMPREHENSIVE (Create, Update, Disable) | ✅ COMPREHENSIVE (Lab 01) |
-| **Group Management** | BASIC | ✅ COMPREHENSIVE (Create, Members, Owners) | ✅ COMPREHENSIVE (Lab 01) |
-| **Dynamic Groups** | INTERMEDIATE | ✅ COMPREHENSIVE (JSON Config) | ✅ COMPREHENSIVE (Lab 01/02) |
-| **Administrative Units** | INTERMEDIATE | ❌ Not Covered (Restricted management scopes) | ✅ COMPREHENSIVE (Lab 02) |
-| **Custom Security Attributes** | ADVANCED | ❌ Not Covered (Attribute definition & assignment) | ❌ Not Covered |
-| **Company Branding** | BASIC | ✅ DETAILED (Logo, Colors, Text) | ❌ Not Covered |
+| Capability | Complexity | Entra-Deployment-Pipelines Coverage | Entra-Zero-Trust-RBAC-Simulation Coverage | SC-300-Identity-Access-Masterclass Coverage |
+|------------|------------|-------------------------------------|-------------------------------------------|---------------------------------------------|
+| **User Provisioning** | INTERMEDIATE | ✅ COMPREHENSIVE (Create, Update, Disable) | ✅ COMPREHENSIVE (Lab 01) | ✅ COMPREHENSIVE (Lab 02) |
+| **Group Management** | BASIC | ✅ COMPREHENSIVE (Create, Members, Owners) | ✅ COMPREHENSIVE (Lab 01) | ✅ COMPREHENSIVE (Lab 02) |
+| **Dynamic Groups** | INTERMEDIATE | ✅ COMPREHENSIVE (JSON Config) | ✅ COMPREHENSIVE (Lab 01/02) | ✅ COMPREHENSIVE (Lab 02) |
+| **Administrative Units** | INTERMEDIATE | ❌ Not Covered (Restricted management scopes) | ✅ COMPREHENSIVE (Lab 02) | ✅ DETAILED (Lab 03) |
+| **Custom Security Attributes** | ADVANCED | ❌ Not Covered (Attribute definition & assignment) | ❌ Not Covered | ❌ Not Covered |
+| **Company Branding** | BASIC | ✅ DETAILED (Logo, Colors, Text) | ❌ Not Covered | ✅ DETAILED (Lab 01) |
 
 #### ✅ Access Management & Zero Trust
 
-| Capability | Complexity | Entra-Deployment-Pipelines Coverage | Entra-Zero-Trust-RBAC-Simulation Coverage |
-|------------|------------|-------------------------------------|-------------------------------------------|
-| **Conditional Access** | ADVANCED | ✅ COMPREHENSIVE (Risk, Location, Device, App) | ✅ COMPREHENSIVE (Lab 06) |
-| **Named Locations** | INTERMEDIATE | ✅ COMPREHENSIVE (IP Ranges, Countries) | ❌ Not Covered |
-| **MFA Configuration** | INTERMEDIATE | ✅ DETAILED (Auth Methods Policy) | ✅ DETAILED (Lab 06) |
-| **Passwordless/FIDO2** | ADVANCED | ✅ DETAILED (FIDO2 Policy) | ✅ DETAILED (Lab 06) |
-| **Identity Protection** | ADVANCED | ✅ EXTENSIVE (User Risk & Sign-in Risk Policies) | ✅ EXTENSIVE (Lab 06) |
-| **Global Secure Access** | EXPERT | ❌ Not Covered (SSE/ZTNA configuration) | ❌ Not Covered |
-| **External ID (B2B/B2C)** | ADVANCED | ❌ Not Covered (Cross-tenant access settings) | ❌ Not Covered |
+| Capability | Complexity | Entra-Deployment-Pipelines Coverage | Entra-Zero-Trust-RBAC-Simulation Coverage | SC-300-Identity-Access-Masterclass Coverage |
+|------------|------------|-------------------------------------|-------------------------------------------|---------------------------------------------|
+| **Conditional Access** | ADVANCED | ✅ COMPREHENSIVE (Risk, Location, Device, App) | ✅ COMPREHENSIVE (Lab 06) | ✅ COMPREHENSIVE (Lab 06) |
+| **Named Locations** | INTERMEDIATE | ✅ COMPREHENSIVE (IP Ranges, Countries) | ❌ Not Covered | ❌ Not Covered |
+| **MFA Configuration** | INTERMEDIATE | ✅ DETAILED (Auth Methods Policy) | ✅ DETAILED (Lab 06) | ✅ DETAILED (Lab 05) |
+| **Passwordless/FIDO2** | ADVANCED | ✅ DETAILED (FIDO2 Policy) | ✅ DETAILED (Lab 06) | ✅ DETAILED (Lab 05) |
+| **Identity Protection** | ADVANCED | ✅ EXTENSIVE (User Risk & Sign-in Risk Policies) | ✅ EXTENSIVE (Lab 06) | ✅ EXTENSIVE (Lab 07) |
+| **Global Secure Access** | EXPERT | ❌ Not Covered (SSE/ZTNA configuration) | ❌ Not Covered | ❌ Not Covered |
+| **External ID (B2B/B2C)** | ADVANCED | ❌ Not Covered (Cross-tenant access settings) | ❌ Not Covered | ✅ DETAILED (Lab 08) |
 
 #### ✅ Identity Governance (IGA)
 
-| Capability | Complexity | Entra-Deployment-Pipelines Coverage | Entra-Zero-Trust-RBAC-Simulation Coverage |
-|------------|------------|-------------------------------------|-------------------------------------------|
-| **Privileged Identity Mgmt** | ADVANCED | ✅ EXTENSIVE (PIM for Groups) | ✅ EXTENSIVE (Lab 04) |
-| **Entitlement Management** | ADVANCED | ❌ Not Covered (Access Packages, Catalogs) | ✅ COMPREHENSIVE (Lab 05) |
-| **Access Reviews** | ADVANCED | ❌ Not Covered (Recertification campaigns) | ✅ COMPREHENSIVE (Lab 07) |
-| **Lifecycle Workflows** | ADVANCED | ❌ Not Covered (Joiner/Mover/Leaver automation) | ✅ COMPREHENSIVE (Lab 07) |
-| **Permissions Management** | EXPERT | ❌ Not Covered (CIEM/Multi-cloud permissions) | ❌ Not Covered |
+| Capability | Complexity | Entra-Deployment-Pipelines Coverage | Entra-Zero-Trust-RBAC-Simulation Coverage | SC-300-Identity-Access-Masterclass Coverage |
+|------------|------------|-------------------------------------|-------------------------------------------|---------------------------------------------|
+| **Privileged Identity Mgmt** | ADVANCED | ✅ EXTENSIVE (PIM for Groups) | ✅ EXTENSIVE (Lab 04) | ✅ COMPREHENSIVE (Lab 12) |
+| **Entitlement Management** | ADVANCED | ❌ Not Covered (Access Packages, Catalogs) | ✅ COMPREHENSIVE (Lab 05) | ✅ COMPREHENSIVE (Lab 14) |
+| **Access Reviews** | ADVANCED | ❌ Not Covered (Recertification campaigns) | ✅ COMPREHENSIVE (Lab 07) | ✅ EXTENSIVE (Lab 13) |
+| **Lifecycle Workflows** | ADVANCED | ❌ Not Covered (Joiner/Mover/Leaver automation) | ✅ COMPREHENSIVE (Lab 07) | ❌ Not Covered |
+| **Permissions Management** | EXPERT | ❌ Not Covered (CIEM/Multi-cloud permissions) | ❌ Not Covered | ❌ Not Covered |
 
 #### ✅ Workload Identities
 
-| Capability | Complexity | Entra-Deployment-Pipelines Coverage | Entra-Zero-Trust-RBAC-Simulation Coverage |
-|------------|------------|-------------------------------------|-------------------------------------------|
-| **App Registrations** | INTERMEDIATE | ❌ Not Covered (OAuth2/OIDC app config) | ✅ DETAILED (Lab 03) |
-| **Managed Identities** | INTERMEDIATE | ❌ Not Covered (Azure resource identity) | ❌ Not Covered |
-| **Workload ID Federation** | ADVANCED | ❌ Not Covered (OIDC federation/GitHub Actions) | ❌ Not Covered |
-| **Service Principals** | INTERMEDIATE | ✅ COMPREHENSIVE (Pipeline authentication) | ✅ DETAILED (Lab 03) |
+| Capability | Complexity | Entra-Deployment-Pipelines Coverage | Entra-Zero-Trust-RBAC-Simulation Coverage | SC-300-Identity-Access-Masterclass Coverage |
+|------------|------------|-------------------------------------|-------------------------------------------|---------------------------------------------|
+| **App Registrations** | INTERMEDIATE | ❌ Not Covered (OAuth2/OIDC app config) | ✅ DETAILED (Lab 03) | ✅ DETAILED (Lab 09) |
+| **Managed Identities** | INTERMEDIATE | ❌ Not Covered (Azure resource identity) | ❌ Not Covered | ❌ Not Covered |
+| **Workload ID Federation** | ADVANCED | ❌ Not Covered (OIDC federation/GitHub Actions) | ❌ Not Covered | ❌ Not Covered |
+| **Service Principals** | INTERMEDIATE | ✅ COMPREHENSIVE (Pipeline authentication) | ✅ DETAILED (Lab 03) | ✅ DETAILED (Lab 10) |
 
 #### ✅ DevSecOps & Automation
 
-| Capability | Complexity | Entra-Deployment-Pipelines Coverage | Entra-Zero-Trust-RBAC-Simulation Coverage |
-|------------|------------|-------------------------------------|-------------------------------------------|
-| **Azure DevOps Pipelines** | INTERMEDIATE | ✅ COMPREHENSIVE (YAML, Triggers, Variables) | ❌ Not Covered |
-| **Microsoft Graph API** | ADVANCED | ✅ COMPREHENSIVE (Direct REST calls) | ✅ COMPREHENSIVE (PowerShell SDK) |
-| **Infrastructure as Code** | ADVANCED | ✅ COMPREHENSIVE (Declarative JSON) | ✅ COMPREHENSIVE (PowerShell Scripts) |
-| **Schema Validation** | ADVANCED | ✅ COMPREHENSIVE (JSON Schema Draft-07) | ❌ Not Covered |
-| **Service Principal Auth** | INTERMEDIATE | ✅ COMPREHENSIVE (App Registration, Secrets) | ✅ DETAILED (Connect Scripts) |
+| Capability | Complexity | Entra-Deployment-Pipelines Coverage | Entra-Zero-Trust-RBAC-Simulation Coverage | SC-300-Identity-Access-Masterclass Coverage |
+|------------|------------|-------------------------------------|-------------------------------------------|---------------------------------------------|
+| **Azure DevOps Pipelines** | INTERMEDIATE | ✅ COMPREHENSIVE (YAML, Triggers, Variables) | ❌ Not Covered | ❌ Not Covered |
+| **Microsoft Graph API** | ADVANCED | ✅ COMPREHENSIVE (Direct REST calls) | ✅ COMPREHENSIVE (PowerShell SDK) | ❌ Not Covered |
+| **Infrastructure as Code** | ADVANCED | ✅ COMPREHENSIVE (Declarative JSON) | ✅ COMPREHENSIVE (PowerShell Scripts) | ❌ Not Covered |
+| **Schema Validation** | ADVANCED | ✅ COMPREHENSIVE (JSON Schema Draft-07) | ❌ Not Covered | ❌ Not Covered |
+| **Service Principal Auth** | INTERMEDIATE | ✅ COMPREHENSIVE (App Registration, Secrets) | ✅ DETAILED (Connect Scripts) | ❌ Not Covered |
 
 ---
 
@@ -170,6 +194,16 @@ The current portfolio focuses on **Core Identity**, **Automation**, and **Govern
 - ✅ **PowerShell scripting mastery** for Entra
 
 **Best For**: Identity Architects, Security Engineers, Compliance Officers, IAM Administrators
+
+### Choose SC-300-Identity-Access-Masterclass When You Need
+
+- ✅ **To prepare for the SC-300 certification exam**
+- ✅ **A comprehensive tour of the Entra Admin Center**
+- ✅ **To understand the "why" and "how" of core features**
+- ✅ **A logical, step-by-step tenant build-out**
+- ✅ **To learn manual configuration before automating**
+
+**Best For**: Certification Seekers, Junior Admins, IT Generalists
 
 ---
 

@@ -11,10 +11,10 @@
 
 ### 🎯 Objectives
 
--   Create a Catalog.
--   Create an Access Package containing a Group and an App.
--   Configure an Approval Policy.
--   Request the package (User experience).
+- Create a Catalog.
+- Create an Access Package containing a Group and an App.
+- Configure an Approval Policy.
+- Request the package (User experience).
 
 ---
 
@@ -36,63 +36,66 @@
 
 ### Task 1: Create a Catalog
 
-1.  Navigate to **Identity Governance** > **Entitlement management** > **Catalogs**.
-2.  Click **+ New catalog**.
-3.  **Name**: `Marketing Resources`.
-4.  **Enabled**: **Yes**.
-5.  Click **Create**.
+1. Navigate to **ID Governance** > **Entitlement management** > **Catalogs**.
+2. Click **+ New catalog**.
+3. **Name**: `Marketing Resources`.
+4. **Enabled**: **Yes**.
+5. Click **Create**.
 
 ### Task 2: Add Resources to Catalog
 
-1.  Open the **Marketing Resources** catalog.
-2.  Click **Resources** > **+ Add resources**.
-3.  **Groups and Teams**: Select `Dynamic-Marketing-Team` (or a static group).
-4.  **Applications**: Select `Contoso SAML App`.
-5.  Click **Add**.
+1. Open the **Marketing Resources** catalog.
+2. Click **Resources** > **+ Add resources**.
+3. **Groups and Teams**: Select `Project-Alpha` (the static group created in Lab 13).
+    - *Note: Access Packages manage membership by adding/removing users. Therefore, you must use **Assigned** (static) groups, not Dynamic groups.*
+4. **Applications**: Select `Contoso SAML App`.
+5. Click **Add**.
 
 ### Task 3: Create Access Package
 
-1.  Click **Access packages** > **+ New access package**.
-2.  **Basics**:
-    *   **Name**: `Marketing Starter Pack`.
-    *   **Description**: `All tools needed for new marketing hires`.
-    *   **Catalog**: `Marketing Resources`.
-3.  **Resource roles**:
-    *   Select the Group -> Role: **Member**.
-    *   Select the App -> Role: **User**.
-4.  **Requests**:
-    *   **Users who can request access**: **For users in your directory**.
-    *   **Select users**: **All members** (or specific users).
-    *   **Approval**: **Yes**.
-    *   **Approver**: **Manager** (if configured) or **Specific user** (Bianca Pisani).
-5.  **Lifecycle**:
-    *   **Access package assignments expire**: **365 Days**.
-6.  Click **Create**.
+1. Click **Access packages** > **+ New access package**.
+2. **Basics**:
+    - **Name**: `Marketing Starter Pack`.
+    - **Description**: `All tools needed for new marketing hires`.
+    - **Catalog**: `Marketing Resources`.
+3. **Resource roles**:
+    - Select the Group -> Role: **Member**.
+    - Select the App -> Role: **User**.
+4. **Requests**:
+    - **Users who can request access**: **For users in your directory**.
+    - **Select users**: **All members** (or specific users).
+    - **Approval**: **Yes**.
+    - **Approver**: **Manager** (if configured) or **Specific user** (Bianca Pisani).
+5. **Lifecycle**:
+    - **Access package assignments expire**: **365 Days**.
+6. Click **Create**.
+
+> **⏳ Timing Note**: It can take **15-30 minutes** for a newly created Access Package to become visible in the My Access portal. If you do not see it immediately, please wait a few minutes and refresh the page.
 
 ### Task 4: Request Access (David)
 
-1.  Open a new InPrivate window.
-2.  Sign in as **David So**.
-3.  Navigate to `https://myaccess.microsoft.com`.
-4.  Click **Access packages**.
-5.  You should see **Marketing Starter Pack**.
-6.  Click **Request**.
-7.  Enter justification.
-8.  Click **Submit**.
+1. Open a new InPrivate window.
+2. Sign in as **David So**.
+3. Navigate to `https://myaccess.microsoft.com`.
+4. Click **Access packages**.
+5. You should see **Marketing Starter Pack**.
+6. Click **Request**.
+7. Enter justification.
+8. Click **Submit**.
 
 ### Task 5: Approve (Bianca)
 
-1.  Sign in as **Bianca Pisani** (Approver).
-2.  Go to `https://myaccess.microsoft.com`.
-3.  Click **Approvals**.
-4.  Approve David's request.
+1. Sign in as **Bianca Pisani** (Approver).
+2. Go to `https://myaccess.microsoft.com`.
+3. Click **Approvals**.
+4. Approve David's request.
 
 ---
 
 ## 🔍 Troubleshooting
 
-*   **"No access packages found"**: Ensure the "Requests" policy in Task 3 targets the user you are testing with.
-*   **"Manager not found"**: If you selected "Manager as approver", ensure David So has a Manager attribute set in Entra ID. If not, the request will fail or go to a fallback approver.
+- **"No access packages found"**: Ensure the "Requests" policy in Task 3 targets the user you are testing with.
+- **"Manager not found"**: If you selected "Manager as approver", ensure David So has a Manager attribute set in Entra ID. If not, the request will fail or go to a fallback approver.
 
 ## 🤖 AI-Assisted Content Generation
 

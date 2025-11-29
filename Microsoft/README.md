@@ -37,6 +37,7 @@ The portfolio is organized by technology domain, with each section containing ha
 
 - **[Entra Zero Trust RBAC Simulation](./Entra/Entra-Zero-Trust-RBAC-Simulation/)**: End-to-end simulation of a production identity environment.
 - **[Entra Deployment Pipelines](./Entra/Entra-Deployment-Pipelines/)**: CI/CD automation for identity artifacts.
+- **[SC-300 Identity & Access Masterclass](./Entra/SC-300-Identity-Access-Masterclass/)**: Comprehensive certification prep and tenant build-out.
 
 **Key Capabilities**:
 
@@ -44,6 +45,7 @@ The portfolio is organized by technology domain, with each section containing ha
 - **Zero Trust Architecture**: Conditional Access, MFA, and Phishing-Resistant Auth (FIDO2).
 - **Identity Governance**: Access Reviews, Entitlement Management, and Lifecycle Workflows.
 - **Privileged Access**: PIM for Groups and Roles, Break Glass account management.
+- **Tenant Administration**: Custom domains, branding, and hybrid identity simulation.
 
 ### [Microsoft Purview](./Purview/)
 
@@ -77,13 +79,13 @@ This assessment serves as a **living roadmap** of demonstrated technical compete
 | Capability Area | Specific Skill | Status | Project Reference |
 |-----------------|----------------|--------|-------------------|
 | **Identity Fundamentals** | Users, Groups, & Licensing | ✅ Implemented | All Projects |
-| **Authentication** | MFA, Passwordless, FIDO2 | ✅ Implemented | Entra Zero Trust RBAC |
-| **Access Control** | Conditional Access Policies | ✅ Implemented | Entra Deployment Pipelines / Entra Zero Trust RBAC |
-| **Identity Governance** | Privileged Identity Mgmt (PIM) | ✅ Implemented | Entra Deployment Pipelines / Entra Zero Trust RBAC |
-| **Identity Governance** | Access Reviews & Lifecycle | ✅ Implemented | Entra Zero Trust RBAC |
+| **Authentication** | MFA, Passwordless, FIDO2 | ✅ Implemented | Entra Zero Trust RBAC / SC-300 Masterclass |
+| **Access Control** | Conditional Access Policies | ✅ Implemented | Entra Deployment Pipelines / Entra Zero Trust RBAC / SC-300 Masterclass |
+| **Identity Governance** | Privileged Identity Mgmt (PIM) | ✅ Implemented | Entra Deployment Pipelines / Entra Zero Trust RBAC / SC-300 Masterclass |
+| **Identity Governance** | Access Reviews & Lifecycle | ✅ Implemented | Entra Zero Trust RBAC / SC-300 Masterclass |
 | **Workload Identities** | Service Principals & Managed Identities | ✅ Implemented | Sentinel-as-Code / Entra Zero Trust RBAC |
-| **External Identities** | B2B Collaboration & B2C | 📅 Planned | - |
-| **Application Identity** | App Registrations & SSO | ✅ Implemented | Azure AI Security Challenge / Entra Zero Trust RBAC |
+| **External Identities** | B2B Collaboration & B2C | ✅ Implemented | SC-300 Masterclass |
+| **Application Identity** | App Registrations & SSO | ✅ Implemented | Azure AI Security Challenge / Entra Zero Trust RBAC / SC-300 Masterclass |
 | **Decentralized Identity** | Microsoft Entra Verified ID | 📅 Planned | - |
 
 ### ☁️ Cloud Infrastructure & Networking (Azure Core)

@@ -1,4 +1,4 @@
-# Lab 09: Power BI Visualization
+# Lab 08: Power BI Visualization
 
 ## 🎯 Objective
 
@@ -10,7 +10,7 @@ Create Power BI reports using DirectLake mode to visualize your Lakehouse data, 
 
 ## 📋 Prerequisites
 
-- [ ] Labs 02-08 completed (Lakehouse with data, labels applied).
+- [ ] Labs 02-07 completed (Lakehouse with data, labels applied).
 - [ ] Access to `Fabric-Purview-Lab` workspace.
 - [ ] Basic familiarity with Power BI concepts.
 
@@ -305,7 +305,7 @@ CALCULATE(
 
 ## ✅ Validation Checklist
 
-Before proceeding to Lab 10, verify:
+Before proceeding to Lab 09, verify:
 
 - [ ] Semantic model exists for Lakehouse.
 - [ ] Created Power BI report with multiple visualizations.
@@ -402,9 +402,9 @@ Before proceeding to Lab 10, verify:
 
 Proceed to:
 
-**[Lab 10: Cleanup and Reset](../10-Cleanup-Reset/)**
+**[Lab 09: Cleanup and Reset](../09-Cleanup-Reset/)**
 
-> **🎯 Important**: Lab 10 provides cleanup procedures to remove all lab resources and reset your environment.
+> **🎯 Important**: Lab 09 provides cleanup procedures to remove all lab resources and reset your environment.
 
 ---
 

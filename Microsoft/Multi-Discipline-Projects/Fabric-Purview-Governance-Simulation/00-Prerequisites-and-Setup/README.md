@@ -8,6 +8,36 @@ Validate licensing, permissions, and environment readiness before beginning the 
 
 ---
 
+## 🛤️ Choose Your Lab Path
+
+This simulation supports two approaches based on your available resources:
+
+| Approach | Best For | Fabric Cost | Purview Cost | Duration Limit |
+|----------|----------|-------------|--------------|----------------|
+| **Path A: Fabric Trial + Purview Free** | First-time learners, quick labs | $0 | $0 | 60 days |
+| **Path B: Fabric F2 + Purview Free** | Extended learning, repeat demos | ~$0.36/hr (pause when idle) | $0 | Unlimited |
+
+> **💡 Recommendation**: Start with **Path A** (Fabric Trial). It provides full Fabric capabilities at no cost for 60 days. Only consider Path B if your trial has expired or you need ongoing access beyond 60 days.
+
+### What Both Paths Include
+
+- ✅ Full Microsoft Fabric capabilities (Lakehouses, Warehouses, Data Pipelines, etc.).
+- ✅ Purview "live view" automatic discovery of Fabric assets.
+- ✅ Manual classification and annotation of up to 1,000 assets.
+- ✅ Glossary terms and business context management.
+- ✅ Basic data lineage within Fabric.
+
+### What Requires Purview Enterprise (Additional Cost)
+
+- ❌ Deep scanning with automatic classification.
+- ❌ Collections for organizing assets hierarchically.
+- ❌ Advanced workflows and approvals.
+- ❌ Unlimited asset annotations.
+
+> **📚 See**: [Purview Enterprise Features and Costs](#-purview-enterprise-features-and-costs) at the end of this document for detailed pricing.
+
+---
+
 ## 📋 Prerequisites
 
 Before starting this lab, ensure you have:
@@ -20,34 +50,58 @@ Before starting this lab, ensure you have:
 
 ## 🔧 Step 1: Verify Microsoft 365 Licensing
 
-### Required Licenses
+### Understanding Fabric and Purview Licensing
 
-The following licenses support Microsoft Fabric and Purview integration:
+Microsoft Fabric and Purview Data Governance are licensed separately:
 
-| License Type | Fabric Access | Purview Access | Recommended |
-|--------------|---------------|----------------|-------------|
-| **Microsoft 365 E5** | ✅ Full | ✅ Full | ✅ Best for labs |
-| **Microsoft 365 E3 + Fabric** | ✅ Full | ⚠️ Limited | ✅ Good alternative |
-| **Fabric Trial** | ✅ 60 days | ⚠️ Limited | ✅ Free option |
-| **Power BI Premium Per User** | ⚠️ Limited | ❌ No | ❌ Not sufficient |
+- **Microsoft Fabric**: Requires either a trial capacity or paid F-SKU capacity.
+- **Purview Data Governance**: Free version included with Microsoft 365; enterprise version requires Azure subscription.
 
-### Verify Your License
+### License Compatibility Matrix
 
-1. Go to [admin.microsoft.com](https://admin.microsoft.com).
+| Your Subscription | Fabric Access | Purview Free (Live View) | Purview Enterprise | This Lab |
+|-------------------|---------------|--------------------------|--------------------|-----------|
+| **Microsoft 365 E5** | ✅ Can start trial or add F-SKU | ✅ Included | ⚠️ Separate Azure cost | ✅ Supported |
+| **Microsoft 365 E3** | ✅ Can start trial or add F-SKU | ✅ Included | ⚠️ Separate Azure cost | ✅ Supported |
+| **Developer Subscription** | ✅ Can start 60-day trial | ✅ Included | ⚠️ Separate Azure cost | ✅ Supported |
+| **Fabric Trial (standalone)** | ✅ 60 days full access | ✅ Included | ⚠️ Separate Azure cost | ✅ Supported |
+| **Fabric F2-F64 (paid)** | ✅ Full with pause/resume | ✅ Included | ⚠️ Separate Azure cost | ✅ Supported |
+| **Power BI Pro only** | ❌ No Fabric capacity | ✅ Limited | ❌ N/A | ❌ Not sufficient |
 
-2. Navigate to **Billing** → **Licenses**.
+> **⚠️ Important**: Purview Enterprise (full scanning, automatic classification) is NOT included in any Microsoft 365 license. It requires a separate Azure subscription with consumption-based billing (~$360+/month minimum). This simulation is designed to work with the **free version** of Purview Data Governance.
 
-3. Look for one of the following:
-   - Microsoft 365 E5
-   - Microsoft Fabric (Free/Pro/Premium)
-   - Power BI Premium Per User (can start Fabric trial)
+### Path A: Verify or Start Fabric Trial (Recommended)
 
-4. If you don't have a Fabric license, you can start a **60-day free trial**:
-   - Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
-   - Click **Start trial** when prompted.
-   - The trial includes full Fabric capacity for 60 days.
+1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
 
-> **💡 Tip**: For this simulation, a Fabric trial is sufficient. You don't need a paid capacity to complete all labs.
+2. If prompted, click **Start trial** to activate your 60-day free trial.
+
+3. If trial is already active or you have existing capacity, you'll see the Fabric home page.
+
+4. Click **Settings** (gear icon) → **Admin portal** → **Capacity settings** to verify your capacity.
+
+> **💡 Tip**: The Fabric trial provides full capabilities at no cost for 60 days. This is sufficient to complete all labs in this simulation.
+
+### Path B: Set Up Fabric F2 Capacity (When Trial Not Available)
+
+If your trial has expired or is unavailable:
+
+1. Go to [portal.azure.com](https://portal.azure.com).
+
+2. Search for **Microsoft Fabric** in the marketplace.
+
+3. Create a new Fabric capacity:
+   - **SKU**: F2 (smallest, ~$0.36/hour).
+   - **Region**: Same as your other Azure resources.
+   - **Resource group**: Create new or use existing.
+
+4. After creation, **pause the capacity** immediately to stop billing:
+   - Navigate to the Fabric capacity resource.
+   - Click **Pause** in the command bar.
+
+5. **Resume only when actively using** for lab exercises.
+
+> **💰 Cost Control Tip**: With F2 and disciplined pause/resume, 4 hours/week × 4 weeks = 16 hours × $0.36 = **~$6/month**. Set up an Azure Automation runbook to auto-pause daily as a safety net.
 
 ---
 
@@ -55,35 +109,53 @@ The following licenses support Microsoft Fabric and Purview integration:
 
 ### Required Permissions
 
-| Permission | Purpose | How to Verify |
-|------------|---------|---------------|
-| **Fabric Administrator** | Enable Fabric, configure tenant settings | Admin Portal access |
-| **Purview Data Curator** | Register sources, run scans | Purview Data Map access |
-| **Workspace Admin** | Create and manage Fabric workspaces | Power BI service |
+| Permission | Purpose | Required For | How to Verify |
+|------------|---------|--------------|---------------|
+| **Fabric Administrator** | Enable Fabric, configure tenant settings | All labs | Fabric Admin portal access |
+| **Fabric Workspace Admin** | Create and manage Fabric workspaces | All labs | Create workspace in Fabric portal |
+| **Purview Reader** | View discovered assets in Purview | Labs 06-08 | Access purview.microsoft.com |
+| **Purview Data Catalog Curator** | Annotate and classify assets | Labs 07-08 (free version) | Edit asset metadata |
+| **Purview Data Source Administrator** | Register sources, run scans | Enterprise only | Purview Data Map → Sources |
 
 ### Verify Fabric Admin Access
 
-1. Go to [admin.powerbi.com](https://admin.powerbi.com).
+1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
 
-2. If you can access the **Admin portal**, you have Fabric/Power BI admin rights.
+2. Click the **Settings** gear icon (top right) and select **Admin portal**.
 
-3. Navigate to **Tenant settings** to verify you can view and modify settings.
+3. If you can access the **Admin portal**, you have Fabric admin rights.
+
+4. Navigate to **Tenant settings** to verify you can view and modify settings.
 
 > **⚠️ Not an Admin?** Contact your IT administrator to request temporary admin access for this simulation, or use a developer/trial tenant where you have full control.
 
-### Verify Purview Access
+### Verify Purview Free Version Access
+
+The free version of Purview Data Governance provides "live view" discovery of Fabric assets.
 
 1. Go to [purview.microsoft.com](https://purview.microsoft.com).
 
-2. Navigate to **Data Map** → **Sources**.
+2. Accept the terms and privacy conditions if prompted, then select **Get started**.
 
-3. If you can view the Data Map, you have at least read access.
+3. On the portal **home page**, verify you can see:
+   - **Solution cards** showing available Purview solutions.
+   - **Settings** option (gear icon).
 
-4. To run scans, you need **Data Source Administrator** role:
-   - In Purview, go to **Data Map** → **Collections**.
-   - Select the root collection.
-   - Click **Role assignments**.
-   - Verify your account has **Data source administrators** role.
+4. Check for **Data Governance** solutions:
+   - Look for **Unified Catalog** or **Data Catalog** in available solutions.
+   - If visible, you have access to the free data governance features.
+
+5. To verify your permissions:
+   - Select **Settings** (gear icon) → **Roles and scopes**.
+   - Look for your assigned role groups.
+
+> **💡 What to Expect with Free Version**:
+>
+> - ✅ Fabric assets appear automatically via "live view" (no scanning required).
+> - ✅ Manual classification and glossary term assignment.
+> - ✅ Up to 1,000 annotated assets.
+> - ❌ No automatic classification or deep scanning.
+> - ❌ No collections for hierarchical organization.
 
 ---
 
@@ -100,13 +172,17 @@ Microsoft Fabric requires a capacity (compute resources) to run workloads.
 3. Select **Admin portal** → **Capacity settings**.
 
 4. Look for available capacities:
-   - **Trial capacity**: Free 60-day trial.
-   - **F2-F64**: Paid Fabric capacities.
-   - **P1-P5**: Power BI Premium capacities (support Fabric).
 
-### Start a Trial Capacity (If Needed)
+| Capacity Type | Cost | Pause/Resume | Best For |
+|---------------|------|--------------|----------|
+| **Trial** | Free (60 days) | ❌ Cannot pause | First-time learners |
+| **F2** | ~$0.36/hour | ✅ Yes | Cost-controlled labs |
+| **F4-F64** | $0.72-$23/hour | ✅ Yes | Larger workloads |
+| **P1-P5** | $4,995+/month | ❌ No | Enterprise production |
 
-If no capacity is available:
+### Path A: Start Trial Capacity (Recommended)
+
+If no capacity exists and trial is available:
 
 1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
 
@@ -114,42 +190,38 @@ If no capacity is available:
 
 3. You'll see a prompt: **"Start a Microsoft Fabric trial"**.
 
-4. Click **Start trial**.
+4. Click **Start trial** - activates immediately for 60 days.
 
-5. The trial capacity activates immediately and lasts 60 days.
+> **💡 Note**: Trial capacity is shared across your organization. Check with colleagues before starting.
 
-> **💡 Tip**: Trial capacity is shared across your organization. If someone else started a trial, you can use it.
+### Path B: Create F2 Capacity (When Trial Unavailable)
 
----
+If trial is expired or unavailable:
 
-## 🔧 Step 4: Verify Purview Data Map Access
+1. Go to [portal.azure.com](https://portal.azure.com) → **Create a resource**.
 
-### Navigate to Purview Data Map
+2. Search **Microsoft Fabric** → **Create**.
 
-1. Go to [purview.microsoft.com](https://purview.microsoft.com).
+3. Configure:
+   - **Name**: `fabric-lab-capacity`
+   - **Size**: F2 (smallest)
+   - **Region**: Your preferred region
+   - **Fabric capacity administrator**: Your account
 
-2. In the left navigation, click **Data Map**.
+4. Click **Review + Create** → **Create**.
 
-3. You should see the Data Map interface with:
-   - **Sources** tab.
-   - **Classifications** tab.
-   - **Scan rule sets** tab.
+5. **Immediately pause** the capacity after creation to avoid charges.
 
-### Verify Registration Permissions
-
-1. In Data Map, click **Register**.
-
-2. You should see a list of available data sources including:
-   - Azure Data Lake Storage
-   - Azure SQL Database
-   - Power BI
-   - **Fabric** (if available in your region)
-
-> **⚠️ Fabric Source Not Visible?** Fabric as a Purview data source is in preview. It may not be available in all regions or tenants. Check the [Microsoft documentation](https://learn.microsoft.com/purview/register-scan-fabric-tenant) for current availability.
+> **💰 F2 Cost Management**:
+>
+> - Billed per-second when running (~$0.36/hour).
+> - **Pause** when not actively using.
+> - Set up daily auto-pause runbook as safety net.
+> - Estimated lab cost: $5-15/month with disciplined usage.
 
 ---
 
-## 🔧 Step 5: Browser and Environment Setup
+## 🔧 Step 4: Browser and Environment Setup
 
 ### Recommended Browser Configuration
 
@@ -179,11 +251,22 @@ If no capacity is available:
 
 Before proceeding to Lab 01, verify:
 
-- [ ] **Licensing**: Microsoft 365 E5 or Fabric trial is active.
-- [ ] **Admin Access**: Can access admin.powerbi.com Admin portal.
-- [ ] **Purview Access**: Can access purview.microsoft.com Data Map.
-- [ ] **Fabric Capacity**: Trial or paid capacity is available.
-- [ ] **Browser Setup**: Signed into correct account in supported browser.
+### Fabric Requirements (All Labs)
+
+- [ ] **Fabric Capacity**: Trial is active OR F2 capacity created and can be resumed.
+- [ ] **Admin Access**: Can access Fabric Admin portal via [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
+- [ ] **Workspace Creation**: Can create a new Fabric workspace.
+
+### Purview Requirements (Labs 06-08)
+
+- [ ] **Portal Access**: Can access [purview.microsoft.com](https://purview.microsoft.com).
+- [ ] **Free Version**: Can see Data Governance solutions (Unified Catalog or Data Catalog).
+- [ ] **Permissions**: Have Reader or Curator role assigned.
+
+### General Requirements
+
+- [ ] **Browser Setup**: Signed into correct account in Microsoft Edge or Chrome.
+- [ ] **Azure Access** (Path B only): Can access [portal.azure.com](https://portal.azure.com) to manage F2 capacity.
 
 ---
 
@@ -201,10 +284,10 @@ cd "00-Prerequisites-and-Setup/scripts"
 
 The script validates:
 
-- Azure CLI installation and authentication.
-- PowerShell module versions.
-- Service connectivity.
-- Basic permission checks.
+- PowerShell version (5.1+ or 7+).
+- Network connectivity to Microsoft services (Fabric, Purview, Power BI, Azure).
+- Azure CLI installation (optional - only used in cleanup lab).
+- Sample data files existence.
 
 ---
 
@@ -212,11 +295,11 @@ The script validates:
 
 ### Cannot Access Admin Portal
 
-**Symptom**: "You don't have permission to access this page" at admin.powerbi.com.
+**Symptom**: "You don't have permission to access this page" when selecting **Admin portal** from Fabric settings.
 
 **Resolution**:
 
-1. Verify you're signed in with the correct account.
+1. Verify you're signed in with the correct account at [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
 2. Request Fabric Admin role from your Global Admin.
 3. Or use a developer/trial tenant where you have full control.
 
@@ -226,19 +309,25 @@ The script validates:
 
 **Resolution**:
 
-1. Someone else in your org may have already started a trial.
-2. Contact your admin to check trial status.
-3. Request access to existing trial capacity.
+1. Someone else in your org may have already started a trial - check with colleagues.
+2. Contact your admin to check trial status and request access.
+3. **Use Path B**: Create an F2 capacity in Azure portal (~$0.36/hour with pause/resume).
+4. See [Step 3: Path B](#path-b-create-f2-capacity-when-trial-unavailable) for F2 setup instructions.
 
-### Purview Data Map Empty
+### Purview Data Governance Not Visible
 
-**Symptom**: Can access Purview but Data Map shows no sources.
+**Symptom**: Can access Purview portal but don't see Unified Catalog, Data Map, or Data Governance solutions.
 
 **Resolution**:
 
-1. This is normal for new/empty Purview accounts.
-2. You'll register Fabric as a source in Lab 06.
-3. Verify you have Data Source Administrator role.
+1. **This is expected with many subscriptions** - Data Governance is a separate product.
+2. The **free version** of Purview Data Governance should be available at [purview.microsoft.com](https://purview.microsoft.com).
+3. If you see no Data Governance options:
+   - Your tenant may not have the free version enabled yet.
+   - Try accessing via [web.purview.azure.com](https://web.purview.azure.com) (classic portal).
+   - Contact your Global Administrator to enable Purview Data Governance.
+4. **For this simulation**: The free version with "live view" is sufficient for Labs 06-08.
+5. **For full scanning**: Requires Purview Enterprise (~$360+/month) - see [Purview Enterprise Features](#-purview-enterprise-features-and-costs).
 
 ---
 
@@ -247,7 +336,42 @@ The script validates:
 - [Microsoft Fabric documentation](https://learn.microsoft.com/fabric/)
 - [Microsoft Purview documentation](https://learn.microsoft.com/purview/)
 - [Fabric licensing overview](https://learn.microsoft.com/fabric/enterprise/licenses)
+- [Fabric capacity pause/resume](https://learn.microsoft.com/fabric/enterprise/pause-resume)
+- [Purview free version overview](https://learn.microsoft.com/purview/data-governance-free-version)
 - [Purview roles and permissions](https://learn.microsoft.com/purview/catalog-permissions)
+
+---
+
+## 💰 Purview Enterprise Features and Costs
+
+> **📖 Detailed Documentation**: For complete enterprise feature documentation, see [ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md](../ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md).
+
+### Quick Summary: Free vs Enterprise
+
+| Feature | Free Version | Enterprise |
+|---------|--------------|--------------------|
+| **Fabric Asset Discovery** | ✅ Live view (automatic) | ✅ Live view + deep scanning |
+| **Manual Classification** | ✅ Up to 1,000 assets | ✅ Unlimited |
+| **Automatic Classification** | ❌ Not available | ✅ 200+ built-in classifiers |
+| **Cost** | **$0** | **~$360-720+/month** |
+| **Pause/Resume** | N/A | **❌ Cannot pause** |
+
+### Do You Need Enterprise for This Simulation?
+
+**No** - The free version is sufficient for all labs in this simulation.
+
+- ✅ Live view discovers Fabric assets automatically.
+- ✅ Manual classification teaches the same governance concepts.
+- ✅ Glossary terms and annotations work in free version.
+- ✅ Data lineage is visible for Fabric workloads.
+
+**Consider Enterprise Only If**:
+
+- You need to scan non-Azure/Fabric sources (on-premises, AWS, GCP).
+- You require automatic classification at scale (200+ sensitive information types).
+- You're building a production data governance solution.
+
+> **⚠️ Warning**: Purview Enterprise **cannot be paused** like Fabric. Once upgraded, billing continues even when idle. See the advanced document for cost optimization strategies.
 
 ---
 

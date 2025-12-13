@@ -2,7 +2,7 @@
 
 ## 🎯 Project Overview
 
-This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview integration from scratch**. Through **eleven progressive labs**, you'll enable Microsoft Fabric, build multiple data workloads (Lakehouse, Warehouse, KQL Database), integrate with Microsoft Purview for auto-classification, and implement enterprise data governance workflows.
+This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview integration from scratch**. Through **ten progressive labs**, you'll enable Microsoft Fabric, build multiple data workloads (Lakehouse, Warehouse, KQL Database), integrate with Microsoft Purview for data discovery, and implement data governance workflows.
 
 **Target Audience**: Data engineers, governance professionals, IT administrators, and anyone learning Microsoft Fabric and Purview integration from the ground up.
 
@@ -10,12 +10,15 @@ This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview inte
 
 **What Makes This Different:**
 
+- **Low/No Cost Fabric Options**: Use the 60-day free trial OR pay-as-you-go F2 capacity (~$0.36/hr) that can be paused when not in use.
+- **Zero Cost Purview Path**: Labs use Purview Free version with "live view" discovery - no enterprise subscription required.
 - **From Scratch Setup**: Assumes Fabric has never been enabled - complete onboarding guidance included.
 - **UI-First Approach**: All primary instructions are portal-based with clear navigation paths.
 - **Multiple Data Workloads**: Covers Lakehouse, Warehouse, and KQL Database - not just one pattern.
-- **On-Demand Scanning**: Focus on immediate scan results for faster learning feedback.
-- **End-to-End Governance**: From raw data ingestion to classified, labeled, governed Power BI reports.
-- **Production Patterns**: Supplemental documentation covers scheduled scans and enterprise recommendations.
+- **Live View Discovery**: Fabric assets automatically appear in Purview - no scanning configuration needed.
+- **End-to-End Governance**: From raw data ingestion to annotated, labeled, governed Power BI reports.
+
+> **💰 Cost Note**: This simulation works with **Fabric Trial (free for 60 days)** or **F2 capacity (~$0.36/hr with pause capability)** combined with **Purview Free version**. Pause your Fabric capacity between lab sessions to minimize costs. For advanced scanning with automatic classification, see [ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md](./ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md).
 
 ---
 
@@ -27,16 +30,22 @@ This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview inte
 |---------------|--------|----------|
 | **⏱️ Lab Completion** | ~7-8 hours total | Plan for full day workshop or 2-3 sessions |
 | **⏱️ Fabric Enablement** | ~15 minutes | Admin API settings require propagation time |
-| **⏱️ On-Demand Scan** | 5-30 minutes | Depends on workspace asset count |
-| **⏱️ Ingestion Processing** | 5-15 minutes | After scan completion |
-| **💰 Fabric Capacity** | Pay-as-you-go or trial | F2+ capacity required for full features |
-| **🔐 Licensing** | Fabric + Purview | Microsoft 365 E5 or equivalent recommended |
+| **⏱️ Live View Sync** | 5-15 minutes | Fabric assets appear in Purview automatically |
+| **💰 Fabric Cost** | $0 or ~$3-5 total | 60-day trial (free) OR F2 capacity with pause |
+| **💰 Purview Cost** | $0 with free version | Enterprise scanning costs ~$360+/month extra |
+| **🔐 Licensing** | Fabric + M365 | Developer subscription or M365 E3/E5 |
+
+> **💡 Fabric Capacity Options**:
+>
+> - **Option 1 - Free Trial**: 60-day Fabric trial with full capabilities (recommended for first-time users)
+> - **Option 2 - F2 Capacity**: ~$0.36/hour, **pause when not in use** to minimize costs (~$3-5 for all labs)
+> - **Cost Tip**: If using F2, pause your capacity after each session - you only pay for active hours
 
 > **💡 Recommended Approach**:
 >
 > - **Session 1 (3 hours)**: Labs 00-03 - Prerequisites, Fabric enablement, Lakehouse, Data ingestion
-> - **Session 2 (2.5 hours)**: Labs 04-06 - Warehouse, KQL, Purview integration
-> - **Session 3 (2.5 hours)**: Labs 07-10 - Classification, Labels, Power BI, Cleanup
+> - **Session 2 (2 hours)**: Labs 04-06 - Warehouse, KQL, Purview discovery and annotations
+> - **Session 3 (2 hours)**: Labs 07-09 - Sensitivity Labels, Power BI, Cleanup
 
 **Key Timing Note**: Unlike SharePoint Content Explorer (which requires up to 7 days for classification indexing), **Fabric Purview scans complete in minutes to hours** with On-Demand scanning. This project is designed for faster feedback loops.
 
@@ -186,81 +195,59 @@ This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview inte
 
 ---
 
-### [Lab 06: Purview Integration and Scanning](./06-Purview-Integration-Scanning/)
+### [Lab 06: Purview Discovery and Annotations](./06-Purview-Discovery-Annotations/)
 
 **Duration**: 60 minutes  
-**Objective**: Register Fabric tenant in Purview and run On-Demand scans
+**Objective**: Explore Purview live view discovery, add annotations, and explore lineage
 
 **What You'll Learn**:
 
-- Access Purview Data Map and register Fabric as a data source.
-- Configure authentication for Fabric scanning (Managed Identity).
-- Run On-Demand ("Once") scans for immediate classification.
-- Monitor scan progress and understand scan states.
-- Access Purview Hub within Fabric portal.
-
-**Key Deliverables**:
-
-- Fabric tenant registered in Purview Data Map.
-- On-Demand scan completed successfully.
-- Scan results visible in Purview.
-- Purview Hub accessible from Fabric workspace.
-
-**Prerequisites**: Labs 02-05 completed (data assets exist to scan)
-
-> **⏱️ Timing Note**: On-Demand scans typically complete in **5-30 minutes** for small workspaces. This is significantly faster than SharePoint classification which requires up to 7 days. See [TIMING-AND-CLASSIFICATION-GUIDE.md](./TIMING-AND-CLASSIFICATION-GUIDE.md) for detailed timing information.
-
----
-
-### [Lab 07: Classification, Catalog, and Lineage](./07-Classification-Catalog-Lineage/)
-
-**Duration**: 45 minutes  
-**Objective**: Explore classification results, browse the data catalog, and view lineage
-
-**What You'll Learn**:
-
-- Review auto-classification results (200+ built-in SITs).
-- Browse assets in the Purview Unified Catalog.
-- Search and filter data assets by classification.
+- Access Purview portal and navigate to Data Catalog.
+- View Fabric assets automatically discovered via "live view".
+- Add manual classifications and annotations to assets.
+- Create and link glossary terms for business context.
 - View end-to-end data lineage for Fabric assets.
-- Understand lineage from source to Power BI.
+- Navigate between Fabric and Purview seamlessly.
 
 **Key Deliverables**:
 
-- Classification results reviewed and validated.
-- Data catalog navigation mastered.
-- Asset search and filtering understood.
-- Lineage visualization explored.
+- Fabric assets visible in Purview Data Catalog.
+- Manual classifications applied to sensitive columns.
+- Glossary terms created and linked to assets.
+- Data lineage visualization explored.
+- Navigation between Fabric and Purview mastered.
 
-**Prerequisites**: Lab 06 completed (scan finished with results)
+**Prerequisites**: Labs 02-05 completed (data assets exist to discover)
+
+> **💡 Free Version Note**: This lab uses Purview's "live view" feature which automatically discovers Fabric assets. For deep scanning with automatic classification, see [ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md](./ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md).
 
 ---
 
-### [Lab 08: Sensitivity Labels and Governance](./08-Sensitivity-Labels-Governance/)
+### [Lab 07: Sensitivity Labels and Governance](./07-Sensitivity-Labels-Governance/)
 
 **Duration**: 45 minutes  
 **Objective**: Apply sensitivity labels and implement governance controls
 
 **What You'll Learn**:
 
-- Understand sensitivity label architecture.
-- Apply sensitivity labels to Fabric assets.
-- Configure label policies for automatic labeling.
-- Implement access controls based on labels.
-- Review governance compliance in Purview.
+- Understand sensitivity label architecture in Microsoft 365.
+- Publish sensitivity labels to Fabric workspaces.
+- Apply sensitivity labels manually to Fabric assets.
+- Configure governance policies for labeled content.
+- View governance status in Purview Data Catalog.
 
 **Key Deliverables**:
 
-- Sensitivity labels applied to Fabric assets.
-- Label policies understood.
-- Governance controls implemented.
-- Compliance posture reviewed.
+- Sensitivity labels published and applied to Fabric assets.
+- Label inheritance behavior understood.
+- Governance controls configured.
+- Compliance posture visible in Purview.
 
-**Prerequisites**: Lab 07 completed
+**Prerequisites**: Lab 06 completed
 
 ---
 
-### [Lab 09: Power BI Visualization](./09-Power-BI-Visualization/)
+### [Lab 08: Power BI Visualization](./08-Power-BI-Visualization/)
 
 **Duration**: 45 minutes  
 **Objective**: Create Power BI reports from governed Fabric data
@@ -284,7 +271,7 @@ This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview inte
 
 ---
 
-### [Lab 10: Cleanup and Reset](./10-Cleanup-Reset/)
+### [Lab 09: Cleanup and Reset](./09-Cleanup-Reset/)
 
 **Duration**: 30 minutes  
 **Objective**: Remove simulation resources and restore environment
@@ -319,15 +306,15 @@ This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview inte
 | Data Warehouse (SQL) | 04 | Intermediate | T-SQL, dimensional modeling, SQL endpoint |
 | KQL Database | 05 | Intermediate | Eventhouse, streaming ingestion, KQL syntax |
 | Real-Time Analytics | 05 | Basic | Event-driven architecture, time-series data |
-| Purview Data Map | 06 | Intermediate | Source registration, on-demand scanning |
+| Purview Data Map | 06 | Intermediate | Source registration, live view discovery |
 | Purview Hub (Fabric) | 06 | Basic | Native Fabric-Purview integration |
-| Auto-Classification | 07 | Intermediate | 200+ SITs, classification results, accuracy |
-| Data Catalog | 07 | Basic | Asset discovery, metadata, search |
-| Data Lineage | 07 | Basic | End-to-end lineage visualization |
-| Sensitivity Labels | 08 | Intermediate | Information Protection, label policies |
-| Data Governance | 08 | Intermediate | Access controls, compliance, auditing |
-| Power BI Reporting | 09 | Intermediate | DirectLake, DAX basics, governed reports |
-| Power BI + Purview | 09 | Basic | Governed data sources, certified datasets |
+| Manual Classification | 06 | Intermediate | Column annotations, glossary terms |
+| Data Catalog | 06 | Basic | Asset discovery, metadata, search |
+| Data Lineage | 06 | Basic | End-to-end lineage visualization |
+| Sensitivity Labels | 07 | Intermediate | Information Protection, label policies |
+| Data Governance | 07 | Intermediate | Access controls, compliance, auditing |
+| Power BI Reporting | 08 | Intermediate | DirectLake, DAX basics, governed reports |
+| Power BI + Purview | 08 | Basic | Governed data sources, certified datasets |
 
 ---
 
@@ -363,15 +350,13 @@ Fabric-Purview-Governance-Simulation/
 │   ├── README.md
 │   └── kql/
 │       └── sample-queries.kql
-├── 06-Purview-Integration-Scanning/
+├── 06-Purview-Discovery-Annotations/
 │   └── README.md
-├── 07-Classification-Catalog-Lineage/
+├── 07-Sensitivity-Labels-Governance/
 │   └── README.md
-├── 08-Sensitivity-Labels-Governance/
+├── 08-Power-BI-Visualization/
 │   └── README.md
-├── 09-Power-BI-Visualization/
-│   └── README.md
-└── 10-Cleanup-Reset/
+└── 09-Cleanup-Reset/
     ├── README.md
     └── scripts/
         └── Remove-FabricResources.ps1

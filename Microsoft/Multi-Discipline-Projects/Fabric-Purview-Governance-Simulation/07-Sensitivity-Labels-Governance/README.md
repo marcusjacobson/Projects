@@ -1,4 +1,4 @@
-# Lab 08: Sensitivity Labels and Governance
+# Lab 07: Sensitivity Labels and Governance
 
 ## 🎯 Objective
 
@@ -8,11 +8,17 @@ Apply Microsoft Information Protection (MIP) sensitivity labels to Fabric assets
 
 ---
 
+## � Cost Note
+
+> **💡 Good News**: Sensitivity labels are a **Microsoft 365 feature**, not a Purview Enterprise feature. If your organization has Microsoft 365 E3/E5 or equivalent licensing, sensitivity labels are included at no additional cost.
+
+---
+
 ## 📋 Prerequisites
 
-- [ ] Lab 06-07 completed (Purview integration with classifications).
-- [ ] Microsoft 365 E5 or Microsoft Purview Information Protection license.
-- [ ] Sensitivity labels configured in Microsoft Purview Compliance Portal.
+- [ ] Lab 06 completed (Fabric assets visible in Purview with annotations).
+- [ ] Microsoft 365 E3/E5 or Microsoft Information Protection license.
+- [ ] Sensitivity labels published by your M365 administrator.
 - [ ] Permissions to apply labels to Fabric items.
 
 ---
@@ -144,18 +150,18 @@ Your organization may have labels like:
 
 ### Check Labels in Data Catalog
 
-1. Go to [purview.microsoft.com](https://purview.microsoft.com).
+- Go to [purview.microsoft.com](https://purview.microsoft.com).
+- Navigate to **Data Catalog** → **Browse**.
+- Search for your Lakehouse.
+- View the asset details.
 
-2. Navigate to **Data Catalog** → **Browse**.
+Look for sensitivity label information in:
 
-3. Search for your Lakehouse.
+- Overview tab
+- Properties tab
+- A dedicated Labels section
 
-4. View the asset details.
-
-5. Look for sensitivity label information in:
-   - Overview tab
-   - Properties tab
-   - A dedicated Labels section
+> **💡 Note**: Sensitivity labels sync from M365 to Purview automatically - this doesn't require Purview Enterprise scanning.
 
 ### Label Governance Report
 
@@ -191,32 +197,27 @@ Depending on label configuration, sensitivity labels can:
 
 ---
 
-## 🔧 Step 8: Create Label Policies (Admin Only)
+## 🔧 Step 8: Auto-Labeling Policies (Enterprise Feature)
 
-> **⚠️ Note**: This step requires Purview Compliance administrator access.
+> **⚠️ Note**: Auto-labeling policies require additional licensing and administrator access. This step is **informational** to understand enterprise governance capabilities.
 
-### Access Compliance Portal
+### About Auto-Labeling
 
-1. Go to [compliance.microsoft.com](https://compliance.microsoft.com).
+Organizations can configure policies that automatically apply sensitivity labels based on:
 
-2. Navigate to **Information Protection** → **Labels**.
+- Classifications detected during Purview Enterprise scanning.
+- Sensitive information types (SSN, Credit Card, etc.).
+- Custom conditions and rules.
 
-### Create Auto-Labeling Policy (Optional)
+### Enterprise Auto-Labeling Setup
 
-1. Click **Create auto-labeling policy**.
+If your organization has Purview Enterprise, administrators can:
 
-2. Configure:
+- Go to [compliance.microsoft.com](https://compliance.microsoft.com).
+- Navigate to **Information Protection** → **Auto-labeling**.
+- Create policies that apply labels when sensitive data is detected.
 
-   | Setting | Value |
-   |---------|-------|
-   | **Name** | `Fabric-PII-Auto-Label` |
-   | **Conditions** | Contains SSN, Credit Card |
-   | **Label to apply** | Confidential |
-   | **Scope** | Microsoft Fabric |
-
-3. This automatically labels items containing sensitive data.
-
-> **📝 Lab Note**: You may not have permissions to create policies. This step is informational for understanding enterprise governance.
+> **📖 Reference**: For enterprise auto-labeling with Fabric data, see [ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md](../ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md).
 
 ---
 
@@ -314,9 +315,10 @@ Before proceeding to Lab 09, verify:
 
 **Resolution**:
 
-1. Wait for sync (can take 15-30 minutes).
-2. Re-run Purview scan to pick up label changes.
-3. Check if Fabric-Purview sync is enabled.
+- Wait for sync (can take 15-30 minutes).
+- Refresh the Purview Data Catalog page.
+- Label sync is automatic - doesn't require Purview Enterprise scanning.
+- Check if Fabric-Purview integration is enabled in admin settings.
 
 ---
 
@@ -347,9 +349,9 @@ Use this to determine appropriate labels:
 
 Proceed to:
 
-**[Lab 09: Power BI Visualization](../09-Power-BI-Visualization/)**
+**[Lab 08: Power BI Visualization](../08-Power-BI-Visualization/)**
 
-> **🎯 Important**: Lab 09 creates Power BI reports from your labeled data, demonstrating how sensitivity flows through the analytics stack.
+> **🎯 Important**: Lab 08 creates Power BI reports from your labeled data, demonstrating how sensitivity flows through the analytics stack.
 
 ---
 

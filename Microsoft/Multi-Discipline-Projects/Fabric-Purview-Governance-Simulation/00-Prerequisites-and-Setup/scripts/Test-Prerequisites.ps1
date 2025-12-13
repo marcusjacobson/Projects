@@ -142,14 +142,16 @@ Write-Host ""
 Write-Host "📋 Azure CLI (Optional)" -ForegroundColor Cyan
 
 try {
-    $azVersion = az version 2>$null | ConvertFrom-Json
-    if ($azVersion) {
+    $azVersionOutput = az version --output json 2>$null
+    if ($azVersionOutput) {
+        $azVersion = $azVersionOutput | ConvertFrom-Json
         Add-CheckResult -Name "Azure CLI Installed" -Status "Passed" -Message "Version $($azVersion.'azure-cli')"
         
         # Check if logged in
         try {
-            $account = az account show 2>$null | ConvertFrom-Json
-            if ($account) {
+            $accountOutput = az account show --output json 2>$null
+            if ($accountOutput) {
+                $account = $accountOutput | ConvertFrom-Json
                 Add-CheckResult -Name "Azure CLI Authenticated" -Status "Passed" -Message "Signed in as $($account.user.name)"
             } else {
                 Add-CheckResult -Name "Azure CLI Authenticated" -Status "Warning" -Message "Not signed in - run 'az login'"
@@ -157,43 +159,15 @@ try {
         } catch {
             Add-CheckResult -Name "Azure CLI Authenticated" -Status "Warning" -Message "Not signed in - run 'az login'"
         }
+    } else {
+        Add-CheckResult -Name "Azure CLI" -Status "Warning" -Message "Not installed - optional for this simulation"
     }
 } catch {
     Add-CheckResult -Name "Azure CLI" -Status "Warning" -Message "Not installed - optional for this simulation"
 }
 
 # =============================================================================
-# Step 5: Check PowerShell Modules (Optional)
-# =============================================================================
-
-Write-Host ""
-Write-Host "📋 PowerShell Modules (Optional)" -ForegroundColor Cyan
-
-$modules = @(
-    @{ Name = "Az.Accounts"; MinVersion = "2.0.0"; Required = $false },
-    @{ Name = "MicrosoftPowerBIMgmt"; MinVersion = "1.0.0"; Required = $false }
-)
-
-foreach ($module in $modules) {
-    $installed = Get-Module -ListAvailable -Name $module.Name | Sort-Object Version -Descending | Select-Object -First 1
-    
-    if ($installed) {
-        if ($installed.Version -ge [version]$module.MinVersion) {
-            Add-CheckResult -Name "$($module.Name)" -Status "Passed" -Message "Version $($installed.Version)"
-        } else {
-            Add-CheckResult -Name "$($module.Name)" -Status "Warning" -Message "Version $($installed.Version) - update recommended"
-        }
-    } else {
-        if ($module.Required) {
-            Add-CheckResult -Name "$($module.Name)" -Status "Failed" -Message "Not installed - required module"
-        } else {
-            Add-CheckResult -Name "$($module.Name)" -Status "Warning" -Message "Not installed - optional for this simulation"
-        }
-    }
-}
-
-# =============================================================================
-# Step 6: Check Sample Data Files
+# Step 5: Check Sample Data Files
 # =============================================================================
 
 Write-Host ""
@@ -223,7 +197,7 @@ if ($dataPath) {
 }
 
 # =============================================================================
-# Step 7: Summary
+# Step 6: Summary
 # =============================================================================
 
 Write-Host ""

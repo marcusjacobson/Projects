@@ -8,6 +8,27 @@ Validate licensing, permissions, and environment readiness before beginning the 
 
 ---
 
+## 🏗️ What You'll Build
+
+| Item | Description |
+|------|-------------|
+| **Validated Environment** | Confirmed licensing, permissions, and capacity for Fabric and Purview |
+| **Trial Capacity** | 60-day Microsoft Fabric trial (or F2 capacity if needed) |
+| **Lab Path Decision** | Chosen approach based on available resources |
+
+### Real-World Context
+
+In enterprise environments, **environment validation is the foundation of every data platform deployment**. Organizations must verify:
+
+- **Licensing compliance** before deploying analytics workloads.
+- **Capacity planning** to ensure resources match workload requirements.
+- **Permission structures** to enable proper governance from day one.
+- **Cost forecasting** to align with budget constraints.
+
+Skipping this validation step is the #1 cause of failed data platform implementations. This lab mirrors the discovery phase that consultants perform when assessing client readiness for Microsoft Fabric adoption.
+
+---
+
 ## 🛤️ Choose Your Lab Path
 
 This simulation supports two approaches based on your available resources:

@@ -14,6 +14,39 @@ Apply Microsoft Information Protection (MIP) sensitivity labels to Fabric assets
 
 ---
 
+## 🏗️ What You'll Build
+
+| Item | Description |
+|------|-------------|
+| **Labeled Lakehouse** | Sensitivity label applied to CustomerDataLakehouse |
+| **Labeled Semantic Model** | Label inheritance from Lakehouse to downstream assets |
+| **Protection Policies** | Data protection controls based on label classification |
+| **Label Audit Trail** | Visibility into who applied labels and when |
+
+### Real-World Context
+
+Sensitivity labels move beyond **discovery** to **protection**:
+
+- **Classifications tell you** what sensitive data exists.
+- **Labels enforce** how that data can be used, shared, and accessed.
+
+Common enterprise labeling scenarios:
+
+- **Confidential - Finance** — restricts export, requires encryption.
+- **Internal Only** — prevents external sharing.
+- **Public** — allows broad distribution.
+- **Highly Confidential - PII** — triggers DLP policies, audit logging.
+
+Label **inheritance** is powerful in Fabric:
+
+- Label a Lakehouse → Reports built from it inherit the label.
+- Label a Semantic Model → All downstream reports are protected.
+- **Downstream impact** — labels flow automatically through the lineage.
+
+This mirrors **Information Protection programs** at Fortune 500 companies where data classification drives automated security controls.
+
+---
+
 ## 📋 Prerequisites
 
 - [ ] Lab 06 completed (Fabric assets visible in Purview with annotations).

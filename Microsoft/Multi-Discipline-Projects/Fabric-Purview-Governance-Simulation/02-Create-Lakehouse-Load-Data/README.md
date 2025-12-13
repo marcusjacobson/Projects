@@ -4,7 +4,29 @@
 
 Create a Lakehouse in your Fabric workspace and load sample data containing classifiable sensitive information.
 
-**Duration**: 45 minutes
+**Duration**: 30 minutes
+
+---
+
+## 🏗️ What You'll Build
+
+| Item | Description |
+|------|-------------|
+| **CustomerDataLakehouse** | Lakehouse with Delta Lake storage and SQL analytics endpoint |
+| **customers** | Table with 100 customer records including PII (SSN, email, address) |
+| **transactions** | Table with 500 financial transaction records |
+| **SQL Analytics Endpoint** | Auto-generated T-SQL query interface |
+| **Default Semantic Model** | Auto-generated Power BI dataset for reporting |
+
+### Real-World Context
+
+The Lakehouse is the **foundation of modern data architecture**, combining:
+
+- **Data Lake flexibility** (store any file format, schema-on-read).
+- **Data Warehouse reliability** (ACID transactions, schema enforcement via Delta Lake).
+- **Unified analytics** (single copy of data for engineering, BI, and ML).
+
+Organizations use Lakehouses as their **single source of truth** for analytics. The sample data you're loading simulates a **customer 360 scenario**—a common pattern where organizations consolidate customer information and transactions for segmentation, risk analysis, and personalized marketing. The PII in this data (SSN, email) will be discovered by Purview in later labs, demonstrating data governance workflows.
 
 ---
 
@@ -57,9 +79,14 @@ Before creating a Lakehouse, understand its key components:
 
 Once created, you'll see:
 
-1. **Explorer pane** (left): Shows Tables and Files folders.
-2. **Main canvas** (center): Currently empty.
-3. **Properties** (right): Lakehouse details.
+1. **Explorer pane** (left): Shows your Lakehouse name with **Tables** (dbo schema) and **Files** folders.
+2. **Main area** (center): Shows **Get data in your lakehouse** welcome screen with data ingestion options:
+   - **Upload files** - Add local files directly.
+   - **Start with sample data** - Use built-in sample datasets.
+   - **New shortcut** - Create shortcuts to external data.
+   - **New Dataflow Gen2** - Build data transformation flows.
+   - **New pipeline** - Create data orchestration pipelines.
+3. **Info banner** (top): Confirms a SQL analytics endpoint was created for SQL querying.
 
 ---
 
@@ -67,7 +94,7 @@ Once created, you'll see:
 
 ### Locate Sample Data
 
-The sample data files are in the `data-templates` folder:
+The sample data files are in the project's `data-templates` folder (at the repository root):
 
 - `customers.csv` - Customer records with PII (SSN, names, addresses).
 - `transactions.csv` - Financial transactions with credit card numbers.
@@ -78,7 +105,7 @@ The sample data files are in the `data-templates` folder:
 
 2. Select **Upload** → **Upload files**.
 
-3. Navigate to the `data-templates` folder.
+3. Navigate to the `data-templates` folder in this project.
 
 4. Select `customers.csv` and select **Open**.
 
@@ -92,7 +119,7 @@ The sample data files are in the `data-templates` folder:
 
 2. You should see both CSV files listed.
 
-3. Select a file to preview its contents.
+3. Select a file to preview its contents in the main area.
 
 ---
 
@@ -148,21 +175,33 @@ The sample data files are in the `data-templates` folder:
 
 ### View Table Schema
 
-1. Select the `customers` table.
+1. In the Explorer pane, expand the `customers` table by selecting the arrow next to it.
 
-2. In the preview pane, select **View schema**.
+2. The column list displays with type icons:
+   - **ABC** icon = string/text column
+   - **123** icon = numeric column
 
-3. Review the automatically inferred data types:
+3. Review the columns and their inferred types:
 
-   | Column | Expected Type |
-   |--------|--------------|
-   | CustomerID | string |
-   | FirstName | string |
-   | LastName | string |
-   | Email | string |
-   | SSN | string |
-   | DateOfBirth | string or date |
-   | CreditScore | integer |
+   | Column | Icon | Type |
+   |--------|------|------|
+   | CustomerID | ABC | string |
+   | FirstName | ABC | string |
+   | LastName | ABC | string |
+   | Email | ABC | string |
+   | Phone | ABC | string |
+   | SSN | ABC | string |
+   | DateOfBirth | ABC | string |
+   | Address | ABC | string |
+   | City | ABC | string |
+   | State | ABC | string |
+   | ZipCode | 123 | integer |
+   | Country | ABC | string |
+   | CreditScore | 123 | integer |
+   | AccountType | ABC | string |
+   | JoinDate | ABC | string |
+
+4. Select the table name to preview data in **Table view** in the main area.
 
 ### Understand Data Types
 
@@ -178,13 +217,11 @@ Delta Lake infers data types from CSV data. For this lab, all types should work 
 
 ### Access SQL Endpoint
 
-1. In the Lakehouse view, look at the top navigation.
+1. In the Lakehouse view, locate the item type dropdown in the toolbar (shows **Lakehouse**).
 
-2. Find the dropdown that shows **Lakehouse**.
+2. Select the dropdown and choose **SQL analytics endpoint**.
 
-3. Select it and choose **SQL analytics endpoint**.
-
-4. The view switches to SQL-based exploration.
+3. The view switches to SQL-based exploration with query capabilities.
 
 ### Run Sample Queries
 
@@ -193,7 +230,7 @@ Delta Lake infers data types from CSV data. For this lab, all types should work 
 2. Run this query to explore customer data:
 
    ```sql
-   SELECT 
+   SELECT TOP 10
        CustomerID,
        FirstName,
        LastName,
@@ -202,8 +239,7 @@ Delta Lake infers data types from CSV data. For this lab, all types should work 
        CreditScore
    FROM customers
    WHERE CreditScore > 700
-   ORDER BY CreditScore DESC
-   LIMIT 10;
+   ORDER BY CreditScore DESC;
    ```
 
 3. Select **Run** to execute.
@@ -215,7 +251,7 @@ Delta Lake infers data types from CSV data. For this lab, all types should work 
 1. Create another query:
 
    ```sql
-   SELECT 
+   SELECT TOP 20
        CustomerID,
        TransactionDate,
        Amount,
@@ -232,16 +268,37 @@ Delta Lake infers data types from CSV data. For this lab, all types should work 
 
 ## 🔧 Step 7: Verify Data for Classification
 
-The uploaded data contains sensitive information that Purview will classify:
+Before proceeding, confirm the data contains sensitive information that Purview will classify in Lab 06.
 
-| Data Element | Example | Expected SIT |
-|--------------|---------|--------------|
+### Query Sensitive Customer Data
+
+1. Create a new SQL query:
+
+   ```sql
+   SELECT TOP 5
+       CustomerID,
+       FirstName,
+       LastName,
+       SSN,
+       Email,
+       Phone,
+       DateOfBirth
+   FROM customers;
+   ```
+
+2. Run and verify you see PII data like SSN formats (123-45-6789) and email addresses.
+
+### Expected Sensitive Information Types
+
+When Purview discovers this Lakehouse in Lab 06, it will automatically classify:
+
+| Column | Example Value | Purview Classification |
+|--------|---------------|------------------------|
 | **SSN** | 123-45-6789 | U.S. Social Security Number (SSN) |
-| **Credit Card** | 4532-1234-5678-9012 | Credit Card Number |
 | **Email** | john.smith@example.com | Email Address |
-| **Phone** | (555) 123-4567 | Phone Number (U.S.) |
+| **Phone** | (555) 123-4567 | U.S. Phone Number |
 
-> **💡 Classification Note**: When Purview scans this Lakehouse in Lab 06, it will automatically detect these sensitive information types using built-in classifiers.
+> **💡 Why This Matters**: This lab creates the data foundation. In Lab 06, you'll connect Purview to discover this Lakehouse and see these classifications appear automatically - no manual tagging required.
 
 ---
 
@@ -252,8 +309,8 @@ Before proceeding to Lab 03, verify:
 - [ ] Lakehouse `CustomerDataLakehouse` exists in workspace.
 - [ ] Files folder contains `customers.csv` and `transactions.csv`.
 - [ ] Tables folder contains `customers` and `transactions` tables.
-- [ ] Data preview shows records with PII (SSN, credit cards, etc.).
-- [ ] SQL endpoint is accessible and queries work.
+- [ ] Customer data preview shows PII (SSN, email, phone).
+- [ ] SQL endpoint is accessible and queries execute successfully.
 
 ---
 

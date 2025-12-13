@@ -8,6 +8,33 @@ Create a Fabric Warehouse, load data from the Lakehouse, and run T-SQL analytics
 
 ---
 
+## 🏗️ What You'll Build
+
+| Item | Description |
+|------|-------------|
+| **AnalyticsWarehouse** | Fabric Warehouse optimized for T-SQL analytics and BI |
+| **Lakehouse Shortcut** | Virtual link to Lakehouse tables (no data duplication) |
+| **vw_CustomerAnalytics** | SQL view combining customer and transaction data |
+| **Analytics Queries** | Saved queries for segmentation and revenue analysis |
+
+### Real-World Context
+
+The Warehouse complements the Lakehouse for **business intelligence workloads**:
+
+- **BI Analysts** prefer T-SQL over Spark for ad-hoc analysis.
+- **Reporting tools** connect natively to SQL endpoints.
+- **Performance optimization** through materialized views and statistics.
+
+The **Shortcut pattern** you're implementing is a key Fabric innovation:
+
+- **Zero data movement** — query Lakehouse data from Warehouse without copying.
+- **Single source of truth** — changes in Lakehouse reflect immediately.
+- **Cost efficiency** — no storage duplication across analytics layers.
+
+This architecture mirrors the **Medallion Architecture** (Bronze/Silver/Gold) used by data teams worldwide, where Lakehouses hold raw/refined data and Warehouses serve the consumption layer.
+
+---
+
 ## 📋 Prerequisites
 
 - [ ] Lab 02 completed (Lakehouse with data).

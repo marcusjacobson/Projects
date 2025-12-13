@@ -8,6 +8,39 @@ Create Power BI reports using DirectLake mode to visualize your Lakehouse data, 
 
 ---
 
+## 🏗️ What You'll Build
+
+| Item | Description |
+|------|-------------|
+| **Customer Analytics Report** | Interactive Power BI report with multiple visualizations |
+| **DirectLake Connection** | High-performance link to Lakehouse data (no import) |
+| **Customer Segmentation Dashboard** | Visual breakdown by segment, state, and credit score |
+| **Inherited Sensitivity Label** | Label automatically applied from upstream data sources |
+
+### Real-World Context
+
+Power BI is where **data becomes decisions**:
+
+- **Executives** view dashboards for strategic planning.
+- **Analysts** explore data for insights and recommendations.
+- **Operations teams** monitor KPIs and take action.
+
+**DirectLake mode** is Fabric's breakthrough innovation:
+
+- **No data copying** — queries read directly from Delta Lake files.
+- **Near real-time** — changes in Lakehouse appear in reports within minutes.
+- **Import-like performance** — fast queries without scheduled refreshes.
+
+The **governance integration** you'll observe:
+
+- Sensitivity labels flow from Lakehouse → Semantic Model → Report.
+- Purview shows the complete lineage of your visualizations.
+- Data protection policies apply throughout the analytics chain.
+
+This demonstrates the **end-to-end governed analytics** pattern that organizations need for compliance and trust.
+
+---
+
 ## 📋 Prerequisites
 
 - [ ] Labs 02-07 completed (Lakehouse with data, labels applied).

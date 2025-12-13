@@ -8,6 +8,27 @@ Enable Microsoft Fabric in your tenant and create a governed workspace for the s
 
 ---
 
+## 🏗️ What You'll Build
+
+| Item | Description |
+|------|-------------|
+| **Fabric Tenant Settings** | Enabled Microsoft Fabric capabilities for your organization |
+| **Fabric-Purview-Lab** | Governed workspace assigned to Fabric capacity |
+| **Capacity Assignment** | Workspace linked to trial or paid capacity |
+
+### Real-World Context
+
+Workspaces are the **fundamental governance boundary** in Microsoft Fabric. In production environments, organizations typically create workspaces aligned to:
+
+- **Business domains** (Sales Analytics, HR Reporting, Finance Data).
+- **Environments** (Development, Test, Production).
+- **Security boundaries** (sensitive data segregation).
+- **Cost centers** (capacity allocation and chargeback).
+
+The workspace you create here mimics a **domain-specific analytics workspace** where a team would build and govern their data assets. Proper workspace design is critical for scalability, security, and cost management.
+
+---
+
 ## 📋 Prerequisites
 
 - [ ] Lab 00 completed (prerequisites validated).

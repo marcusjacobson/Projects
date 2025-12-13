@@ -8,6 +8,34 @@ Explore how Microsoft Purview automatically discovers your Fabric assets, add bu
 
 ---
 
+## 🏗️ What You'll Build
+
+| Item | Description |
+|------|-------------|
+| **Discovered Assets** | All Fabric items automatically indexed in Purview catalog |
+| **Manual Classifications** | PII, Financial, and Custom classifications on sensitive columns |
+| **Glossary Terms** | Business definitions linked to technical assets |
+| **Data Lineage Map** | Visual representation of data flow across Fabric items |
+
+### Real-World Context
+
+Data governance is **no longer optional**—regulations like GDPR, CCPA, and HIPAA require organizations to:
+
+- **Know what data they have** (discovery and cataloging).
+- **Understand where sensitive data lives** (classification).
+- **Document business meaning** (glossary and context).
+- **Track data movement** (lineage).
+
+Purview's **Live View** provides automatic discovery without complex scanning infrastructure:
+
+- **Immediate visibility** — Fabric assets appear within minutes.
+- **Zero configuration** — no agents, connectors, or scan schedules.
+- **Free tier included** — no additional cost for basic governance.
+
+The classifications and glossary terms you create here mirror what **Data Stewards** do daily in enterprise data governance programs.
+
+---
+
 ## 📋 Prerequisites
 
 - [ ] Labs 01-05 completed (Lakehouse, Warehouse, KQL Database with data).

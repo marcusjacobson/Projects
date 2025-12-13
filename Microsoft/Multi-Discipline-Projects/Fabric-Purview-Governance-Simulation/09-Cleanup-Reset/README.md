@@ -8,6 +8,39 @@ Remove all lab resources to clean up your Fabric environment and optionally rese
 
 ---
 
+## 🏗️ What You'll Remove
+
+| Item | Lab Created | Impact of Removal |
+|------|-------------|-------------------|
+| **Fabric-Purview-Lab** | Lab 01 | Deletes all workspace contents |
+| **CustomerDataLakehouse** | Lab 02 | Removes tables, files, and SQL endpoint |
+| **DF_CustomerSegmentation** | Lab 03 | Stops scheduled refreshes |
+| **PL_CustomerDataRefresh** | Lab 03 | Cancels any running pipelines |
+| **AnalyticsWarehouse** | Lab 04 | Removes shortcuts and views |
+| **IoTEventhouse** | Lab 05 | Deletes KQL database and data |
+| **Customer Analytics Report** | Lab 08 | Removes visualizations |
+| **Purview Catalog Entries** | Labs 06-07 | Assets marked as deleted in catalog |
+
+### Real-World Context
+
+**Resource lifecycle management** is critical in enterprise environments:
+
+- **Cost control** — unused resources consume capacity and budget.
+- **Security hygiene** — orphaned assets create governance gaps.
+- **Compliance** — data retention policies may require deletion.
+- **Environment management** — dev/test cleanup after projects complete.
+
+In production, organizations implement:
+
+- **Automated cleanup policies** for stale workspaces.
+- **Approval workflows** before deleting governed assets.
+- **Audit trails** documenting what was deleted and why.
+- **Grace periods** allowing recovery before permanent deletion.
+
+This lab demonstrates the **responsible decommissioning** process that data teams should follow.
+
+---
+
 ## 📋 Prerequisites
 
 - [ ] Labs 01-08 completed.

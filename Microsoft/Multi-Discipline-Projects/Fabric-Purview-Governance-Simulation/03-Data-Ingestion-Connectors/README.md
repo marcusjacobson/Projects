@@ -8,6 +8,33 @@ Use Dataflows Gen2 and Data Factory pipelines to ingest and transform data into 
 
 ---
 
+## 🏗️ What You'll Build
+
+| Item | Description |
+|------|-------------|
+| **DF_CustomerSegmentation** | Dataflow Gen2 that filters and enriches customer data |
+| **customers_segmented** | New table with high-value customers and segment classifications |
+| **PL_CustomerDataRefresh** | Pipeline that orchestrates dataflow execution |
+| **Scheduled Refresh** | Automated daily pipeline trigger (optional) |
+
+### Real-World Context
+
+This lab implements a **customer segmentation pipeline**—one of the most common analytics patterns in business:
+
+- **Marketing teams** use segmentation to target campaigns by customer value tier.
+- **Sales teams** prioritize outreach based on customer potential.
+- **Risk teams** apply different credit policies to Premium vs. Basic customers.
+
+The **Dataflow → Pipeline pattern** you're building is the standard approach for:
+
+- **ETL/ELT workflows** (Extract, Transform, Load).
+- **Scheduled data refreshes** (daily, hourly, real-time).
+- **Orchestrated dependencies** (run transformation A, then B, then C).
+
+In production, organizations build hundreds of these pipelines to move and transform data across their analytics estate.
+
+---
+
 ## 📋 Prerequisites
 
 - [ ] Lab 02 completed (Lakehouse created with data).
@@ -16,7 +43,7 @@ Use Dataflows Gen2 and Data Factory pipelines to ingest and transform data into 
 
 ---
 
-## 🔧 Step 1: Understand Data Ingestion Options
+## 📥 Data Ingestion Options Overview
 
 Microsoft Fabric provides multiple ways to ingest data:
 
@@ -32,7 +59,7 @@ Microsoft Fabric provides multiple ways to ingest data:
 
 ---
 
-## 🔧 Step 2: Create a Dataflow Gen2
+## 🔧 Step 1: Create a Dataflow Gen2
 
 ### Navigate to Workspace
 
@@ -46,37 +73,56 @@ Microsoft Fabric provides multiple ways to ingest data:
 
 2. In the **New item** pane, search for or select **Dataflow Gen2**.
 
-3. The Power Query editor opens.
+3. In the **New Dataflow Gen2** dialog:
+   - **Name**: `DF_CustomerSegmentation`
+   - Leave **Enable Git integration** checked.
 
-### Connect to Sample Data
+4. Select **Create**.
 
-For this lab, we'll create a simple dataflow that transforms data:
+5. The Power Query editor opens.
 
-1. Select **Get data** in the Power Query ribbon.
+### Connect to Lakehouse Data
 
-2. Select **Text/CSV**.
+The Power Query editor displays a welcome screen with data source options:
 
-3. For this example, we'll use the existing Lakehouse data:
-   - Select **Cancel** on the external source dialog.
-   - Instead, select **Get data** → **Microsoft Fabric** → **Lakehouse**.
+- **Add default destination** - Configure output location.
+- **Import from Excel** - Load Excel files.
+- **Import from SQL Server** - Connect to SQL databases.
+- **Import from a Text/CSV file** - Load CSV/text files.
+- **Import from dataflows** - Reuse other dataflows.
 
-4. Connect to your `CustomerDataLakehouse`.
+1. Select **Get data from another source →** at the bottom.
 
-5. Select the `customers` table.
+2. In the **Choose data source** dialog, search for or select **Lakehouse**.
 
-6. Select **Create**.
+3. Select your `CustomerDataLakehouse`.
+
+4. Select the `customers` table.
+
+5. Select **Create** to load the data into Power Query.
 
 ---
 
-## 🔧 Step 3: Apply Data Transformations
+## 🔧 Step 2: Apply Data Transformations
+
+### Explore the Power Query Interface
+
+Once the data loads, you'll see:
+
+- **Queries pane** (left): Shows your `customers` query.
+- **Data preview** (center): Displays the table data with column headers.
+- **Query settings** (right): Shows **Properties** (query name), **Applied steps**, and **Data destination**.
+
+The **Applied steps** section shows the steps already applied:
+
+- Source
+- Navigation (one or more steps depending on how you connected)
 
 ### Add Transformation Steps
 
-1. With the customers data loaded, apply these transformations:
-
-   **Filter High-Value Customers:**
+1. **Filter High-Value Customers:**
    - Select the **CreditScore** column header.
-   - Select the filter icon.
+   - Select the filter dropdown arrow.
    - Select **Number Filters** → **Greater Than**.
    - Enter `650`.
    - Select **OK**.
@@ -84,8 +130,9 @@ For this lab, we'll create a simple dataflow that transforms data:
 2. **Add Calculated Column:**
    - Select **Add column** in the ribbon.
    - Select **Custom column**.
-   - Name: `CustomerSegment`
-   - Formula:
+   - **New column name**: `CustomerSegment`
+   - **Data type**: Leave as default (auto-detects text).
+   - **Custom column formula**:
 
      ```powerquery
      if [CreditScore] >= 750 then "Premium"
@@ -96,168 +143,195 @@ For this lab, we'll create a simple dataflow that transforms data:
    - Select **OK**.
 
 3. **Select Final Columns:**
-   - Select **Choose columns** in the ribbon.
+   - Select **Home** in the ribbon.
+   - Select **Choose columns**.
    - Select: CustomerID, FirstName, LastName, Email, State, CreditScore, CustomerSegment.
    - Select **OK**.
 
 ### Review Applied Steps
 
-1. Look at the **Query Settings** pane on the right.
+1. In the **Query settings** pane on the right, review **Applied steps**.
 
-2. Under **Applied Steps**, you should see:
+2. You should now see these steps:
    - Source
    - Navigation
-   - Filtered Rows
-   - Added Custom Column
-   - Removed Other Columns
+   - Navigation 1
+   - Navigation 2
+   - Filtered rows
+   - Added custom
+   - Choose columns
 
 ---
 
-## 🔧 Step 4: Configure Dataflow Destination
+## 🔧 Step 3: Configure Dataflow Destination
 
 ### Set Output Destination
 
-1. Select the query name in the Queries pane.
+1. In the **Query settings** pane on the right, locate **Data destination** at the bottom.
 
-2. In the **Query settings** pane on the right, scroll to the bottom.
+2. Select the **+** button next to **Data destination**.
 
-3. Select **Choose destination settings** (or **+ Add data destination** if shown).
+3. Select **Lakehouse** as the destination type.
 
-4. Select **Lakehouse** as the destination type.
+4. In the **Connect to data destination** dialog, select your connection and select **Next**.
 
-5. Connect to your `CustomerDataLakehouse`.
+5. In the **Choose destination target** dialog:
+   - Select **New table** (default).
+   - In the left pane, expand and select **CustomerDataLakehouse**.
+   - **Table name**: Enter `customers_segmented`.
 
-6. Configure destination:
+6. Select **Next**.
 
-   | Setting | Value |
-   |---------|-------|
-   | **Table name** | `customers_segmented` |
-   | **Update method** | Replace |
+7. Review the column mapping settings and select **Save settings**.
 
-6. Select **Next** → **Save settings**.
+### Save and Run Dataflow
 
-### Publish Dataflow
+1. Select **Save & run** in the **Home** ribbon (or select the dropdown arrow next to the save icon).
 
-1. Select **Publish** in the top right.
-
-2. Wait for the dataflow to be published.
-
-3. Name the dataflow: `DF_CustomerSegmentation`.
-
-4. The dataflow is now saved and ready to run.
+2. This saves your changes and immediately starts running the dataflow.
 
 ---
 
-## 🔧 Step 5: Run and Monitor Dataflow
+## 🔧 Step 4: Monitor Dataflow and Verify Output
 
-### Execute Dataflow
+### Return to Workspace
 
-1. Return to the workspace view.
+1. Return to the workspace view (select **Fabric-Purview-Lab** in the breadcrumb or navigation).
 
-2. Find `DF_CustomerSegmentation` in the item list.
+2. In the workspace item list, you'll see:
+   - **CustomerDataLakehouse** (Lakehouse)
+   - **CustomerDataLakehouse** (SQL analytics endpoint)
+   - **DF_CustomerSegmentation** (Dataflow Gen2) - may show a spinning indicator if still running
 
-3. Hover over it and select the **Refresh** icon.
-
-4. The dataflow starts executing.
+3. The **Refreshed** column shows when the dataflow last ran.
 
 ### Monitor Execution
 
-1. Select the dataflow name.
+1. If the dataflow is still running (spinning indicator), wait for it to complete (typically 1-2 minutes).
 
-2. Select **Refresh history**.
+2. The **Refreshed** column updates when the dataflow finishes.
 
-3. View the execution status:
-   - **In Progress**: Currently running.
-   - **Succeeded**: Completed successfully.
-   - **Failed**: Check error details.
+3. Execution status indicators:
+   - **Spinning icon**: Currently running.
+   - **Checkmark**: Completed successfully.
+   - **Error icon**: Failed - hover for details.
 
 ### Verify Output
 
-1. Open `CustomerDataLakehouse`.
+1. Open **CustomerDataLakehouse** from the workspace.
 
-2. Expand **Tables**.
+2. In the Explorer pane, right-click on **Tables**.
 
-3. Look for `customers_segmented` table.
+3. Select **Refresh** from the context menu.
 
-4. Preview the data to verify transformations applied.
+4. Expand **Tables** → **dbo** and look for the `customers_segmented` table.
+
+5. Select the table to preview the data and verify:
+   - Only customers with CreditScore > 650 appear.
+   - The **CustomerSegment** column shows Premium, Standard, or Basic values.
 
 ---
 
-## 🔧 Step 6: Create a Data Factory Pipeline
+## 🔧 Step 5: Create a Data Factory Pipeline
 
 ### Create New Pipeline
 
-1. Return to workspace.
+1. In the workspace, select **+ New item**.
 
-2. Select **+ New item**.
+2. Search for or select **Pipeline**.
 
-3. Select **Data pipeline**.
+3. In the **Name** field, enter `PL_CustomerDataRefresh`.
 
-4. Name: `PL_CustomerDataRefresh`.
+4. Select **Create**.
 
-5. Select **Create**.
+### Pipeline Welcome Screen
+
+The pipeline opens to a welcome screen with options:
+
+- **Start with a blank canvas**:
+  - **Pipeline activity** - Build custom orchestrations.
+- **Start with guidance**:
+  - **Copy data assistant** - Guided data copy wizard.
+  - **Practice with sample data** - Use sample templates.
+  - **Templates** - Pre-built pipeline templates.
 
 ### Add Dataflow Activity
 
-1. In the pipeline canvas, you'll see the activity palette.
+1. Select **Pipeline activity** to start with a blank canvas.
 
-2. Drag **Dataflow** activity onto the canvas.
+2. In the **Home** ribbon, select **Dataflow** from the toolbar.
 
-3. Configure the activity:
-   - **Name**: `Run Customer Segmentation`
-   - **Settings** tab → Select `DF_CustomerSegmentation`.
+3. A Dataflow activity appears on the canvas.
 
-4. Select **Save**.
+4. With the activity selected, configure in the properties pane below:
+   - **General** tab → **Name**: `Run Customer Segmentation`
+   - **Settings** tab → **Dataflow**: Select `DF_CustomerSegmentation`.
+
+5. Select **Save** in the toolbar (or press Ctrl+S).
 
 ---
 
-## 🔧 Step 7: Add Pipeline Orchestration
+## 🔧 Step 6: Configure Pipeline Schedule (Optional)
 
-### Add Notification (Optional)
+### Open Schedule Settings
 
-1. From the activity palette, add a **Set variable** activity after the dataflow.
+1. From the pipeline editor, select **Schedule** in the toolbar.
 
-2. This demonstrates pipeline orchestration concepts.
+2. A settings panel opens on the right with tabs: **About**, **Endorsement**, **Schedule**.
 
-### Configure Pipeline Schedule
+3. The **Schedule** tab shows:
+   - **Refresh status**: Shows last successful refresh and a **Run now** button.
+   - **Scheduled run**: Where you configure automated schedules.
 
-1. Select the pipeline canvas (not an activity).
+### Add a Schedule
 
-2. Select **Schedule** in the toolbar.
+1. Select **+ Add schedule**.
 
-3. Configure:
+2. Configure the schedule:
 
    | Setting | Value |
    |---------|-------|
-   | **Scheduled run** | On |
    | **Repeat** | Daily |
-   | **Time** | 02:00 AM |
+   | **Time of day** | 02:00 AM |
+   | **Start date and time** | Today's date |
+   | **End date and time** | A date 1 week from today |
+   | **Time zone** | Your local time zone |
 
-4. Select **Apply** to save.
+3. Select **Save** to save the schedule.
 
-5. For this lab, you can turn the schedule **Off** after configuring.
+4. For this lab, you can delete the schedule after testing (schedules incur compute costs).
+
+> **💡 Note**: You can also run the pipeline manually using the **Run now** button in the Refresh status section.
 
 ---
 
-## 🔧 Step 8: Run Pipeline Manually
+## 🔧 Step 7: Run Pipeline Manually
 
 ### Execute Pipeline
 
-1. Select **Run** in the pipeline toolbar.
+1. In the pipeline editor, select **Run** in the **Home** ribbon.
 
-2. Confirm the run.
-
-3. The pipeline starts executing.
+2. The pipeline starts executing immediately.
 
 ### Monitor Pipeline Run
 
-1. Select **View run history** or **Monitor**.
+The **Output** pane appears at the bottom of the screen showing:
 
-2. View the pipeline run status.
+- **Pipeline run ID**: Unique identifier for this run.
+- **Pipeline status**: Shows **In progress** while running.
+- **Activity list**: Shows each activity with:
+  - **Activity name**: `Run Customer Segmentation`
+  - **Activity status**: Queued → In progress → Succeeded
+  - **Run start**: Timestamp when the activity started.
+  - **Duration**: How long the activity has been running.
 
-3. Expand the run to see individual activity status.
+1. Wait for the **Pipeline status** to change to **Succeeded**.
 
-4. Verify the dataflow activity completed successfully.
+2. The **Activity status** for `Run Customer Segmentation` should also show **Succeeded**.
+
+3. If any activity fails, select it to view error details in the **Output** column.
+
+> **💡 Note**: The output pane auto-refreshes for 5 minutes while the pipeline is running. You can select **Turn off auto-refresh** to stop automatic updates.
 
 ---
 
@@ -275,15 +349,16 @@ Before proceeding to Lab 04, verify:
 
 ## ❌ Troubleshooting
 
-### Dataflow Publish Fails
+### Dataflow Save & Run Fails
 
-**Symptom**: Error when publishing dataflow.
+**Symptom**: Error when saving or running dataflow.
 
 **Resolution**:
 
 1. Check for unsupported Power Query functions.
 2. Verify destination Lakehouse is accessible.
 3. Ensure column names don't contain special characters.
+4. Check that the destination table name is valid (no spaces or special characters).
 
 ### Pipeline Activity Fails
 

@@ -8,6 +8,34 @@ Create an Eventhouse and KQL Database to ingest and analyze streaming data using
 
 ---
 
+## 🏗️ What You'll Build
+
+| Item | Description |
+|------|-------------|
+| **IoTEventhouse** | Container for real-time analytics databases |
+| **IoTEventhouse** (KQL Database) | Time-series database for streaming events |
+| **Events** | Table with simulated IoT device telemetry |
+| **KQL_IoTAnalytics** | Saved KQL queries for time-series analysis |
+
+### Real-World Context
+
+Real-Time Intelligence addresses **streaming and time-series analytics**:
+
+- **IoT scenarios** — device telemetry, sensor data, equipment monitoring.
+- **Security operations** — log analysis, threat detection, incident response.
+- **Application monitoring** — performance metrics, error tracking, usage patterns.
+- **Operational analytics** — real-time dashboards, alerting, anomaly detection.
+
+KQL (Kusto Query Language) is purpose-built for:
+
+- **High-velocity data** — millions of events per second.
+- **Time-series analysis** — trends, patterns, seasonality.
+- **Log exploration** — filtering, parsing, correlation.
+
+The skills you learn here apply directly to **Microsoft Sentinel** (security), **Azure Monitor** (operations), and **Azure Data Explorer** (advanced analytics).
+
+---
+
 ## 📋 Prerequisites
 
 - [ ] Labs 01-02 completed (Workspace and Lakehouse exist).

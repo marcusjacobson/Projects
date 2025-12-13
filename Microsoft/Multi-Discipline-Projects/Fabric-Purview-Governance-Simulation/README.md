@@ -29,7 +29,7 @@ This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview inte
 | Consideration | Impact | Planning |
 |---------------|--------|----------|
 | **⏱️ Lab Completion** | ~7-8 hours total | Plan for full day workshop or 2-3 sessions |
-| **⏱️ Fabric Enablement** | ~15 minutes | Admin API settings require propagation time |
+| **⏱️ Fabric Enablement** | ~5 minutes | Enable Fabric tenant settings and create workspace |
 | **⏱️ Live View Sync** | 5-15 minutes | Fabric assets appear in Purview automatically |
 | **💰 Fabric Cost** | $0 or ~$3-5 total | 60-day trial (free) OR F2 capacity with pause |
 | **💰 Purview Cost** | $0 with free version | Enterprise scanning costs ~$360+/month extra |
@@ -47,7 +47,7 @@ This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview inte
 > - **Session 2 (2 hours)**: Labs 04-06 - Warehouse, KQL, Purview discovery and annotations
 > - **Session 3 (2 hours)**: Labs 07-09 - Sensitivity Labels, Power BI, Cleanup
 
-**Key Timing Note**: Unlike SharePoint Content Explorer (which requires up to 7 days for classification indexing), **Fabric Purview scans complete in minutes to hours** with On-Demand scanning. This project is designed for faster feedback loops.
+**Key Timing Note**: Unlike SharePoint Content Explorer (which requires up to 7 days for classification indexing), **Fabric assets appear in Purview within minutes** via automatic Live View discovery. This project is designed for faster feedback loops.
 
 ---
 
@@ -83,7 +83,6 @@ This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview inte
 **What You'll Learn**:
 
 - Enable Microsoft Fabric at the tenant level (Admin Portal).
-- Configure Fabric Admin API settings for Purview integration.
 - Create a Fabric workspace with appropriate capacity.
 - Understand workspace roles and permissions.
 - Configure workspace settings for governance.
@@ -91,7 +90,6 @@ This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview inte
 **Key Deliverables**:
 
 - Microsoft Fabric enabled in tenant.
-- Admin API settings configured (15-minute propagation wait).
 - Fabric workspace created and configured.
 - Workspace ready for data workload creation.
 
@@ -279,7 +277,7 @@ This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview inte
 **What You'll Learn**:
 
 - Delete Fabric workspace and all contained items.
-- Remove Purview scan configuration.
+- Remove Purview manual classifications and annotations.
 - Clean up any remaining resources.
 - Validate cleanup completion.
 - Prepare environment for fresh start.
@@ -287,7 +285,7 @@ This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview inte
 **Key Deliverables**:
 
 - Fabric workspace deleted.
-- Purview registration removed.
+- Purview annotations removed.
 - Environment restored to clean state.
 - Cleanup validation completed.
 
@@ -323,7 +321,8 @@ This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview inte
 ```text
 Fabric-Purview-Governance-Simulation/
 ├── README.md                              # This file - project overview
-├── TIMING-AND-CLASSIFICATION-GUIDE.md     # Scan timing and scheduling guidance
+├── TIMING-AND-CLASSIFICATION-GUIDE.md     # Live View timing expectations
+├── ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md # Enterprise scanning guide (optional)
 ├── TROUBLESHOOTING.md                     # Common issues and resolutions
 ├── data-templates/                        # Sample data files
 │   ├── customers.csv                      # 500 records with PII
@@ -394,8 +393,8 @@ This comprehensive Fabric + Purview Governance Simulation project was created wi
 **Research and Validation:**
 
 - Microsoft Learn documentation for Fabric and Purview integration.
-- Timing behavior analysis for On-Demand vs Scheduled scans.
-- Classification architecture review (L1/L2/L3 scan levels).
+- Live View discovery timing and behavior analysis.
+- Free vs Enterprise feature comparison and documentation.
 - Reference project patterns from Purview-Data-Governance-Simulation.
 
 *AI tools were used to validate current Microsoft documentation, research scan timing expectations, and ensure comprehensive coverage of Fabric + Purview integration patterns while maintaining technical accuracy.*

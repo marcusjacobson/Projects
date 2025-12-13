@@ -99,13 +99,12 @@ Write-Host "      https://purview.microsoft.com" -ForegroundColor Blue
 Write-Host ""
 Write-Host "   2. Navigate to Data Catalog > Browse" -ForegroundColor White
 Write-Host ""
-Write-Host "   3. Search for these assets (should be removed or stale):" -ForegroundColor White
+Write-Host "   3. Search for these assets (should be removed after Live View sync):" -ForegroundColor White
 Write-Host "      • CustomerDataLakehouse" -ForegroundColor Magenta
 Write-Host "      • AnalyticsWarehouse" -ForegroundColor Magenta
 Write-Host "      • IoTEventhouse" -ForegroundColor Magenta
 Write-Host ""
-Write-Host "   4. In Data Map > Sources, verify scan is deleted:" -ForegroundColor White
-Write-Host "      • Fabric-Lab-Scan-01" -ForegroundColor Magenta
+Write-Host "   4. Verify manual classifications and annotations are removed (if desired)" -ForegroundColor White
 Write-Host ""
 
 # =============================================================================
@@ -118,8 +117,8 @@ Write-Host "   ✅ Verification Checklist:" -ForegroundColor Green
 Write-Host ""
 Write-Host "   [ ] Fabric workspace 'Fabric-Purview-Lab' is deleted" -ForegroundColor White
 Write-Host "   [ ] All workspace items (Lakehouse, Warehouse, etc.) removed" -ForegroundColor White
-Write-Host "   [ ] Purview scan configuration deleted" -ForegroundColor White
-Write-Host "   [ ] Purview catalog updated (assets removed or marked stale)" -ForegroundColor White
+Write-Host "   [ ] Manual classifications removed (if desired)" -ForegroundColor White
+Write-Host "   [ ] Purview catalog updated after Live View sync" -ForegroundColor White
 Write-Host ""
 Write-Host "   📂 Sample data files are preserved in:" -ForegroundColor Cyan
 Write-Host "      data-templates/customers.csv" -ForegroundColor White

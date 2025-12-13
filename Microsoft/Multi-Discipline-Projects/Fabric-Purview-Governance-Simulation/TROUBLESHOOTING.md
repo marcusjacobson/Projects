@@ -142,59 +142,52 @@ This guide covers common issues encountered during Microsoft Fabric + Purview in
 
 ---
 
-## 🔐 Purview Scanning Issues
+## 🔐 Purview Live View Issues
 
-### Cannot Register Fabric Tenant in Purview
+The main labs use Purview's **free Live View** feature for automatic asset discovery. For enterprise scanning troubleshooting, see [ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md](./ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md).
 
-**Symptoms:**
-
-- Fabric not appearing as data source option.
-- Registration fails with permission error.
-
-**Resolution:**
-
-1. **Verify Purview permissions**: You need **Data Source Administrator** role.
-2. **Check Fabric Admin API settings**:
-   - **admin.powerbi.com** → **Tenant settings** → **Admin API settings**.
-   - Enable **Allow service principals to use Power BI APIs**.
-   - Enable **Allow service principals to use read-only admin APIs**.
-3. **Wait 15 minutes**: API settings require propagation time.
-4. **Verify Purview account**: Ensure you're using the correct Purview account.
-
-### Scan Authentication Fails
+### Assets Not Appearing in Data Catalog
 
 **Symptoms:**
 
-- "Authentication failed" when running scan.
-- Scan stuck in "Queued" state.
+- Fabric assets not visible in Purview Data Catalog.
+- Search returns no results for workspace name.
 
 **Resolution:**
 
-1. **For Managed Identity**:
-   - Verify Purview Managed Identity has **Fabric Administrator** role.
-   - Check Managed Identity is enabled on Purview account.
-2. **For Service Principal**:
-   - Verify client secret hasn't expired.
-   - Check Service Principal is added to Purview.
-   - Ensure correct permissions granted.
-3. **For Delegated Auth**:
-   - Verify admin consent was granted.
-   - Check user has appropriate Fabric permissions.
+1. **Wait for sync**: Live View takes 5-15 minutes for initial sync.
+2. **Verify workspace has data**: Empty workspaces show no assets.
+3. **Check search scope**: Search by workspace name or asset name.
+4. **Browser cache**: Refresh or use incognito mode.
+5. **Verify Purview access**: Ensure you have Data Reader role or higher.
 
-### Scan Completes But No Assets Found
+### Cannot Add Manual Classifications
 
 **Symptoms:**
 
-- Scan shows "Completed" but 0 assets discovered.
-- Data Map is empty after scan.
+- Classification options not available.
+- "Save" button disabled when editing asset.
 
 **Resolution:**
 
-1. **Check scan scope**: Verify workspace is included in scan scope.
-2. **Verify data exists**: Ensure Lakehouse/Warehouse has actual data.
-3. **Check scan rule set**: Ensure rule set includes relevant file types.
-4. **Review scan logs**: Check for warnings or errors in scan details.
-5. **Wait for ingestion**: Assets appear after ingestion completes (5-15 min).
+1. **Check role**: You need **Data Curator** role or higher to edit assets.
+2. **Asset limit**: Free version allows manual classification on up to 1,000 assets.
+3. **Browser refresh**: Refresh the page and try again.
+4. **Try different asset**: Some asset types have limited classification support.
+
+### Lineage Not Showing
+
+**Symptoms:**
+
+- Lineage tab is empty.
+- Data flow connections not visible.
+
+**Resolution:**
+
+1. **Run transformations**: Lineage requires data operations to have executed.
+2. **Wait for processing**: Lineage appears 5-15 minutes after execution.
+3. **Check asset type**: Not all Fabric items generate lineage (notebooks have limited lineage).
+4. **Verify data exists**: Transformations must process actual data.
 
 ---
 

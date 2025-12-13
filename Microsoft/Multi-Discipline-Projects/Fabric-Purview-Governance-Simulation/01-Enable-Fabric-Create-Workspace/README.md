@@ -4,7 +4,7 @@
 
 Enable Microsoft Fabric in your tenant and create a governed workspace for the simulation.
 
-**Duration**: 30 minutes
+**Duration**: 15-20 minutes
 
 ---
 
@@ -46,50 +46,7 @@ Enable Microsoft Fabric in your tenant and create a governed workspace for the s
 
 ---
 
-## 🔧 Step 2: Configure Admin API Settings (Critical for Purview)
-
-These settings are **required** for Purview to scan Fabric workloads via service principals.
-
-### Enable Service Principal Settings for Fabric APIs
-
-1. In the Admin portal **Tenant settings**, scroll to the **Developer settings** section.
-
-2. Find **Service principals can use Fabric APIs** and expand it.
-
-   > **📝 Note**: This setting is being replaced by two newer settings. You may see either the legacy setting or the new settings depending on your tenant:
-   >
-   > - **Service principals can create workspaces, connections, and deployment pipelines**
-   > - **Service principals can call Fabric public APIs**
-
-3. Enable the setting(s) for your organization or specific security groups.
-
-4. Select **Apply**.
-
-### Enable Read-Only Admin API Access
-
-1. In Tenant settings, scroll to the **Admin API settings** section.
-
-2. Find **Service principals can access read-only admin APIs** and expand it.
-
-3. Toggle to **Enabled**.
-
-4. (Optional) Specify security groups to limit which service principals can use admin APIs.
-
-5. Select **Apply**.
-
-### Enable Detailed Metadata (Optional but Recommended)
-
-1. Still in **Admin API settings**, find **Enhance admin APIs responses with detailed metadata**.
-
-2. Toggle to **Enabled**.
-
-3. Select **Apply**.
-
-> **⏱️ Important**: These API settings require approximately **15 minutes to propagate**. Plan a short break before attempting Purview integration in Lab 06.
-
----
-
-## 🔧 Step 3: Verify Capacity Assignment
+## 🔧 Step 2: Verify Capacity Assignment
 
 ### Check Available Capacities
 
@@ -102,9 +59,11 @@ These settings are **required** for Purview to scan Fabric workloads via service
 
 3. Note the capacity name for workspace assignment.
 
+4. If you have a capacity available, proceed to Step 3.
+
 ### Start Trial (If No Capacity Available)
 
-1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
+1. Close the Admin portal and return to the Fabric home page.
 
 2. Select **Workspaces** in the left navigation.
 
@@ -118,30 +77,28 @@ These settings are **required** for Purview to scan Fabric workloads via service
 
 ---
 
-## 🔧 Step 4: Create Fabric Workspace
+## 🔧 Step 3: Create Fabric Workspace
 
 ### Create New Workspace
 
-1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
+1. From the Fabric home page, select **Workspaces** in the left navigation.
 
-2. Select **Workspaces** in the left navigation.
+2. Select **+ New workspace** (at the bottom of the Workspaces pane).
 
-3. Select **+ New workspace** (at the bottom of the Workspaces pane).
-
-4. Configure the workspace:
+3. Configure the workspace:
 
    | Setting | Value |
    |---------|-------|
    | **Name** | `Fabric-Purview-Lab` |
    | **Description** | `Hands-on simulation for Fabric + Purview governance` |
 
-5. Expand **Advanced** settings.
+4. Expand **Advanced** settings.
 
-6. Under **License mode**, select:
+5. Under **License mode**, select:
    - **Trial** (if using trial capacity).
    - **Fabric capacity** and choose your capacity (if using paid F SKU).
 
-7. Select **Apply**.
+6. Select **Apply**.
 
 ### Verify Workspace Creation
 
@@ -153,19 +110,13 @@ These settings are **required** for Purview to scan Fabric workloads via service
 
 ---
 
-## 🔧 Step 5: Configure Workspace Settings
+## 🔧 Step 4: Configure Workspace Settings
 
-### Access Workspace Settings
+### Manage Workspace Access
 
-1. In your new workspace, select the **Settings** gear icon (top right).
+1. In your new workspace, select **Manage access** (top right of the workspace).
 
-2. Or select the workspace name → **Workspace settings**.
-
-### Configure Security Settings
-
-1. In workspace settings, select **Security** (or **Manage access** depending on your view).
-
-2. Review default role assignments:
+2. Review the current access assignments:
 
    | Role | Capabilities |
    |------|--------------|
@@ -176,17 +127,23 @@ These settings are **required** for Purview to scan Fabric workloads via service
 
 3. Your account should have **Admin** role.
 
-### Configure License Info
+4. Select **X** or select outside the panel to close.
 
-1. Select **License info** in settings.
+### Access Workspace Settings
 
-2. Verify the workspace is assigned to your Fabric capacity.
+1. Select **Workspace settings** (top right, next to **Manage access**).
 
-3. If not, select **Edit** and choose the appropriate capacity.
+2. Review the available settings categories in the left panel.
+
+### Verify License Info
+
+1. In workspace settings, select **License info** in the left panel.
+
+2. Confirm the workspace shows your Fabric capacity (Trial or F SKU) that you selected during creation.
 
 ---
 
-## 🔧 Step 6: Enable Git Integration (Optional)
+## 🔧 Step 5: Enable Git Integration (Optional)
 
 For version control of Fabric items:
 
@@ -203,7 +160,6 @@ For version control of Fabric items:
 Before proceeding to Lab 02, verify:
 
 - [ ] Microsoft Fabric is enabled in tenant settings.
-- [ ] Admin API settings are configured (service principals enabled).
 - [ ] Fabric capacity is available and active.
 - [ ] Workspace `Fabric-Purview-Lab` is created.
 - [ ] Workspace is assigned to Fabric capacity.

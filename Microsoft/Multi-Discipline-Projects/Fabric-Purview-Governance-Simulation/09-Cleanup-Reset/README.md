@@ -128,21 +128,17 @@ Deleting the workspace removes all contained items at once.
 
 When Fabric resources are deleted:
 
-- Purview assets become **stale** but aren't automatically removed.
-- Catalog may show deleted assets until next scan.
-- Classifications and lineage are preserved until manual cleanup.
+- Purview Live View assets become **stale** but aren't automatically removed immediately.
+- The catalog may show deleted assets for some time until Live View syncs.
+- Manual classifications and glossary term assignments are preserved until manual cleanup.
 
-### Re-Scan to Update Catalog
+### Wait for Live View Sync
 
-1. Go to [purview.microsoft.com](https://purview.microsoft.com).
+1. Live View typically syncs within 15-30 minutes of resource deletion.
 
-2. Navigate to **Data Map** → **Sources**.
+2. Deleted Fabric assets will eventually be removed from the catalog.
 
-3. Find your Fabric tenant source.
-
-4. Run a new **On-Demand scan**.
-
-5. This updates the catalog with current state.
+3. No manual action is usually required.
 
 ### Manual Asset Removal (If Needed)
 
@@ -157,28 +153,33 @@ When Fabric resources are deleted:
 
 ---
 
-## 🔧 Step 6: Remove Purview Scan Configuration
+## 🔧 Step 6: Remove Manual Classifications and Annotations
 
-### Delete Lab Scan
+### Review Lab Annotations
 
-1. In **Data Map** → **Sources** → Fabric tenant.
+During the labs, you added manual classifications and annotations:
 
-2. Select **View details**.
+- Custom classifications on Lakehouse tables.
+- Glossary terms linked to assets.
+- Descriptions and owner assignments.
 
-3. Navigate to **Scans** tab.
+### Clean Up Annotations (If Needed)
 
-4. Find `Fabric-Lab-Scan-01`.
+1. Go to [purview.microsoft.com](https://purview.microsoft.com).
 
-5. Select the **...** menu.
+2. Navigate to **Data Catalog**.
 
-6. Select **Delete**.
+3. Search for assets you annotated during the labs.
 
-7. Confirm deletion.
+4. For each asset:
+   - Remove manual classifications.
+   - Unlink glossary terms.
+   - Clear custom descriptions.
 
-### Keep Fabric Registration
+### Keep Glossary Terms
 
-- You can keep the Fabric tenant registered for future labs.
-- Only delete scans specific to this lab.
+- You can keep the business glossary terms for future use.
+- Only remove if you want a complete reset.
 
 ---
 
@@ -257,8 +258,8 @@ Verify complete cleanup:
 
 - [ ] Workspace `Fabric-Purview-Lab` is deleted.
 - [ ] All workspace items are removed.
-- [ ] Purview scan `Fabric-Lab-Scan-01` is deleted.
-- [ ] Catalog assets are updated (re-scan completed or assets removed).
+- [ ] Manual classifications removed (if desired).
+- [ ] Catalog assets updated after Live View sync.
 - [ ] No orphaned resources in Fabric capacity.
 - [ ] Sample data files preserved in repository.
 
@@ -283,10 +284,10 @@ Verify complete cleanup:
 
 **Resolution**:
 
-1. Run a new On-Demand scan.
-2. Wait 24 hours for automatic cleanup.
+1. Wait 15-30 minutes for Live View sync.
+2. Wait up to 24 hours for complete catalog cleanup.
 3. Manually delete assets if immediate cleanup needed.
-4. This is normal behavior—catalog preserves history.
+4. This is normal behavior—catalog may preserve history temporarily.
 
 ### Capacity Still Shows Usage
 
@@ -323,7 +324,7 @@ Congratulations! You've completed the Fabric-Purview Governance Simulation.
 
 2. **DirectLake Performance**: Near real-time analytics without data movement.
 
-3. **Auto-Classification**: Automatic sensitive data discovery.
+3. **Live View Discovery**: Automatic asset discovery without manual scanning.
 
 4. **Sensitivity Labels**: Protection flows through lineage.
 
@@ -348,7 +349,7 @@ Congratulations! You've completed the Fabric-Purview Governance Simulation.
 ### Production Considerations
 
 - Implement proper access controls (workspace roles).
-- Set up scheduled scans for continuous governance.
+- Consider enterprise Purview for automatic classification (see [ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md](../ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md)).
 - Create data quality rules and monitoring.
 - Establish data lifecycle policies.
 - Document data ownership and stewardship.

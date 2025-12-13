@@ -55,7 +55,7 @@ Remove all lab resources to clean up your Fabric environment and optionally rese
 
 1. Open `Customer Analytics Report`.
 
-2. Click **File** → **Download this file** → **.pbix**.
+2. Select **File** → **Download this file** → **.pbix**.
 
 3. Save locally for future reference.
 
@@ -81,17 +81,17 @@ Deleting the workspace removes all contained items at once.
 
 3. Find `Fabric-Purview-Lab`.
 
-4. Click the **...** (more options) menu.
+4. Select the **...** (more options) menu.
 
 5. Select **Workspace settings**.
 
 6. Scroll to the bottom.
 
-7. Click **Delete this workspace**.
+7. Select **Delete this workspace**.
 
 8. Type the workspace name to confirm.
 
-9. Click **Delete**.
+9. Select **Delete**.
 
 ### What This Removes
 
@@ -149,7 +149,7 @@ When Fabric resources are deleted:
 1. Search for the deleted Lakehouse in Data Catalog.
 
 2. If assets still appear:
-   - Click on the asset.
+   - Select the asset.
    - Look for **Delete** option (requires Data Curator role).
    - Confirm deletion.
 
@@ -163,13 +163,13 @@ When Fabric resources are deleted:
 
 1. In **Data Map** → **Sources** → Fabric tenant.
 
-2. Click **View details**.
+2. Select **View details**.
 
 3. Navigate to **Scans** tab.
 
 4. Find `Fabric-Lab-Scan-01`.
 
-5. Click the **...** menu.
+5. Select the **...** menu.
 
 6. Select **Delete**.
 

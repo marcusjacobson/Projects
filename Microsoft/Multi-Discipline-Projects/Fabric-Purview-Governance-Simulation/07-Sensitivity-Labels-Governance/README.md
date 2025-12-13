@@ -53,7 +53,7 @@ Apply Microsoft Information Protection (MIP) sensitivity labels to Fabric assets
 
 1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
 
-2. Click the **Settings** gear icon (top right).
+2. Select the **Settings** gear icon (top right).
 
 3. Select **Admin portal** (if you have admin access).
 
@@ -80,14 +80,14 @@ Your organization may have labels like:
 
 1. Open your `Fabric-Purview-Lab` workspace.
 
-2. Click on `CustomerDataLakehouse`.
+2. Select `CustomerDataLakehouse`.
 
 ### Apply Sensitivity Label
 
 1. In the Lakehouse view, look for the **Sensitivity** label indicator.
    - This may be in the toolbar, header, or settings.
 
-2. Click on the label selector.
+2. Select the label selector.
 
 3. Choose an appropriate label based on data sensitivity:
    - Since the data contains SSN and financial information, select **Confidential** or higher.
@@ -108,7 +108,7 @@ Your organization may have labels like:
 
 ### Label the Warehouse
 
-1. Click on `AnalyticsWarehouse`.
+1. Select `AnalyticsWarehouse`.
 
 2. Find the sensitivity label option.
 
@@ -235,7 +235,7 @@ If your organization has Purview Enterprise, administrators can:
 
 ### Endorse Your Lakehouse
 
-1. Click on `CustomerDataLakehouse`.
+1. Select `CustomerDataLakehouse`.
 
 2. Find the endorsement option (may be in item settings or menu).
 

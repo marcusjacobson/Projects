@@ -42,9 +42,9 @@ Microsoft Fabric provides multiple ways to ingest data:
 
 ### Create Dataflow
 
-1. Click **+ New item**.
+1. Select **+ New item**.
 
-2. Under **Get data**, select **Dataflow Gen2**.
+2. In the **New item** pane, search for or select **Dataflow Gen2**.
 
 3. The Power Query editor opens.
 
@@ -52,19 +52,19 @@ Microsoft Fabric provides multiple ways to ingest data:
 
 For this lab, we'll create a simple dataflow that transforms data:
 
-1. Click **Get data** in the Power Query ribbon.
+1. Select **Get data** in the Power Query ribbon.
 
 2. Select **Text/CSV**.
 
 3. For this example, we'll use the existing Lakehouse data:
-   - Click **Cancel** on the external source dialog.
-   - Instead, click **Get data** → **Microsoft Fabric** → **Lakehouse**.
+   - Select **Cancel** on the external source dialog.
+   - Instead, select **Get data** → **Microsoft Fabric** → **Lakehouse**.
 
 4. Connect to your `CustomerDataLakehouse`.
 
 5. Select the `customers` table.
 
-6. Click **Create**.
+6. Select **Create**.
 
 ---
 
@@ -75,14 +75,14 @@ For this lab, we'll create a simple dataflow that transforms data:
 1. With the customers data loaded, apply these transformations:
 
    **Filter High-Value Customers:**
-   - Click the **CreditScore** column header.
-   - Click the filter icon.
+   - Select the **CreditScore** column header.
+   - Select the filter icon.
    - Select **Number Filters** → **Greater Than**.
    - Enter `650`.
-   - Click **OK**.
+   - Select **OK**.
 
 2. **Add Calculated Column:**
-   - Click **Add column** in the ribbon.
+   - Select **Add column** in the ribbon.
    - Select **Custom column**.
    - Name: `CustomerSegment`
    - Formula:
@@ -93,12 +93,12 @@ For this lab, we'll create a simple dataflow that transforms data:
      else "Basic"
      ```
 
-   - Click **OK**.
+   - Select **OK**.
 
 3. **Select Final Columns:**
-   - Click **Choose columns** in the ribbon.
+   - Select **Choose columns** in the ribbon.
    - Select: CustomerID, FirstName, LastName, Email, State, CreditScore, CustomerSegment.
-   - Click **OK**.
+   - Select **OK**.
 
 ### Review Applied Steps
 
@@ -117,26 +117,28 @@ For this lab, we'll create a simple dataflow that transforms data:
 
 ### Set Output Destination
 
-1. Click on the query name in the Queries pane.
+1. Select the query name in the Queries pane.
 
-2. Look at the bottom of the Power Query editor.
+2. In the **Query settings** pane on the right, scroll to the bottom.
 
-3. Click **Add data destination** → **Lakehouse**.
+3. Select **Choose destination settings** (or **+ Add data destination** if shown).
 
-4. Connect to your `CustomerDataLakehouse`.
+4. Select **Lakehouse** as the destination type.
 
-5. Configure destination:
+5. Connect to your `CustomerDataLakehouse`.
+
+6. Configure destination:
 
    | Setting | Value |
    |---------|-------|
    | **Table name** | `customers_segmented` |
    | **Update method** | Replace |
 
-6. Click **Next** → **Save settings**.
+6. Select **Next** → **Save settings**.
 
 ### Publish Dataflow
 
-1. Click **Publish** in the top right.
+1. Select **Publish** in the top right.
 
 2. Wait for the dataflow to be published.
 
@@ -154,13 +156,13 @@ For this lab, we'll create a simple dataflow that transforms data:
 
 2. Find `DF_CustomerSegmentation` in the item list.
 
-3. Hover over it and click the **Refresh** icon.
+3. Hover over it and select the **Refresh** icon.
 
 4. The dataflow starts executing.
 
 ### Monitor Execution
 
-1. Click on the dataflow name.
+1. Select the dataflow name.
 
 2. Select **Refresh history**.
 
@@ -187,13 +189,13 @@ For this lab, we'll create a simple dataflow that transforms data:
 
 1. Return to workspace.
 
-2. Click **+ New item**.
+2. Select **+ New item**.
 
 3. Select **Data pipeline**.
 
 4. Name: `PL_CustomerDataRefresh`.
 
-5. Click **Create**.
+5. Select **Create**.
 
 ### Add Dataflow Activity
 
@@ -205,7 +207,7 @@ For this lab, we'll create a simple dataflow that transforms data:
    - **Name**: `Run Customer Segmentation`
    - **Settings** tab → Select `DF_CustomerSegmentation`.
 
-4. Click **Save**.
+4. Select **Save**.
 
 ---
 
@@ -219,9 +221,9 @@ For this lab, we'll create a simple dataflow that transforms data:
 
 ### Configure Pipeline Schedule
 
-1. Click on the pipeline canvas (not an activity).
+1. Select the pipeline canvas (not an activity).
 
-2. Click **Schedule** in the toolbar.
+2. Select **Schedule** in the toolbar.
 
 3. Configure:
 
@@ -231,7 +233,7 @@ For this lab, we'll create a simple dataflow that transforms data:
    | **Repeat** | Daily |
    | **Time** | 02:00 AM |
 
-4. Click **Apply** to save.
+4. Select **Apply** to save.
 
 5. For this lab, you can turn the schedule **Off** after configuring.
 
@@ -241,7 +243,7 @@ For this lab, we'll create a simple dataflow that transforms data:
 
 ### Execute Pipeline
 
-1. Click **Run** in the pipeline toolbar.
+1. Select **Run** in the pipeline toolbar.
 
 2. Confirm the run.
 
@@ -249,7 +251,7 @@ For this lab, we'll create a simple dataflow that transforms data:
 
 ### Monitor Pipeline Run
 
-1. Click **View run history** or **Monitor**.
+1. Select **View run history** or **Monitor**.
 
 2. View the pipeline run status.
 

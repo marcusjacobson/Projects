@@ -20,17 +20,19 @@ Enable Microsoft Fabric in your tenant and create a governed workspace for the s
 
 ### Navigate to Admin Portal
 
-1. Go to [admin.powerbi.com](https://admin.powerbi.com).
+1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com) and sign in.
 
-2. In the left navigation, click **Tenant settings**.
+2. Select the **Settings** (gear icon) in the top right corner.
 
-3. Scroll down to find the **Microsoft Fabric** section.
+3. Select **Admin portal** from the menu.
+
+4. In the Admin portal, select **Tenant settings**.
 
 ### Enable Fabric for Users
 
-1. Locate **Users can create Fabric items**.
+1. In Tenant settings, scroll to the **Microsoft Fabric** section.
 
-2. Click to expand the setting.
+2. Expand **Users can create Fabric items**.
 
 3. Toggle the setting to **Enabled**.
 
@@ -38,7 +40,7 @@ Enable Microsoft Fabric in your tenant and create a governed workspace for the s
    - **The entire organization** - Recommended for labs.
    - **Specific security groups** - For controlled rollout.
 
-5. Click **Apply**.
+5. Select **Apply**.
 
 > **💡 Tip**: For a lab environment, enabling for the entire organization is simplest. In production, use security groups for controlled access.
 
@@ -46,35 +48,42 @@ Enable Microsoft Fabric in your tenant and create a governed workspace for the s
 
 ## 🔧 Step 2: Configure Admin API Settings (Critical for Purview)
 
-### Enable Service Principal APIs
+These settings are **required** for Purview to scan Fabric workloads via service principals.
 
-These settings are **required** for Purview to scan Fabric workloads.
+### Enable Service Principal Settings for Fabric APIs
 
-1. In the Admin portal, scroll to **Developer settings** section.
+1. In the Admin portal **Tenant settings**, scroll to the **Developer settings** section.
 
-2. Find **Allow service principals to use Power BI APIs**.
+2. Find **Service principals can use Fabric APIs** and expand it.
 
-3. Enable this setting for your organization or specific groups.
+   > **📝 Note**: This setting is being replaced by two newer settings. You may see either the legacy setting or the new settings depending on your tenant:
+   >
+   > - **Service principals can create workspaces, connections, and deployment pipelines**
+   > - **Service principals can call Fabric public APIs**
 
-4. Find **Allow service principals to use read-only admin APIs**.
+3. Enable the setting(s) for your organization or specific security groups.
 
-5. Enable this setting as well.
+4. Select **Apply**.
 
-6. Click **Apply** for each setting.
+### Enable Read-Only Admin API Access
 
-### Enable Fabric Admin API Settings
+1. In Tenant settings, scroll to the **Admin API settings** section.
 
-1. Scroll to **Admin API settings** section.
+2. Find **Service principals can access read-only admin APIs** and expand it.
 
-2. Find **Allow service principals to access read-only admin APIs**.
+3. Toggle to **Enabled**.
 
-3. Ensure this is **Enabled**.
+4. (Optional) Specify security groups to limit which service principals can use admin APIs.
 
-4. Find **Enhance admin APIs responses with detailed metadata**.
+5. Select **Apply**.
 
-5. Enable this setting.
+### Enable Detailed Metadata (Optional but Recommended)
 
-6. Click **Apply**.
+1. Still in **Admin API settings**, find **Enhance admin APIs responses with detailed metadata**.
+
+2. Toggle to **Enabled**.
+
+3. Select **Apply**.
 
 > **⏱️ Important**: These API settings require approximately **15 minutes to propagate**. Plan a short break before attempting Purview integration in Lab 06.
 
@@ -84,12 +93,12 @@ These settings are **required** for Purview to scan Fabric workloads.
 
 ### Check Available Capacities
 
-1. In the Admin portal, click **Capacity settings** in the left menu.
+1. In the Admin portal left menu, select **Capacity settings**.
 
 2. You should see at least one capacity:
-   - **Trial** - Free 60-day capacity.
-   - **F2-F64** - Paid Fabric capacities.
-   - **P1-P5** - Power BI Premium capacities.
+   - **Trial** - Free 60-day Fabric trial capacity.
+   - **F2-F2048** - Fabric capacities (F SKUs).
+   - **P1-P5** - Power BI Premium capacities (also support Fabric).
 
 3. Note the capacity name for workspace assignment.
 
@@ -97,15 +106,15 @@ These settings are **required** for Purview to scan Fabric workloads.
 
 1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
 
-2. Click **Workspaces** in the left navigation.
+2. Select **Workspaces** in the left navigation.
 
-3. Click **+ New workspace**.
+3. Select **+ New workspace**.
 
 4. You'll see a prompt to start a Fabric trial.
 
-5. Click **Start trial**.
+5. Select **Start trial**.
 
-6. The trial activates immediately.
+6. The trial activates immediately (60 days free).
 
 ---
 
@@ -115,9 +124,9 @@ These settings are **required** for Purview to scan Fabric workloads.
 
 1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
 
-2. Click **Workspaces** in the left navigation.
+2. Select **Workspaces** in the left navigation.
 
-3. Click **+ New workspace**.
+3. Select **+ New workspace** (at the bottom of the Workspaces pane).
 
 4. Configure the workspace:
 
@@ -130,15 +139,15 @@ These settings are **required** for Purview to scan Fabric workloads.
 
 6. Under **License mode**, select:
    - **Trial** (if using trial capacity).
-   - **Fabric capacity** and select your capacity (if using paid).
+   - **Fabric capacity** and choose your capacity (if using paid F SKU).
 
-7. Click **Apply**.
+7. Select **Apply**.
 
 ### Verify Workspace Creation
 
-1. The new workspace should appear in the left navigation.
+1. The new workspace appears in the Workspaces list.
 
-2. Click on the workspace to open it.
+2. Select the workspace to open it.
 
 3. Verify the workspace is empty and ready for content.
 
@@ -148,29 +157,32 @@ These settings are **required** for Purview to scan Fabric workloads.
 
 ### Access Workspace Settings
 
-1. In your new workspace, click the **Settings** gear icon (top right).
+1. In your new workspace, select the **Settings** gear icon (top right).
 
-2. Or click the workspace name → **Workspace settings**.
+2. Or select the workspace name → **Workspace settings**.
 
 ### Configure Security Settings
 
-1. In workspace settings, click **Security**.
+1. In workspace settings, select **Security** (or **Manage access** depending on your view).
 
 2. Review default role assignments:
-   - **Admin**: Full control, can add members.
-   - **Member**: Can create/edit content.
-   - **Contributor**: Can create/edit but not share.
-   - **Viewer**: Read-only access.
+
+   | Role | Capabilities |
+   |------|--------------|
+   | **Admin** | Full control, can add/remove members, delete workspace |
+   | **Member** | Can create/edit content, add members with lower permissions |
+   | **Contributor** | Can create/edit content but cannot share |
+   | **Viewer** | Read-only access |
 
 3. Your account should have **Admin** role.
 
 ### Configure License Info
 
-1. Click **License info** in settings.
+1. Select **License info** in settings.
 
 2. Verify the workspace is assigned to your Fabric capacity.
 
-3. If not, click **Edit** and select the appropriate capacity.
+3. If not, select **Edit** and choose the appropriate capacity.
 
 ---
 
@@ -178,7 +190,7 @@ These settings are **required** for Purview to scan Fabric workloads.
 
 For version control of Fabric items:
 
-1. In workspace settings, click **Git integration**.
+1. In workspace settings, select **Git integration**.
 
 2. You can connect to Azure DevOps or GitHub.
 
@@ -207,9 +219,9 @@ Before proceeding to Lab 02, verify:
 
 **Resolution**:
 
-1. Verify you have Fabric Administrator or Global Administrator role.
-2. Check if tenant-level restrictions are in place.
-3. Contact your IT administrator if settings are locked.
+- Verify you have Fabric Administrator or Global Administrator role.
+- Check if tenant-level restrictions are in place.
+- Contact your IT administrator if settings are locked.
 
 ### Capacity Not Available
 
@@ -217,19 +229,19 @@ Before proceeding to Lab 02, verify:
 
 **Resolution**:
 
-1. Start a Fabric trial from app.fabric.microsoft.com.
-2. Request capacity access from your Fabric Administrator.
-3. Verify your account is in the capacity admins group.
+- Start a Fabric trial from [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
+- Request capacity access from your Fabric Administrator.
+- Verify your account is in the capacity admins group.
 
 ### Workspace Creation Fails
 
-**Symptom**: Error when clicking Apply to create workspace.
+**Symptom**: Error when selecting Apply to create workspace.
 
 **Resolution**:
 
-1. Check workspace name doesn't contain special characters.
-2. Verify workspace name is unique in your organization.
-3. Ensure you have permission to create workspaces.
+- Check workspace name doesn't contain special characters.
+- Verify workspace name is unique in your organization.
+- Ensure you have permission to create workspaces.
 
 ---
 

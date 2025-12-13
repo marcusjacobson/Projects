@@ -40,13 +40,13 @@ Create a Fabric Warehouse, load data from the Lakehouse, and run T-SQL analytics
 
 ### Create New Warehouse
 
-1. Click **+ New item**.
+1. Select **+ New item**.
 
-2. In the list, find and select **Warehouse**.
+2. In the **New item** pane, under **Store data**, select **Warehouse**.
 
 3. Enter name: `AnalyticsWarehouse`.
 
-4. Click **Create**.
+4. Select **Create**.
 
 5. Wait for the Warehouse to provision (30-60 seconds).
 
@@ -76,7 +76,7 @@ Instead of duplicating data, we'll create a shortcut to the Lakehouse tables.
    - `transactions`
    - `customers_segmented` (if created in Lab 03)
 
-7. Click **Create**.
+7. Select **Create**.
 
 ### Verify Shortcuts
 
@@ -92,7 +92,7 @@ Instead of duplicating data, we'll create a shortcut to the Lakehouse tables.
 
 ### Open Query Editor
 
-1. Click **New SQL query** in the toolbar.
+1. Select **New SQL query** in the toolbar.
 
 2. A new query tab opens.
 
@@ -114,7 +114,7 @@ ORDER BY CustomerCount DESC;
 ```
 
 1. Select the query text.
-2. Click **Run** or press F5.
+2. Select **Run** or press F5.
 3. View results in the results pane.
 
 ### Query 2: Transaction Analysis
@@ -180,7 +180,7 @@ GROUP BY c.CustomerID, c.FirstName, c.LastName, c.Email, c.State, c.CreditScore
 HAVING COALESCE(SUM(t.Amount), 0) > 1000 OR c.CreditScore >= 750;
 ```
 
-3. Click **Run**.
+3. Select **Run**.
 
 4. The view is created.
 
@@ -244,7 +244,7 @@ EXEC dbo.sp_CreditScoreReport @MinCreditScore = 700;
 
 ### Save Query as Item
 
-1. Click the **Save** icon in the query tab.
+1. Select the **Save** icon in the query tab.
 
 2. Name: `QRY_CustomerAnalytics`.
 
@@ -264,7 +264,7 @@ EXEC dbo.sp_CreditScoreReport @MinCreditScore = 700;
 
 ### View Query Performance
 
-1. In the Warehouse, click on **Query insights** in the left navigation.
+1. In the Warehouse, select **Query insights** in the left navigation.
 
 2. This shows query history and performance metrics.
 

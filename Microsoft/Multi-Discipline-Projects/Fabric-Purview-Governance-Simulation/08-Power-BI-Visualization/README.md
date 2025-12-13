@@ -30,7 +30,7 @@ Create Power BI reports using DirectLake mode to visualize your Lakehouse data, 
 
 ---
 
-## 🔧 Step 2: Create Semantic Model
+## 🔧 Step 2: Explore the Default Semantic Model
 
 ### Navigate to Lakehouse
 
@@ -38,25 +38,23 @@ Create Power BI reports using DirectLake mode to visualize your Lakehouse data, 
 
 2. Open your `Fabric-Purview-Lab` workspace.
 
-3. Click on `CustomerDataLakehouse`.
+3. Select `CustomerDataLakehouse`.
 
-### Create Default Semantic Model
+### Locate Default Semantic Model
 
-1. In the Lakehouse, you may already have a default semantic model.
+1. A default semantic model is automatically created when you create a Lakehouse.
 
-2. Look for a semantic model with the same name as your Lakehouse.
+2. In the workspace, look for an item with the same name as your Lakehouse but with a **semantic model** icon.
 
-3. If not present:
-   - Click on the **SQL analytics endpoint** view.
-   - This automatically creates a semantic model.
+3. The semantic model uses **Direct Lake** mode, which queries data directly from OneLake delta tables.
 
 ### Open Semantic Model
 
 1. In the workspace, find `CustomerDataLakehouse` (semantic model type).
 
-2. Click to open it.
+2. Select to open it.
 
-3. This semantic model uses DirectLake mode automatically.
+3. Direct Lake mode provides fast query performance without importing data.
 
 ---
 
@@ -80,7 +78,7 @@ Create Power BI reports using DirectLake mode to visualize your Lakehouse data, 
 
 2. Verify the sensitivity label from the Lakehouse flows through.
 
-3. The label should match what you applied in Lab 08.
+3. The label should match what you applied in Lab 07.
 
 ---
 
@@ -88,15 +86,25 @@ Create Power BI reports using DirectLake mode to visualize your Lakehouse data, 
 
 ### Start New Report
 
-1. From the workspace, click **+ New item**.
+There are multiple ways to create a report. Use one of these options:
+
+**Option A - From Semantic Model:**
+
+1. In the workspace, hover over the `CustomerDataLakehouse` semantic model.
+
+2. Select the **...** (context menu) and choose **Create report**.
+
+**Option B - From New Item:**
+
+1. Select **+ New item**.
 
 2. Select **Report**.
 
-3. Choose **Build a report from this semantic model**.
+3. Choose **Pick a published semantic model**.
 
 4. Select `CustomerDataLakehouse` semantic model.
 
-5. The Power BI report editor opens.
+The Power BI report editor opens with a live connection to the semantic model.
 
 ### Add Visualizations
 
@@ -199,13 +207,13 @@ Create a dashboard layout with:
 
 ### Save Report
 
-1. Click **File** → **Save**.
+1. Select **File** → **Save**.
 
 2. Name: `Customer Analytics Report`.
 
 3. Select your `Fabric-Purview-Lab` workspace.
 
-4. Click **Save**.
+4. Select **Save**.
 
 ### Verify in Workspace
 
@@ -224,7 +232,7 @@ Create a dashboard layout with:
 
 ### Check Report Sensitivity
 
-1. Click on the report to open it.
+1. Select the report to open it.
 
 2. Look for sensitivity label indicator.
 

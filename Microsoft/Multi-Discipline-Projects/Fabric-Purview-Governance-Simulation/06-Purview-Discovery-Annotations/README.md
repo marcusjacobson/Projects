@@ -73,13 +73,13 @@ In the left navigation, note the main sections:
 
 ### Navigate to Data Catalog
 
-- In the left navigation, click **Data Catalog**.
-- Click **Browse** to explore available assets.
+- In the left navigation, select **Data Catalog**.
+- Select **Browse** to explore available assets.
 
 ### Search for Your Fabric Assets
 
 - In the search bar at the top, type your workspace name: `Fabric-Purview-Lab`.
-- Press Enter or click the search icon.
+- Press Enter or select the search icon.
 
 You should see your Fabric assets listed:
 
@@ -94,7 +94,7 @@ You should see your Fabric assets listed:
 
 ### View Asset Details
 
-- Click on `CustomerDataLakehouse` to open its details page.
+- Select `CustomerDataLakehouse` to open its details page.
 - Review the information displayed:
   - **Overview**: Basic metadata and description.
   - **Properties**: Technical properties and settings.
@@ -113,7 +113,7 @@ You should see your Fabric assets listed:
 
 ### Explore Purview Hub
 
-- Click **Purview hub**.
+- Select **Purview hub**.
 - This shows Purview integration status for your workspace.
 
 Review the hub sections:
@@ -132,15 +132,15 @@ Review the hub sections:
 
 ### Open Asset in Fabric from Purview
 
-- In Purview Data Catalog, click on one of your Fabric assets.
+- In Purview Data Catalog, select one of your Fabric assets.
 - Look for an **Open in Fabric** or external link option.
-- Click to navigate directly to the asset in Fabric portal.
+- Select to navigate directly to the asset in Fabric portal.
 
 ### Open Asset in Purview from Fabric
 
 - In Fabric portal, right-click on a Lakehouse or Warehouse item.
 - Look for **View in Purview** or similar option.
-- Click to navigate directly to the asset in Purview.
+- Select to navigate directly to the asset in Purview.
 
 ### Practice the Navigation Flow
 
@@ -159,7 +159,7 @@ This seamless navigation is essential for governance workflows.
 ### Navigate to Your Table Asset
 
 - In Purview Data Catalog, search for: `CustomerDataLakehouse`.
-- Expand the Lakehouse and click on the `customers` table.
+- Expand the Lakehouse and select the `customers` table.
 
 ### Open the Schema Tab
 
@@ -178,7 +178,7 @@ You'll add classifications manually based on your knowledge of the data:
 
 ### Add Classification to a Column
 
-- Click on the `SSN` column row (or the edit icon if available).
+- Select the `SSN` column row (or the edit icon if available).
 - Look for **Add classification** or a classification dropdown.
 - Select an appropriate classification:
   - If available: **Government Identification Numbers > SSN**
@@ -195,13 +195,13 @@ Repeat for other PII columns (Email, Phone, DateOfBirth).
 
 ### Navigate to Glossary
 
-- In the left navigation, click **Data Catalog**.
-- Click **Glossary**.
+- In the left navigation, select **Data Catalog**.
+- Select **Glossary**.
 - This is where business terms are defined and managed.
 
 ### Create a New Term
 
-- Click **+ New term** or **Add term**.
+- Select **+ New term** or **Add term**.
 - Fill in the term details:
 
 | Field | Value |
@@ -211,7 +211,7 @@ Repeat for other PII columns (Email, Phone, DateOfBirth).
 | **Status** | Approved |
 | **Experts** | Add yourself |
 
-- Click **Create** or **Save**.
+- Select **Create** or **Save**.
 
 ### Create Additional Terms
 
@@ -240,7 +240,7 @@ Create 2-3 more terms for your lab:
 - Navigate back to **Data Catalog** → **Browse**.
 - Open the `customers` table asset.
 - Look for the **Related** or **Glossary terms** tab/section.
-- Click **Add glossary term** or **Link term**.
+- Select **Add glossary term** or **Link term**.
 - Search for: `Customer Data` and select it.
 
 Repeat to link:
@@ -251,7 +251,7 @@ Repeat to link:
 ### Add Asset Descriptions
 
 - Open the `customers` table asset.
-- Click **Edit** on the Overview tab.
+- Select **Edit** on the Overview tab.
 - Add a description:
 
 ```text
@@ -260,12 +260,12 @@ contact details, and financial indicators. Source: Lab sample data.
 Contains PII including SSN, email, and phone numbers.
 ```
 
-- Click **Save**.
+- Select **Save**.
 
 ### Add Owners and Experts
 
 - In the asset details, find the **Contacts** section.
-- Click **Edit** or **Add**.
+- Select **Edit** or **Add**.
 - Add yourself as **Owner** and **Expert**.
 - Save changes.
 

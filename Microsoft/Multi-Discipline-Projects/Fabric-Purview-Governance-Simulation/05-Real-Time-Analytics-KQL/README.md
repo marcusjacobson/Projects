@@ -1,4 +1,4 @@
-# Lab 05: Real-Time Analytics with KQL
+# Lab 05: Real-Time Intelligence with KQL
 
 ## 🎯 Objective
 
@@ -16,7 +16,7 @@ Create an Eventhouse and KQL Database to ingest and analyze streaming data using
 
 ---
 
-## 🔧 Step 1: Understand Real-Time Analytics Components
+## 🔧 Step 1: Understand Real-Time Intelligence Components
 
 | Component | Purpose |
 |-----------|---------|
@@ -39,17 +39,17 @@ Create an Eventhouse and KQL Database to ingest and analyze streaming data using
 
 ### Create Eventhouse
 
-1. Click **+ New item**.
+1. Select **+ New item**.
 
-2. Under **Real-Time Intelligence**, select **Eventhouse**.
+2. In the **New item** pane, search for **Eventhouse** and select it.
 
 3. Enter name: `IoTEventhouse`.
 
-4. Click **Create**.
+4. Select **Create**.
 
 5. Wait for provisioning (1-2 minutes).
 
-> **📝 Note**: A KQL Database is automatically created with the same name as the Eventhouse.
+> **📝 Note**: Both an Eventhouse and its default child KQL database are created with the same name. The database name can be renamed at any time.
 
 ---
 
@@ -59,7 +59,7 @@ Create an Eventhouse and KQL Database to ingest and analyze streaming data using
 
 1. In the Eventhouse, you'll see the default KQL Database.
 
-2. Click on **IoTEventhouse** (the database name).
+2. Select **IoTEventhouse** (the database name).
 
 3. The database overview shows:
    - Database details
@@ -76,13 +76,13 @@ First, ensure you have the `streaming-events.json` file from the `data-templates
 
 ### Get Data into KQL Database
 
-1. In the KQL Database view, click **Get data**.
+1. In the KQL Database view, select **Get data**.
 
 2. Select **Local file**.
 
 3. Create a new table:
    - **Table name**: `IoTEvents`
-   - Click **Next**.
+   - Select **Next**.
 
 4. Upload the `streaming-events.json` file.
 
@@ -90,11 +90,11 @@ First, ensure you have the `streaming-events.json` file from the `data-templates
    - Fabric automatically detects JSON structure.
    - Verify column names and types.
 
-6. Click **Finish** to complete ingestion.
+6. Select **Finish** to complete ingestion.
 
 ### Verify Data Ingestion
 
-1. After ingestion completes, click on the `IoTEvents` table.
+1. After ingestion completes, select the `IoTEvents` table.
 
 2. Preview the data to confirm it was loaded correctly.
 
@@ -104,7 +104,7 @@ First, ensure you have the `streaming-events.json` file from the `data-templates
 
 ### Open KQL Queryset
 
-1. Click **New** → **KQL Queryset**.
+1. Select **New** → **KQL Queryset**.
 
 2. Name: `KQL_IoTAnalytics`.
 
@@ -119,7 +119,7 @@ IoTEvents
 ```
 
 1. Copy this query into the query editor.
-2. Click **Run** or press Shift+Enter.
+2. Select **Run** or press Shift+Enter.
 
 ### Query 2: Event Count by Device
 
@@ -242,7 +242,7 @@ IoTEvents
 
 ### Pin to Dashboard (Optional)
 
-1. After running a query with visualization, click **Pin to dashboard**.
+1. After running a query with visualization, select **Pin to dashboard**.
 
 2. Create a new dashboard or add to existing.
 
@@ -254,7 +254,7 @@ IoTEvents
 
 ### Save KQL Queryset
 
-1. Click **Save** in the KQL Queryset.
+1. Select **Save** in the KQL Queryset.
 
 2. Verify `KQL_IoTAnalytics` is saved to your workspace.
 

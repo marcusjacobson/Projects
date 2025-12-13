@@ -37,19 +37,19 @@ Before creating a Lakehouse, understand its key components:
 
 1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
 
-2. Click **Workspaces** in the left navigation.
+2. Select **Workspaces** in the left navigation.
 
 3. Select your **Fabric-Purview-Lab** workspace.
 
 ### Create New Lakehouse
 
-1. Click **+ New item** button.
+1. Select **+ New item**.
 
-2. In the item gallery, select **Lakehouse**.
+2. In the **New item** pane, search for or select **Lakehouse**.
 
 3. Enter the Lakehouse name: `CustomerDataLakehouse`.
 
-4. Click **Create**.
+4. Select **Create**.
 
 5. Wait for the Lakehouse to be provisioned (typically 10-30 seconds).
 
@@ -80,7 +80,7 @@ The sample data files are in the `data-templates` folder:
 
 3. Navigate to the `data-templates` folder.
 
-4. Select `customers.csv` and click **Open**.
+4. Select `customers.csv` and select **Open**.
 
 5. Repeat for `transactions.csv`.
 
@@ -92,7 +92,7 @@ The sample data files are in the `data-templates` folder:
 
 2. You should see both CSV files listed.
 
-3. Click on a file to preview its contents.
+3. Select a file to preview its contents.
 
 ---
 
@@ -111,7 +111,7 @@ The sample data files are in the `data-templates` folder:
    | **New table name** | `customers` |
    | **Use first row as headers** | ✅ Checked |
 
-4. Click **Load**.
+4. Select **Load**.
 
 5. Wait for the load operation to complete.
 
@@ -128,7 +128,7 @@ The sample data files are in the `data-templates` folder:
    | **New table name** | `transactions` |
    | **Use first row as headers** | ✅ Checked |
 
-4. Click **Load**.
+4. Select **Load**.
 
 5. Wait for completion.
 
@@ -140,7 +140,7 @@ The sample data files are in the `data-templates` folder:
    - `customers`
    - `transactions`
 
-3. Click on a table to preview the data.
+3. Select a table to preview the data.
 
 ---
 
@@ -148,9 +148,9 @@ The sample data files are in the `data-templates` folder:
 
 ### View Table Schema
 
-1. Click on the `customers` table.
+1. Select the `customers` table.
 
-2. In the preview pane, click **View schema**.
+2. In the preview pane, select **View schema**.
 
 3. Review the automatically inferred data types:
 
@@ -182,13 +182,13 @@ Delta Lake infers data types from CSV data. For this lab, all types should work 
 
 2. Find the dropdown that shows **Lakehouse**.
 
-3. Click it and select **SQL analytics endpoint**.
+3. Select it and choose **SQL analytics endpoint**.
 
 4. The view switches to SQL-based exploration.
 
 ### Run Sample Queries
 
-1. Click **New SQL query**.
+1. Select **New SQL query**.
 
 2. Run this query to explore customer data:
 
@@ -206,7 +206,7 @@ Delta Lake infers data types from CSV data. For this lab, all types should work 
    LIMIT 10;
    ```
 
-3. Click **Run** to execute.
+3. Select **Run** to execute.
 
 4. Review results in the output pane.
 

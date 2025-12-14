@@ -449,8 +449,7 @@ Fabric-Purview-Governance-Simulation/
 ├── 01-Enable-Fabric-Create-Workspace/
 │   └── README.md
 ├── 02-Create-Lakehouse-Load-Data/
-│   ├── README.md
-│   └── scripts/
+│   └── README.md
 ├── 03-Data-Ingestion-Connectors/
 │   └── README.md
 ├── 04-Create-Warehouse-SQL-Analytics/
@@ -466,8 +465,7 @@ Fabric-Purview-Governance-Simulation/
 ├── 09-Final-Validation/
 │   └── README.md
 └── 10-Cleanup-Reset/
-    ├── README.md
-    └── scripts/
+    └── README.md
 ```
 
 ---

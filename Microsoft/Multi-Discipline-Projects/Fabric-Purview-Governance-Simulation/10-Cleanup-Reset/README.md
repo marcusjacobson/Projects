@@ -56,17 +56,13 @@ Before cleanup, understand which items generate ongoing costs:
 ### Save Report If Needed
 
 1. Open `Customer Analytics Report`.
-
 2. Select **File** → **Download this file** → **.pbix**.
-
 3. Save locally for future reference.
 
 ### Export Query Results
 
 1. Open any queries you want to save.
-
 2. Run the query and export results to CSV.
-
 3. Save KQL queries as text files.
 
 ---
@@ -78,24 +74,16 @@ Before cleanup, understand which items generate ongoing costs:
 Deleting the workspace removes all contained items at once.
 
 1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
-
 2. Navigate to your workspaces list.
-
 3. Find `Fabric-Purview-Lab`.
-
 4. Select the **...** (more options) menu.
-
 5. Select **Workspace settings**.
-
 6. Scroll to the bottom.
+7. Select **Remove this workspace**.
 
-7. Select **Delete this workspace**.
+![remove-workspace](.images/remove-workspace.png)
 
-> 📷 **Screenshot**: Delete workspace confirmation dialog with workspace name typed
-
-8. Type the workspace name to confirm.
-
-9. Select **Delete**.
+8. Select **Delete**.
 
 ### What This Removes
 
@@ -119,18 +107,14 @@ Deleting the workspace removes all contained items at once.
 
 The DLP policy created in Lab 06 is **not** deleted with the workspace—it must be removed manually.
 
-### Navigate to DLP Policies
+1. Go to [purview.microsoft.com](https://purview.microsoft.com).
+2. Navigate to **Solutions** → **Data loss prevention** → **Policies**.
+3. Select the `Fabric PII Detection - Lab` policy.
+4. Select the policy, then click **Delete policy**.
 
-- Go to [purview.microsoft.com](https://purview.microsoft.com).
-- Navigate to **Solutions** → **Data loss prevention** → **Policies**.
+![remove-policy](.images/remove-policy.png)
 
-### Delete the Lab Policy
-
-> 📷 **Screenshot**: DLP Policies list with lab policy selected and Delete option highlighted
-
-- Find `Fabric PII Detection - Lab` policy.
-- Select the policy, then click **Delete policy**.
-- Confirm deletion.
+5. Confirm deletion.
 
 > **💡 Why Delete?** DLP policies are tenant-wide. Leaving unused policies creates clutter and potential confusion. Delete lab policies to maintain a clean policy inventory.
 
@@ -143,7 +127,7 @@ Purview catalog entries are cleaned up automatically:
 - **Live View** syncs within 15-30 minutes.
 - No manual action required.
 
-> **💡 Keep for Future Use**: Glossary terms, Data Map scan definitions, and Purview PAYG billing have **no ongoing cost** and can be reused.
+> **💡 Keep for Future Use**: Data Map scan definitions and Purview PAYG billing have **no ongoing cost** and can be reused for future Fabric governance labs.
 
 ---
 
@@ -231,13 +215,9 @@ Congratulations! You've completed the Fabric-Purview Governance Simulation.
 ### Key Takeaways
 
 1. **Fabric + Purview Integration**: Seamless governance across the analytics stack.
-
 2. **DirectLake Performance**: Near real-time analytics without data movement.
-
 3. **Live View Discovery**: Automatic asset discovery without manual scanning.
-
 4. **Sensitivity Labels**: Protection flows through lineage.
-
 5. **Unified Platform**: Single workspace for all analytics workloads.
 
 ---
@@ -247,13 +227,9 @@ Congratulations! You've completed the Fabric-Purview Governance Simulation.
 ### Extend Your Learning
 
 1. **Advanced Dataflows**: Complex ETL with error handling.
-
 2. **Real-Time Streaming**: Eventstream with live data.
-
 3. **Capacity Management**: Performance tuning and monitoring.
-
 4. **Custom Classifications**: Create organization-specific patterns.
-
 5. **Automated Governance**: Policy-based label application.
 
 ### Production Considerations

@@ -44,8 +44,8 @@ This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview inte
 > **💡 Recommended Approach**:
 >
 > - **Session 1 (3 hours)**: Labs 00-03 - Prerequisites, Fabric enablement, Lakehouse, Data ingestion
-> - **Session 2 (2 hours)**: Labs 04-06 - Warehouse, KQL, Purview discovery and annotations
-> - **Session 3 (2 hours)**: Labs 07-09 - Sensitivity Labels, Power BI, Cleanup
+> - **Session 2 (2 hours)**: Labs 04-05 - Warehouse, Real-Time Analytics (KQL)
+> - **Session 3 (3 hours)**: Labs 06-10 - DLP Classification, Data Map & Lineage, Power BI, Final Validation, Cleanup
 
 **Key Timing Note**: Unlike SharePoint Content Explorer (which requires up to 7 days for classification indexing), **Fabric assets appear in Purview within minutes** via automatic Live View discovery. This project is designed for faster feedback loops.
 
@@ -193,55 +193,54 @@ This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview inte
 
 ---
 
-### [Lab 06: Purview Discovery and Annotations](./06-Purview-Discovery-Annotations/)
+### [Lab 06: DLP Data Classification](./06-DLP-Data-Classification/)
 
-**Duration**: 60 minutes  
-**Objective**: Explore Purview live view discovery, add annotations, and explore lineage
+**Duration**: 35 minutes  
+**Objective**: Create DLP policies that automatically detect sensitive data in Fabric items
 
 **What You'll Learn**:
 
-- Access Purview portal and navigate to Data Catalog.
-- View Fabric assets automatically discovered via "live view".
-- Add manual classifications and annotations to assets.
-- Create and link glossary terms for business context.
-- View end-to-end data lineage for Fabric assets.
-- Navigate between Fabric and Purview seamlessly.
+- Create Microsoft Purview DLP policies targeting Fabric and Power BI.
+- Configure Sensitive Information Type (SIT) detection for SSN, credit cards, financial data.
+- Apply DLP policies to Lakehouse, Warehouse, AND KQL Database.
+- View policy tips and alerts when sensitive data is detected.
+- Configure endorsements for data quality governance.
 
 **Key Deliverables**:
 
-- Fabric assets visible in Purview Data Catalog.
-- Manual classifications applied to sensitive columns.
-- Glossary terms created and linked to assets.
-- Data lineage visualization explored.
-- Navigation between Fabric and Purview mastered.
+- DLP policy created in Microsoft Purview portal.
+- SIT detection configured for PII data patterns.
+- Policy tips visible on flagged Fabric items.
+- Admin alerts configured for compliance monitoring.
+- Endorsements applied for governance visibility.
 
-**Prerequisites**: Labs 02-05 completed (data assets exist to discover)
+**Prerequisites**: Labs 01-05 completed, M365 E5 license (or E3 + Compliance add-on)
 
-> **💡 Free Version Note**: This lab uses Purview's "live view" feature which automatically discovers Fabric assets. For deep scanning with automatic classification, see [ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md](./ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md).
+> **🔒 Licensing Note**: DLP for Fabric requires M365 E5. This lab provides hands-on experience with automatic data classification that scans actual data content in Lakehouse tables, Warehouse tables, and KQL databases.
 
 ---
 
-### [Lab 07: Sensitivity Labels and Governance](./07-Sensitivity-Labels-Governance/)
+### [Lab 07: Data Map and Lineage](./07-Data-Map-Lineage/)
 
-**Duration**: 45 minutes  
-**Objective**: Apply sensitivity labels and implement governance controls
+**Duration**: 25 minutes  
+**Objective**: Scan Fabric assets with Data Map and visualize data lineage
 
 **What You'll Learn**:
 
-- Understand sensitivity label architecture in Microsoft 365.
-- Publish sensitivity labels to Fabric workspaces.
-- Apply sensitivity labels manually to Fabric assets.
-- Configure governance policies for labeled content.
-- View governance status in Purview Data Catalog.
+- Configure and run a Data Map scan on Fabric data sources.
+- View discovered assets with schema-level metadata.
+- Visualize data lineage showing flow from Lakehouse to Warehouse.
+- Use lineage for impact analysis and data tracing.
+- Understand upstream and downstream data dependencies.
 
 **Key Deliverables**:
 
-- Sensitivity labels published and applied to Fabric assets.
-- Label inheritance behavior understood.
-- Governance controls configured.
-- Compliance posture visible in Purview.
+- Data Map scan completed for Fabric workspace.
+- Asset metadata visible in Data Catalog.
+- Lineage visualization showing data flow relationships.
+- Impact analysis skills for schema change assessment.
 
-**Prerequisites**: Lab 06 completed
+**Prerequisites**: Labs 01-06 completed, Fabric registered in Data Map (Lab 00)
 
 ---
 
@@ -257,6 +256,7 @@ This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview inte
 - Create basic DAX measures.
 - Build interactive visualizations.
 - Publish reports to workspace with governance inheritance.
+- View updated lineage showing reports in Data Map.
 
 **Key Deliverables**:
 
@@ -264,21 +264,47 @@ This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview inte
 - DirectLake mode configured for optimal performance.
 - Visualizations created from governed data.
 - Report published with inherited sensitivity labels.
+- Lineage extended to show report dependencies.
 
-**Prerequisites**: Labs 02-04 completed (data sources available)
+**Prerequisites**: Labs 01-07 completed (data sources and lineage available)
 
 ---
 
-### [Lab 09: Cleanup and Reset](./09-Cleanup-Reset/)
+### [Lab 09: Final Validation](./09-Final-Validation/)
 
-**Duration**: 30 minutes  
+**Duration**: 30-45 minutes  
+**Objective**: Validate all governance capabilities configured throughout the lab series
+
+**What You'll Learn**:
+
+- Verify DLP policy results (policy tips, alerts, Activity Explorer).
+- Validate end-to-end data lineage visualization.
+- Confirm automatic classifications on sensitive data.
+- Apply and verify endorsements on Fabric items.
+- Review governance scorecard across all lab components.
+
+**Key Deliverables**:
+
+- DLP policy tips visible on Fabric items.
+- Lineage showing complete data flow.
+- Classifications applied to sensitive columns.
+- Endorsements signaling data quality.
+- Governance summary documenting all capabilities.
+
+**Prerequisites**: Labs 01-08 completed, DLP policy deployed (1+ hours)
+
+---
+
+### [Lab 10: Cleanup and Reset](./10-Cleanup-Reset/)
+
+**Duration**: 15 minutes  
 **Objective**: Remove simulation resources and restore environment
 
 **What You'll Learn**:
 
 - Delete Fabric workspace and all contained items.
 - Remove Purview manual classifications and annotations.
-- Clean up any remaining resources.
+- Clean up DLP policies in Purview portal.
 - Validate cleanup completion.
 - Prepare environment for fresh start.
 
@@ -286,6 +312,7 @@ This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview inte
 
 - Fabric workspace deleted.
 - Purview annotations removed.
+- DLP policies removed.
 - Environment restored to clean state.
 - Cleanup validation completed.
 
@@ -304,15 +331,13 @@ This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview inte
 | Data Warehouse (SQL) | 04 | Intermediate | T-SQL, dimensional modeling, SQL endpoint |
 | KQL Database | 05 | Intermediate | Eventhouse, streaming ingestion, KQL syntax |
 | Real-Time Analytics | 05 | Basic | Event-driven architecture, time-series data |
-| Purview Data Map | 06 | Intermediate | Source registration, live view discovery |
-| Purview Hub (Fabric) | 06 | Basic | Native Fabric-Purview integration |
-| Manual Classification | 06 | Intermediate | Column annotations, glossary terms |
-| Data Catalog | 06 | Basic | Asset discovery, metadata, search |
-| Data Lineage | 06 | Basic | End-to-end lineage visualization |
-| Sensitivity Labels | 07 | Intermediate | Information Protection, label policies |
-| Data Governance | 07 | Intermediate | Access controls, compliance, auditing |
+| DLP for Fabric | 06 | Intermediate | DLP policies, SIT detection, policy tips |
+| Purview Data Map | 07 | Intermediate | Source registration, scanning, asset discovery |
+| Data Lineage | 07 | Intermediate | End-to-end lineage visualization, impact analysis |
+| Data Catalog | 07 | Basic | Asset discovery, schema metadata, search |
 | Power BI Reporting | 08 | Intermediate | DirectLake, DAX basics, governed reports |
-| Power BI + Purview | 08 | Basic | Governed data sources, certified datasets |
+| Sensitivity Labels | 08 | Basic | Information Protection, label inheritance |
+| Power BI + Purview | 08 | Basic | Governed data sources, lineage to reports |
 
 ---
 
@@ -349,13 +374,15 @@ Fabric-Purview-Governance-Simulation/
 │   ├── README.md
 │   └── kql/
 │       └── sample-queries.kql
-├── 06-Purview-Discovery-Annotations/
+├── 06-DLP-Data-Classification/
 │   └── README.md
-├── 07-Sensitivity-Labels-Governance/
+├── 07-Data-Map-Lineage/
 │   └── README.md
 ├── 08-Power-BI-Visualization/
 │   └── README.md
-└── 09-Cleanup-Reset/
+├── 09-Final-Validation/
+│   └── README.md
+└── 10-Cleanup-Reset/
     ├── README.md
     └── scripts/
         └── Remove-FabricResources.ps1

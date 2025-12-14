@@ -290,13 +290,21 @@ Before proceeding, confirm the data contains sensitive information that Purview 
 
 ### Expected Sensitive Information Types
 
-When Purview discovers this Lakehouse in Lab 06, it will automatically classify:
+When Purview DLP discovers this Lakehouse in Lab 06, it will automatically classify:
+
+**From customers.csv:**
 
 | Column | Example Value | Purview Classification |
 |--------|---------------|------------------------|
 | **SSN** | 123-45-6789 | U.S. Social Security Number (SSN) |
-| **Email** | john.smith@example.com | Email Address |
-| **Phone** | (555) 123-4567 | U.S. Phone Number |
+
+**From transactions.csv:**
+
+| Column | Example Value | Purview Classification |
+|--------|---------------|------------------------|
+| **CreditCardNumber** | 4532-1234-5678-9012 | Credit Card Number |
+
+> **⚠️ Fabric Location Limitation**: Some built-in SITs like **All Full Names** are not supported for Fabric/Power BI DLP locations. The **Email** and **Phone** columns also contain PII but are NOT auto-detected by built-in SITs. For this project, we focus on **SSN** and **Credit Card Number** which are fully supported for Fabric.
 
 > **💡 Why This Matters**: This lab creates the data foundation. In Lab 06, you'll connect Purview to discover this Lakehouse and see these classifications appear automatically - no manual tagging required.
 

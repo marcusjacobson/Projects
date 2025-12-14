@@ -276,7 +276,7 @@ EXEC dbo.sp_CreditScoreReport @MinCreditScore = 700;
 
 ## 🔧 Step 6: Create View for Power BI
 
-In Lab 08, you'll create Power BI visualizations. Create a view now that combines customer and spending data.
+In Lab 07, you'll create Power BI visualizations. Create a view now that combines customer and spending data.
 
 ### Create Customer Spending View
 
@@ -313,7 +313,7 @@ GROUP BY c.CustomerID, c.FirstName, c.LastName, c.State, c.CreditScore;
 
 > **⚠️ Important**: You must select/highlight the query text before clicking **Save as view**. If you click the button without selecting text, you'll see an error: "To save as a view, select the text of one SELECT statement."
 >
-> **💡 Why Save as a View?**: In Fabric Warehouse, queries are saved as views rather than standalone query files. This view will be available as a data source in Lab 08 for Power BI visualizations.
+> **💡 Why Save as a View?**: In Fabric Warehouse, queries are saved as views rather than standalone query files. This view will be available as a data source in Lab 07 for Power BI visualizations.
 
 ### Verify All Objects Created
 

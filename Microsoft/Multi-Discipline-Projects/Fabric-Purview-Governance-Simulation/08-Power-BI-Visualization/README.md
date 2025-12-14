@@ -43,7 +43,7 @@ This demonstrates the **end-to-end governed analytics** pattern that organizatio
 
 ## 📋 Prerequisites
 
-- [ ] Labs 02-07 completed (Lakehouse with data, labels applied).
+- [ ] Labs 01-07 completed (Lakehouse with data, DLP policies, lineage configured).
 - [ ] Access to `Fabric-Purview-Lab` workspace.
 - [ ] Basic familiarity with Power BI concepts.
 
@@ -443,9 +443,9 @@ Before proceeding to Lab 09, verify:
 
 Proceed to:
 
-**[Lab 09: Cleanup and Reset](../09-Cleanup-Reset/)**
+**[Lab 09: Final Validation](../09-Final-Validation/)**
 
-> **🎯 Important**: Lab 09 provides cleanup procedures to remove all lab resources and reset your environment.
+> **🎯 Important**: Lab 09 validates all governance capabilities you've configured: DLP policy results, data lineage, classifications, and endorsements. Your DLP policy (Lab 06) has had time to deploy while you completed Labs 07-08.
 
 ---
 

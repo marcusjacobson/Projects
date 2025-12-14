@@ -1,4 +1,4 @@
-# Lab 09: Cleanup and Reset
+# Lab 10: Cleanup and Reset
 
 ## 🎯 Objective
 
@@ -18,8 +18,8 @@ Remove all lab resources to clean up your Fabric environment and optionally rese
 | **PL_CustomerDataRefresh** | Lab 03 | Cancels any running pipelines |
 | **AnalyticsWarehouse** | Lab 04 | Removes shortcuts and views |
 | **IoTEventhouse** | Lab 05 | Deletes KQL database and data |
+| **DLP Policies** | Lab 06 | Manual cleanup in Purview portal |
 | **Customer Analytics Report** | Lab 08 | Removes visualizations |
-| **Purview Catalog Entries** | Labs 06-07 | Assets marked as deleted in catalog |
 
 ### Real-World Context
 
@@ -43,7 +43,7 @@ This lab demonstrates the **responsible decommissioning** process that data team
 
 ## 📋 Prerequisites
 
-- [ ] Labs 01-08 completed.
+- [ ] Labs 01-09 completed (or ready to cleanup).
 - [ ] Workspace owner or admin permissions.
 - [ ] Purview Data Curator role (for catalog cleanup).
 
@@ -347,9 +347,9 @@ Congratulations! You've completed the Fabric-Purview Governance Simulation.
 | **Data Engineering** | Labs 02-03 |
 | **Data Warehousing** | Lab 04 |
 | **Real-Time Analytics** | Lab 05 |
-| **Data Governance** | Labs 06-08 |
-| **Business Intelligence** | Lab 09 |
-| **Environment Management** | Lab 09 |
+| **DLP Classification** | Lab 06 |
+| **Business Intelligence** | Lab 07 |
+| **Environment Management** | Lab 08 |
 
 ### Key Takeaways
 
@@ -406,6 +406,6 @@ This lab documentation was created with the assistance of **GitHub Copilot** pow
 
 ## 🎉 Congratulations!
 
-You have successfully completed all 10 labs of the **Fabric-Purview Governance Simulation**.
+You have successfully completed all 9 labs of the **Fabric-Purview Governance Simulation**.
 
 Return to the [Project README](../README.md) for additional resources and next steps.

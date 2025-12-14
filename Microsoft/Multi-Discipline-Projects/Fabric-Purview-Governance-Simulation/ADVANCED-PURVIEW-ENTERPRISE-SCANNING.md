@@ -4,7 +4,37 @@
 
 This document covers **advanced Microsoft Purview Data Governance Enterprise features** for scanning and classifying Microsoft Fabric data sources. These features require a separate Azure subscription with consumption-based billing and are **not included in the standard simulation labs**.
 
-> **⚠️ Important**: The main simulation labs (00-10) are designed to work with the **free version** of Purview Data Governance. This document is supplementary content for organizations with enterprise Purview subscriptions.
+> **⚠️ Important**: The main simulation labs (00-09) are designed to work with the **free version** of Purview Data Governance. This document is supplementary content for organizations with enterprise Purview subscriptions.
+
+---
+
+## 🔴 Critical Discovery: Table-Level Metadata Requirements
+
+### What Live View Actually Provides (Free)
+
+During validation of the simulation labs, we discovered critical limitations in Purview's free "Live View" for Fabric:
+
+| Asset Type | Live View (Free) | Enterprise Scanning |
+|------------|------------------|---------------------|
+| **Workspaces** | ✅ Automatic | ✅ Automatic |
+| **Items** (Lakehouse, Warehouse, etc.) | ✅ Automatic | ✅ Automatic |
+| **Tables** | ❌ **Not included** | ✅ Requires scan |
+| **Columns** | ❌ **Not included** | ✅ Requires scan |
+| **Automatic Classifications** | ❌ Not available | ✅ Requires scan |
+
+**Key Documentation Quote** (from Microsoft Learn):
+> "Only Microsoft Fabric **item level metadata** are available in live view."
+
+### What This Means for Labs
+
+The original lab design assumed tables would automatically appear in Purview Data Catalog. **This is incorrect.** To see Fabric Lakehouse or Warehouse tables in Purview, you must:
+
+1. Have **Purview Enterprise** subscription (~$360+/month minimum)
+2. Configure **Service Principal** authentication (Managed Identity doesn't work for Lakehouses)
+3. **Register Fabric as a data source** in Purview Data Map
+4. **Run an explicit scan** to discover table/column metadata
+
+> **📖 Source**: [Connect to your Microsoft Fabric tenant in Microsoft Purview](https://learn.microsoft.com/en-us/purview/register-scan-fabric-tenant)
 
 ---
 
@@ -14,22 +44,24 @@ This document covers **advanced Microsoft Purview Data Governance Enterprise fea
 
 The free version of Purview Data Governance provides:
 
-- ✅ **Live View Discovery**: Fabric assets automatically appear in Purview.
-- ✅ **Manual Classification**: Add classifications to up to 1,000 assets.
-- ✅ **Glossary Terms**: Create and assign business terms.
-- ✅ **Basic Lineage**: View Fabric-native lineage relationships.
-- ✅ **Asset Annotations**: Add descriptions and owners.
+- ✅ **Live View Discovery**: Fabric **workspaces and items** automatically appear in Purview.
+- ✅ **Sensitivity Labels**: Apply and view labels (synced from M365, not Purview).
+- ✅ **Endorsements**: Apply via Fabric (visible in Purview).
+- ❌ **Table/Column Discovery**: NOT included in free Live View.
+- ❌ **Automatic Classification**: NOT available without scanning.
+- ❌ **Glossary Term Linking**: Limited without Enterprise catalog features.
 
 ### Enterprise Version (This Document)
 
 Enterprise Purview Data Governance adds:
 
-- ✅ **Deep Scanning**: Schema-level analysis with column profiling.
+- ✅ **Deep Scanning**: Schema-level analysis with table and column discovery.
+- ✅ **Lakehouse Table Metadata**: Requires Service Principal + explicit scan.
 - ✅ **Automatic Classification**: 200+ built-in Sensitive Information Types (SITs).
 - ✅ **Scheduled Scans**: Automated recurring discovery and classification.
 - ✅ **Collections**: Hierarchical asset organization.
 - ✅ **Workflows**: Approval processes and business workflows.
-- ✅ **Unlimited Assets**: No annotation limits.
+- ✅ **Glossary Terms**: Full glossary with asset linking.
 - ✅ **100+ Connectors**: Scan non-Azure sources (AWS, GCP, on-premises).
 
 ---
@@ -99,9 +131,83 @@ After upgrade, verify access to:
    |---------|-------|
    | **Name** | `Fabric-Tenant-Enterprise` |
    | **Tenant** | Your Azure AD tenant |
-   | **Credential** | Managed Identity (recommended) |
+   | **Credential** | Service Principal (required for Lakehouse) |
 
 4. Click **Register**.
+
+---
+
+## 🔐 Fabric Lakehouse Scanning Requirements
+
+### Critical: Service Principal Required for Lakehouses
+
+**Key Documentation Quote** (from Microsoft Learn):
+> "*Managed Identity is currently **not supported** to scan Fabric lakehouses. Only **Service Principal** should be used for lakehouse metadata scanning.*"
+
+This means you **cannot** use Managed Identity (the simpler option) for Lakehouse scanning.
+
+### Service Principal Setup for Lakehouse Scanning
+
+#### Step 1: Create App Registration in Entra ID
+
+1. Go to [portal.azure.com](https://portal.azure.com).
+2. Navigate to **Microsoft Entra ID** → **App registrations**.
+3. Click **+ New registration**.
+4. Configure:
+
+   | Setting | Value |
+   |---------|-------|
+   | **Name** | `Purview-Fabric-Scanner` |
+   | **Supported account types** | Single tenant |
+   | **Redirect URI** | Web: `https://purview.microsoft.com` |
+
+5. Note the **Application (client) ID** and **Directory (tenant) ID**.
+
+#### Step 2: Create Client Secret
+
+1. In your app registration, go to **Certificates & secrets**.
+2. Click **+ New client secret**.
+3. Add a description and expiration period.
+4. **Copy the secret value immediately** (shown only once).
+
+#### Step 3: Store Secret in Azure Key Vault
+
+1. Navigate to your Azure Key Vault.
+2. Go to **Secrets** → **+ Generate/Import**.
+3. Create a secret with your app's client secret value.
+4. Connect Key Vault to Microsoft Purview (if not already connected).
+
+#### Step 4: Create Security Group in Entra ID
+
+1. Go to **Microsoft Entra ID** → **Groups**.
+2. Create a new **Security** group (e.g., `Purview-Fabric-Scanners`).
+3. Add your Service Principal as a member.
+
+#### Step 5: Configure Fabric Admin Portal
+
+1. Go to [app.fabric.microsoft.com/admin-portal](https://app.fabric.microsoft.com/admin-portal).
+2. Navigate to **Tenant settings** → **Admin API settings**.
+3. Enable **Allow service principals to use read-only admin APIs**.
+4. Set to **Specific security groups** and add your security group.
+5. Enable **Enhance admin APIs responses with detailed metadata**.
+
+> **⏱️ Important**: After enabling Admin API settings, wait **15-30 minutes** before testing scans.
+
+#### Step 6: Configure OneLake Access (If Using OneLake Security)
+
+If your Lakehouse has OneLake security enabled:
+
+1. Create a OneLake security role with **Read** permission.
+2. Assign the security role to your Service Principal.
+
+### Supported Authentication Methods by Item Type
+
+| Fabric Item | Managed Identity | Service Principal | Delegated Auth |
+|-------------|-----------------|-------------------|----------------|
+| **Lakehouse** | ❌ Not supported | ✅ Required | ✅ Supported |
+| **Warehouse** | ✅ Supported | ✅ Supported | ✅ Supported |
+| **KQL Database** | ✅ Supported | ✅ Supported | ✅ Supported |
+| **Power BI items** | ✅ Supported | ✅ Supported | ✅ Supported |
 
 ---
 
@@ -119,7 +225,7 @@ After upgrade, verify access to:
    |---------|-------------------|
    | **Name** | `Fabric-Enterprise-Scan-01` |
    | **Scope** | Select specific workspaces |
-   | **Credential** | Managed Identity |
+   | **Credential** | Service Principal (for Lakehouses) |
    | **Integration Runtime** | Azure AutoResolve |
 
 ### Select Asset Types

@@ -268,6 +268,76 @@ If trial is expired or unavailable:
 
 ---
 
+## 🔧 Step 5: Enable Pay-As-You-Go Billing for Purview (Required for Lab 06)
+
+> **⚠️ Critical for Later Labs**: Labs 06-07 require Microsoft Purview features (DLP for Fabric, Data Map) that need **pay-as-you-go billing** enabled. Complete this now so billing propagates during Labs 01-05.
+
+### Why Enable Now?
+
+- Pay-as-you-go billing takes **a few hours** to propagate.
+- If you wait until Lab 06, you'll hit a blocker and need to wait.
+- Enabling now allows propagation during Labs 01-05.
+
+### Enable Pay-As-You-Go
+
+1. Go to [purview.microsoft.com](https://purview.microsoft.com).
+2. Look for the **rocket icon** (🚀) in the top-right header near the Settings gear.
+3. Click the rocket and select **Get Started**.
+   - Alternatively: **Settings** → **Account details** → configure billing.
+4. Select your **Azure subscription** from the list (must be in the same tenant as your M365).
+5. Select or create a **Resource group**:
+   - **Recommended**: Create a new resource group named `rg-purview-billing` or `rg-fabric-governance-lab`.
+   - In Azure Portal: **Resource groups** → **+ Create** → Name: `rg-purview-billing` → Region: your region → **Create**.
+6. Complete the setup wizard.
+
+> **📝 Requirements**:
+>
+> - **Global Administrator** role required for this step.
+> - Active Azure subscription in the same tenant.
+> - A resource group in that subscription.
+
+### Verify Billing Enabled
+
+After completing the wizard:
+
+1. Go to **Settings** → **Account details**.
+2. Verify your Azure subscription is linked.
+3. You should see billing configuration details.
+
+> **💡 Note**: Full propagation can take a few hours. Continue to Lab 01 — by the time you reach Lab 06, billing will be active.
+
+---
+
+## 🔧 Step 6: Register Fabric in Data Map (Required for Lab 07)
+
+> **📊 For Lineage Visibility**: Registering Fabric as a data source in Data Map enables lineage visualization in Lab 07. Complete this now so it's ready when needed.
+
+### Register Fabric Data Source
+
+1. In the [Purview portal](https://purview.microsoft.com), navigate to **Data Map** in the left menu.
+2. Select **Data sources**.
+3. Click **Register**.
+4. In the **Register data source** panel:
+   - Search for and select **Fabric (Includes Power BI)**.
+5. Configure the registration:
+   - **Data source name**: `Fabric-Lab`
+   - **Tenant ID**: Auto-populated with your tenant ID.
+   - **Domain**: Select your domain (e.g., `payg-billing`).
+   - **Collection**: Leave as default (Select domain only).
+6. Click **Register**.
+
+### Verify Registration
+
+After registration, you should see:
+
+- **Fabric-Lab** appears in the Data sources map view.
+- The Fabric icon indicates successful registration.
+- You can click **View details** to see registration information.
+
+> **💡 Note**: You'll configure and run a scan in Lab 07. Registration now ensures the data source is ready.
+
+---
+
 ## ✅ Validation Checklist
 
 Before proceeding to Lab 01, verify:
@@ -283,6 +353,8 @@ Before proceeding to Lab 01, verify:
 - [ ] **Portal Access**: Can access [purview.microsoft.com](https://purview.microsoft.com).
 - [ ] **Free Version**: Can see Data Governance solutions (Unified Catalog or Data Catalog).
 - [ ] **Permissions**: Have Reader or Curator role assigned.
+- [ ] **Pay-As-You-Go**: Billing enabled (Step 5) — propagates during Labs 01-05.
+- [ ] **Data Map Registration**: Fabric registered as data source (Step 6).
 
 ### General Requirements
 

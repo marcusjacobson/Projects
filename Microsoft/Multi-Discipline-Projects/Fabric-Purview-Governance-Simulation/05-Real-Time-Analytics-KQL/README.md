@@ -374,9 +374,9 @@ Before proceeding to Lab 06, verify:
 
 Proceed to:
 
-**[Lab 06: Purview Integration and Scanning](../06-Purview-Integration-Scanning/)**
+**[Lab 06: DLP Data Classification](../06-DLP-Data-Classification/)**
 
-> **🎯 Important**: Lab 06 is a critical integration point where we connect Microsoft Purview to scan all the Fabric assets you've created.
+> **🎯 Important**: Lab 06 creates DLP policies to automatically detect sensitive data in your Fabric items. The pay-as-you-go billing you enabled in Lab 00 should now be active.
 
 ---
 

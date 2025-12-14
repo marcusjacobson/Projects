@@ -4,122 +4,238 @@
 
 Validate the governance capabilities configured throughout this lab series: DLP policy detection, asset discovery in Unified Catalog, and the Power BI report governance chain.
 
-**Duration**: 15-20 minutes
+**Duration**: 20-30 minutes (plus DLP propagation wait time)
 
 ---
 
 ## 🏗️ What You'll Validate
 
-| Component | Lab | Validation Focus |
-|-----------|-----|------------------|
-| **DLP Policy** | Lab 06 | Simulation results, detected matches |
-| **Asset Discovery** | Lab 07 | Fabric assets visible in Unified Catalog |
-| **Report Governance** | Lab 08 | Semantic model and report in workspace |
+| Component | Source Lab | Validation Focus |
+|-----------|------------|------------------|
+| **DLP Policy** | Lab 06 | Simulation review, enable policy, trigger scan, verify matches, investigate alerts |
 
-### Why Final Validation Matters
+> **💡 Note**: Asset Discovery (Lab 07) and Report Governance (Lab 08) were validated in their respective labs. This lab focuses on the DLP workflow, alert investigation, and how all governance components work together.
 
-DLP policies require **propagation time** before detecting sensitive data:
+---
 
-- **Policy deployment**: Immediate (sync completed).
-- **Real-time scanning**: Activates when users access reports.
-- **Match detection**: Requires data access activity to trigger.
+## 🔄 Understanding DLP Detection Triggers
 
-By completing Labs 07-08 after creating the DLP policy, you've allowed time for deployment while continuing to build the governance chain.
+> **⚠️ Important**: DLP for Fabric does **not** proactively scan data at rest. It evaluates data only when trigger events occur.
+
+| Asset Type | Trigger Events |
+|------------|----------------|
+| **Lakehouse** | Data changes: new data, adding tables, updating existing tables |
+| **Semantic Model** | Publish, Republish, On-demand refresh, Scheduled refresh |
+
+**Key Behavior**: Adding a single row triggers a **full table scan**—you don't need to reload entire tables.
+
+**Timing**: Allow 15-30 minutes after triggering for results to appear in Activity Explorer and Alerts.
 
 ---
 
 ## 📋 Prerequisites
 
 - [ ] Labs 01-08 completed.
-- [ ] DLP policy created in Lab 06 (ideally 1+ hours ago).
+- [ ] DLP policy created in Lab 06 (in simulation mode, ideally 1+ hours ago).
 - [ ] Data Map scan completed in Lab 07.
 - [ ] Power BI report saved in Lab 08.
 
 ---
 
-## 🔧 Step 1: Check DLP Policy Status
+## 🔧 Step 1: Review DLP Policy Simulation and Enable
 
-### Verify Policy Deployment
+Before triggering data changes, first verify your DLP policy simulation completed successfully and then enable the policy for enforcement.
 
-1. Go to [purview.microsoft.com](https://purview.microsoft.com).
-2. Navigate to **Solutions** → **Data loss prevention** → **Policies**.
-3. Locate your `Fabric PII Detection - Lab` policy.
-4. Verify:
-   - **Policy sync status**: Sync completed ✅
-   - **Mode**: In simulation with notifications (or On)
+### Navigate to DLP Policies
 
-### Check Simulation Results
+- Go to [purview.microsoft.com](https://purview.microsoft.com).
+- Navigate to **Solutions** → **Data loss prevention** → **Policies**.
+- Click on your `Fabric PII Detection - Lab` policy.
 
-1. Click on your `Fabric PII Detection - Lab` policy.
-2. Review the **Simulation overview** tab:
-   - **Total matches**: Number of items with detected sensitive data.
-   - **Scanning per location**: Power BI status (Real-time).
+### Verify Simulation Status
 
-> **💡 Note**: DLP for Fabric uses **real-time scanning** — it detects sensitive data when users access reports or semantic models, not by proactively scanning data at rest.
+Review the **Simulation overview** tab:
 
-### Trigger Detection (If No Matches Yet)
+| Check | Expected Value | Notes |
+|-------|----------------|-------|
+| **Simulation status** | "Complete" or "In progress" | Status shows simulation ran |
+| **Sync status** | "Sync completed" | Policy synced to Fabric/Power BI |
+| **Total matches** | 0 | **Expected** — Data existed before policy, no trigger occurred |
+| **Scanning per location** | Power BI: Real-time | Confirms Fabric coverage |
 
-If simulation shows 0 matches:
+### Enable the DLP Policy
 
-1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
-2. Open your **Fabric-Purview-Lab** workspace.
-3. **Open** the `Customer Analytics Report` and interact with it.
-4. Wait 15-30 minutes and check simulation results again.
+According to [Microsoft's DLP deployment guidance](https://learn.microsoft.com/en-us/purview/dlp-create-deploy-policy#policy-deployment-steps), after confirming simulation works correctly, change the policy state to enable enforcement:
 
----
+- On your policy page, click **Edit policy** (or access policy settings).
+- Navigate to the **Policy mode** section.
+- Change from **Run the policy in simulation mode** to **Turn it on right away**.
+- Click **Submit** to save changes.
 
-## 🔧 Step 2: Validate Asset Discovery
+> **⚠️ Important**: Enabling the policy means DLP actions (alerts, notifications) will now be enforced. In a lab environment this is safe. In production, follow Microsoft's recommended deployment steps to gradually roll out policies.
 
-### Verify Assets in Unified Catalog
+### Wait for Policy Sync
 
-1. In the [Purview portal](https://purview.microsoft.com), go to **Unified Catalog** → **Data assets**.
-2. Click **Microsoft Fabric** under **Explore your data**.
-3. Select your **Fabric-Purview-Lab** workspace.
+After enabling, wait **5-10 minutes** for the policy change to sync to Fabric locations. You can verify sync status:
 
-### Confirm Discovered Assets
-
-Navigate through categories to verify:
-
-| Category | Expected Asset | Status |
-|----------|----------------|--------|
-| **Lakehouse** | `CustomerDataLakehouse` | Should show tables: `customers`, `customers_segmented`, `transactions` |
-| **Warehouses** | `AnalyticsWarehouse` | Should be listed |
-| **Datasets** | `CustomerDataLakehouse` | Semantic model |
-| **Reports** | `Customer Analytics Report` | Power BI report |
-
-### View Table Schema
-
-1. Navigate to **Lakehouse** → `CustomerDataLakehouse` → **tables** → `customers`.
-2. Click on the `customers` table.
-3. Select the **Schema** tab.
-4. Verify columns are listed (FirstName, LastName, SSN, State, CreditScore, etc.).
-
-> **✅ Success**: Your Fabric assets are discoverable in the Unified Catalog with schema-level metadata.
+- Return to the policy overview.
+- Confirm **Sync status** shows "Sync completed" after the change.
 
 ---
 
-## 🔧 Step 3: Verify Report Governance Chain
+## 🔧 Step 2: Trigger DLP Evaluation
 
-### Confirm Workspace Items
+Now that the policy is enabled, trigger a data change event in your Lakehouse to initiate DLP scanning. The SQL analytics endpoint is **read-only**, so you must use one of these methods.
 
-1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
-2. Open your **Fabric-Purview-Lab** workspace.
-3. Verify these items exist:
+### Option A: Spark Notebook (Required for INSERT)
 
-| Item | Type | Purpose |
-|------|------|---------|
-| `CustomerDataLakehouse` | Lakehouse | Source data with DLP-protected columns (SSN, Credit Card) |
-| `CustomerDataLakehouse` | Semantic model | Data layer created from Lakehouse |
-| `Customer Analytics Report` | Report | Visualization using data from both tables |
+> **⚠️ Why a Notebook?** Earlier labs used the **SQL analytics endpoint** for SELECT queries. However, that endpoint is **read-only**—you cannot INSERT, UPDATE, or DELETE data through it. To modify Lakehouse data, you must use a Spark notebook with the `%%sql` magic command.
 
-### Verify Report Uses Governed Data
+Create a notebook to add test rows with sensitive data patterns:
 
-1. Open `Customer Analytics Report`.
-2. Confirm the report displays data from:
-   - **customers** table (State, CreditScore charts).
-   - **transactions** table (Amount, MerchantCategory charts).
+- Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
+- Open the **Fabric-Purview-Lab** workspace.
+- Click **+ New item** → **Notebook**.
+- Name it `DLP-Trigger-Notebook`.
+- Ensure the notebook is attached to your Lakehouse (check the **Lakehouse** panel on the left).
 
-> **🎯 Governance Chain Complete**: The report connects to the semantic model, which connects to the Lakehouse containing DLP-protected data (SSN in `customers`, Credit Card in `transactions`).
+Add and run this cell to insert a test customer with SSN:
+
+```sql
+%%sql
+-- Add test row to customers table to trigger DLP scan
+-- When Lakehouse is attached, reference tables directly (no prefix needed)
+INSERT INTO customers 
+VALUES ('C999', 'Test', 'DLPTrigger', 'test.trigger@example.com', '(555) 999-9999', '999-99-9999', '2000-01-01', '999 Trigger Lane', 'Test City', 'TX', '77777', 'USA', 700, 'Standard', '2024-12-14')
+```
+
+Run a second cell to verify the insert:
+
+```sql
+%%sql
+SELECT * FROM customers WHERE CustomerID = 'C999'
+```
+
+Add and run this cell to insert a test transaction with Credit Card:
+
+```sql
+%%sql
+-- Add test row to transactions table to trigger DLP scan
+-- Table has 14 columns: TransactionID, CustomerID, TransactionDate, TransactionTime, Amount, Currency, MerchantName, MerchantCategory, CreditCardNumber, CardType, PaymentMethod, Status, Description, Location
+INSERT INTO transactions 
+VALUES ('T9999', 'C999', '2024-12-14', '08:30:00', 99.99, 'USD', 'Test Store', 'Testing', '4532-9999-8888-7777', 'Visa', 'Credit Card', 'Completed', 'DLP trigger test transaction', 'Test City TX')
+```
+
+Verify the transaction insert:
+
+```sql
+%%sql
+SELECT * FROM transactions WHERE TransactionID = 'T9999'
+```
+
+> **💡 Tip**: Adding rows to BOTH tables triggers DLP evaluation on each, maximizing detection coverage. Each table will be fully scanned.
+
+### Option B: Re-load CSV Files to Tables
+
+If you prefer not to use a notebook, you can re-load the CSV files to the Delta tables:
+
+- Navigate to **CustomerDataLakehouse** → **Files**.
+- Right-click on `customers.csv` and select **Load to Tables** → **Existing table** → select `customers` → choose **Overwrite**.
+- Repeat for `transactions.csv`.
+
+> **⚠️ Important Distinction**: Files in the **Files** folder are separate from Delta tables. Simply re-uploading a CSV to Files does NOT update the Delta table. You must use **Load to Tables** with the **Overwrite** option to update the actual table data that downstream components (semantic model, reports) consume.
+>
+> **⚠️ Note on Semantic Model Refresh**: Refreshing the semantic model alone will NOT trigger DLP matches for SSN/Credit Card patterns. The semantic model contains aggregated data and relationships—not the raw text values where PII patterns exist. You must modify the **Lakehouse tables** (Option A or B) to trigger detection of sensitive data patterns.
+
+### Optional: Update Segmented Table via Dataflow
+
+To maximize coverage, also trigger the `customers_segmented` table:
+
+- Open the **Customer Segmentation Pipeline** (if created in Lab 03).
+- Run the dataflow to refresh the segmented data.
+- This creates another data change event for DLP to evaluate.
+
+### After Triggering
+
+Wait **15-30 minutes** for DLP to complete evaluation, then proceed to Step 3.
+
+---
+
+## 🔧 Step 3: Verify DLP Detections in Activity Explorer
+
+After the 15-30 minute wait, check Activity Explorer to confirm DLP detected sensitive data.
+
+### Navigate to Activity Explorer
+
+- Go to [purview.microsoft.com](https://purview.microsoft.com).
+- Navigate to **Solutions** → **Data loss prevention** → **Activity explorer**.
+- Filter: **Workload** = `Power BI`, **Activity** = `DLP policy matched`.
+
+### Expected Results
+
+You should see DLP policy matches showing:
+
+- **Item name**: `CustomerDataLakehouse`
+- **Policy matched**: `Fabric PII Detection - Lab`
+- **Sensitive info types**: U.S. Social Security Number, Credit Card Number
+
+### If No Results Appear
+
+1. Verify 15-30 minutes have passed since Step 2.
+2. Confirm policy is **enabled** (not simulation mode).
+3. Check **Sync status** shows "Sync completed".
+4. Re-run INSERT statements if needed.
+
+---
+
+## 🔧 Step 4: Investigate DLP Alert Details
+
+Now investigate the alerts to confirm the sensitive data patterns detected.
+
+### Check DLP Alerts Dashboard
+
+- Navigate to **Solutions** → **Data loss prevention** → **Alerts**.
+- Select an alert from your `Fabric PII Detection - Lab` policy.
+
+### Alert Detail Pane Tabs
+
+| Tab | Information |
+|-----|-------------|
+| **Details** | Event ID, Location, Impacted entities (Item name, Workspace) |
+| **Source** | "Preview not available" (expected for Fabric) |
+| **Classifiers** | Sensitive info types detected |
+| **Metadata** | Additional context |
+
+**Key fields to verify:**
+
+- **Item name**: `CustomerDataLakehouse`
+- **Sensitive info types detected**: Click link to see SSN and/or Credit Card
+
+### DLP Detection Granularity (Expected Limitation)
+
+> **⚠️ Important**: DLP for Fabric provides **item-level** detection only.
+
+| What You See | What You Don't See |
+|--------------|-------------------|
+| ✅ Lakehouse name | ❌ Specific table |
+| ✅ Sensitive info types | ❌ Specific column/row |
+| ✅ Policy matched | ❌ Content preview |
+
+The validation is that DLP **detected** sensitive data in your Lakehouse. You know from your data design that SSN is in `customers.SSN` and Credit Card is in `transactions.CreditCardNumber`.
+
+### Optional: Microsoft Defender XDR
+
+DLP alerts also flow to [security.microsoft.com](https://security.microsoft.com):
+
+- Go to **Incidents & alerts** → **Incidents**.
+- Filter: **Service Source** = `Data Loss Prevention`.
+
+### Manage Alert Status
+
+Update alert status after investigation:
+
+- **Resolved - True Positive**: Confirmed detection.
+- **Resolved - False Positive**: Tune policy if detection was incorrect.
 
 ---
 
@@ -179,59 +295,45 @@ With this governance stack:
 
 ## ✅ Final Validation Checklist
 
-### DLP Policy
+### DLP Policy Workflow (Steps 1-4)
 
 - [ ] Policy sync status shows "Sync completed".
-- [ ] Policy is in simulation mode (or enabled).
-- [ ] Scanning per location shows Power BI as "Real-time".
-- [ ] (Optional) Matches detected after accessing reports.
+- [ ] Simulation confirmed 0 matches before triggering (expected behavior).
+- [ ] Policy changed from simulation mode to **enabled**.
+- [ ] Data change trigger executed (INSERT to customers and transactions tables).
+- [ ] Matches detected in Activity Explorer after trigger.
+- [ ] Alerts visible in DLP Alerts dashboard.
+- [ ] Investigated alert details to confirm detected SITs (SSN, Credit Card).
+- [ ] (Optional) Reviewed alerts in Microsoft Defender XDR.
 
-### Asset Discovery
+### From Previous Labs (Already Validated)
 
-- [ ] `Fabric-Purview-Lab` workspace visible in Unified Catalog.
-- [ ] Lakehouse tables (`customers`, `transactions`) discoverable.
-- [ ] Schema metadata visible when viewing table details.
-
-### Report Governance
-
-- [ ] Semantic model created from Lakehouse.
-- [ ] Power BI report saved to workspace.
-- [ ] Report uses data from both DLP-protected source tables.
+- [ ] **Lab 07**: Fabric assets discoverable in Unified Catalog with schema metadata.
+- [ ] **Lab 08**: Semantic model and Power BI report created and saved to workspace.
 
 ---
 
 ## ❌ Troubleshooting
 
-### No DLP Matches After Several Hours
+### No DLP Matches After Triggering
 
-**Symptom**: Policy deployed but simulation shows 0 matches.
-
-**Resolution**:
-
-1. DLP for Fabric uses **real-time scanning** — it requires data access activity.
-2. Open the Power BI report and interact with visuals.
-3. Wait 15-30 minutes and check simulation results again.
-4. Verify policy scope includes Power BI location.
-
-### Assets Not in Unified Catalog
-
-**Symptom**: Cannot find workspace or assets in catalog.
+**Symptom**: Policy enabled and data inserted, but no matches appear.
 
 **Resolution**:
 
-1. Verify Data Map scan completed successfully (Lab 07).
-2. Check scan scope included your workspace.
-3. Re-run scan if assets are missing.
+1. Verify at least **15-30 minutes** have passed since INSERT.
+2. Confirm policy is **enabled** (not still in simulation mode).
+3. Check **Sync status** shows "Sync completed" after enabling.
+4. Verify policy scope includes **Fabric and Power BI** location.
+5. Re-run the INSERT statements from Step 2 if needed.
 
-### Report Not Showing Data
+### Simulation Shows 0 Matches Before Enabling
 
-**Symptom**: Report opens but visuals are empty.
+**Symptom**: Simulation dashboard shows 0 total matches.
 
 **Resolution**:
 
-1. Verify Lakehouse tables have data.
-2. Check semantic model connection to Lakehouse.
-3. Refresh the report data.
+This is **expected behavior**! DLP for Fabric uses **real-time scanning**—it requires data change events. The data existed before the policy was created, so no scanning occurred. Follow Steps 2-3 to trigger detection.
 
 ---
 

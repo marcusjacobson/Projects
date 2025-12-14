@@ -14,7 +14,8 @@ Create an Eventhouse and KQL Database to ingest and analyze streaming data using
 |------|-------------|
 | **IoTEventhouse** | Container for real-time analytics databases |
 | **IoTEventhouse** (KQL Database) | Time-series database for streaming events |
-| **Events** | Table with simulated IoT device telemetry |
+| **IoTEvents** | Table with simulated IoT device telemetry |
+| **DeviceStats** | Materialized view for pre-aggregated device analytics |
 | **KQL_IoTAnalytics** | Saved KQL queries for time-series analysis |
 
 ### Real-World Context
@@ -44,7 +45,7 @@ The skills you learn here apply directly to **Microsoft Sentinel** (security), *
 
 ---
 
-## 🔧 Step 1: Understand Real-Time Intelligence Components
+## 📊 Real-Time Intelligence Components Overview
 
 | Component | Purpose |
 |-----------|---------|
@@ -57,38 +58,31 @@ The skills you learn here apply directly to **Microsoft Sentinel** (security), *
 
 ---
 
-## 🔧 Step 2: Create Eventhouse
+## 🔧 Step 1: Create Eventhouse
 
 ### Navigate to Workspace
 
 1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
-
 2. Open your **Fabric-Purview-Lab** workspace.
 
 ### Create Eventhouse
 
 1. Select **+ New item**.
-
 2. In the **New item** pane, search for **Eventhouse** and select it.
-
 3. Enter name: `IoTEventhouse`.
-
 4. Select **Create**.
-
 5. Wait for provisioning (1-2 minutes).
 
 > **📝 Note**: Both an Eventhouse and its default child KQL database are created with the same name. The database name can be renamed at any time.
 
 ---
 
-## 🔧 Step 3: Explore KQL Database
+## 🔧 Step 2: Explore KQL Database
 
 ### Open KQL Database
 
 1. In the Eventhouse, you'll see the default KQL Database.
-
 2. Select **IoTEventhouse** (the database name).
-
 3. The database overview shows:
    - Database details
    - Tables (empty initially)
@@ -96,7 +90,7 @@ The skills you learn here apply directly to **Microsoft Sentinel** (security), *
 
 ---
 
-## 🔧 Step 4: Create Table and Ingest Sample Data
+## 🔧 Step 3: Create Table and Ingest Sample Data
 
 ### Prepare Sample Data
 
@@ -104,39 +98,37 @@ First, ensure you have the `streaming-events.json` file from the `data-templates
 
 ### Get Data into KQL Database
 
-1. In the KQL Database view, select **Get data**.
-
+1. In the KQL Database view, select **Get data** in the toolbar.
 2. Select **Local file**.
-
-3. Create a new table:
-   - **Table name**: `IoTEvents`
+3. In the **Get data** wizard (Source step):
+   - Under **Select or create a destination table**, expand **IoTEventhouse**.
+   - Select **+ New table**.
+   - Enter table name: `IoTEvents`.
+   - Drag and drop or browse to select `streaming-events.json`.
    - Select **Next**.
-
-4. Upload the `streaming-events.json` file.
-
-5. Review the schema detection:
-   - Fabric automatically detects JSON structure.
-   - Verify column names and types.
-
-6. Select **Finish** to complete ingestion.
+4. In the **Inspect** step:
+   - Review the data preview showing columns: `eventId`, `timestamp`, `deviceId`, `deviceType`, `location`, `sensorValue`, `unit`, `status`, `batteryLevel`, `signalStrength`.
+   - Verify the mapping looks correct (IoTEvents_mapping).
+   - Select **Finish** to complete ingestion.
+   - On the **Summary** step, let the processes complete and then select **Close**.
 
 ### Verify Data Ingestion
 
-1. After ingestion completes, select the `IoTEvents` table.
-
-2. Preview the data to confirm it was loaded correctly.
+1. After ingestion completes, expand **IoTEventhouse** → **IoTEvents** in the Explorer.
+2. Select the table to preview data and confirm it loaded correctly.
 
 ---
 
-## 🔧 Step 5: Write KQL Queries
+## 🔧 Step 4: Write KQL Queries
 
 ### Open KQL Queryset
 
-1. Select **New** → **KQL Queryset**.
-
-2. Name: `KQL_IoTAnalytics`.
-
-3. Connect to your `IoTEventhouse` database.
+1. From the **IoTEvents** table view, select **KQL Queryset** in the toolbar.
+2. In the **New KQL Queryset** dialog:
+   - Enter name: `KQL_IoTAnalytics`.
+   - Select **Create**.
+3. The queryset opens with default template queries. Select the **+** tab to create a new blank query tab.
+4. In the Explorer pane (left side), expand **IoTEventhouse** → **Tables** → **IoTEvents** to confirm your table is available.
 
 ### Query 1: Basic Data Exploration
 
@@ -146,7 +138,7 @@ IoTEvents
 | take 20
 ```
 
-1. Copy this query into the query editor.
+1. Copy this query into the new query tab.
 2. Select **Run** or press Shift+Enter.
 
 ### Query 2: Event Count by Device
@@ -154,22 +146,22 @@ IoTEvents
 ```kql
 // Count events per device
 IoTEvents
-| summarize EventCount = count() by DeviceID
+| summarize EventCount = count() by deviceId
 | order by EventCount desc
 ```
 
-### Query 3: Temperature Analysis
+### Query 3: Sensor Value Analysis by Location
 
 ```kql
-// Temperature statistics by location
+// Sensor statistics by location
 IoTEvents
 | summarize 
-    AvgTemp = avg(Temperature),
-    MinTemp = min(Temperature),
-    MaxTemp = max(Temperature),
+    AvgValue = avg(sensorValue),
+    MinValue = min(sensorValue),
+    MaxValue = max(sensorValue),
     EventCount = count()
-    by Location
-| order by AvgTemp desc
+    by location
+| order by AvgValue desc
 ```
 
 ### Query 4: Time-Based Analysis
@@ -177,7 +169,7 @@ IoTEvents
 ```kql
 // Events over time (grouped by hour)
 IoTEvents
-| extend Hour = bin(Timestamp, 1h)
+| extend Hour = bin(timestamp, 1h)
 | summarize EventCount = count() by Hour
 | order by Hour asc
 | render timechart
@@ -186,16 +178,16 @@ IoTEvents
 ### Query 5: Anomaly Detection
 
 ```kql
-// Find high temperature events (potential anomalies)
+// Find high sensor value events (potential anomalies)
 IoTEvents
-| where Temperature > 80
-| project Timestamp, DeviceID, Location, Temperature, Humidity
-| order by Temperature desc
+| where sensorValue > 100
+| project timestamp, deviceId, location, deviceType, sensorValue, unit, status
+| order by sensorValue desc
 ```
 
 ---
 
-## 🔧 Step 6: Create Materialized View
+## 🔧 Step 5: Create Materialized View
 
 Materialized views pre-aggregate data for faster queries.
 
@@ -207,32 +199,41 @@ Materialized views pre-aggregate data for faster queries.
 {
     IoTEvents
     | summarize 
-        AvgTemperature = avg(Temperature),
-        AvgHumidity = avg(Humidity),
+        AvgSensorValue = avg(sensorValue),
+        AvgBatteryLevel = avg(batteryLevel),
         EventCount = count(),
-        LastEvent = max(Timestamp)
-        by DeviceID, Location
+        LastEvent = max(timestamp)
+        by deviceId, location
 }
 ```
 
-> **⚠️ Note**: In Fabric KQL Database, materialized views may have limited support. If this command fails, skip to the next step.
+After running, you'll see metadata about the view (Name, SourceTable, IsHealthy, etc.). To see the aggregated data:
 
-### Alternative: Create Function
+```kql
+// Query the materialized view
+DeviceStats
+```
+
+### Alternative: Create Function (Optional)
+
+> **⏭️ Skip this section** if your materialized view created successfully. Proceed directly to **Step 6: Visualize Query Results**.
+
+If the materialized view command fails in your environment, use a function instead:
 
 ```kql
 // Create a function for reusable queries
 .create-or-alter function DeviceStatistics() {
     IoTEvents
     | summarize 
-        AvgTemperature = avg(Temperature),
-        AvgHumidity = avg(Humidity),
+        AvgSensorValue = avg(sensorValue),
+        AvgBatteryLevel = avg(batteryLevel),
         EventCount = count(),
-        LastEvent = max(Timestamp)
-        by DeviceID, Location
+        LastEvent = max(timestamp)
+        by deviceId, location
 }
 ```
 
-### Use the Function
+To use the function:
 
 ```kql
 // Call the function
@@ -242,68 +243,50 @@ DeviceStatistics()
 
 ---
 
-## 🔧 Step 7: Visualize Query Results
+## 🔧 Step 6: Visualize Query Results
 
 ### Render Charts
 
 ```kql
-// Temperature by location as bar chart
+// Sensor value by location as bar chart
 IoTEvents
-| summarize AvgTemp = avg(Temperature) by Location
+| summarize AvgValue = avg(sensorValue) by location
 | render barchart
 ```
 
 ```kql
 // Event distribution as pie chart
 IoTEvents
-| summarize Count = count() by DeviceID
+| summarize Count = count() by deviceId
 | render piechart
 ```
 
 ```kql
-// Temperature trend as line chart
+// Sensor value trend as line chart
 IoTEvents
-| order by Timestamp asc
-| project Timestamp, Temperature
+| order by timestamp asc
+| project timestamp, sensorValue
 | render linechart
 ```
 
 ### Pin to Dashboard (Optional)
 
-1. After running a query with visualization, select **Pin to dashboard**.
+> **📝 Note**: This step is optional and for learning purposes only. The dashboard is not used in later labs — Lab 08 uses Power BI with Warehouse data instead.
 
-2. Create a new dashboard or add to existing.
+If you want to explore real-time dashboards:
 
-3. This creates real-time monitoring capabilities.
+1. Run the **bar chart** query (sensor value by location) — it's the most visually informative.
+2. Select **Save to Dashboard** in the toolbar (or **Pin to dashboard** if available).
+3. Create a new dashboard named `IoT-Monitoring-Dashboard`.
+4. The dashboard provides real-time monitoring capabilities for operational scenarios.
 
 ---
 
-## 🔧 Step 8: Save and Organize Queries
+## 🔧 Step 7: Save KQL Queryset
 
-### Save KQL Queryset
-
-1. Select **Save** in the KQL Queryset.
-
-2. Verify `KQL_IoTAnalytics` is saved to your workspace.
-
-### Create Additional Queryset for Alerts
-
-1. Create another KQL Queryset: `KQL_IoTAlerts`.
-
-2. Add alert-focused queries:
-
-```kql
-// Temperature threshold alert
-IoTEvents
-| where Temperature > 85
-| project AlertTime = Timestamp, DeviceID, Location, Temperature
-| extend AlertSeverity = case(
-    Temperature > 95, "Critical",
-    Temperature > 90, "High",
-    "Medium"
-)
-| order by AlertTime desc
-```
+1. In the KQL Queryset, select **Save** in the toolbar.
+2. Verify `KQL_IoTAnalytics` appears in your **Fabric-Purview-Lab** workspace.
+3. Close any extra query tabs — the queryset and its queries are saved.
 
 ---
 
@@ -312,11 +295,11 @@ IoTEvents
 Before proceeding to Lab 06, verify:
 
 - [ ] Eventhouse `IoTEventhouse` exists.
-- [ ] KQL Database contains `IoTEvents` table.
-- [ ] Sample data is visible in the table.
+- [ ] KQL Database contains `IoTEvents` table with 20 rows.
+- [ ] Materialized view `DeviceStats` exists (check Explorer → Materialized Views).
 - [ ] KQL queries execute successfully.
 - [ ] At least one visualization renders correctly.
-- [ ] KQL Queryset `KQL_IoTAnalytics` is saved.
+- [ ] KQL Queryset `KQL_IoTAnalytics` is saved to workspace.
 
 ---
 
@@ -368,14 +351,14 @@ Before proceeding to Lab 06, verify:
 
 | Operator | Purpose | Example |
 |----------|---------|---------|
-| `where` | Filter rows | `where Temperature > 70` |
-| `summarize` | Aggregate data | `summarize avg(Temperature) by Location` |
-| `project` | Select columns | `project Timestamp, DeviceID` |
-| `extend` | Add calculated column | `extend TempF = Temperature * 9/5 + 32` |
-| `order by` | Sort results | `order by Timestamp desc` |
+| `where` | Filter rows | `where sensorValue > 100` |
+| `summarize` | Aggregate data | `summarize avg(sensorValue) by location` |
+| `project` | Select columns | `project timestamp, deviceId` |
+| `extend` | Add calculated column | `extend ValueCategory = iff(sensorValue > 100, "High", "Normal")` |
+| `order by` | Sort results | `order by timestamp desc` |
 | `take` | Limit rows | `take 100` |
 | `render` | Visualize | `render barchart` |
-| `bin` | Time bucketing | `bin(Timestamp, 1h)` |
+| `bin` | Time bucketing | `bin(timestamp, 1h)` |
 
 ---
 

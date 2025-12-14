@@ -8,36 +8,31 @@ Remove all lab resources to clean up your Fabric environment and optionally rese
 
 ---
 
-## 🏗️ What You'll Remove
+## 💰 Cost Impact Summary
 
-| Item | Lab Created | Impact of Removal |
-|------|-------------|-------------------|
-| **Fabric-Purview-Lab** | Lab 01 | Deletes all workspace contents |
-| **CustomerDataLakehouse** | Lab 02 | Removes tables, files, and SQL endpoint |
-| **DF_CustomerSegmentation** | Lab 03 | Stops scheduled refreshes |
-| **PL_CustomerDataRefresh** | Lab 03 | Cancels any running pipelines |
-| **AnalyticsWarehouse** | Lab 04 | Removes shortcuts and views |
-| **IoTEventhouse** | Lab 05 | Deletes KQL database and data |
-| **DLP Policies** | Lab 06 | Manual cleanup in Purview portal |
-| **Customer Analytics Report** | Lab 08 | Removes visualizations |
+Before cleanup, understand which items generate ongoing costs:
 
-### Real-World Context
+| Resource | Cost When Active | Cost When Idle | Recommendation |
+|----------|------------------|----------------|----------------|
+| **Fabric Trial Capacity** | $0 | $0 | ✅ Keep until expiration |
+| **Fabric F2 Capacity** | ~$0.36/hr | $0 (paused) | ⚠️ Pause or delete |
+| **Fabric Workspace** | Consumes capacity | Minimal storage | ⚠️ Delete |
+| **Purview PAYG Account** | Per scan (~<$1) | $0 | ✅ Keep (free when idle) |
+| **DLP Policy** | $0 | $0 | ⚠️ Delete (clutter) |
 
-**Resource lifecycle management** is critical in enterprise environments:
+> **💡 Key Insight**: The Purview pay-as-you-go account does **not** generate costs unless you run Data Map scans. You can safely keep it for future labs.
 
-- **Cost control** — unused resources consume capacity and budget.
-- **Security hygiene** — orphaned assets create governance gaps.
-- **Compliance** — data retention policies may require deletion.
-- **Environment management** — dev/test cleanup after projects complete.
+---
 
-In production, organizations implement:
+## 🏗️ Cleanup Overview
 
-- **Automated cleanup policies** for stale workspaces.
-- **Approval workflows** before deleting governed assets.
-- **Audit trails** documenting what was deleted and why.
-- **Grace periods** allowing recovery before permanent deletion.
+**Deleting the workspace removes all Fabric items automatically.** Only the DLP policy requires manual deletion.
 
-This lab demonstrates the **responsible decommissioning** process that data teams should follow.
+| Cleanup Action | Method |
+|----------------|--------|
+| Fabric workspace + all contents | Delete workspace (Step 2) |
+| DLP policy | Manual deletion in Purview (Step 4) |
+| Purview catalog entries | Automatic (Live View sync) |
 
 ---
 
@@ -45,44 +40,18 @@ This lab demonstrates the **responsible decommissioning** process that data team
 
 - [ ] Labs 01-09 completed (or ready to cleanup).
 - [ ] Workspace owner or admin permissions.
-- [ ] Purview Data Curator role (for catalog cleanup).
 
 ---
 
 ## ⚠️ Important Warnings
 
 > **🚨 Destructive Operations**: This lab permanently deletes resources. Ensure you've completed all other labs and saved any work you want to keep.
-
+>
 > **💡 Lab Environment Only**: Only perform these steps in lab/test environments. Never run cleanup scripts against production workspaces.
 
 ---
 
-## 🔧 Step 1: Document What Gets Removed
-
-### Fabric Resources Created
-
-| Lab | Resource | Type |
-|-----|----------|------|
-| 01 | `Fabric-Purview-Lab` | Workspace |
-| 02 | `CustomerDataLakehouse` | Lakehouse |
-| 03 | `DF_CustomerSegmentation` | Dataflow Gen2 |
-| 03 | `PL_CustomerDataRefresh` | Pipeline |
-| 04 | `AnalyticsWarehouse` | Warehouse |
-| 05 | `IoTEventhouse` | Eventhouse |
-| 05 | `KQL_IoTAnalytics` | KQL Queryset |
-| 08 | `Customer Analytics Report` | Report |
-
-### Purview Catalog Entries
-
-- Lakehouse and table assets
-- Warehouse and view assets
-- Eventhouse and KQL database assets
-- Classifications and lineage data
-- Sensitivity labels applied
-
----
-
-## 🔧 Step 2: Export Important Data (Optional)
+## 🔧 Step 1: Export Important Data (Optional)
 
 ### Save Report If Needed
 
@@ -102,7 +71,7 @@ This lab demonstrates the **responsible decommissioning** process that data team
 
 ---
 
-## 🔧 Step 3: Delete Fabric Workspace
+## 🔧 Step 2: Delete Fabric Workspace
 
 ### Delete Workspace (Recommended Method)
 
@@ -137,164 +106,66 @@ Deleting the workspace removes all contained items at once.
 
 ---
 
-## 🔧 Step 4: Verify Fabric Cleanup
+## 🔧 Step 3: Verify Workspace Deleted
 
-### Confirm Workspace Deleted
-
-1. Refresh the workspaces list.
-
-2. Verify `Fabric-Purview-Lab` is no longer visible.
-
-3. Search for any orphaned items.
-
-### Check Capacity Usage
-
-1. If you're a capacity admin, check capacity utilization.
-
-2. Storage and compute should reflect the removed resources.
+- Refresh the workspaces list at [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
+- Verify `Fabric-Purview-Lab` is no longer visible.
 
 ---
 
-## 🔧 Step 5: Clean Purview Catalog (Optional)
+## 🔧 Step 4: Delete DLP Policy
 
-### Understanding Catalog Cleanup
+The DLP policy created in Lab 06 is **not** deleted with the workspace—it must be removed manually.
 
-When Fabric resources are deleted:
+### Navigate to DLP Policies
 
-- Purview Live View assets become **stale** but aren't automatically removed immediately.
-- The catalog may show deleted assets for some time until Live View syncs.
-- Manual classifications and glossary term assignments are preserved until manual cleanup.
+- Go to [purview.microsoft.com](https://purview.microsoft.com).
+- Navigate to **Solutions** → **Data loss prevention** → **Policies**.
 
-### Wait for Live View Sync
+### Delete the Lab Policy
 
-1. Live View typically syncs within 15-30 minutes of resource deletion.
+- Find `Fabric PII Detection - Lab` policy.
+- Select the policy, then click **Delete policy**.
+- Confirm deletion.
 
-2. Deleted Fabric assets will eventually be removed from the catalog.
-
-3. No manual action is usually required.
-
-### Manual Asset Removal (If Needed)
-
-1. Search for the deleted Lakehouse in Data Catalog.
-
-2. If assets still appear:
-   - Select the asset.
-   - Look for **Delete** option (requires Data Curator role).
-   - Confirm deletion.
-
-> **📝 Note**: Some organizations retain catalog history intentionally. Follow your organization's data governance policies.
+> **💡 Why Delete?** DLP policies are tenant-wide. Leaving unused policies creates clutter and potential confusion. Delete lab policies to maintain a clean policy inventory.
 
 ---
 
-## 🔧 Step 6: Remove Manual Classifications and Annotations
+## 🔧 Step 5: Purview Catalog (Automatic)
 
-### Review Lab Annotations
+Purview catalog entries are cleaned up automatically:
 
-During the labs, you added manual classifications and annotations:
+- **Live View** syncs within 15-30 minutes.
+- No manual action required.
 
-- Custom classifications on Lakehouse tables.
-- Glossary terms linked to assets.
-- Descriptions and owner assignments.
-
-### Clean Up Annotations (If Needed)
-
-1. Go to [purview.microsoft.com](https://purview.microsoft.com).
-
-2. Navigate to **Data Catalog**.
-
-3. Search for assets you annotated during the labs.
-
-4. For each asset:
-   - Remove manual classifications.
-   - Unlink glossary terms.
-   - Clear custom descriptions.
-
-### Keep Glossary Terms
-
-- You can keep the business glossary terms for future use.
-- Only remove if you want a complete reset.
+> **💡 Keep for Future Use**: Glossary terms, Data Map scan definitions, and Purview PAYG billing have **no ongoing cost** and can be reused.
 
 ---
 
-## 🔧 Step 7: PowerShell Cleanup Verification
+## ✅ Cleanup Checklist
 
-### Run Verification Script
-
-Execute this script to verify cleanup:
-
-```powershell
-# Fabric-Purview-Governance-Simulation Cleanup Verification
-# This script checks that lab resources have been removed
-
-Write-Host "============================================" -ForegroundColor Cyan
-Write-Host "Cleanup Verification Script" -ForegroundColor Cyan
-Write-Host "============================================" -ForegroundColor Cyan
-
-# Verify Azure CLI is installed
-Write-Host "`n[1/3] Checking Azure CLI..." -ForegroundColor Yellow
-try {
-    $azVersion = az --version 2>$null | Select-Object -First 1
-    Write-Host "  ✅ Azure CLI installed: $azVersion" -ForegroundColor Green
-} catch {
-    Write-Host "  ⚠️ Azure CLI not found (optional for this check)" -ForegroundColor Yellow
-}
-
-# Check for Fabric workspace (requires Fabric REST API access)
-Write-Host "`n[2/3] Workspace Cleanup Status..." -ForegroundColor Yellow
-Write-Host "  ℹ️ Manual verification required:" -ForegroundColor Cyan
-Write-Host "     - Open app.fabric.microsoft.com" -ForegroundColor White
-Write-Host "     - Verify 'Fabric-Purview-Lab' workspace is deleted" -ForegroundColor White
-
-# Purview catalog status
-Write-Host "`n[3/3] Purview Catalog Status..." -ForegroundColor Yellow
-Write-Host "  ℹ️ Manual verification required:" -ForegroundColor Cyan
-Write-Host "     - Open purview.microsoft.com" -ForegroundColor White
-Write-Host "     - Search for 'CustomerDataLakehouse'" -ForegroundColor White
-Write-Host "     - Verify assets are removed or marked stale" -ForegroundColor White
-
-Write-Host "`n============================================" -ForegroundColor Cyan
-Write-Host "Cleanup Verification Complete" -ForegroundColor Cyan
-Write-Host "============================================" -ForegroundColor Cyan
-```
-
-Save as `scripts/Test-Cleanup.ps1` and run from the lab folder.
+- [ ] Workspace `Fabric-Purview-Lab` deleted (Step 2).
+- [ ] DLP policy `Fabric PII Detection - Lab` deleted (Step 4).
+- [ ] Fabric F2 capacity **paused** (if applicable).
 
 ---
 
-## 🔧 Step 8: Reset for Future Labs
-
-### Prepare for Re-Running Labs
+## 🔄 Reset for Future Labs
 
 If you want to run the labs again:
 
 1. **Create new workspace** with fresh name or same name.
-
 2. **Upload sample data** from `data-templates/` folder.
-
 3. **Start from Lab 01** with clean environment.
 
-### Keep Sample Data
+### Sample Data Files (Not Affected by Cleanup)
 
 The `data-templates/` folder in this repository contains:
 
-- `customers.csv` - Customer records
-- `transactions.csv` - Transaction records
-- `streaming-events.json` - IoT events
-
-These files are not affected by workspace deletion.
-
----
-
-## ✅ Cleanup Validation Checklist
-
-Verify complete cleanup:
-
-- [ ] Workspace `Fabric-Purview-Lab` is deleted.
-- [ ] All workspace items are removed.
-- [ ] Manual classifications removed (if desired).
-- [ ] Catalog assets updated after Live View sync.
-- [ ] No orphaned resources in Fabric capacity.
-- [ ] Sample data files preserved in repository.
+- `customers.csv` - Customer records with SSN patterns
+- `transactions.csv` - Transaction records with Credit Card patterns
+- `streaming-events.json` - IoT events for Eventhouse
 
 ---
 
@@ -344,12 +215,14 @@ Congratulations! You've completed the Fabric-Purview Governance Simulation.
 | Skill Area | Labs Covered |
 |------------|--------------|
 | **Fabric Administration** | Labs 00-01 |
-| **Data Engineering** | Labs 02-03 |
+| **Data Engineering (Lakehouse)** | Lab 02 |
+| **Data Pipelines & Dataflows** | Lab 03 |
 | **Data Warehousing** | Lab 04 |
-| **Real-Time Analytics** | Lab 05 |
-| **DLP Classification** | Lab 06 |
-| **Business Intelligence** | Lab 07 |
-| **Environment Management** | Lab 08 |
+| **Real-Time Analytics (Eventhouse)** | Lab 05 |
+| **DLP & Data Classification** | Labs 06, 09 |
+| **Data Map & Asset Discovery** | Lab 07 |
+| **Business Intelligence (Power BI)** | Lab 08 |
+| **Resource Lifecycle Management** | Lab 10 |
 
 ### Key Takeaways
 
@@ -404,7 +277,7 @@ This lab documentation was created with the assistance of **GitHub Copilot** pow
 
 ---
 
-## 🎉 Congratulations!
+## 🎉 Congratulations
 
 You have successfully completed all 9 labs of the **Fabric-Purview Governance Simulation**.
 

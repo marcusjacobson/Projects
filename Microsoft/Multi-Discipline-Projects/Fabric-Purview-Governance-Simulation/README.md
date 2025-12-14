@@ -24,7 +24,7 @@ This hands-on simulation teaches **DLP and Information Protection for Microsoft 
 
 | Consideration | Impact | Planning |
 |---------------|--------|----------|
-| **⏱️ Total Duration** | ~4-5 hours (hands-on) | Plan for full day or 2 sessions |
+| **⏱️ Total Duration** | ~5-6 hours (hands-on) | Plan for full day or 2 sessions |
 | **⏱️ DLP Propagation** | Up to 24 hours | Create DLP policy in Lab 06, validate in Lab 09 next day |
 | **⏱️ Data Map Scan** | 5-15 minutes | Assets appear in Unified Catalog after scan |
 | **💰 Fabric Cost** | $0 or ~$3-5 total | 60-day trial (free) OR F2 capacity with pause |
@@ -35,7 +35,7 @@ This hands-on simulation teaches **DLP and Information Protection for Microsoft 
 
 > **💡 Recommended Approach**:
 >
-> - **Session 1 (3 hours)**: Labs 00-06 — Prerequisites, Fabric setup, data foundation, DLP policy creation
+> - **Session 1 (4 hours)**: Labs 00-06 — Prerequisites, Fabric setup, data foundation, DLP policy creation
 > - **Session 2 (1.5 hours, next day)**: Labs 07-09 — Data Map scan, Power BI report, validation
 > - **Cleanup**: Lab 10 — When ready to remove resources
 
@@ -45,7 +45,7 @@ This hands-on simulation teaches **DLP and Information Protection for Microsoft 
 
 ### [Lab 00: Prerequisites and Environment Setup](./00-Prerequisites-and-Setup/)
 
-**Duration**: 30-45 minutes  
+**Duration**: 30 minutes  
 **Objective**: Validate licensing, configure Fabric Admin API access for Purview scanning
 
 **What You'll Accomplish**:
@@ -65,8 +65,8 @@ This hands-on simulation teaches **DLP and Information Protection for Microsoft 
 
 ### [Lab 01: Enable Fabric and Create Workspace](./01-Enable-Fabric-Create-Workspace/)
 
-**Duration**: 15 minutes  
-**Objective**: Create a Fabric workspace for the governance simulation
+**Duration**: 15-20 minutes  
+**Objective**: Enable Microsoft Fabric and create a governed workspace for the simulation
 
 **What You'll Accomplish**:
 
@@ -85,8 +85,8 @@ This hands-on simulation teaches **DLP and Information Protection for Microsoft 
 
 ### [Lab 02: Create Lakehouse and Load Customer Data](./02-Create-Lakehouse-Load-Data/)
 
-**Duration**: 20 minutes  
-**Objective**: Create a Lakehouse and load customer data containing SSN (sensitive data)
+**Duration**: 30 minutes  
+**Objective**: Create a Lakehouse and load sample data containing classifiable sensitive information
 
 **What You'll Accomplish**:
 
@@ -104,30 +104,32 @@ This hands-on simulation teaches **DLP and Information Protection for Microsoft 
 
 ---
 
-### [Lab 03: Load Transaction Data](./03-Data-Ingestion-Connectors/)
+### [Lab 03: Data Ingestion with Connectors](./03-Data-Ingestion-Connectors/)
 
-**Duration**: 15 minutes  
-**Objective**: Add transaction data containing Credit Card numbers (sensitive data)
+**Duration**: 45 minutes  
+**Objective**: Use Dataflows Gen2 and Data Factory pipelines to ingest and transform data
 
 **What You'll Accomplish**:
 
-- Run a notebook to generate transaction data with Credit Card values.
-- Verify the `transactions` table is created.
-- Confirm both sensitive data types are now in the Lakehouse.
+- Create a Dataflow Gen2 to filter and enrich customer data.
+- Build a Data Factory pipeline with data copy activities.
+- Ingest transaction data containing Credit Card numbers (sensitive data).
+- Monitor pipeline execution and refresh status.
 
 **Key Deliverables**:
 
+- `DF_CustomerSegmentation` dataflow created.
+- `PL_TransactionLoader` pipeline created.
 - `transactions` table with CreditCardNumber column (DLP-detectable).
-- Lakehouse contains two tables with sensitive data patterns.
 
 **Prerequisites**: Lab 02 completed
 
 ---
 
-### [Lab 04: Create Warehouse and Cross-Database Queries](./04-Create-Warehouse-SQL-Analytics/)
+### [Lab 04: Create Warehouse and SQL Analytics](./04-Create-Warehouse-SQL-Analytics/)
 
-**Duration**: 20 minutes  
-**Objective**: Create a Warehouse that queries Lakehouse data
+**Duration**: 30 minutes  
+**Objective**: Create a Warehouse and use cross-database queries to analyze Lakehouse data with T-SQL
 
 **What You'll Accomplish**:
 
@@ -144,21 +146,23 @@ This hands-on simulation teaches **DLP and Information Protection for Microsoft 
 
 ---
 
-### [Lab 05: Data Transformation](./05-Real-Time-Analytics-KQL/)
+### [Lab 05: Real-Time Intelligence with KQL](./05-Real-Time-Analytics-KQL/)
 
-**Duration**: 20 minutes  
-**Objective**: Transform customer data for analytics use cases
+**Duration**: 45 minutes  
+**Objective**: Create an Eventhouse and KQL Database to ingest and analyze streaming data
 
 **What You'll Accomplish**:
 
-- Run a notebook to create segmented customer data.
-- Add derived columns for analytics.
-- Create `customers_segmented` table in Lakehouse.
+- Create an Eventhouse and KQL Database.
+- Ingest streaming event data using Kusto Query Language (KQL).
+- Run real-time analytics queries on streaming data.
+- Monitor ingestion and query performance.
 
 **Key Deliverables**:
 
-- `customers_segmented` table created.
-- Lakehouse contains three tables for reporting.
+- `IoTEventhouse` and KQL Database created.
+- Streaming events ingested and queryable.
+- Real-time analytics capabilities demonstrated.
 
 **Prerequisites**: Lab 02 completed
 
@@ -166,7 +170,7 @@ This hands-on simulation teaches **DLP and Information Protection for Microsoft 
 
 ### [Lab 06: DLP Policy for Sensitive Data Detection](./06-DLP-Data-Classification/)
 
-**Duration**: 20 minutes  
+**Duration**: 35 minutes  
 **Objective**: Create a DLP policy that detects SSN and Credit Card patterns in Fabric data
 
 **What You'll Accomplish**:
@@ -234,7 +238,7 @@ This hands-on simulation teaches **DLP and Information Protection for Microsoft 
 
 ### [Lab 09: Final Validation](./09-Final-Validation/)
 
-**Duration**: 15-20 minutes  
+**Duration**: 20-30 minutes (plus DLP propagation wait time)  
 **Objective**: Validate DLP detection, asset discovery, and report governance
 
 **What You'll Accomplish**:
@@ -280,13 +284,13 @@ This hands-on simulation teaches **DLP and Information Protection for Microsoft 
 | Skill / Technology | Lab | Key Learning |
 |-------------------|-----|--------------|
 | Fabric Workspace Setup | 01 | Create workspace, assign capacity |
-| Lakehouse Architecture | 02 | Delta tables, SQL endpoint |
-| Sensitive Data Patterns | 02-03 | SSN and Credit Card data for DLP testing |
-| Data Warehouse | 04 | Cross-database queries |
-| Data Transformation | 05 | Notebook-based ETL |
+| Lakehouse Architecture | 02 | Delta tables, SQL endpoint, sensitive data |
+| Dataflows Gen2 & Pipelines | 03 | Data Factory, connectors, ingestion |
+| Data Warehouse | 04 | Cross-database queries, T-SQL analytics |
+| Real-Time Intelligence | 05 | Eventhouse, KQL Database, streaming data |
 | **DLP for Fabric** | 06 | Policy creation, SIT detection, real-time scanning |
 | **Data Map Scanning** | 07 | Asset discovery, Unified Catalog |
-| Power BI Reporting | 08 | Semantic model, DirectLake mode |
+| Power BI Reporting | 08 | Semantic model, governance chain |
 | **Governance Validation** | 09 | DLP results, asset discovery, governance chain |
 
 ---
@@ -298,6 +302,10 @@ Fabric-Purview-Governance-Simulation/
 ├── README.md                              # This file - project overview
 ├── TIMING-AND-CLASSIFICATION-GUIDE.md     # Timing expectations for DLP and scanning
 ├── ENTERPRISE-GOVERNANCE-CAPABILITIES.md  # Advanced capabilities guide
+├── data-templates/                        # Sample data files for ingestion
+│   ├── customers.csv
+│   ├── transactions.csv
+│   └── streaming-events.json
 ├── 00-Prerequisites-and-Setup/
 │   ├── README.md
 │   └── scripts/

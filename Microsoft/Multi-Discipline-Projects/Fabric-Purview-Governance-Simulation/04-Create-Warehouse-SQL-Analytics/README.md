@@ -430,7 +430,7 @@ AS
 
 Proceed to:
 
-**[Lab 05: Real-Time Analytics with KQL](../05-Real-Time-Analytics-KQL/)**
+**[Lab 05: Real-Time Intelligence with KQL](../05-Real-Time-Analytics-KQL/)**
 
 ---
 

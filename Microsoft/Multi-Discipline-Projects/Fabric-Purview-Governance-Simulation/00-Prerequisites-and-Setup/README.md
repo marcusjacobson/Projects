@@ -517,7 +517,7 @@ The script validates:
 
 ## 💰 Purview Enterprise Features and Costs
 
-> **📖 Detailed Documentation**: For complete enterprise feature documentation, see [ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md](../ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md).
+> **📖 Detailed Documentation**: For complete enterprise feature documentation, see [ENTERPRISE-GOVERNANCE-CAPABILITIES.md](../ENTERPRISE-GOVERNANCE-CAPABILITIES.md).
 
 ### Quick Summary: Free vs Enterprise
 

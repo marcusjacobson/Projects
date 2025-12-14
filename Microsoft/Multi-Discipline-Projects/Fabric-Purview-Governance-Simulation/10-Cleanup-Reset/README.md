@@ -255,7 +255,7 @@ Congratulations! You've completed the Fabric-Purview Governance Simulation.
 ### Production Considerations
 
 - Implement proper access controls (workspace roles).
-- Consider enterprise Purview for automatic classification (see [ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md](../ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md)).
+- Consider enterprise Purview for automatic classification (see [ENTERPRISE-GOVERNANCE-CAPABILITIES.md](../ENTERPRISE-GOVERNANCE-CAPABILITIES.md)).
 - Create data quality rules and monitoring.
 - Establish data lifecycle policies.
 - Document data ownership and stewardship.
@@ -279,6 +279,6 @@ This lab documentation was created with the assistance of **GitHub Copilot** pow
 
 ## 🎉 Congratulations
 
-You have successfully completed all 9 labs of the **Fabric-Purview Governance Simulation**.
+You have successfully completed all labs of the **Fabric-Purview Governance Simulation**.
 
 Return to the [Project README](../README.md) for additional resources and next steps.

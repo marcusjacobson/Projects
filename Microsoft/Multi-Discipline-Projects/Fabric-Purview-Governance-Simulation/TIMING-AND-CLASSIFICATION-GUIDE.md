@@ -77,16 +77,16 @@ These timings apply to the data foundation labs (01-05).
 
 | Lab | Primary Activity | Typical Duration | Key Wait Points |
 |-----|------------------|------------------|-----------------|
-| **Lab 00** | Prerequisites and setup | 30-45 minutes | Admin API propagation (15-30 min) |
-| **Lab 01** | Workspace and Lakehouse | 15 minutes | None |
-| **Lab 02** | Customer data notebook | 20 minutes | Notebook execution |
-| **Lab 03** | Transaction data notebook | 15 minutes | Notebook execution |
-| **Lab 04** | Warehouse and queries | 20 minutes | None |
-| **Lab 05** | Data transformation | 20 minutes | Notebook execution |
-| **Lab 06** | DLP policy creation | 20 minutes | Policy sync (5-15 min) |
+| **Lab 00** | Prerequisites and setup | 30 minutes | Admin API propagation (15-30 min) |
+| **Lab 01** | Enable Fabric, create workspace | 15-20 minutes | None |
+| **Lab 02** | Create Lakehouse, load data | 30 minutes | Data loading |
+| **Lab 03** | Data ingestion with connectors | 45 minutes | Dataflow/pipeline execution |
+| **Lab 04** | Warehouse and SQL analytics | 30 minutes | None |
+| **Lab 05** | Real-Time Intelligence with KQL | 45 minutes | Data ingestion |
+| **Lab 06** | DLP policy creation | 35 minutes | Policy sync (5-15 min) |
 | **Lab 07** | Data Map scan | 15 minutes | Scan completion (5-15 min) |
 | **Lab 08** | Power BI report | 20 minutes | None |
-| **Lab 09** | Final validation | 15-20 minutes | DLP results (may need to wait) |
+| **Lab 09** | Final validation | 20-30 minutes | DLP results (may need to wait) |
 
 ### Recommended Lab Sequencing
 

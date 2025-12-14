@@ -2,322 +2,249 @@
 
 ## 🎯 Objective
 
-Validate all governance capabilities configured throughout this lab series, including DLP policy results, data lineage, classifications, and endorsements.
+Validate the governance capabilities configured throughout this lab series: DLP policy detection, asset discovery in Unified Catalog, and the Power BI report governance chain.
 
-**Duration**: 30-45 minutes
+**Duration**: 15-20 minutes
 
 ---
 
 ## 🏗️ What You'll Validate
 
-| Component | Labs | Validation Focus |
-|-----------|------|------------------|
-| **DLP Policy Results** | Lab 06 | Policy tips, alerts, Activity Explorer |
-| **Data Lineage** | Lab 07 | End-to-end data flow visualization |
-| **Classifications** | Lab 06-07 | SIT detection across Fabric items |
-| **Endorsements** | Lab 06 | Certified/Promoted badges |
-| **Catalog Discovery** | Lab 07 | Assets discoverable in Purview |
+| Component | Lab | Validation Focus |
+|-----------|-----|------------------|
+| **DLP Policy** | Lab 06 | Simulation results, detected matches |
+| **Asset Discovery** | Lab 07 | Fabric assets visible in Unified Catalog |
+| **Report Governance** | Lab 08 | Semantic model and report in workspace |
 
 ### Why Final Validation Matters
 
-Many Purview and DLP features require **propagation time**:
+DLP policies require **propagation time** before detecting sensitive data:
 
-- **DLP policies**: 1-24 hours to fully deploy and scan.
-- **Data Map scans**: 15-60 minutes after triggered.
-- **Lineage visualization**: Updates after pipeline/dataflow runs.
-- **Classification propagation**: Can take several hours.
+- **Policy deployment**: Immediate (sync completed).
+- **Real-time scanning**: Activates when users access reports.
+- **Match detection**: Requires data access activity to trigger.
 
-By completing Labs 07-08 before validation, you've allowed sufficient time for all governance features to activate.
+By completing Labs 07-08 after creating the DLP policy, you've allowed time for deployment while continuing to build the governance chain.
 
 ---
 
 ## 📋 Prerequisites
 
 - [ ] Labs 01-08 completed.
-- [ ] DLP policy created in Lab 06 (1+ hours ago recommended).
-- [ ] Data Map scan triggered in Lab 07.
-- [ ] Fabric workspace still active with all items.
+- [ ] DLP policy created in Lab 06 (ideally 1+ hours ago).
+- [ ] Data Map scan completed in Lab 07.
+- [ ] Power BI report saved in Lab 08.
 
 ---
 
-## 🔧 Step 1: Trigger DLP Scans on Fabric Items
+## 🔧 Step 1: Check DLP Policy Status
 
-DLP scans occur automatically when data changes. To ensure your items have been scanned:
+### Verify Policy Deployment
 
-### Trigger Lakehouse Scan
+1. Go to [purview.microsoft.com](https://purview.microsoft.com).
+2. Navigate to **Solutions** → **Data loss prevention** → **Policies**.
+3. Locate your `Fabric PII Detection - Lab` policy.
+4. Verify:
+   - **Policy sync status**: Sync completed ✅
+   - **Mode**: In simulation with notifications (or On)
+
+### Check Simulation Results
+
+1. Click on your `Fabric PII Detection - Lab` policy.
+2. Review the **Simulation overview** tab:
+   - **Total matches**: Number of items with detected sensitive data.
+   - **Scanning per location**: Power BI status (Real-time).
+
+> **💡 Note**: DLP for Fabric uses **real-time scanning** — it detects sensitive data when users access reports or semantic models, not by proactively scanning data at rest.
+
+### Trigger Detection (If No Matches Yet)
+
+If simulation shows 0 matches:
 
 1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
 2. Open your **Fabric-Purview-Lab** workspace.
-3. Open `CustomerDataLakehouse`.
-4. In the Lakehouse, trigger a data change:
-   - Option A: Run a Dataflow refresh (Lab 03).
-   - Option B: Add a small amount of data via notebook.
-   - Option C: Simply wait — periodic scans may occur.
-
-### Trigger Warehouse Scan
-
-1. Open `AnalyticsWarehouse`.
-2. Run a query that modifies data, or refresh the shortcuts.
-
-### Trigger KQL Database Scan (If Configured)
-
-1. Open `IoTEventhouse` → KQL Database.
-2. Send new events or run a query that writes data.
-
-> **⏱️ Timing**: If you just completed Lab 08, DLP has had sufficient time. If scans still show no results, allow another 15-30 minutes.
+3. **Open** the `Customer Analytics Report` and interact with it.
+4. Wait 15-30 minutes and check simulation results again.
 
 ---
 
-## 🔧 Step 2: View DLP Results
+## 🔧 Step 2: Validate Asset Discovery
 
-### Check for Policy Tips in Fabric
+### Verify Assets in Unified Catalog
 
-1. Return to your **Fabric-Purview-Lab** workspace.
-2. Look for items with a **policy tip indicator**:
-   - May appear as a shield icon or warning badge.
-   - Hover over the icon to see the policy tip message.
+1. In the [Purview portal](https://purview.microsoft.com), go to **Unified Catalog** → **Data assets**.
+2. Click **Microsoft Fabric** under **Explore your data**.
+3. Select your **Fabric-Purview-Lab** workspace.
 
-3. Open an item with sensitive data (e.g., `CustomerDataLakehouse`).
-4. Check for the policy tip banner in the item header.
+### Confirm Discovered Assets
 
-### View DLP Alerts in Purview
+Navigate through categories to verify:
 
-1. Go to [purview.microsoft.com](https://purview.microsoft.com).
-2. Navigate to **Data loss prevention** → **Alerts**.
-3. Look for alerts from your `Fabric PII Detection - Lab` policy.
-4. Click an alert to see:
-   - Which item triggered the alert.
-   - Which SITs were detected.
-   - Match count and confidence level.
+| Category | Expected Asset | Status |
+|----------|----------------|--------|
+| **Lakehouse** | `CustomerDataLakehouse` | Should show tables: `customers`, `customers_segmented`, `transactions` |
+| **Warehouses** | `AnalyticsWarehouse` | Should be listed |
+| **Datasets** | `CustomerDataLakehouse` | Semantic model |
+| **Reports** | `Customer Analytics Report` | Power BI report |
 
-### Check Activity Explorer
+### View Table Schema
 
-1. In the [Purview portal](https://purview.microsoft.com), go to **Data classification** → **Activity explorer**.
-2. Filter by:
-   - **Activity type**: DLP policy matched
-   - **Workload**: Microsoft Fabric / Power BI
-3. Review detected activities and matched items.
+1. Navigate to **Lakehouse** → `CustomerDataLakehouse` → **tables** → `customers`.
+2. Click on the `customers` table.
+3. Select the **Schema** tab.
+4. Verify columns are listed (FirstName, LastName, SSN, State, CreditScore, etc.).
 
-> **💡 Tip**: If your policy is in simulation mode, check the **DLP simulation mode** dashboard under Data loss prevention to see policy matches without enforcement.
+> **✅ Success**: Your Fabric assets are discoverable in the Unified Catalog with schema-level metadata.
 
 ---
 
-## 🔧 Step 3: Verify Data Lineage
+## 🔧 Step 3: Verify Report Governance Chain
 
-### Review End-to-End Lineage
+### Confirm Workspace Items
 
-1. In the [Purview portal](https://purview.microsoft.com), go to **Data Catalog**.
-2. Search for `CustomerDataLakehouse`.
-3. Open the asset and click the **Lineage** tab.
-4. Verify you can see:
-   - Source files (`customers.csv`, `transactions.csv`)
-   - Lakehouse tables
-   - Downstream connections (Warehouse shortcuts, Reports)
+1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
+2. Open your **Fabric-Purview-Lab** workspace.
+3. Verify these items exist:
 
-### Expected Lineage Flow
+| Item | Type | Purpose |
+|------|------|---------|
+| `CustomerDataLakehouse` | Lakehouse | Source data with DLP-protected columns (SSN, Credit Card) |
+| `CustomerDataLakehouse` | Semantic model | Data layer created from Lakehouse |
+| `Customer Analytics Report` | Report | Visualization using data from both tables |
 
-```
-CSV Files → Lakehouse Tables → Warehouse Shortcuts → Power BI Reports
-              ↓
-         Dataflow Gen2 (transformations)
-```
+### Verify Report Uses Governed Data
 
-### Lineage Not Showing?
+1. Open `Customer Analytics Report`.
+2. Confirm the report displays data from:
+   - **customers** table (State, CreditScore charts).
+   - **transactions** table (Amount, MerchantCategory charts).
 
-- **Trigger a dataflow/pipeline run** — lineage captures after execution.
-- **Wait for Data Map scan** — lineage updates with catalog scans.
-- **Check scan status** in Data Map → Sources.
+> **🎯 Governance Chain Complete**: The report connects to the semantic model, which connects to the Lakehouse containing DLP-protected data (SSN in `customers`, Credit Card in `transactions`).
 
 ---
 
-## 🔧 Step 4: Validate Classifications
+## 🔗 Bringing It All Together: DLP and Information Protection
 
-### Check SIT Detection in Catalog
+The three capabilities you validated work together to provide comprehensive information protection for your Fabric data estate.
 
-1. In the [Purview portal](https://purview.microsoft.com), go to **Data Catalog**.
-2. Search for your Lakehouse tables (`customers`, `transactions`).
-3. Open a table asset and check the **Schema** tab.
-4. Look for classification labels on columns:
-   - `SSN` column → U.S. Social Security Number
-   - `CreditCardNumber` column → Credit Card Number
+### How These Components Complement Each Other
 
-### Review Classification Summary
+| Component | What It Does | Information Protection Role |
+|-----------|--------------|----------------------------|
+| **DLP Policy** | Detects sensitive data patterns (SSN, Credit Card) | **Prevention** — Alerts or blocks when PII is accessed |
+| **Asset Discovery** | Catalogs all data assets with schema metadata | **Visibility** — Know what data exists and where |
+| **Report Governance** | Tracks data flow from source to visualization | **Accountability** — Understand who consumes sensitive data |
 
-1. In the Purview portal, go to **Data Estate Insights** (if available).
-2. Review:
-   - Total classified assets
-   - Classification types found
-   - Sensitive data distribution
+### Real-World Governance Scenarios
 
----
+**Scenario 1: Compliance Audit**:
 
-## 🔧 Step 5: Apply and Verify Endorsements
+When auditors ask "Where is PII stored in your analytics environment?":
 
-Endorsements signal data quality and trust to data consumers.
+1. **Unified Catalog** → Shows Lakehouse tables containing SSN and Credit Card columns.
+2. **DLP Policy** → Provides evidence of monitoring and detection for those data types.
+3. **Report Chain** → Documents which reports surface data from those tables.
 
-### Types of Endorsements
+**Scenario 2: Data Breach Response**:
 
-| Endorsement | Meaning | Use Case |
-|-------------|---------|----------|
-| **Promoted** | Recommended for use | Quality validated data |
-| **Certified** | Officially approved | Production-ready, trusted |
+If sensitive data exposure is suspected:
 
-### Apply Endorsements
+1. **DLP Alerts** → Identify which reports triggered matches for SSN/Credit Card.
+2. **Asset Discovery** → Locate all tables containing similar sensitive columns.
+3. **Report Governance** → Determine which downstream assets consumed the data.
 
-1. In your Fabric workspace, select an item (e.g., `CustomerDataLakehouse`).
-2. Click **More options** (three dots) → **Settings**.
-3. Find the **Endorsement** section.
-4. Select **Certified** or **Promoted**.
-5. Add notes: `Contains PII - DLP monitored`
-6. Click **Apply** or **Save**.
+**Scenario 3: New Report Request**:
 
-### Suggested Endorsements
+When a business user wants a report with customer data:
 
-| Item | Endorsement | Notes |
-|------|-------------|-------|
-| `CustomerDataLakehouse` | **Certified** | Primary source, DLP protected |
-| `AnalyticsWarehouse` | **Promoted** | Derived data, DLP protected |
-| `Customer Analytics Report` | **Promoted** | End-user reporting |
+1. **Unified Catalog** → Discover available data assets and their schemas.
+2. **DLP Policy** → Automatic detection applies when report accesses sensitive data.
+3. **Report Governance** → New report automatically inherits DLP coverage.
 
-### Verify Endorsements Display
+### The Governance Advantage
 
-1. Return to the workspace list view.
-2. Look for endorsement badges (ribbon icons) on endorsed items.
-3. Hover to see the endorsement type and notes.
+Without these tools, organizations face:
 
----
+- **Shadow analytics** — Reports built on unknown data sources.
+- **Compliance gaps** — No visibility into where PII exists.
+- **Reactive responses** — Discovering sensitive data only after incidents.
 
-## 🔧 Step 6: Governance Summary Review
+With this governance stack:
 
-### Create Your Governance Scorecard
-
-Review what you've implemented across this lab series:
-
-| Capability | Status | Notes |
-|------------|--------|-------|
-| **Data Lake Storage** | ✅ | Lakehouse with Delta tables |
-| **Data Warehouse** | ✅ | SQL analytics with shortcuts |
-| **Real-Time Analytics** | ✅ | Eventhouse with KQL |
-| **Data Ingestion** | ✅ | Dataflows and Pipelines |
-| **Data Visualization** | ✅ | Power BI reports |
-| **DLP Protection** | ✅ | Policy detecting SSN, Credit Card |
-| **Data Lineage** | ✅ | End-to-end visibility |
-| **Data Classification** | ✅ | Automatic SIT detection |
-| **Endorsements** | ✅ | Trust signals applied |
-| **Catalog Discovery** | ✅ | Assets searchable in Purview |
-
-### Enterprise Governance Alignment
-
-This lab demonstrated key pillars of a modern data governance strategy:
-
-- **Data Protection**: DLP policies prevent sensitive data exposure.
-- **Data Quality**: Endorsements signal trustworthy data sources.
-- **Data Discovery**: Catalog makes data findable and understandable.
-- **Data Lineage**: Trace data from source to consumption.
-- **Compliance**: Classification supports regulatory requirements.
+- ✅ **Proactive discovery** — Know your data assets before building reports.
+- ✅ **Automatic protection** — DLP applies to any report using sensitive data.
+- ✅ **Audit-ready documentation** — Catalog and policies provide compliance evidence.
 
 ---
 
 ## ✅ Final Validation Checklist
 
-Before proceeding to cleanup, verify:
+### DLP Policy
 
-### DLP Policy Results
+- [ ] Policy sync status shows "Sync completed".
+- [ ] Policy is in simulation mode (or enabled).
+- [ ] Scanning per location shows Power BI as "Real-time".
+- [ ] (Optional) Matches detected after accessing reports.
 
-- [ ] DLP policy has been deployed (created 1+ hours ago).
-- [ ] Policy tips visible on Fabric items with sensitive data.
-- [ ] Alerts appearing in Purview DLP Alerts dashboard.
-- [ ] Activity Explorer shows DLP policy matches.
+### Asset Discovery
 
-### Data Lineage
+- [ ] `Fabric-Purview-Lab` workspace visible in Unified Catalog.
+- [ ] Lakehouse tables (`customers`, `transactions`) discoverable.
+- [ ] Schema metadata visible when viewing table details.
 
-- [ ] Lakehouse assets visible in Purview Data Catalog.
-- [ ] Lineage tab shows data flow from files → tables → reports.
-- [ ] Dataflow/Pipeline runs captured in lineage.
+### Report Governance
 
-### Classifications
-
-- [ ] SSN column classified as U.S. Social Security Number.
-- [ ] CreditCardNumber column classified as Credit Card Number.
-- [ ] Classifications visible in Purview asset schema.
-
-### Endorsements
-
-- [ ] Key items endorsed as Certified or Promoted.
-- [ ] Endorsement badges visible in workspace view.
-- [ ] Endorsement notes indicate governance status.
+- [ ] Semantic model created from Lakehouse.
+- [ ] Power BI report saved to workspace.
+- [ ] Report uses data from both DLP-protected source tables.
 
 ---
 
 ## ❌ Troubleshooting
 
-### No DLP Policy Tips After 24 Hours
+### No DLP Matches After Several Hours
 
-**Symptom**: Policy deployed but no visible policy tips.
-
-**Resolution**:
-
-1. Verify policy is **not** in simulation mode (or check simulation dashboard).
-2. Confirm data contains matching SIT patterns (SSN format: 123-45-6789).
-3. Check policy scope includes your workspace.
-4. Trigger a data modification to invoke scan.
-
-### Lineage Not Showing
-
-**Symptom**: Assets appear in catalog but no lineage connections.
+**Symptom**: Policy deployed but simulation shows 0 matches.
 
 **Resolution**:
 
-1. **Run a dataflow or pipeline** — lineage captures on execution.
-2. **Trigger Data Map scan** — lineage requires recent scan.
-3. **Check data connections** — DirectQuery sources may not show lineage.
-4. **Wait** — lineage propagation can take 30-60 minutes.
+1. DLP for Fabric uses **real-time scanning** — it requires data access activity.
+2. Open the Power BI report and interact with visuals.
+3. Wait 15-30 minutes and check simulation results again.
+4. Verify policy scope includes Power BI location.
 
-### Classifications Not Appearing
+### Assets Not in Unified Catalog
 
-**Symptom**: Tables exist in catalog but columns not classified.
-
-**Resolution**:
-
-1. **Verify data format** — Delta tables are required for classification.
-2. **Check Data Map scan status** — classification happens during scans.
-3. **Validate data patterns** — ensure SSN/Credit Card columns have proper format.
-4. **Review scan rule set** — ensure default classification rules are enabled.
-
-### Endorsements Not Visible
-
-**Symptom**: Applied endorsement but badge not showing.
+**Symptom**: Cannot find workspace or assets in catalog.
 
 **Resolution**:
 
-1. **Refresh the workspace view** — badges may not update instantly.
-2. **Check permissions** — endorsement requires workspace contributor role.
-3. **Verify endorsement saved** — re-open item settings to confirm.
+1. Verify Data Map scan completed successfully (Lab 07).
+2. Check scan scope included your workspace.
+3. Re-run scan if assets are missing.
 
----
+### Report Not Showing Data
 
-## 📚 Related Resources
+**Symptom**: Report opens but visuals are empty.
 
-- [DLP for Fabric and Power BI Overview](https://learn.microsoft.com/en-us/purview/dlp-powerbi-get-started)
-- [Microsoft Purview Data Catalog](https://learn.microsoft.com/en-us/purview/catalog-overview)
-- [Fabric Endorsement Overview](https://learn.microsoft.com/en-us/fabric/governance/endorsement-overview)
-- [Data Lineage in Microsoft Purview](https://learn.microsoft.com/en-us/purview/lineage-overview)
-- [Sensitive Information Types Reference](https://learn.microsoft.com/en-us/purview/sit-sensitive-information-type-entity-definitions)
+**Resolution**:
+
+1. Verify Lakehouse tables have data.
+2. Check semantic model connection to Lakehouse.
+3. Refresh the report data.
 
 ---
 
 ## ➡️ Next Steps
 
-If you've completed all validation checks and are ready to clean up your lab environment:
+If you've completed validation and are ready to clean up:
 
 **[Lab 10: Cleanup and Reset](../10-Cleanup-Reset/)**
 
-> **💡 Tip**: Take screenshots of your governance dashboard, lineage views, and DLP alerts before cleanup for future reference or portfolio documentation.
+> **💡 Tip**: Take screenshots of your DLP simulation results, Unified Catalog assets, and workspace items before cleanup for future reference.
 
 ---
 
 ## 🤖 AI-Assisted Content Generation
 
-This lab documentation was created with the assistance of **GitHub Copilot** powered by Claude Opus 4.5. Validation procedures were consolidated from throughout the lab series within **Visual Studio Code**.
-
-*AI tools were used to enhance productivity and ensure comprehensive coverage of Microsoft Fabric and Purview governance validation while maintaining technical accuracy against official Microsoft documentation.*
+This lab documentation was created with the assistance of **GitHub Copilot** powered by Claude Opus 4.5. Validation procedures were aligned with actual lab deliverables within **Visual Studio Code**.

@@ -2,52 +2,42 @@
 
 ## 🎯 Project Overview
 
-This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview integration from scratch**. Through **ten progressive labs**, you'll enable Microsoft Fabric, build multiple data workloads (Lakehouse, Warehouse, KQL Database), integrate with Microsoft Purview for data discovery, and implement data governance workflows.
+This hands-on simulation teaches **DLP and Information Protection for Microsoft Fabric data**. Through **ten progressive labs**, you'll build a Fabric data estate with sensitive data (SSN, Credit Card numbers), configure DLP policies to detect that data, discover assets in the Purview Unified Catalog, and create a governed Power BI report chain.
 
-**Target Audience**: Data engineers, governance professionals, IT administrators, and anyone learning Microsoft Fabric and Purview integration from the ground up.
+**Target Audience**: Data engineers, governance professionals, compliance officers, and anyone learning to protect sensitive data in Microsoft Fabric.
 
-**Approach**: UI-based step-by-step instructions validated against Microsoft Learn documentation. All labs can be completed using the Azure portal, Fabric portal, and Purview portal - PowerShell is used only for validation and cleanup operations.
+**Approach**: UI-based step-by-step instructions validated against current Microsoft portals. All labs can be completed using the Fabric portal and Purview portal—PowerShell is used only for data generation and cleanup.
 
-**What Makes This Different:**
+**What You'll Accomplish**:
 
-- **Low/No Cost Fabric Options**: Use the 60-day free trial OR pay-as-you-go F2 capacity (~$0.36/hr) that can be paused when not in use.
-- **Zero Cost Purview Path**: Labs use Purview Free version with "live view" discovery - no enterprise subscription required.
-- **From Scratch Setup**: Assumes Fabric has never been enabled - complete onboarding guidance included.
-- **UI-First Approach**: All primary instructions are portal-based with clear navigation paths.
-- **Multiple Data Workloads**: Covers Lakehouse, Warehouse, and KQL Database - not just one pattern.
-- **Live View Discovery**: Fabric assets automatically appear in Purview - no scanning configuration needed.
-- **End-to-End Governance**: From raw data ingestion to annotated, labeled, governed Power BI reports.
+- **Build a Fabric Data Foundation**: Lakehouse with customer PII data (SSN) and transaction data (Credit Card numbers).
+- **Configure DLP Policies**: Detect sensitive data patterns when users access Fabric reports.
+- **Discover Assets**: Run Data Map scans to make Fabric assets searchable in Unified Catalog.
+- **Create Governed Reports**: Power BI reports that connect to DLP-protected data sources.
+- **Validate Governance**: Confirm DLP detection, asset discovery, and report governance chain.
 
-> **💰 Cost Note**: This simulation works with **Fabric Trial (free for 60 days)** or **F2 capacity (~$0.36/hr with pause capability)** combined with **Purview Free version**. Pause your Fabric capacity between lab sessions to minimize costs. For advanced scanning with automatic classification, see [ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md](./ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md).
+> **💰 Cost Note**: This simulation works with **Fabric Trial (free for 60 days)** or **F2 capacity (~$0.36/hr with pause capability)**. DLP scanning incurs pay-per-scan costs with M365 E5 licensing. For enterprise capabilities beyond this project, see [ENTERPRISE-GOVERNANCE-CAPABILITIES.md](./ENTERPRISE-GOVERNANCE-CAPABILITIES.md).
 
 ---
 
 ## ⏱️ Time and Resource Considerations
 
-**Before starting this project, understand these key factors:**
-
 | Consideration | Impact | Planning |
 |---------------|--------|----------|
-| **⏱️ Lab Completion** | ~7-8 hours total | Plan for full day workshop or 2-3 sessions |
-| **⏱️ Fabric Enablement** | ~5 minutes | Enable Fabric tenant settings and create workspace |
-| **⏱️ Live View Sync** | 5-15 minutes | Fabric assets appear in Purview automatically |
+| **⏱️ Total Duration** | ~4-5 hours (hands-on) | Plan for full day or 2 sessions |
+| **⏱️ DLP Propagation** | Up to 24 hours | Create DLP policy in Lab 06, validate in Lab 09 next day |
+| **⏱️ Data Map Scan** | 5-15 minutes | Assets appear in Unified Catalog after scan |
 | **💰 Fabric Cost** | $0 or ~$3-5 total | 60-day trial (free) OR F2 capacity with pause |
-| **💰 Purview Cost** | $0 with free version | Enterprise scanning costs ~$360+/month extra |
-| **🔐 Licensing** | Fabric + M365 | Developer subscription or M365 E3/E5 |
+| **💰 DLP Cost** | Pay-per-scan | Included with M365 E5 licensing |
+| **🔐 Licensing** | M365 E5 + Fabric | Required for DLP policy creation |
 
-> **💡 Fabric Capacity Options**:
->
-> - **Option 1 - Free Trial**: 60-day Fabric trial with full capabilities (recommended for first-time users)
-> - **Option 2 - F2 Capacity**: ~$0.36/hour, **pause when not in use** to minimize costs (~$3-5 for all labs)
-> - **Cost Tip**: If using F2, pause your capacity after each session - you only pay for active hours
+> **⚠️ DLP Timing Note**: DLP policies for Fabric use **real-time scanning**—they detect sensitive data when users access reports, not by proactively scanning data at rest. While policy sync completes in minutes, **full detection capability can take up to 24 hours** to propagate across your tenant. For best results, complete Labs 00-06 in one session, then return the next day for Labs 07-09.
 
 > **💡 Recommended Approach**:
 >
-> - **Session 1 (3 hours)**: Labs 00-03 - Prerequisites, Fabric enablement, Lakehouse, Data ingestion
-> - **Session 2 (2 hours)**: Labs 04-05 - Warehouse, Real-Time Analytics (KQL)
-> - **Session 3 (3 hours)**: Labs 06-10 - DLP Classification, Data Map & Lineage, Power BI, Final Validation, Cleanup
-
-**Key Timing Note**: Unlike SharePoint Content Explorer (which requires up to 7 days for classification indexing), **Fabric assets appear in Purview within minutes** via automatic Live View discovery. This project is designed for faster feedback loops.
+> - **Session 1 (3 hours)**: Labs 00-06 — Prerequisites, Fabric setup, data foundation, DLP policy creation
+> - **Session 2 (1.5 hours, next day)**: Labs 07-09 — Data Map scan, Power BI report, validation
+> - **Cleanup**: Lab 10 — When ready to remove resources
 
 ---
 
@@ -55,289 +45,249 @@ This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview inte
 
 ### [Lab 00: Prerequisites and Environment Setup](./00-Prerequisites-and-Setup/)
 
-**Duration**: 30 minutes  
-**Objective**: Validate licensing, permissions, and environment readiness
+**Duration**: 30-45 minutes  
+**Objective**: Validate licensing, configure Fabric Admin API access for Purview scanning
 
-**What You'll Learn**:
+**What You'll Accomplish**:
 
-- Verify Microsoft 365 and Azure subscription requirements.
-- Validate Fabric licensing and Purview access.
-- Confirm required admin permissions (Fabric Admin, Purview roles).
-- Understand the Fabric capacity model and trial options.
-- Set up browser profiles for optimal lab experience.
+- Verify Microsoft 365 E5 and Fabric licensing.
+- Configure Fabric Admin API settings for Purview integration.
+- Grant Purview MSI access to your Fabric workspace.
+- Validate environment readiness for DLP and Data Map features.
 
 **Key Deliverables**:
 
-- Licensing validation completed.
-- Admin permissions confirmed.
-- Fabric capacity available (trial or paid).
-- Environment readiness checklist completed.
+- Licensing confirmed (M365 E5, Fabric capacity).
+- Admin API settings enabled for Purview.
+- Workspace Viewer role granted to Purview MSI.
 
 ---
 
 ### [Lab 01: Enable Fabric and Create Workspace](./01-Enable-Fabric-Create-Workspace/)
 
-**Duration**: 30 minutes  
-**Objective**: Enable Microsoft Fabric in your tenant and create a governed workspace
+**Duration**: 15 minutes  
+**Objective**: Create a Fabric workspace for the governance simulation
 
-**What You'll Learn**:
+**What You'll Accomplish**:
 
-- Enable Microsoft Fabric at the tenant level (Admin Portal).
 - Create a Fabric workspace with appropriate capacity.
-- Understand workspace roles and permissions.
-- Configure workspace settings for governance.
+- Configure workspace settings.
+- Prepare workspace for Lakehouse creation.
 
 **Key Deliverables**:
 
-- Microsoft Fabric enabled in tenant.
-- Fabric workspace created and configured.
-- Workspace ready for data workload creation.
+- `Fabric-Purview-Lab` workspace created.
+- Workspace assigned to Fabric capacity (trial or F2).
 
 **Prerequisites**: Lab 00 completed
 
 ---
 
-### [Lab 02: Create Lakehouse and Load Data](./02-Create-Lakehouse-Load-Data/)
+### [Lab 02: Create Lakehouse and Load Customer Data](./02-Create-Lakehouse-Load-Data/)
 
-**Duration**: 45 minutes  
-**Objective**: Create a Lakehouse and load sample data containing classifiable information
+**Duration**: 20 minutes  
+**Objective**: Create a Lakehouse and load customer data containing SSN (sensitive data)
 
-**What You'll Learn**:
+**What You'll Accomplish**:
 
-- Create a Lakehouse in your Fabric workspace.
-- Understand Lakehouse architecture (Files vs Tables, Delta Lake).
-- Upload sample CSV files containing PII data.
-- Create Delta tables from uploaded files.
-- Query data using the SQL analytics endpoint.
+- Create a Lakehouse in your workspace.
+- Run a notebook to generate customer data with SSN values.
+- Verify Delta tables are created in the Lakehouse.
 
 **Key Deliverables**:
 
-- Lakehouse created in workspace.
-- Sample data files uploaded (customers.csv, transactions.csv).
-- Delta tables created from CSV files.
+- `CustomerDataLakehouse` created.
+- `customers` table with SSN column (DLP-detectable).
 - SQL endpoint available for querying.
 
 **Prerequisites**: Lab 01 completed
 
 ---
 
-### [Lab 03: Data Ingestion with Connectors](./03-Data-Ingestion-Connectors/)
+### [Lab 03: Load Transaction Data](./03-Data-Ingestion-Connectors/)
 
-**Duration**: 45 minutes  
-**Objective**: Use Dataflows Gen2 and Data Factory pipelines for data ingestion
+**Duration**: 15 minutes  
+**Objective**: Add transaction data containing Credit Card numbers (sensitive data)
 
-**What You'll Learn**:
+**What You'll Accomplish**:
 
-- Create a Dataflow Gen2 for data transformation.
-- Build a Data Factory pipeline for orchestration.
-- Connect to external data sources (sample data).
-- Apply data transformations using Power Query.
-- Schedule and monitor data pipeline runs.
+- Run a notebook to generate transaction data with Credit Card values.
+- Verify the `transactions` table is created.
+- Confirm both sensitive data types are now in the Lakehouse.
 
 **Key Deliverables**:
 
-- Dataflow Gen2 created with transformations.
-- Data Factory pipeline configured.
-- Data successfully ingested into Lakehouse.
-- Pipeline monitoring dashboard understood.
+- `transactions` table with CreditCardNumber column (DLP-detectable).
+- Lakehouse contains two tables with sensitive data patterns.
 
 **Prerequisites**: Lab 02 completed
 
 ---
 
-### [Lab 04: Create Warehouse and SQL Analytics](./04-Create-Warehouse-SQL-Analytics/)
+### [Lab 04: Create Warehouse and Cross-Database Queries](./04-Create-Warehouse-SQL-Analytics/)
 
-**Duration**: 45 minutes  
-**Objective**: Create a Data Warehouse and perform SQL-based analytics
+**Duration**: 20 minutes  
+**Objective**: Create a Warehouse that queries Lakehouse data
 
-**What You'll Learn**:
+**What You'll Accomplish**:
 
-- Create a Fabric Data Warehouse.
-- Understand Warehouse vs Lakehouse differences.
-- Load data into Warehouse tables.
-- Write T-SQL queries for analytics.
-- Create views and stored procedures.
+- Create a Data Warehouse in your workspace.
+- Configure cross-database queries to access Lakehouse tables.
+- Understand how Warehouse integrates with Lakehouse data.
 
 **Key Deliverables**:
 
-- Data Warehouse created in workspace.
-- Tables created and populated with data.
-- SQL queries executed successfully.
-- SQL endpoint ready for Power BI connection.
+- `AnalyticsWarehouse` created.
+- Cross-database queries accessing Lakehouse tables.
 
-**Prerequisites**: Lab 02 completed (data available in Lakehouse)
+**Prerequisites**: Lab 02 completed
 
 ---
 
-### [Lab 05: Real-Time Analytics with KQL](./05-Real-Time-Analytics-KQL/)
+### [Lab 05: Data Transformation](./05-Real-Time-Analytics-KQL/)
 
-**Duration**: 45 minutes  
-**Objective**: Create a KQL Database for real-time streaming analytics
+**Duration**: 20 minutes  
+**Objective**: Transform customer data for analytics use cases
 
-**What You'll Learn**:
+**What You'll Accomplish**:
 
-- Create an Eventhouse and KQL Database.
-- Understand real-time analytics architecture.
-- Ingest sample streaming data (JSON events).
-- Write KQL queries for data exploration.
-- Create KQL querysets for reusable analytics.
+- Run a notebook to create segmented customer data.
+- Add derived columns for analytics.
+- Create `customers_segmented` table in Lakehouse.
 
 **Key Deliverables**:
 
-- Eventhouse created in workspace.
-- KQL Database with sample data ingested.
-- KQL queries written and saved.
-- Real-time dashboard concepts understood.
+- `customers_segmented` table created.
+- Lakehouse contains three tables for reporting.
 
-**Prerequisites**: Lab 01 completed
+**Prerequisites**: Lab 02 completed
 
 ---
 
-### [Lab 06: DLP Data Classification](./06-DLP-Data-Classification/)
+### [Lab 06: DLP Policy for Sensitive Data Detection](./06-DLP-Data-Classification/)
 
-**Duration**: 35 minutes  
-**Objective**: Create DLP policies that automatically detect sensitive data in Fabric items
+**Duration**: 20 minutes  
+**Objective**: Create a DLP policy that detects SSN and Credit Card patterns in Fabric data
 
-**What You'll Learn**:
+**What You'll Accomplish**:
 
-- Create Microsoft Purview DLP policies targeting Fabric and Power BI.
-- Configure Sensitive Information Type (SIT) detection for SSN, credit cards, financial data.
-- Apply DLP policies to Lakehouse, Warehouse, AND KQL Database.
-- View policy tips and alerts when sensitive data is detected.
-- Configure endorsements for data quality governance.
+- Create a Microsoft Purview DLP policy targeting Power BI.
+- Configure detection for U.S. Social Security Number and Credit Card patterns.
+- Deploy policy in simulation mode for testing.
+- Understand how DLP real-time scanning works for Fabric.
 
 **Key Deliverables**:
 
-- DLP policy created in Microsoft Purview portal.
-- SIT detection configured for PII data patterns.
-- Policy tips visible on flagged Fabric items.
-- Admin alerts configured for compliance monitoring.
-- Endorsements applied for governance visibility.
+- `Fabric PII Detection - Lab` DLP policy created.
+- Policy sync completed.
+- Real-time scanning enabled for Power BI location.
 
-**Prerequisites**: Labs 01-05 completed, M365 E5 license (or E3 + Compliance add-on)
+**Prerequisites**: Labs 01-05 completed, M365 E5 license
 
-> **🔒 Licensing Note**: DLP for Fabric requires M365 E5. This lab provides hands-on experience with automatic data classification that scans actual data content in Lakehouse tables, Warehouse tables, and KQL databases.
+> **💡 Timing Tip**: Create this policy before Labs 07-08 to allow propagation time.
 
 ---
 
-### [Lab 07: Data Map and Lineage](./07-Data-Map-Lineage/)
+### [Lab 07: Data Map and Asset Discovery](./07-Data-Map-Asset-Discovery/)
 
-**Duration**: 25 minutes  
-**Objective**: Scan Fabric assets with Data Map and visualize data lineage
+**Duration**: 15 minutes  
+**Objective**: Run a Data Map scan to discover Fabric assets in Unified Catalog
 
-**What You'll Learn**:
+**What You'll Accomplish**:
 
-- Configure and run a Data Map scan on Fabric data sources.
-- View discovered assets with schema-level metadata.
-- Visualize data lineage showing flow from Lakehouse to Warehouse.
-- Use lineage for impact analysis and data tracing.
-- Understand upstream and downstream data dependencies.
+- Verify Fabric tenant registration in Data Map.
+- Configure and run a scan on your workspace.
+- Browse discovered assets in Unified Catalog.
+- View table schema metadata.
 
 **Key Deliverables**:
 
-- Data Map scan completed for Fabric workspace.
-- Asset metadata visible in Data Catalog.
-- Lineage visualization showing data flow relationships.
-- Impact analysis skills for schema change assessment.
+- Data Map scan completed.
+- Lakehouse tables discoverable in Unified Catalog.
+- Schema metadata (columns, types) visible.
 
-**Prerequisites**: Labs 01-06 completed, Fabric registered in Data Map (Lab 00)
+**Prerequisites**: Labs 01-05 completed, Lab 00 Admin API settings configured
 
 ---
 
-### [Lab 08: Power BI Visualization](./08-Power-BI-Visualization/)
+### [Lab 08: Power BI Report from Governed Data](./08-Power-BI-Visualization/)
 
-**Duration**: 45 minutes  
-**Objective**: Create Power BI reports from governed Fabric data
+**Duration**: 20 minutes  
+**Objective**: Create a Power BI report that uses DLP-protected Lakehouse data
 
-**What You'll Learn**:
+**What You'll Accomplish**:
 
-- Connect Power BI to Lakehouse (DirectLake mode).
-- Connect Power BI to Warehouse (SQL endpoint).
-- Create basic DAX measures.
-- Build interactive visualizations.
-- Publish reports to workspace with governance inheritance.
-- View updated lineage showing reports in Data Map.
+- Create a semantic model from the Lakehouse.
+- Build a Power BI report with visualizations.
+- Save the report to your workspace.
+- Understand the governance chain (Report → Semantic Model → Lakehouse).
 
 **Key Deliverables**:
 
-- Power BI report connected to Fabric data.
-- DirectLake mode configured for optimal performance.
-- Visualizations created from governed data.
-- Report published with inherited sensitivity labels.
-- Lineage extended to show report dependencies.
+- `Customer Analytics Report` created.
+- Report uses data from `customers` and `transactions` tables.
+- Governance chain complete from source to visualization.
 
-**Prerequisites**: Labs 01-07 completed (data sources and lineage available)
+**Prerequisites**: Labs 01-07 completed
 
 ---
 
 ### [Lab 09: Final Validation](./09-Final-Validation/)
 
-**Duration**: 30-45 minutes  
-**Objective**: Validate all governance capabilities configured throughout the lab series
+**Duration**: 15-20 minutes  
+**Objective**: Validate DLP detection, asset discovery, and report governance
 
-**What You'll Learn**:
+**What You'll Accomplish**:
 
-- Verify DLP policy results (policy tips, alerts, Activity Explorer).
-- Validate end-to-end data lineage visualization.
-- Confirm automatic classifications on sensitive data.
-- Apply and verify endorsements on Fabric items.
-- Review governance scorecard across all lab components.
+- Check DLP policy simulation results.
+- Verify assets are discoverable in Unified Catalog.
+- Confirm report governance chain is complete.
+- Understand how DLP, Data Map, and reports work together for information protection.
 
 **Key Deliverables**:
 
-- DLP policy tips visible on Fabric items.
-- Lineage showing complete data flow.
-- Classifications applied to sensitive columns.
-- Endorsements signaling data quality.
-- Governance summary documenting all capabilities.
+- DLP simulation results reviewed.
+- Assets confirmed in Unified Catalog.
+- Governance architecture documented.
 
-**Prerequisites**: Labs 01-08 completed, DLP policy deployed (1+ hours)
+**Prerequisites**: Labs 01-08 completed, DLP policy deployed (1+ hours ideal)
 
 ---
 
 ### [Lab 10: Cleanup and Reset](./10-Cleanup-Reset/)
 
 **Duration**: 15 minutes  
-**Objective**: Remove simulation resources and restore environment
+**Objective**: Remove simulation resources
 
-**What You'll Learn**:
+**What You'll Accomplish**:
 
-- Delete Fabric workspace and all contained items.
-- Remove Purview manual classifications and annotations.
-- Clean up DLP policies in Purview portal.
-- Validate cleanup completion.
-- Prepare environment for fresh start.
+- Delete Fabric workspace and all items.
+- Remove DLP policy from Purview.
+- Restore environment to clean state.
 
 **Key Deliverables**:
 
-- Fabric workspace deleted.
-- Purview annotations removed.
-- DLP policies removed.
-- Environment restored to clean state.
-- Cleanup validation completed.
+- Workspace deleted.
+- DLP policy removed.
+- Environment ready for fresh start.
 
-**Prerequisites**: Any labs completed (can run cleanup at any stage)
+**Prerequisites**: Any labs completed
 
 ---
 
 ## 📊 Skills Coverage Matrix
 
-| Skill / Technology | Lab | Depth | Key Learning Outcomes |
-|-------------------|-----|-------|----------------------|
-| Microsoft Fabric Enablement | 01 | Basic | Enable Fabric, understand licensing, create workspace |
-| Lakehouse Architecture | 02 | Intermediate | Delta Lake, Spark, file vs table storage |
-| Dataflows Gen2 | 03 | Intermediate | Data transformation, M queries, connectors |
-| Data Factory Pipelines | 03 | Basic | Orchestration, copy activities, scheduling |
-| Data Warehouse (SQL) | 04 | Intermediate | T-SQL, dimensional modeling, SQL endpoint |
-| KQL Database | 05 | Intermediate | Eventhouse, streaming ingestion, KQL syntax |
-| Real-Time Analytics | 05 | Basic | Event-driven architecture, time-series data |
-| DLP for Fabric | 06 | Intermediate | DLP policies, SIT detection, policy tips |
-| Purview Data Map | 07 | Intermediate | Source registration, scanning, asset discovery |
-| Data Lineage | 07 | Intermediate | End-to-end lineage visualization, impact analysis |
-| Data Catalog | 07 | Basic | Asset discovery, schema metadata, search |
-| Power BI Reporting | 08 | Intermediate | DirectLake, DAX basics, governed reports |
-| Sensitivity Labels | 08 | Basic | Information Protection, label inheritance |
-| Power BI + Purview | 08 | Basic | Governed data sources, lineage to reports |
+| Skill / Technology | Lab | Key Learning |
+|-------------------|-----|--------------|
+| Fabric Workspace Setup | 01 | Create workspace, assign capacity |
+| Lakehouse Architecture | 02 | Delta tables, SQL endpoint |
+| Sensitive Data Patterns | 02-03 | SSN and Credit Card data for DLP testing |
+| Data Warehouse | 04 | Cross-database queries |
+| Data Transformation | 05 | Notebook-based ETL |
+| **DLP for Fabric** | 06 | Policy creation, SIT detection, real-time scanning |
+| **Data Map Scanning** | 07 | Asset discovery, Unified Catalog |
+| Power BI Reporting | 08 | Semantic model, DirectLake mode |
+| **Governance Validation** | 09 | DLP results, asset discovery, governance chain |
 
 ---
 
@@ -346,19 +296,11 @@ This comprehensive hands-on simulation teaches **Microsoft Fabric + Purview inte
 ```text
 Fabric-Purview-Governance-Simulation/
 ├── README.md                              # This file - project overview
-├── TIMING-AND-CLASSIFICATION-GUIDE.md     # Live View timing expectations
-├── ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md # Enterprise scanning guide (optional)
-├── TROUBLESHOOTING.md                     # Common issues and resolutions
-├── data-templates/                        # Sample data files
-│   ├── customers.csv                      # 500 records with PII
-│   ├── transactions.csv                   # 1000 financial transactions
-│   ├── streaming-events.json              # Sample IoT/event data
-│   ├── employee-handbook.docx             # Unstructured document
-│   └── financial-report.pdf               # PDF with financial data
+├── TIMING-AND-CLASSIFICATION-GUIDE.md     # Timing expectations for DLP and scanning
+├── ENTERPRISE-GOVERNANCE-CAPABILITIES.md  # Advanced capabilities guide
 ├── 00-Prerequisites-and-Setup/
 │   ├── README.md
 │   └── scripts/
-│       └── Test-Prerequisites.ps1
 ├── 01-Enable-Fabric-Create-Workspace/
 │   └── README.md
 ├── 02-Create-Lakehouse-Load-Data/
@@ -367,16 +309,12 @@ Fabric-Purview-Governance-Simulation/
 ├── 03-Data-Ingestion-Connectors/
 │   └── README.md
 ├── 04-Create-Warehouse-SQL-Analytics/
-│   ├── README.md
-│   └── sql/
-│       └── sample-queries.sql
+│   └── README.md
 ├── 05-Real-Time-Analytics-KQL/
-│   ├── README.md
-│   └── kql/
-│       └── sample-queries.kql
+│   └── README.md
 ├── 06-DLP-Data-Classification/
 │   └── README.md
-├── 07-Data-Map-Lineage/
+├── 07-Data-Map-Asset-Discovery/
 │   └── README.md
 ├── 08-Power-BI-Visualization/
 │   └── README.md
@@ -385,43 +323,31 @@ Fabric-Purview-Governance-Simulation/
 └── 10-Cleanup-Reset/
     ├── README.md
     └── scripts/
-        └── Remove-FabricResources.ps1
 ```
 
 ---
 
 ## 🔗 Related Resources
 
-### Microsoft Learn Documentation
+### Microsoft Documentation
 
 | Topic | URL |
 |-------|-----|
-| Microsoft Fabric Overview | [learn.microsoft.com/fabric/get-started/](https://learn.microsoft.com/fabric/get-started/) |
+| DLP for Power BI | [learn.microsoft.com/power-bi/enterprise/service-security-dlp-policies-for-power-bi-overview](https://learn.microsoft.com/power-bi/enterprise/service-security-dlp-policies-for-power-bi-overview) |
+| Purview Data Map | [learn.microsoft.com/purview/concept-data-map](https://learn.microsoft.com/purview/concept-data-map) |
 | Fabric Lakehouse | [learn.microsoft.com/fabric/data-engineering/lakehouse-overview](https://learn.microsoft.com/fabric/data-engineering/lakehouse-overview) |
-| Fabric Data Warehouse | [learn.microsoft.com/fabric/data-warehouse/](https://learn.microsoft.com/fabric/data-warehouse/) |
-| Fabric Real-Time Intelligence | [learn.microsoft.com/fabric/real-time-intelligence/](https://learn.microsoft.com/fabric/real-time-intelligence/) |
-| Purview + Fabric Scanning | [learn.microsoft.com/purview/register-scan-fabric-tenant](https://learn.microsoft.com/purview/register-scan-fabric-tenant) |
-| Purview Classification | [learn.microsoft.com/purview/concept-scans-and-ingestion](https://learn.microsoft.com/purview/concept-scans-and-ingestion) |
-| Sensitivity Labels | [learn.microsoft.com/purview/sensitivity-labels](https://learn.microsoft.com/purview/sensitivity-labels) |
+| Sensitivity Labels for Fabric | [learn.microsoft.com/fabric/governance/information-protection](https://learn.microsoft.com/fabric/governance/information-protection) |
 
-### Related Projects in This Repository
+### Related Projects
 
 | Project | Description |
 |---------|-------------|
-| [Purview-Data-Governance-Simulation](../../Purview/Purview-Data-Governance-Simulation/) | SharePoint-focused Purview classification simulation |
-| [Purview-Skills-Ramp-OnPrem-and-Cloud](../../Purview/Purview-Skills-Ramp-OnPrem-and-Cloud/) | Hybrid information protection labs |
+| [Purview-Data-Governance-Simulation](../../Purview/Purview-Data-Governance-Simulation/) | SharePoint-focused Purview classification |
 
 ---
 
 ## 🤖 AI-Assisted Content Generation
 
-This comprehensive Fabric + Purview Governance Simulation project was created with the assistance of **GitHub Copilot** powered by Claude Opus 4.5. The project structure, lab content, sample data templates, and documentation were generated through iterative collaboration between human expertise and AI assistance within **Visual Studio Code**.
+This Fabric + Purview Governance Simulation was created with the assistance of **GitHub Copilot** powered by Claude Opus 4.5. Lab content was validated against live Microsoft Fabric and Purview portals within **Visual Studio Code**.
 
-**Research and Validation:**
-
-- Microsoft Learn documentation for Fabric and Purview integration.
-- Live View discovery timing and behavior analysis.
-- Free vs Enterprise feature comparison and documentation.
-- Reference project patterns from Purview-Data-Governance-Simulation.
-
-*AI tools were used to validate current Microsoft documentation, research scan timing expectations, and ensure comprehensive coverage of Fabric + Purview integration patterns while maintaining technical accuracy.*
+*AI tools were used to ensure accurate, current documentation for DLP and information protection capabilities in Microsoft Fabric.*

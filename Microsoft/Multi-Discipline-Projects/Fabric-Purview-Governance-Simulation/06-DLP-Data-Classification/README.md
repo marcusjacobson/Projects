@@ -422,7 +422,7 @@ Before proceeding to Lab 07, verify:
 
 Your DLP policy is now deploying in the background. Choose your path:
 
-**[Lab 07: Data Map and Lineage](../07-Data-Map-Lineage/)** ⭐ Recommended
+**[Lab 07: Data Map and Asset Discovery](../07-Data-Map-Asset-Discovery/)** ⭐ Recommended
 
 > **🎯 Continue Configuration**: Proceed with Lab 07 to configure Data Map and Lineage while your DLP policy deploys. By the time you complete Labs 07-08, your policy will have had time to scan your data.
 

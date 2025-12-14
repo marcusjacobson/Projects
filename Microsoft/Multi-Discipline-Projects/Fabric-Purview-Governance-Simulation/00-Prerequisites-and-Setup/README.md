@@ -386,6 +386,20 @@ Without this configuration, the Data Map scan in Lab 07 will fail with:
 
 > **⏱️ Propagation Time**: Admin API settings can take **up to 15 minutes** to propagate. The scan configuration in Lab 07 won't work immediately after these changes.
 
+### Step 7.4: Grant Workspace Access to Purview MSI
+
+The Admin API settings allow Purview to call tenant-level APIs, but it also needs **direct workspace access** to scan workspace contents.
+
+1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
+2. Open your **Fabric-Purview-Lab** workspace (create it now if it doesn't exist).
+3. Click **Manage access** (in the workspace header or via **...** menu).
+4. Click **+ Add people or groups**.
+5. Search for `payg-billing` (your Purview Managed Identity).
+6. Assign **Viewer** role (minimum required for scanning).
+7. Click **Add**.
+
+> **💡 Why Viewer?** The Purview MSI needs to read workspace metadata and asset schemas. Viewer provides read-only access without modification permissions.
+
 ### Verify Security Group Configuration
 
 After completing the steps above:
@@ -397,6 +411,7 @@ After completing the steps above:
 | **Admin API Access** | Enabled for `Purview-Fabric-Scanners` security group |
 | **Detailed Metadata** | Enabled for `Purview-Fabric-Scanners` security group |
 | **DAX Expressions** | Enabled for `Purview-Fabric-Scanners` security group |
+| **Workspace Access** | `payg-billing` has Viewer role on `Fabric-Purview-Lab` workspace |
 
 ---
 
@@ -419,6 +434,7 @@ Before proceeding to Lab 01, verify:
 - [ ] **Data Map Registration**: Fabric registered as data source (Step 6).
 - [ ] **Security Group**: `Purview-Fabric-Scanners` group created with Purview MSI as member (Step 7).
 - [ ] **Admin API Access**: Service principal read-only API access enabled for security group (Step 7).
+- [ ] **Workspace Access**: Purview MSI (`payg-billing`) has Viewer role on target workspace (Step 7.4).
 
 ### General Requirements
 

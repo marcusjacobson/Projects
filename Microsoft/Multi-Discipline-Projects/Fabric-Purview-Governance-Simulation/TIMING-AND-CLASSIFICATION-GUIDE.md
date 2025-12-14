@@ -1,93 +1,158 @@
 # Timing and Classification Reference Guide
 
-This guide provides timing expectations for the free Purview "Live View" discovery feature used in the main simulation labs (00-09).
+This guide provides timing expectations for the governance features used throughout the Fabric-Purview Governance Simulation labs.
 
-> **📝 Note**: For enterprise Purview scanning with automatic classification, scheduled scans, and deep analysis, see [ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md](./ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md).
-
----
-
-## ⏱️ Live View Timing Expectations
-
-The main labs use Purview's **free Live View** feature, which automatically discovers Fabric assets without manual scan configuration.
-
-| Scenario | Expected Duration | Notes |
-|----------|-------------------|-------|
-| Initial Live View sync | 5-15 minutes | After workspace creation or data changes |
-| Asset visibility in catalog | Immediate-15 minutes | Assets appear in Data Catalog automatically |
-| Manual classification save | Immediate | Changes visible after saving |
-| Glossary term assignment | Immediate | Links appear after saving |
-| Lineage visibility | 5-15 minutes | After data transformations complete |
-
-> **💡 Key Insight**: Unlike SharePoint Content Explorer classification (which can take up to **7 days**), Fabric assets appear in Purview almost immediately via Live View!
+> **📝 Note**: For enterprise capabilities beyond what's covered in these labs, see [ENTERPRISE-GOVERNANCE-CAPABILITIES.md](./ENTERPRISE-GOVERNANCE-CAPABILITIES.md).
 
 ---
 
-## 🔄 Free vs Enterprise Features
+## ⏱️ DLP Policy Timing
 
-| Feature | Free (Live View) | Enterprise (Paid) |
-|---------|------------------|-------------------|
-| **Asset Discovery** | ✅ Automatic | ✅ Automatic + deep scanning |
-| **Manual Classification** | ✅ Up to 1,000 assets | ✅ Unlimited |
-| **Automatic Classification** | ❌ Not available | ✅ 200+ built-in SITs |
-| **Scheduled Scans** | ❌ Not available | ✅ Daily/weekly/monthly |
-| **Glossary Terms** | ✅ Create and link | ✅ Advanced workflows |
-| **Data Lineage** | ✅ Fabric-native | ✅ Cross-source |
-| **Cost** | $0 (included) | ~$360+/month |
+DLP for Fabric is a key component of Labs 06-09. Understanding timing helps set expectations for when detection results appear.
+
+| Phase | Expected Duration | Notes |
+|-------|-------------------|-------|
+| Policy creation | Immediate | Policy saved in Purview portal |
+| Policy sync | 5-15 minutes | "Sync completed" status appears |
+| Real-time scanning activation | After sync | Detects sensitive data when accessed |
+| Simulation results population | 15-60 minutes | After users access reports containing sensitive data |
+| Full tenant propagation | Up to 24 hours | For consistent enforcement across all items |
+
+### How DLP for Fabric Works
+
+DLP policies for Power BI use **real-time scanning**—they detect sensitive data patterns (SSN, Credit Card) **when users access reports or semantic models**, not by proactively scanning data at rest.
+
+**To trigger detection:**
+
+1. Create and save the DLP policy.
+2. Wait for "Sync completed" status.
+3. Open a report that queries data containing sensitive patterns.
+4. Check simulation results after 15-30 minutes.
+
+> **💡 Key Insight**: If simulation shows 0 matches, it doesn't mean no sensitive data exists—it means no one has accessed items containing that data since the policy was deployed.
 
 ---
 
-## ⏱️ Timing Comparison: Fabric vs SharePoint
+## ⏱️ Data Map Scan Timing
 
-| Aspect | Microsoft Fabric (Live View) | SharePoint/OneDrive |
-|--------|------------------------------|---------------------|
-| **Discovery Type** | Live View metadata sync | Content Explorer indexing |
-| **Typical Wait Time** | Minutes | **Up to 7 days** |
-| **Trigger** | Automatic (real-time sync) | System-managed indexing |
-| **Classification** | Manual only (free version) | Automatic (after indexing) |
+Labs 07-08 use Purview Data Map to discover Fabric assets in the Unified Catalog.
 
-This timing difference makes Fabric an excellent platform for **learning and testing** Purview governance capabilities, as you can see asset discovery results quickly rather than waiting days.
+| Phase | Expected Duration | Notes |
+|-------|-------------------|-------|
+| Scan initiation | Immediate | Scan starts after clicking "Save and run" |
+| Workspace discovery | 2-5 minutes | Workspace-level items appear |
+| Table/column schema capture | 5-15 minutes | Full schema metadata extracted |
+| Assets visible in Unified Catalog | After scan completes | Browse via Unified Catalog → Data assets |
+
+### What Data Map Discovers
+
+| Asset Level | Discovery Method | What You See |
+|-------------|------------------|--------------|
+| **Workspaces** | Automatic (Live View) | Workspace names in catalog |
+| **Items** (Lakehouse, Warehouse) | Automatic + Scan | Item inventory with types |
+| **Tables** | Requires scan | Table names under Lakehouse/Warehouse |
+| **Columns** | Requires scan | Column names, data types in Schema tab |
+
+> **💡 Key Insight**: Live View shows workspaces and items automatically. To see **tables and columns**, you must run a Data Map scan (Lab 07).
 
 ---
 
-## 📋 Troubleshooting Live View
+## ⏱️ Fabric Data Operations Timing
 
-### Assets Not Appearing in Purview
+These timings apply to the data foundation labs (01-05).
 
-**Common Causes:**
+| Operation | Expected Duration | Notes |
+|-----------|-------------------|-------|
+| Lakehouse creation | 1-2 minutes | Item appears in workspace |
+| Notebook execution (data load) | 2-5 minutes | Depends on data volume |
+| Table availability after load | Immediate | Tables visible in Lakehouse explorer |
+| Warehouse creation | 1-2 minutes | Item appears in workspace |
+| Cross-database query execution | Seconds | After Warehouse points to Lakehouse |
+| Semantic model creation | 1-2 minutes | Default model created with Lakehouse |
+| Report save | Immediate | Report appears in workspace |
 
-- Wait 5-15 minutes for initial sync after creating new Fabric items.
-- Verify you're searching in the correct Purview Data Catalog.
-- Check that your Fabric workspace has data (empty workspaces show no assets).
-- Refresh the browser or clear cache.
+---
 
-### Manual Classifications Not Saving
+## 📊 Lab-by-Lab Timing Summary
 
-**Common Causes:**
+| Lab | Primary Activity | Typical Duration | Key Wait Points |
+|-----|------------------|------------------|-----------------|
+| **Lab 00** | Prerequisites and setup | 30-45 minutes | Admin API propagation (15-30 min) |
+| **Lab 01** | Workspace and Lakehouse | 15 minutes | None |
+| **Lab 02** | Customer data notebook | 20 minutes | Notebook execution |
+| **Lab 03** | Transaction data notebook | 15 minutes | Notebook execution |
+| **Lab 04** | Warehouse and queries | 20 minutes | None |
+| **Lab 05** | Data transformation | 20 minutes | Notebook execution |
+| **Lab 06** | DLP policy creation | 20 minutes | Policy sync (5-15 min) |
+| **Lab 07** | Data Map scan | 15 minutes | Scan completion (5-15 min) |
+| **Lab 08** | Power BI report | 20 minutes | None |
+| **Lab 09** | Final validation | 15-20 minutes | DLP results (may need to wait) |
 
-- Verify you have **Data Curator** role or higher in Purview.
-- Check that you're within the 1,000 asset limit for free manual classification.
-- Refresh the asset detail page after saving.
+### Recommended Lab Sequencing
 
-### Lineage Not Showing
+For optimal results, complete **Lab 06 (DLP policy)** before Labs 07-08. This allows the policy to propagate while you complete asset discovery and report creation. By Lab 09, simulation results should be available.
 
-**Common Causes:**
+---
 
-- Lineage requires data transformations to have executed at least once.
-- Wait 5-15 minutes after pipeline/dataflow execution.
-- Some manual operations don't generate lineage automatically.
+## 📋 Troubleshooting Timing Issues
+
+### DLP Simulation Shows 0 Matches
+
+**Expected behavior**: DLP requires data access activity to detect patterns.
+
+**Resolution:**
+
+1. Verify policy sync completed (check status in Policies list).
+2. Open the Power BI report and interact with visuals.
+3. Wait 15-30 minutes.
+4. Check simulation results again.
+
+### Data Map Scan Stuck or Failing
+
+**Common causes:**
+
+- Purview MSI doesn't have workspace Viewer access (Lab 00, Step 7.4).
+- Admin API settings not fully propagated (wait 15-30 minutes).
+- Scan scope doesn't include your workspace.
+
+**Resolution:**
+
+1. Verify workspace Viewer role assigned to Purview MSI.
+2. Re-run scan after permission changes.
+
+### Assets Not in Unified Catalog
+
+**Common causes:**
+
+- Scan hasn't completed yet.
+- Scan scope missed your workspace.
+
+**Resolution:**
+
+1. Check scan status in Data Map → Data sources.
+2. Verify scan scope includes `Fabric-Purview-Lab` workspace.
+3. Re-run scan if needed.
+
+### Report Not Showing in Catalog
+
+**Expected behavior**: Reports appear after Data Map scan discovers them.
+
+**Resolution:**
+
+1. Re-run Data Map scan after saving report (Lab 08).
+2. Wait for scan to complete.
+3. Browse Unified Catalog → Data assets → Microsoft Fabric → Reports.
 
 ---
 
 ## 🔗 Related Documentation
 
-- [Purview Data Catalog Overview](https://learn.microsoft.com/purview/data-catalog-home)
-- [Microsoft Fabric + Purview Integration](https://learn.microsoft.com/fabric/governance/use-microsoft-purview-hub)
-- [Enterprise Scanning Guide](./ADVANCED-PURVIEW-ENTERPRISE-SCANNING.md)
+- [DLP for Power BI](https://learn.microsoft.com/power-bi/enterprise/service-security-dlp-policies-for-power-bi-overview)
+- [Purview Data Map Overview](https://learn.microsoft.com/purview/concept-data-map)
+- [Enterprise Governance Capabilities](./ENTERPRISE-GOVERNANCE-CAPABILITIES.md)
 
 ---
 
 ## 🤖 AI-Assisted Content Generation
 
-This timing and classification reference guide was created with the assistance of **GitHub Copilot** powered by Claude Opus 4.5. The timing expectations were researched and validated against Microsoft Learn documentation within **Visual Studio Code**.
-
-*AI tools were used to synthesize Microsoft documentation into actionable guidance for Fabric + Purview governance implementations.*
+This timing reference guide was created with the assistance of **GitHub Copilot** powered by Claude Opus 4.5. Timing expectations were validated against lab testing within **Visual Studio Code**.

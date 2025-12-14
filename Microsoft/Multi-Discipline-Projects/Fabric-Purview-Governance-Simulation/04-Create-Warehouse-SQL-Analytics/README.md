@@ -2,7 +2,7 @@
 
 ## 🎯 Objective
 
-Create a Fabric Warehouse, load data from the Lakehouse, and run T-SQL analytics queries.
+Create a Fabric Warehouse and use cross-database queries to analyze Lakehouse data with T-SQL.
 
 **Duration**: 30 minutes
 
@@ -13,9 +13,10 @@ Create a Fabric Warehouse, load data from the Lakehouse, and run T-SQL analytics
 | Item | Description |
 |------|-------------|
 | **AnalyticsWarehouse** | Fabric Warehouse optimized for T-SQL analytics and BI |
-| **Lakehouse Shortcut** | Virtual link to Lakehouse tables (no data duplication) |
-| **vw_CustomerAnalytics** | SQL view combining customer and transaction data |
-| **Analytics Queries** | Saved queries for segmentation and revenue analysis |
+| **Cross-Database Queries** | T-SQL queries that access Lakehouse data directly (no duplication) |
+| **vw_HighValueCustomers** | SQL view for premium customer analysis |
+| **vw_CustomerSpendingAnalysis** | SQL view combining customer demographics with spending (for Power BI) |
+| **sp_CreditScoreReport** | Stored procedure for parameterized reporting |
 
 ### Real-World Context
 
@@ -25,13 +26,14 @@ The Warehouse complements the Lakehouse for **business intelligence workloads**:
 - **Reporting tools** connect natively to SQL endpoints.
 - **Performance optimization** through materialized views and statistics.
 
-The **Shortcut pattern** you're implementing is a key Fabric innovation:
+The **Cross-Database Query pattern** you're implementing is a key Fabric innovation:
 
 - **Zero data movement** — query Lakehouse data from Warehouse without copying.
-- **Single source of truth** — changes in Lakehouse reflect immediately.
+- **Single source of truth** — changes in Lakehouse reflect immediately in queries.
+- **DDL in Warehouse** — create views and stored procedures that reference Lakehouse data.
 - **Cost efficiency** — no storage duplication across analytics layers.
 
-This architecture mirrors the **Medallion Architecture** (Bronze/Silver/Gold) used by data teams worldwide, where Lakehouses hold raw/refined data and Warehouses serve the consumption layer.
+This architecture mirrors the **Medallion Architecture** (Bronze/Silver/Gold) used by data teams worldwide, where Lakehouses hold raw/refined data and Warehouses serve the consumption layer with reusable SQL objects.
 
 ---
 
@@ -43,127 +45,134 @@ This architecture mirrors the **Medallion Architecture** (Bronze/Silver/Gold) us
 
 ---
 
-## 🔧 Step 1: Understand Lakehouse vs Warehouse
+## 📊 Lakehouse vs Warehouse Overview
 
 | Feature | Lakehouse | Warehouse |
 |---------|-----------|-----------|
-| **Primary Use** | Data engineering, ML | Business analytics, reporting |
-| **Query Language** | Spark SQL, PySpark | T-SQL |
-| **Schema** | Schema-on-read | Schema-on-write |
+| **Primary Use** | Data engineering, ML, flexible storage | Business analytics, reporting |
+| **Query Language** | T-SQL (via SQL endpoint), Spark SQL, PySpark | T-SQL only |
+| **Schema** | Schema-on-read (flexible) | Schema-on-write (enforced) |
 | **Performance** | Optimized for large-scale processing | Optimized for BI queries |
 | **Data Format** | Delta Lake (Parquet) | Delta Lake (Parquet) |
+| **DDL Support** | Limited (no stored procedures) | Full T-SQL DDL (views, procedures, functions) |
 
-> **💡 Key Insight**: Both use Delta Lake format, enabling seamless data sharing via shortcuts.
+> **💡 Key Insight**: Both use Delta Lake format and T-SQL for querying. The Warehouse adds full DDL support for views, stored procedures, and advanced SQL objects that aren't available in the Lakehouse SQL endpoint.
 
 ---
 
-## 🔧 Step 2: Create Warehouse
+## 🔧 Step 1: Create Warehouse
 
 ### Navigate to Workspace
 
 1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
-
 2. Open your **Fabric-Purview-Lab** workspace.
 
 ### Create New Warehouse
 
 1. Select **+ New item**.
-
 2. In the **New item** pane, under **Store data**, select **Warehouse**.
-
 3. Enter name: `AnalyticsWarehouse`.
-
 4. Select **Create**.
-
 5. Wait for the Warehouse to provision (30-60 seconds).
 
 ---
 
-## 🔧 Step 3: Create Shortcut to Lakehouse Data
+## 🔧 Step 2: Query Lakehouse Data Using Cross-Database Queries
 
-Instead of duplicating data, we'll create a shortcut to the Lakehouse tables.
+Instead of duplicating data, Fabric Warehouse supports **cross-database queries** that let you query Lakehouse tables directly using three-part naming.
 
-### Add Shortcut
+### Understanding Cross-Database Queries
 
-1. In the Warehouse, expand the **Schemas** folder.
+In Fabric, you can query any item in OneLake using:
 
-2. Right-click on **dbo** schema.
+```sql
+[ItemName].[Schema].[Table]
+```
 
-3. Select **New shortcut**.
+For example, to query the customers table in your Lakehouse:
 
-4. Choose **Microsoft OneLake**.
+```sql
+SELECT * FROM [CustomerDataLakehouse].[dbo].[customers];
+```
 
-5. Navigate to:
-   - Your workspace: `Fabric-Purview-Lab`
-   - Lakehouse: `CustomerDataLakehouse`
-   - Tables folder
+### Test Cross-Database Query
 
-6. Select the following tables (hold Ctrl to multi-select):
-   - `customers`
-   - `transactions`
-   - `customers_segmented` (if created in Lab 03)
+1. Select **New SQL query** in the toolbar (or select the dropdown arrow and choose **New SQL query**).
+2. Run this query to verify access to Lakehouse data:
 
-7. Select **Create**.
+```sql
+-- Query Lakehouse tables directly from Warehouse
+SELECT TOP 10 * 
+FROM [CustomerDataLakehouse].[dbo].[customers];
+```
 
-### Verify Shortcuts
+3. Select **Run** or press F5.
+4. You should see customer data from the Lakehouse.
 
-1. Expand **dbo** → **Tables**.
+> **💡 Key Insight**: Cross-database queries provide zero-copy access to Lakehouse data. No data is duplicated—you're querying the source directly.
 
-2. You should see the shortcut tables with a shortcut icon.
+### Verify Both Tables Are Accessible
 
-3. These tables reference the Lakehouse data directly.
+```sql
+-- Verify customers table
+SELECT COUNT(*) AS CustomerCount 
+FROM [CustomerDataLakehouse].[dbo].[customers];
+
+-- Verify transactions table
+SELECT COUNT(*) AS TransactionCount 
+FROM [CustomerDataLakehouse].[dbo].[transactions];
+```
 
 ---
 
-## 🔧 Step 4: Write Analytics Queries
+## 🔧 Step 3: Write Analytics Queries
 
-### Open Query Editor
-
-1. Select **New SQL query** in the toolbar.
-
-2. A new query tab opens.
+Now write some analytics queries that demonstrate cross-database joins and aggregations.
 
 ### Query 1: Customer State Distribution
 
-Copy and run this query:
+1. Open a new query tab (**New SQL query** in the toolbar).
+2. Copy and run this query:
 
 ```sql
--- Customer distribution by state
+-- Customer distribution by state (cross-database query)
 SELECT 
     State,
     COUNT(*) AS CustomerCount,
     AVG(CreditScore) AS AvgCreditScore,
     MIN(CreditScore) AS MinCreditScore,
     MAX(CreditScore) AS MaxCreditScore
-FROM dbo.customers
+FROM [CustomerDataLakehouse].[dbo].[customers]
 GROUP BY State
 ORDER BY CustomerCount DESC;
 ```
 
-1. Select the query text.
-2. Select **Run** or press F5.
-3. View results in the results pane.
+3. Select **Run** or press F5 to see results.
 
-### Query 2: Transaction Analysis
+### Query 2: Transaction Analysis by Category
+
+In the same query tab (or a new one), run:
 
 ```sql
--- Transaction summary by type
+-- Transaction summary by merchant category
 SELECT 
-    TransactionType,
+    MerchantCategory,
     COUNT(*) AS TransactionCount,
     SUM(Amount) AS TotalAmount,
     AVG(Amount) AS AvgAmount,
     MIN(TransactionDate) AS FirstTransaction,
     MAX(TransactionDate) AS LastTransaction
-FROM dbo.transactions
-GROUP BY TransactionType
+FROM [CustomerDataLakehouse].[dbo].[transactions]
+GROUP BY MerchantCategory
 ORDER BY TotalAmount DESC;
 ```
 
 ### Query 3: Customer Transaction Join
 
+This query joins both tables:
+
 ```sql
--- Customer spending analysis
+-- Customer spending analysis (cross-database join)
 SELECT 
     c.CustomerID,
     c.FirstName,
@@ -172,24 +181,23 @@ SELECT
     c.CreditScore,
     COUNT(t.TransactionID) AS TotalTransactions,
     SUM(t.Amount) AS TotalSpending
-FROM dbo.customers c
-LEFT JOIN dbo.transactions t ON c.CustomerID = t.CustomerID
+FROM [CustomerDataLakehouse].[dbo].[customers] c
+LEFT JOIN [CustomerDataLakehouse].[dbo].[transactions] t ON c.CustomerID = t.CustomerID
 GROUP BY c.CustomerID, c.FirstName, c.LastName, c.State, c.CreditScore
 ORDER BY TotalSpending DESC;
 ```
 
 ---
 
-## 🔧 Step 5: Create a View
+## 🔧 Step 4: Create a View
 
 ### Create Reusable View
 
 1. Open a new query tab.
-
 2. Run this DDL statement:
 
 ```sql
--- Create a view for high-value customers
+-- Create a view for high-value customers (references Lakehouse data)
 CREATE VIEW dbo.vw_HighValueCustomers
 AS
 SELECT 
@@ -201,15 +209,14 @@ SELECT
     c.CreditScore,
     COALESCE(SUM(t.Amount), 0) AS TotalSpending,
     COUNT(t.TransactionID) AS TransactionCount
-FROM dbo.customers c
-LEFT JOIN dbo.transactions t ON c.CustomerID = t.CustomerID
+FROM [CustomerDataLakehouse].[dbo].[customers] c
+LEFT JOIN [CustomerDataLakehouse].[dbo].[transactions] t ON c.CustomerID = t.CustomerID
 GROUP BY c.CustomerID, c.FirstName, c.LastName, c.Email, c.State, c.CreditScore
 HAVING COALESCE(SUM(t.Amount), 0) > 1000 OR c.CreditScore >= 750;
 ```
 
 3. Select **Run**.
-
-4. The view is created.
+4. The view is created in your Warehouse but queries Lakehouse data.
 
 ### Query the View
 
@@ -221,7 +228,7 @@ ORDER BY TotalSpending DESC;
 
 ---
 
-## 🔧 Step 6: Create a Stored Procedure
+## 🔧 Step 5: Create a Stored Procedure
 
 ### Create Procedure for Reporting
 
@@ -241,7 +248,7 @@ BEGIN
         END AS CreditTier,
         COUNT(*) AS CustomerCount,
         AVG(CreditScore) AS AvgScore
-    FROM dbo.customers
+    FROM [CustomerDataLakehouse].[dbo].[customers]
     WHERE CreditScore >= @MinCreditScore
     GROUP BY 
         CASE 
@@ -267,49 +274,95 @@ EXEC dbo.sp_CreditScoreReport @MinCreditScore = 700;
 
 ---
 
-## 🔧 Step 7: Save and Organize Queries
+## 🔧 Step 6: Create View for Power BI
 
-### Save Query as Item
+In Lab 08, you'll create Power BI visualizations. Create a view now that combines customer and spending data.
 
-1. Select the **Save** icon in the query tab.
+### Create Customer Spending View
 
-2. Name: `QRY_CustomerAnalytics`.
+1. Open a new query tab.
+2. Enter this query (combining customer and transaction data):
 
-3. The query is saved to your workspace.
+```sql
+-- Customer spending analysis for Power BI visualization
+SELECT 
+    c.CustomerID,
+    c.FirstName,
+    c.LastName,
+    c.State,
+    c.CreditScore,
+    CASE 
+        WHEN c.CreditScore >= 750 THEN 'Premium'
+        WHEN c.CreditScore >= 700 THEN 'Standard'
+        ELSE 'Basic'
+    END AS CustomerSegment,
+    COUNT(t.TransactionID) AS TotalTransactions,
+    COALESCE(SUM(t.Amount), 0) AS TotalSpending
+FROM [CustomerDataLakehouse].[dbo].[customers] c
+LEFT JOIN [CustomerDataLakehouse].[dbo].[transactions] t ON c.CustomerID = t.CustomerID
+GROUP BY c.CustomerID, c.FirstName, c.LastName, c.State, c.CreditScore;
+```
 
-### View Saved Queries
+3. Run the query to verify it works (you should see customer data with segments and spending).
+4. **Select the entire query text** (Ctrl+A in the query editor, or manually highlight from `SELECT` to the final semicolon).
+5. With the query text selected, select **Save as view** in the toolbar.
+6. In the **Save as view** dialog:
+   - **Name**: `vw_CustomerSpendingAnalysis`
+   - Select **OK** or **Save**.
+7. The view is saved in your Warehouse under **Views**.
 
-1. Return to workspace view.
+> **⚠️ Important**: You must select/highlight the query text before clicking **Save as view**. If you click the button without selecting text, you'll see an error: "To save as a view, select the text of one SELECT statement."
+>
+> **💡 Why Save as a View?**: In Fabric Warehouse, queries are saved as views rather than standalone query files. This view will be available as a data source in Lab 08 for Power BI visualizations.
 
-2. Find your saved query in the item list.
+### Verify All Objects Created
 
-3. Saved queries can be shared and scheduled.
+1. In the Explorer pane (left side), expand **Schemas** → **dbo** → **Views** to see both views.
+2. Expand **Stored Procedures** to see the stored procedure.
+3. Close any open query tabs — the permanent objects are saved in the Warehouse.
 
 ---
 
-## 🔧 Step 8: Explore Query Insights
+## 🔧 Step 7: Explore Query Insights
 
-### View Query Performance
+Fabric Warehouse provides built-in query insights through system views in the **queryinsights** schema.
 
-1. In the Warehouse, select **Query insights** in the left navigation.
+### View Available Insight Views
 
-2. This shows query history and performance metrics.
+1. In the Explorer pane, expand **Schemas** → **queryinsights** → **Views**.
+2. You'll see these system views:
+   - `exec_requests_history` — History of all query executions
+   - `exec_sessions_history` — Session connection history
+   - `frequently_run_queries` — Most commonly executed queries
+   - `long_running_queries` — Queries that took longest to execute
+   - `sql_pool_insights` — Overall pool performance metrics
 
-3. Review:
-   - Query duration
-   - Data processed
-   - Cache usage
+### Query Execution History
 
-### Understand Query Plans
-
-1. In a query tab, prefix your query with:
+1. Open a new query tab.
+2. Run this query to see your recent query history:
 
 ```sql
-EXPLAIN
-SELECT * FROM dbo.customers WHERE State = 'CA';
+SELECT TOP 20
+    start_time,
+    end_time,
+    DATEDIFF(SECOND, start_time, end_time) AS duration_seconds,
+    command,
+    status
+FROM queryinsights.exec_requests_history
+ORDER BY start_time DESC;
 ```
 
-2. This shows the query execution plan.
+3. Review your queries from this lab session.
+
+### Find Long-Running Queries
+
+```sql
+SELECT *
+FROM queryinsights.long_running_queries;
+```
+
+> **💡 Tip**: These insights help identify slow queries and optimization opportunities in production scenarios.
 
 ---
 
@@ -318,25 +371,26 @@ SELECT * FROM dbo.customers WHERE State = 'CA';
 Before proceeding to Lab 05, verify:
 
 - [ ] Warehouse `AnalyticsWarehouse` exists.
-- [ ] Shortcuts to Lakehouse tables are working.
-- [ ] Analytics queries run successfully.
-- [ ] View `vw_HighValueCustomers` is created.
-- [ ] Stored procedure `sp_CreditScoreReport` works.
-- [ ] At least one query is saved to workspace.
+- [ ] Cross-database queries to Lakehouse tables work.
+- [ ] Analytics queries run successfully and return data.
+- [ ] View `vw_HighValueCustomers` exists (check Explorer → Views).
+- [ ] View `vw_CustomerSpendingAnalysis` exists (check Explorer → Views).
+- [ ] Stored procedure `sp_CreditScoreReport` exists (check Explorer → Stored Procedures).
 
 ---
 
 ## ❌ Troubleshooting
 
-### Shortcut Creation Fails
+### Cross-Database Query Fails
 
-**Symptom**: Cannot create shortcut to Lakehouse.
+**Symptom**: Error "Invalid object name" when querying Lakehouse.
 
 **Resolution**:
 
-1. Verify you have access to the Lakehouse.
-2. Check that tables exist in the Lakehouse.
-3. Ensure the Lakehouse is in the same capacity region.
+1. Verify the Lakehouse name is spelled correctly (case-sensitive).
+2. Check that the Lakehouse exists in the same workspace.
+3. Ensure you have read access to the Lakehouse.
+4. Use the exact three-part name: `[LakehouseName].[dbo].[TableName]`.
 
 ### Query Returns No Results
 
@@ -344,9 +398,9 @@ Before proceeding to Lab 05, verify:
 
 **Resolution**:
 
-1. Verify shortcuts are active (not broken).
-2. Check if source data exists in Lakehouse.
-3. Review filter conditions in WHERE clause.
+1. Verify data exists in the Lakehouse tables.
+2. Check filter conditions in WHERE clause.
+3. Run a simple `SELECT COUNT(*)` to verify table access.
 
 ### View or Procedure Already Exists
 

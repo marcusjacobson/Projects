@@ -78,30 +78,43 @@ Enterprise lineage scenarios:
 
 ### Create New Scan
 
-1. In Data Map → **Data sources**, locate **Fabric-Lab**.
-2. Click the **scan icon** (🔍) or select **New scan** from the menu.
-3. Configure the scan:
-
-| Setting | Value |
-|---------|-------|
-| **Name** | `Fabric-Lab-Scan-01` |
-| **Integration runtime** | Default (Azure) |
-| **Scope** | Select your workspace or scan entire tenant |
-
-### Select Scan Scope
-
-1. Expand the workspace tree to see available items.
-2. Select the items to scan:
-   - ✅ **CustomerDataLakehouse**
-   - ✅ **AnalyticsWarehouse**
-   - ✅ **IoTEventhouse** (KQL Database)
-3. Click **Continue**.
+1. In Data Map → **Data sources**, locate **Fabric-Lab** in the Map view.
+2. Click **View details** on the Fabric-Lab tile, then select **New scan**.
+   - Or click the scan icon (🔍) directly on the tile.
 
 ### Configure Scan Settings
 
-1. **Scan rule set**: Use default Fabric scan rules.
+The **Scan "Fabric-Lab"** panel opens on the right:
+
+| Setting | Value | Notes |
+|---------|-------|-------|
+| **Name** | `Fabric-Lab-Scan-01` | Auto-generated, can customize |
+| **Personal workspaces** | **Include** (selected) | Scans personal workspaces too |
+| **Integration runtime** | Azure AutoResolveIntegrationRuntime | Default, no change needed |
+| **Credential** | Microsoft Purview MSI (system) | Uses Purview's managed identity |
+| **Domain** | `payg-billing` | Auto-populated from your setup |
+| **Collection** | **Select domain only** | Click dropdown → select this option |
+
+> **📝 Note**: The info banner states "In addition to Power BI items, other Fabric items can also be scanned in Fabric tenants." — this confirms your Lakehouse, Warehouse, and KQL items will be included.
+>
+> **⚠️ Permissions Note**: The panel reminds you to give the managed identity of the Microsoft Purview account permissions to connect to your Fabric. This was configured in Lab 00.
+
+3. Click **Test connection** (optional) to verify connectivity.
+4. Click **Continue** to proceed to scope selection.
+
+### Select Scan Scope
+
+1. On the scope selection screen, expand the workspace tree.
+2. Select the items to scan:
+   - ✅ **Fabric-Purview-Lab** workspace (or select individual items)
+   - This includes: CustomerDataLakehouse, AnalyticsWarehouse, IoTEventhouse
+3. Click **Continue**.
+
+### Configure Scan Trigger
+
+1. **Scan rule set**: Use default Fabric scan rules (or select custom if available).
 2. **Scan trigger**: Select **Once** for manual scan.
-   - Production environments typically use scheduled scans.
+   - Production environments typically use scheduled scans (daily, weekly).
 3. Review settings and click **Save and run**.
 
 ### Monitor Scan Progress

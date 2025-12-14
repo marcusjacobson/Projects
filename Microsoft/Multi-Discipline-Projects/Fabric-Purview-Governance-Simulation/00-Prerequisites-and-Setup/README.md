@@ -338,6 +338,68 @@ After registration, you should see:
 
 ---
 
+## 🔧 Step 7: Create Security Group for Purview Scanning (Required for Lab 07)
+
+> **🔐 Required for Data Map Scanning**: Microsoft Purview uses its Managed Identity to scan Fabric. The Fabric Admin API requires this identity to be in a security group with explicit API permissions.
+
+### Why This Is Required
+
+When you enabled pay-as-you-go billing in Step 5, Azure created a **Managed Identity** for your Purview account. This identity (named the same as your Purview account, e.g., `payg-billing`) needs permission to access Fabric's read-only admin APIs for scanning.
+
+Without this configuration, the Data Map scan in Lab 07 will fail with:
+
+- ✓ Access: Passed
+- ✗ Assets (+ lineage): Failed
+- ✗ Detailed metadata: Failed
+
+### Step 7.1: Create Security Group in Microsoft Entra ID
+
+1. Go to [entra.microsoft.com](https://entra.microsoft.com) or [portal.azure.com](https://portal.azure.com) → **Microsoft Entra ID**.
+2. Navigate to **Groups** → **All groups** → **New group**.
+3. Configure the group:
+   - **Group type**: Security
+   - **Group name**: `Purview-Fabric-Scanners`
+   - **Group description**: Security group for Purview Managed Identity to scan Fabric tenant
+   - **Membership type**: Assigned
+4. Click **Create**.
+
+### Step 7.2: Add Purview Managed Identity to the Group
+
+1. Open the newly created **Purview-Fabric-Scanners** group.
+2. Go to **Members** → **Add members**.
+3. Search for **payg-billing** (the Purview account created in Step 5).
+4. Select it and click **Select**.
+
+### Step 7.3: Enable Admin API Access for the Security Group
+
+1. Go to **Fabric Admin Portal**: [app.fabric.microsoft.com](https://app.fabric.microsoft.com) → **Settings** (gear icon) → **Admin portal**.
+2. Navigate to **Tenant settings**.
+3. Scroll to the **Admin API settings** section.
+4. Find **Allow service principals to use read-only admin APIs**:
+   - Toggle to **Enabled**.
+   - Select **Specific security groups**.
+   - Click **Add groups** and search for `Purview-Fabric-Scanners`.
+   - Add the group and click **Apply**.
+5. Verify these additional settings are enabled (should already be from Step 6):
+   - **Enhance admin APIs responses with detailed metadata**: Enabled for the same security group.
+   - **Enhance admin APIs responses with DAX and mashup expressions**: Enabled for the same security group.
+
+> **⏱️ Propagation Time**: Admin API settings can take **up to 15 minutes** to propagate. The scan configuration in Lab 07 won't work immediately after these changes.
+
+### Verify Security Group Configuration
+
+After completing the steps above:
+
+| Setting | Expected Value |
+|---------|----------------|
+| **Security Group** | `Purview-Fabric-Scanners` created in Entra ID |
+| **Group Members** | Purview Managed Identity (e.g., `payg-billing`) added |
+| **Admin API Access** | Enabled for `Purview-Fabric-Scanners` security group |
+| **Detailed Metadata** | Enabled for `Purview-Fabric-Scanners` security group |
+| **DAX Expressions** | Enabled for `Purview-Fabric-Scanners` security group |
+
+---
+
 ## ✅ Validation Checklist
 
 Before proceeding to Lab 01, verify:
@@ -355,6 +417,8 @@ Before proceeding to Lab 01, verify:
 - [ ] **Permissions**: Have Reader or Curator role assigned.
 - [ ] **Pay-As-You-Go**: Billing enabled (Step 5) — propagates during Labs 01-05.
 - [ ] **Data Map Registration**: Fabric registered as data source (Step 6).
+- [ ] **Security Group**: `Purview-Fabric-Scanners` group created with Purview MSI as member (Step 7).
+- [ ] **Admin API Access**: Service principal read-only API access enabled for security group (Step 7).
 
 ### General Requirements
 

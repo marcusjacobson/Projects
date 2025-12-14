@@ -118,6 +118,8 @@ The **Applied steps** section shows the steps already applied:
 - Source
 - Navigation (one or more steps depending on how you connected)
 
+> 📷 **Screenshot**: Power Query editor showing Queries pane (left), data preview (center), and Query settings with Applied steps (right)
+
 ### Add Transformation Steps
 
 1. **Filter High-Value Customers:**
@@ -141,6 +143,8 @@ The **Applied steps** section shows the steps already applied:
      ```
 
    - Select **OK**.
+
+> 📷 **Screenshot**: Custom column dialog showing column name "CustomerSegment" and the if-then-else formula entered
 
 3. **Select Final Columns:**
    - Select **Home** in the ribbon.
@@ -183,6 +187,8 @@ The **Applied steps** section shows the steps already applied:
 6. Select **Next**.
 
 7. Review the column mapping settings and select **Save settings**.
+
+> 📷 **Screenshot**: Data destination configuration showing Lakehouse selected with table name "customers_segmented" entered
 
 ### Save and Run Dataflow
 
@@ -269,6 +275,8 @@ The pipeline opens to a welcome screen with options:
 
 5. Select **Save** in the toolbar (or press Ctrl+S).
 
+> 📷 **Screenshot**: Pipeline editor canvas showing Dataflow activity with properties pane displaying General and Settings tabs
+
 ---
 
 ## 🔧 Step 6: Configure Pipeline Schedule (Optional)
@@ -330,6 +338,8 @@ The **Output** pane appears at the bottom of the screen showing:
 2. The **Activity status** for `Run Customer Segmentation` should also show **Succeeded**.
 
 3. If any activity fails, select it to view error details in the **Output** column.
+
+> 📷 **Screenshot**: Pipeline Output pane showing activity status progression (In progress → Succeeded) with duration and timestamps
 
 > **💡 Note**: The output pane auto-refreshes for 5 minutes while the pipeline is running. You can select **Turn off auto-refresh** to stop automatic updates.
 

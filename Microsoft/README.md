@@ -29,6 +29,17 @@ The portfolio is organized by technology domain, with each section containing ha
 - **Security Operations**: Integration with Defender XDR and Security Copilot.
 - **Responsible AI**: Implementation of content safety and responsible AI frameworks.
 
+### [Fabric + Purview Governance Simulation](./Multi-Discipline-Projects/Fabric-Purview-Governance-Simulation/)
+
+**Focus**: DLP and Information Protection for Microsoft Fabric data assets using Purview governance tools.
+
+**Key Capabilities**:
+
+- **DLP for Fabric**: Policy design, SIT detection, real-time scanning for Power BI workloads.
+- **Data Map Integration**: Fabric tenant scanning, Live View sync, Unified Catalog discovery.
+- **Governance Chain**: Report → Semantic Model → Lakehouse traceability with DLP coverage.
+- **Alert Investigation**: Activity Explorer analysis and DLP incident management.
+
 ### [Microsoft Entra](./Entra/)
 
 **Focus**: Identity and Access Management (IAM), Zero Trust security, and Identity Governance.
@@ -137,7 +148,10 @@ This assessment serves as a **living roadmap** of demonstrated technical compete
 | **AI Security** | OWASP Top 10 for LLMs | ✅ Implemented | Azure AI Security Challenge |
 | **Responsible AI** | Content Safety Filters | ✅ Implemented | Azure AI Security Challenge |
 | **Model Deployment** | Azure AI Foundry | ✅ Implemented | Azure AI Security Challenge |
-| **Analytics** | Microsoft Fabric | 📅 Planned | - |
+| **Analytics Platform** | Microsoft Fabric (Lakehouse, Warehouse) | ✅ Implemented | Fabric + Purview Governance Simulation |
+| **Analytics Governance** | DLP for Fabric / Power BI | ✅ Implemented | Fabric + Purview Governance Simulation |
+| **Real-Time Intelligence** | Eventhouse & KQL | ✅ Implemented | Fabric + Purview Governance Simulation |
+| **Data Discovery** | Purview Data Map for Fabric | ✅ Implemented | Fabric + Purview Governance Simulation |
 | **Analytics** | Synapse Analytics | 📅 Planned | - |
 
 ### 🏢 Modern Work & Endpoint Management
@@ -156,9 +170,9 @@ This assessment serves as a **living roadmap** of demonstrated technical compete
 
 This portfolio is continuously evolving. Upcoming focus areas include:
 
-- **Microsoft Fabric**: Secure analytics and data engineering.
 - **Microsoft Priva**: Privacy risk management.
 - **External Attack Surface Management (EASM)**: Discovery and inventory.
+- **Microsoft Fabric Advanced**: Direct Lake, Spark optimization, Real-Time Hub.
 
 ---
 

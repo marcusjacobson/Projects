@@ -103,6 +103,8 @@ Your sample data contains these detectable SITs:
 2. Select **Policies**.
 3. You should see the policy management interface with a **+ Create policy** button.
 
+> 📷 **Screenshot**: Purview portal showing Data loss prevention → Policies in left navigation with "+ Create policy" button visible
+
 > **❌ If you don't see DLP**: You may not have the required Compliance Administrator or Information Protection Admin role. Contact your tenant administrator.
 
 ---
@@ -119,6 +121,8 @@ Your sample data contains these detectable SITs:
    - Select **Enterprise applications & devices** (left option).
    - This option covers Fabric, Power BI, SharePoint, OneDrive, and other M365 locations.
    - Click to continue.
+
+> 📷 **Screenshot**: "What info do you want to protect?" page with "Enterprise applications & devices" option selected
 
 > **📝 Note**: The "Inline web traffic" option is for Edge browser and network integrations — not needed for Fabric.
 
@@ -152,6 +156,8 @@ This is the critical step — you must select **Fabric and Power BI workspaces**
 1. On the **Choose locations to apply the policy** page:
    - Select **Fabric and Power BI workspaces** as the location.
    - All other locations will be automatically disabled — DLP policies for Fabric only support this location.
+
+> 📷 **Screenshot**: "Choose locations" page with "Fabric and Power BI workspaces" selected and other locations disabled
 
 2. **Scope to specific workspaces** (optional):
    - By default, the policy applies to all workspaces.
@@ -195,6 +201,8 @@ The **Conditions** section shows a **Content contains** group by default:
 | **U.S. Social Security Number (SSN)** | `SSN` or `social security` | customers.csv |
 | **Credit Card Number** | `credit card` | transactions.csv |
 
+> 📷 **Screenshot**: "Add sensitive info types" sidebar showing SSN and Credit Card Number selections
+
 > **⚠️ Note**: Some SITs like **All Full Names** are not supported for Fabric/Power BI locations. If you try to add them, you'll receive an error when saving the rule.
 
 4. Click **Add** to confirm your SIT selections.
@@ -202,6 +210,8 @@ The **Conditions** section shows a **Content contains** group by default:
    - **Instance count**: Default is 1-Any (keep default for lab).
    - **Confidence level**: Default is Medium 75% (keep default).
 6. Toggle **Quick summary** to **On** to verify your rule logic displays correctly.
+
+> 📷 **Screenshot**: Rule configuration showing "Quick summary" toggle enabled with human-readable rule logic displayed
 
 > **💡 Tip**: The Quick summary shows a human-readable version of your conditions — useful for validating complex rules.
 
@@ -288,6 +298,8 @@ Under **Actions**:
 | **Run in simulation mode and show policy tips** | No actions, but users see policy tips | User awareness testing |
 | **Turn it on right away** | Full enforcement | After validating detection |
 | **Keep it off** | Policy inactive | While still configuring |
+
+> 📷 **Screenshot**: "Policy mode" page showing the three mode options with "Run the policy in simulation mode" selected
 
 > **💡 Recommendation**: Start with **Run the policy in simulation mode** to validate detection, review matches in Activity Explorer, then switch to active mode.
 

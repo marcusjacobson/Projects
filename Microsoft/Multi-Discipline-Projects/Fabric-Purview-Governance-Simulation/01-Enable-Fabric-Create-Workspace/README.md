@@ -63,6 +63,8 @@ The workspace you create here mimics a **domain-specific analytics workspace** w
 
 5. Select **Apply**.
 
+> 📷 **Screenshot**: Tenant settings page showing "Users can create Fabric items" toggle expanded with scope options visible
+
 > **💡 Tip**: For a lab environment, enabling for the entire organization is simplest. In production, use security groups for controlled access.
 
 ---
@@ -81,6 +83,8 @@ The workspace you create here mimics a **domain-specific analytics workspace** w
 3. Note the capacity name for workspace assignment.
 
 4. If you have a capacity available, proceed to Step 3.
+
+> 📷 **Screenshot**: Capacity settings page showing available capacities (Trial or F-SKU) with status indicators
 
 ### Start Trial (If No Capacity Available)
 
@@ -121,6 +125,8 @@ The workspace you create here mimics a **domain-specific analytics workspace** w
 
 6. Select **Apply**.
 
+> 📷 **Screenshot**: New workspace dialog with Advanced section expanded showing License mode dropdown with Trial/Fabric capacity options
+
 ### Verify Workspace Creation
 
 1. The new workspace appears in the Workspaces list.
@@ -149,6 +155,8 @@ The workspace you create here mimics a **domain-specific analytics workspace** w
 3. Your account should have **Admin** role.
 
 4. Select **X** or select outside the panel to close.
+
+> 📷 **Screenshot**: Manage access panel showing role assignments with Admin, Member, Contributor, and Viewer roles listed
 
 ### Access Workspace Settings
 

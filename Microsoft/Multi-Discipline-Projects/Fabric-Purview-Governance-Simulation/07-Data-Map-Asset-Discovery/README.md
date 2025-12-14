@@ -91,11 +91,15 @@ Use **Microsoft Purview Data Map** to scan your Fabric workspace and make assets
 3. Click **Test connection** to verify connectivity.
 4. Click **Continue**.
 
+> 📷 **Screenshot**: New scan dialog showing scan settings (Name, Personal workspaces, Credential) with Test connection button
+
 ### Select Scan Scope
 
 1. On the **Scope your scan** screen, select **Yes (Preview)**.
 2. Expand the workspace tree and select **Fabric-Purview-Lab**.
 3. Click **Continue**.
+
+> 📷 **Screenshot**: "Scope your scan" screen showing workspace tree with Fabric-Purview-Lab checkbox selected
 
 ### Configure Scan Trigger
 
@@ -115,6 +119,8 @@ Scan typically takes **5-15 minutes**. You can navigate away and return.
 1. In the Purview portal, go to **Unified Catalog** → **Data assets**.
 2. Click **Microsoft Fabric** under **Explore your data**.
 3. Select **Fabric-Purview-Lab** workspace.
+
+> 📷 **Screenshot**: Unified Catalog → Data assets showing Microsoft Fabric categories with workspace assets listed
 
 ### Verify Discovery
 

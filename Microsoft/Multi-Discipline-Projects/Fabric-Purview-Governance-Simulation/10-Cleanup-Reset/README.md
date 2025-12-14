@@ -91,6 +91,8 @@ Deleting the workspace removes all contained items at once.
 
 7. Select **Delete this workspace**.
 
+> 📷 **Screenshot**: Delete workspace confirmation dialog with workspace name typed
+
 8. Type the workspace name to confirm.
 
 9. Select **Delete**.
@@ -123,6 +125,8 @@ The DLP policy created in Lab 06 is **not** deleted with the workspace—it must
 - Navigate to **Solutions** → **Data loss prevention** → **Policies**.
 
 ### Delete the Lab Policy
+
+> 📷 **Screenshot**: DLP Policies list with lab policy selected and Delete option highlighted
 
 - Find `Fabric PII Detection - Lab` policy.
 - Select the policy, then click **Delete policy**.

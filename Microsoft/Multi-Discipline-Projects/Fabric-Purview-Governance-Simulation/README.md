@@ -281,17 +281,154 @@ This hands-on simulation teaches **DLP and Information Protection for Microsoft 
 
 ## 📊 Skills Coverage Matrix
 
-| Skill / Technology | Lab | Key Learning |
-|-------------------|-----|--------------|
-| Fabric Workspace Setup | 01 | Create workspace, assign capacity |
-| Lakehouse Architecture | 02 | Delta tables, SQL endpoint, sensitive data |
-| Dataflows Gen2 & Pipelines | 03 | Data Factory, connectors, ingestion |
-| Data Warehouse | 04 | Cross-database queries, T-SQL analytics |
-| Real-Time Intelligence | 05 | Eventhouse, KQL Database, streaming data |
-| **DLP for Fabric** | 06 | Policy creation, SIT detection, real-time scanning |
-| **Data Map Scanning** | 07 | Asset discovery, Unified Catalog |
-| Power BI Reporting | 08 | Semantic model, governance chain |
-| **Governance Validation** | 09 | DLP results, asset discovery, governance chain |
+### Professional Skills You'll Gain
+
+Completing this project demonstrates proficiency in the following industry-recognized Microsoft Fabric and Purview governance skills:
+
+#### **Core Technical Competencies**
+
+**DLP and Information Protection for Fabric:**
+
+- DLP policy design targeting Power BI and Fabric workloads.
+- Sensitive Information Type (SIT) detection (SSN, Credit Card patterns).
+- Real-time DLP scanning architecture for Fabric data assets.
+- DLP policy lifecycle (simulation mode → enforcement → monitoring).
+- Activity Explorer analysis for DLP policy matches.
+- Alert investigation and incident management workflows.
+- Information protection policy scoping for Power BI locations.
+
+**Data Governance and Asset Discovery:**
+
+- Purview Data Map configuration for Fabric tenant scanning.
+- Live View synchronization between Fabric and Purview.
+- Unified Catalog asset discovery and schema metadata.
+- Fabric Admin API settings for Purview integration.
+- Managed identity (MSI) role assignments for Purview access.
+- Governance chain traceability (Report → Semantic Model → Lakehouse).
+
+**Fabric Data Foundation (Governance Context):**
+
+- Lakehouse architecture with Delta tables containing sensitive data patterns.
+- SQL analytics endpoint for governed data access.
+- Semantic model creation with DLP-protected data sources.
+- Power BI report governance and data lineage.
+
+---
+
+### Covered Capabilities by Category
+
+#### ✅ DLP for Microsoft Fabric (100% Core Features)
+
+| Capability | Coverage Level | Lab(s) |
+|------------|----------------|--------|
+| **DLP Policy for Power BI** | ✅ EXTENSIVE | Lab 06, Lab 09 |
+| **Sensitive Information Type (SIT) Detection** | ✅ COMPREHENSIVE | Lab 06 |
+| **DLP Simulation Mode** | ✅ DETAILED | Lab 06, Lab 09 |
+| **DLP Policy Enforcement** | ✅ DETAILED | Lab 09 |
+| **Activity Explorer (DLP Matches)** | ✅ COMPREHENSIVE | Lab 09 |
+| **DLP Alert Investigation** | ✅ DETAILED | Lab 09 |
+| **Real-time Scanning Architecture** | ✅ DETAILED | Lab 06 |
+| **Policy Sync and Propagation** | ✅ DETAILED | Lab 06, Lab 09 |
+
+#### ✅ Purview Data Map for Fabric (100% Core Features)
+
+| Capability | Coverage Level | Lab(s) |
+|------------|----------------|--------|
+| **Fabric Tenant Registration** | ✅ COMPREHENSIVE | Lab 00, Lab 07 |
+| **Data Map Scan Configuration** | ✅ DETAILED | Lab 07 |
+| **Live View Synchronization** | ✅ DETAILED | Lab 07 |
+| **Unified Catalog Discovery** | ✅ COMPREHENSIVE | Lab 07 |
+| **Schema Metadata Extraction** | ✅ DETAILED | Lab 07 |
+| **Fabric Admin API Settings** | ✅ DETAILED | Lab 00 |
+| **Purview MSI Role Assignment** | ✅ DETAILED | Lab 00 |
+
+#### ✅ Governance Chain and Lineage (90% Core Features)
+
+| Capability | Coverage Level | Lab(s) |
+|------------|----------------|--------|
+| **Report → Semantic Model → Lakehouse Chain** | ✅ COMPREHENSIVE | Lab 08, Lab 09 |
+| **Semantic Model Governance** | ✅ DETAILED | Lab 08 |
+| **DLP Coverage for Report Chain** | ✅ DETAILED | Lab 09 |
+| **Asset Discovery Lineage** | ✅ DETAILED | Lab 07 |
+
+#### ✅ Fabric Data Foundation (Governance Context Only)
+
+| Capability | Coverage Level | Lab(s) |
+|------------|----------------|--------|
+| **Lakehouse with Sensitive Data** | ✅ COMPREHENSIVE | Lab 02 |
+| **SQL Analytics Endpoint** | ✅ DETAILED | Lab 02, Lab 04 |
+| **Delta Table Architecture** | ✅ DETAILED | Lab 02 |
+| **Dataflows Gen2 (Data Movement)** | ✅ DETAILED | Lab 03 |
+| **Data Factory Pipelines** | ✅ DETAILED | Lab 03 |
+
+---
+
+### What This Project Does NOT Cover
+
+The following capabilities require **additional licensing**, **different Purview portals**, or are outside the scope of Fabric/Purview governance:
+
+#### ❌ Advanced Purview Information Protection (Beyond Fabric)
+
+| Capability | Why Not Covered |
+|------------|-----------------|
+| **Information Protection Scanner (On-Premises)** | Requires on-premises infrastructure; covered in [Purview-Skills-Ramp-OnPrem-and-Cloud](../../Purview/Purview-Skills-Ramp-OnPrem-and-Cloud/) |
+| **Sensitivity Labels with Encryption** | Visual markings and encryption beyond scope; project focuses on DLP detection |
+| **Custom SITs (Regex-based)** | Uses built-in SITs; custom patterns covered in other projects |
+| **Trainable Classifiers (ML)** | Machine learning classification beyond scope |
+| **Exact Data Match (EDM) SITs** | Requires database hashing infrastructure |
+
+#### ❌ Purview Data Governance (Classic Portal)
+
+| Capability | Why Not Covered |
+|------------|-----------------|
+| **Glossary Terms and Business Domains** | Classic Data Governance portal; project uses Unified Catalog |
+| **Data Quality Rules** | Requires Purview Data Quality (separate capability) |
+| **Data Lineage (Classic)** | Uses Live View lineage instead |
+| **Collections and Access Policies** | Classic governance features beyond scope |
+
+#### ❌ Advanced Fabric Analytics (Non-Governance)
+
+| Capability | Why Not Covered |
+|------------|-----------------|
+| **Advanced Spark Processing** | Project uses basic notebook for DLP trigger only |
+| **Eventhouse Advanced Features** | Real-Time Intelligence beyond basic demo |
+| **Warehouse Performance Tuning** | Analytics optimization beyond governance focus |
+| **Direct Lake Mode** | Advanced semantic model architecture beyond scope |
+
+#### ❌ Compliance and Risk Management
+
+| Capability | Why Not Covered |
+|------------|-----------------|
+| **Insider Risk Management** | Separate Purview capability requiring different setup |
+| **Communication Compliance** | Not applicable to Fabric workloads |
+| **eDiscovery** | Document search/legal hold beyond Fabric governance |
+| **Retention Labels for Fabric** | Not currently supported for Fabric workloads |
+
+---
+
+### LinkedIn Skills Keywords
+
+For maximum visibility on LinkedIn and applicant tracking systems (ATS), this project covers:
+
+`Microsoft Fabric` • `Microsoft Purview` • `Data Loss Prevention (DLP)` • `Information Protection` • `Data Governance` • `Power BI Governance` • `Sensitive Information Types (SIT)` • `Data Classification` • `Activity Explorer` • `Unified Catalog` • `Data Map` • `Asset Discovery` • `Lakehouse` • `Delta Tables` • `Semantic Models` • `Data Lineage` • `Compliance Management` • `M365 E5 Compliance` • `Real-time Scanning` • `DLP Policy Design` • `Governance Chain` • `Schema Metadata`
+
+---
+
+### Lab Skills Mapping
+
+| Lab | Primary Skills |
+|-----|----------------|
+| **Lab 00** | Fabric Admin API, Purview MSI, prerequisite validation |
+| **Lab 01** | Workspace governance, capacity assignment |
+| **Lab 02** | Lakehouse architecture, sensitive data patterns |
+| **Lab 03** | Data ingestion, connector configuration |
+| **Lab 04** | Cross-database queries, SQL analytics |
+| **Lab 05** | Real-Time Intelligence, KQL basics |
+| **Lab 06** | **DLP policy design, SIT detection, simulation mode** |
+| **Lab 07** | **Data Map scanning, Unified Catalog, Live View** |
+| **Lab 08** | **Semantic model governance, report chain** |
+| **Lab 09** | **DLP validation, Activity Explorer, alert investigation** |
+| **Lab 10** | Cleanup procedures, policy removal |
 
 ---
 

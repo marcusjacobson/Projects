@@ -75,6 +75,8 @@ The skills you learn here apply directly to **Microsoft Sentinel** (security), *
 
 > **📝 Note**: Both an Eventhouse and its default child KQL database are created with the same name. The database name can be renamed at any time.
 
+> 📷 **Screenshot**: Eventhouse overview showing the container with its child KQL Database item listed
+
 ---
 
 ## 🔧 Step 2: Explore KQL Database
@@ -112,6 +114,8 @@ First, ensure you have the `streaming-events.json` file from the `data-templates
    - Select **Finish** to complete ingestion.
    - On the **Summary** step, let the processes complete and then select **Close**.
 
+> 📷 **Screenshot**: Get data wizard Source step showing table name configuration, file selection, and data preview
+
 ### Verify Data Ingestion
 
 1. After ingestion completes, expand **IoTEventhouse** → **IoTEvents** in the Explorer.
@@ -129,6 +133,8 @@ First, ensure you have the `streaming-events.json` file from the `data-templates
    - Select **Create**.
 3. The queryset opens with default template queries. Select the **+** tab to create a new blank query tab.
 4. In the Explorer pane (left side), expand **IoTEventhouse** → **Tables** → **IoTEvents** to confirm your table is available.
+
+> 📷 **Screenshot**: KQL Queryset editor showing Explorer pane with table structure, query editor tab, and results area
 
 ### Query 1: Basic Data Exploration
 
@@ -253,6 +259,8 @@ IoTEvents
 | summarize AvgValue = avg(sensorValue) by location
 | render barchart
 ```
+
+> 📷 **Screenshot**: KQL query results rendered as a bar chart showing sensor values by location
 
 ```kql
 // Event distribution as pie chart

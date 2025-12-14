@@ -97,6 +97,8 @@ Microsoft Fabric and Purview Data Governance are licensed separately:
 
 2. If prompted, click **Start trial** to activate your 60-day free trial.
 
+> 📷 **Screenshot**: Fabric home page showing the "Start trial" button or capacity indicator in the header
+
 3. If trial is already active or you have existing capacity, you'll see the Fabric home page.
 
 4. Click **Settings** (gear icon) → **Admin portal** → **Capacity settings** to verify your capacity.
@@ -147,6 +149,8 @@ If your trial has expired or is unavailable:
 3. If you can access the **Admin portal**, you have Fabric admin rights.
 
 4. Navigate to **Tenant settings** to verify you can view and modify settings.
+
+> 📷 **Screenshot**: Admin portal showing left navigation with "Tenant settings" selected and the Microsoft Fabric section visible
 
 > **⚠️ Not an Admin?** Contact your IT administrator to request temporary admin access for this simulation, or use a developer/trial tenant where you have full control.
 
@@ -284,6 +288,9 @@ If trial is expired or unavailable:
 2. Look for the **rocket icon** (🚀) in the top-right header near the Settings gear.
 3. Click the rocket and select **Get Started**.
    - Alternatively: **Settings** → **Account details** → configure billing.
+
+> 📷 **Screenshot**: Purview portal header showing the rocket icon (🚀) location next to the Settings gear
+
 4. Select your **Azure subscription** from the list (must be in the same tenant as your M365).
 5. Select or create a **Resource group**:
    - **Recommended**: Create a new resource group named `rg-purview-billing` or `rg-fabric-governance-lab`.
@@ -319,6 +326,9 @@ After completing the wizard:
 3. Click **Register**.
 4. In the **Register data source** panel:
    - Search for and select **Fabric (Includes Power BI)**.
+
+> 📷 **Screenshot**: Data Map → Data sources screen showing the "Register" button and the Fabric (Includes Power BI) option selected
+
 5. Configure the registration:
    - **Data source name**: `Fabric-Lab`
    - **Tenant ID**: Auto-populated with your tenant ID.
@@ -380,6 +390,9 @@ Without this configuration, the Data Map scan in Lab 07 will fail with:
    - Select **Specific security groups**.
    - Click **Add groups** and search for `Purview-Fabric-Scanners`.
    - Add the group and click **Apply**.
+
+> 📷 **Screenshot**: Tenant settings → Admin API settings section showing "Allow service principals to use read-only admin APIs" toggle enabled with security group configured
+
 5. Verify these additional settings are enabled (should already be from Step 6):
    - **Enhance admin APIs responses with detailed metadata**: Enabled for the same security group.
    - **Enhance admin APIs responses with DAX and mashup expressions**: Enabled for the same security group.

@@ -25,6 +25,17 @@ This project aligns with Microsoft's AI Transformation strategy and provides a h
 
 ---
 
+### [Fabric + Purview Governance Simulation](./Fabric-Purview-Governance-Simulation/README.md)
+
+**A hands-on simulation teaching DLP and Information Protection for Microsoft Fabric data assets.**
+
+This project demonstrates how to protect sensitive data (SSN, Credit Card patterns) in Microsoft Fabric using Purview DLP policies, Data Map scanning, and governance chain traceability from Lakehouse to Power BI reports.
+
+- **Core Technologies**: Microsoft Fabric (Lakehouse, Warehouse, Eventhouse), Microsoft Purview (DLP, Data Map, Unified Catalog), Power BI.
+- **Key Outcomes**: DLP policy lifecycle for Fabric, asset discovery in Unified Catalog, governed report chain with real-time sensitive data detection.
+
+---
+
 ## 🎓 Professional Skills You'll Gain
 
 By engaging with the projects in this portfolio, you will develop a diverse set of high-demand technical and business skills.
@@ -37,6 +48,8 @@ By engaging with the projects in this portfolio, you will develop a diverse set 
 | **Unified Security Operations** | Integrating Defender XDR, Sentinel, and Security Copilot for a modern, AI-driven SOC. | Azure AI Security Skills Challenge |
 | **Cloud Security Posture** | Implementing Defender for Cloud for CSPM and CWP across hybrid and multi-cloud environments. | Azure AI Security Skills Challenge |
 | **Data Governance & Privacy** | Deploying Microsoft Purview and Priva to manage data lifecycle, classification, and privacy risks in AI systems. | Azure AI Security Skills Challenge |
+| **DLP for Analytics Platforms** | Implementing DLP policies for Microsoft Fabric, real-time sensitive data detection, and Activity Explorer analysis. | Fabric + Purview Governance Simulation |
+| **Data Asset Discovery** | Configuring Purview Data Map for Fabric tenant scanning, Unified Catalog browsing, and schema metadata extraction. | Fabric + Purview Governance Simulation |
 | **Infrastructure as Code** | Automating complex multi-service deployments using Bicep and PowerShell with enterprise standards. | Azure AI Security Skills Challenge |
 
 ### 💼 Business Skills
@@ -46,6 +59,7 @@ By engaging with the projects in this portfolio, you will develop a diverse set 
 | **Strategic AI Implementation** | Aligning AI security measures with business goals and compliance requirements. | Azure AI Security Skills Challenge |
 | **Cost Management & FinOps** | Optimizing cloud spend for AI services and security tooling through budgeting and monitoring. | Azure AI Security Skills Challenge |
 | **Risk Management** | Identifying and mitigating risks associated with AI adoption, including data leakage and model vulnerabilities. | Azure AI Security Skills Challenge |
+| **Compliance & Governance** | Building governance chains for sensitive data traceability from source to visualization with DLP enforcement. | Fabric + Purview Governance Simulation |
 | **Operational Excellence** | Designing scalable, maintainable, and automated security workflows for enterprise environments. | Azure AI Security Skills Challenge |
 
 ### 🏆 Aligned Certifications
@@ -67,7 +81,6 @@ This portfolio is continuously expanding to cover emerging cross-discipline scen
 - **Zero Trust Architecture Implementation**: Integrating Entra ID, Intune, and Defender for comprehensive Zero Trust.
 - **DevSecOps Pipeline Automation**: Advanced CI/CD pipelines with embedded security scanning and policy enforcement.
 - **Multi-Cloud Security Governance**: Unified governance across Azure, AWS, and GCP using Microsoft Defender for Cloud.
-- **Secure Data Analytics Platforms**: End-to-end secure analytics using Microsoft Fabric and Purview.
 
 ---
 

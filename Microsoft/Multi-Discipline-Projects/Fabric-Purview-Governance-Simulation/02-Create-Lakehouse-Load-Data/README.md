@@ -88,6 +88,8 @@ Once created, you'll see:
    - **New pipeline** - Create data orchestration pipelines.
 3. **Info banner** (top): Confirms a SQL analytics endpoint was created for SQL querying.
 
+> 📷 **Screenshot**: Lakehouse interface showing Explorer pane (Tables/Files folders) and the "Get data in your lakehouse" welcome screen with ingestion options
+
 ---
 
 ## 🔧 Step 3: Upload Sample Data Files
@@ -104,6 +106,8 @@ The sample data files are in the project's `data-templates` folder (at the repos
 1. In the Lakehouse Explorer, right-click on **Files**.
 
 2. Select **Upload** → **Upload files**.
+
+> 📷 **Screenshot**: Files folder context menu showing Upload → Upload files option
 
 3. Navigate to the `data-templates` folder in this project.
 
@@ -141,6 +145,8 @@ The sample data files are in the project's `data-templates` folder (at the repos
 4. Select **Load**.
 
 5. Wait for the load operation to complete.
+
+> 📷 **Screenshot**: Load to Tables dialog showing table name configuration and "Use first row as headers" checkbox
 
 ### Load transactions.csv to Table
 
@@ -222,6 +228,8 @@ Delta Lake infers data types from CSV data. For this lab, all types should work 
 2. Select the dropdown and choose **SQL analytics endpoint**.
 
 3. The view switches to SQL-based exploration with query capabilities.
+
+> 📷 **Screenshot**: SQL analytics endpoint view showing query editor with sample query and results pane
 
 ### Run Sample Queries
 

@@ -56,6 +56,8 @@ Before triggering data changes, first verify your DLP policy simulation complete
 
 Review the **Simulation overview** tab:
 
+> 📷 **Screenshot**: Simulation overview tab showing status indicators, sync status, and match counts
+
 | Check | Expected Value | Notes |
 |-------|----------------|-------|
 | **Simulation status** | "Complete" or "In progress" | Status shows simulation ran |
@@ -71,6 +73,8 @@ According to [Microsoft's DLP deployment guidance](https://learn.microsoft.com/e
 - Navigate to the **Policy mode** section.
 - Change from **Run the policy in simulation mode** to **Turn it on right away**.
 - Click **Submit** to save changes.
+
+> 📷 **Screenshot**: Policy mode selection showing "Turn it on right away" option selected
 
 > **⚠️ Important**: Enabling the policy means DLP actions (alerts, notifications) will now be enforced. In a lab environment this is safe. In production, follow Microsoft's recommended deployment steps to gradually roll out policies.
 
@@ -100,6 +104,8 @@ Create a notebook to add test rows with sensitive data patterns:
 - Ensure the notebook is attached to your Lakehouse (check the **Lakehouse** panel on the left).
 
 Add and run this cell to insert a test customer with SSN:
+
+> 📷 **Screenshot**: Spark notebook with %%sql cell and INSERT statement ready to execute
 
 ```sql
 %%sql
@@ -175,6 +181,8 @@ After the 15-30 minute wait, check Activity Explorer to confirm DLP detected sen
 
 You should see DLP policy matches showing:
 
+> 📷 **Screenshot**: Activity Explorer filtered showing DLP policy matches with Lakehouse name and sensitive info types
+
 - **Item name**: `CustomerDataLakehouse`
 - **Policy matched**: `Fabric PII Detection - Lab`
 - **Sensitive info types**: U.S. Social Security Number, Credit Card Number
@@ -198,6 +206,8 @@ Now investigate the alerts to confirm the sensitive data patterns detected.
 - Select an alert from your `Fabric PII Detection - Lab` policy.
 
 ### Alert Detail Pane Tabs
+
+> 📷 **Screenshot**: Alert details pane showing Classifiers tab with detected sensitive info types
 
 | Tab | Information |
 |-----|-------------|

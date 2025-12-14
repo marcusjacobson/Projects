@@ -75,6 +75,8 @@ This architecture mirrors the **Medallion Architecture** (Bronze/Silver/Gold) us
 4. Select **Create**.
 5. Wait for the Warehouse to provision (30-60 seconds).
 
+> 📷 **Screenshot**: New item pane showing "Store data" section with Warehouse option highlighted
+
 ---
 
 ## 🔧 Step 2: Query Lakehouse Data Using Cross-Database Queries
@@ -311,6 +313,8 @@ GROUP BY c.CustomerID, c.FirstName, c.LastName, c.State, c.CreditScore;
    - Select **OK** or **Save**.
 7. The view is saved in your Warehouse under **Views**.
 
+> 📷 **Screenshot**: Save as view dialog with name "vw_CustomerSpendingAnalysis" entered and query text highlighted in the editor
+
 > **⚠️ Important**: You must select/highlight the query text before clicking **Save as view**. If you click the button without selecting text, you'll see an error: "To save as a view, select the text of one SELECT statement."
 >
 > **💡 Why Save as a View?**: In Fabric Warehouse, queries are saved as views rather than standalone query files. This view will be available as a data source in Lab 07 for Power BI visualizations.
@@ -320,6 +324,8 @@ GROUP BY c.CustomerID, c.FirstName, c.LastName, c.State, c.CreditScore;
 1. In the Explorer pane (left side), expand **Schemas** → **dbo** → **Views** to see both views.
 2. Expand **Stored Procedures** to see the stored procedure.
 3. Close any open query tabs — the permanent objects are saved in the Warehouse.
+
+> 📷 **Screenshot**: Explorer pane showing Schemas → dbo → Views with vw_HighValueCustomers and vw_CustomerSpendingAnalysis listed
 
 ---
 

@@ -22,6 +22,7 @@ This repository serves as a professional portfolio showcasing a growing expertis
 * ✅ **Deployed Enterprise AI Security:** Secured Azure OpenAI workloads with Defender for Cloud.
 * ✅ **Automated SOC Operations:** Built a cloud-native SIEM with Microsoft Sentinel and Logic App automation.
 * ✅ **Enforced Data Governance:** Implemented comprehensive data governance simulation with Microsoft Purview.
+* ✅ **Protected Analytics Data:** Configured DLP and Data Map scanning for Microsoft Fabric workloads.
 * ✅ **Streamlined DevSecOps:** Established automated synchronization between Azure DevOps and GitHub for hybrid workflows.
 
 The projects within this portfolio reflect a rigorous approach to:
@@ -47,6 +48,7 @@ A deep dive into the Microsoft Cloud stack, featuring advanced implementations a
 * **Microsoft Security**: Defender XDR, Microsoft Sentinel, and Security Copilot.
 * **Identity & Access**: Microsoft Entra ID, Permissions Management, and Zero Trust.
 * **Governance**: Microsoft Purview for data governance and compliance.
+* **Analytics**: Microsoft Fabric with DLP, Data Map, and governance chain integration.
 
 ---
 
@@ -62,7 +64,8 @@ Across all projects, this portfolio highlights proficiency in the following key 
 | **Serverless Computing** | Leveraging Functions, Logic Apps, and Event Grid. | ✅ Implemented |
 | **Containerization** | Managing workloads with Docker and Kubernetes. | 📅 Planned |
 | **Cloud Networking** | Implementing VNETs, Private Link, and Hybrid Connectivity. | ✅ Implemented |
-| **Database Architecture** | Designing scalable SQL and NoSQL data solutions. | 📅 Planned |
+| **Analytics Platforms** | Designing Lakehouse, Warehouse, and real-time analytics architectures. | ✅ Implemented |
+| **Database Architecture** | Designing scalable SQL and NoSQL transactional data solutions. | 📅 Planned |
 | **AI & ML Infrastructure** | Deploying and securing model inference endpoints and training clusters. | ✅ Implemented |
 
 ### 🔄 DevOps & DevSecOps

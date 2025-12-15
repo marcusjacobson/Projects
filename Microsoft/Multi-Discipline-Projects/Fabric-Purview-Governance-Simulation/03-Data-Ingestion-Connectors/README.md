@@ -64,22 +64,19 @@ Microsoft Fabric provides multiple ways to ingest data:
 ### Navigate to Workspace
 
 1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
-
 2. Open your **Fabric-Purview-Lab** workspace.
 
 ### Create Dataflow
 
 1. Select **+ New item**.
-
 2. In the **New item** pane, search for or select **Dataflow Gen2**.
-
 3. In the **New Dataflow Gen2** dialog:
    - **Name**: `DF_CustomerSegmentation`
    - Leave **Enable Git integration** checked.
-
 4. Select **Create**.
-
 5. The Power Query editor opens.
+
+![power-query](.images/power-query.png)
 
 ### Connect to Lakehouse Data
 
@@ -92,14 +89,12 @@ The Power Query editor displays a welcome screen with data source options:
 - **Import from dataflows** - Reuse other dataflows.
 
 1. Select **Get data from another source →** at the bottom.
-
 2. In the **Choose data source** dialog, search for or select **Lakehouse**.
-
 3. Select your `CustomerDataLakehouse`.
-
 4. Select the `customers` table.
+S5. Select **Create** to load the data into Power Query.
 
-5. Select **Create** to load the data into Power Query.
+![choose-data](.images/choose-data.png)
 
 ---
 
@@ -118,7 +113,7 @@ The **Applied steps** section shows the steps already applied:
 - Source
 - Navigation (one or more steps depending on how you connected)
 
-> 📷 **Screenshot**: Power Query editor showing Queries pane (left), data preview (center), and Query settings with Applied steps (right)
+![query-editor](.images/query-editor.png)
 
 ### Add Transformation Steps
 
@@ -144,7 +139,7 @@ The **Applied steps** section shows the steps already applied:
 
    - Select **OK**.
 
-> 📷 **Screenshot**: Custom column dialog showing column name "CustomerSegment" and the if-then-else formula entered
+![custom-column](.images/custom-column.png)
 
 3. **Select Final Columns:**
    - Select **Home** in the ribbon.
@@ -172,28 +167,21 @@ The **Applied steps** section shows the steps already applied:
 ### Set Output Destination
 
 1. In the **Query settings** pane on the right, locate **Data destination** at the bottom.
-
 2. Select the **+** button next to **Data destination**.
-
 3. Select **Lakehouse** as the destination type.
-
 4. In the **Connect to data destination** dialog, select your connection and select **Next**.
-
 5. In the **Choose destination target** dialog:
    - Select **New table** (default).
    - In the left pane, expand and select **CustomerDataLakehouse**.
    - **Table name**: Enter `customers_segmented`.
-
 6. Select **Next**.
-
 7. Review the column mapping settings and select **Save settings**.
 
-> 📷 **Screenshot**: Data destination configuration showing Lakehouse selected with table name "customers_segmented" entered
+![destination-target](.images/destination-target.png)
 
 ### Save and Run Dataflow
 
 1. Select **Save & run** in the **Home** ribbon (or select the dropdown arrow next to the save icon).
-
 2. This saves your changes and immediately starts running the dataflow.
 
 ---
@@ -214,9 +202,7 @@ The **Applied steps** section shows the steps already applied:
 ### Monitor Execution
 
 1. If the dataflow is still running (spinning indicator), wait for it to complete (typically 1-2 minutes).
-
 2. The **Refreshed** column updates when the dataflow finishes.
-
 3. Execution status indicators:
    - **Spinning icon**: Currently running.
    - **Checkmark**: Completed successfully.
@@ -225,13 +211,9 @@ The **Applied steps** section shows the steps already applied:
 ### Verify Output
 
 1. Open **CustomerDataLakehouse** from the workspace.
-
 2. In the Explorer pane, right-click on **Tables**.
-
 3. Select **Refresh** from the context menu.
-
 4. Expand **Tables** → **dbo** and look for the `customers_segmented` table.
-
 5. Select the table to preview the data and verify:
    - Only customers with CreditScore > 650 appear.
    - The **CustomerSegment** column shows Premium, Standard, or Basic values.
@@ -243,11 +225,8 @@ The **Applied steps** section shows the steps already applied:
 ### Create New Pipeline
 
 1. In the workspace, select **+ New item**.
-
 2. Search for or select **Pipeline**.
-
 3. In the **Name** field, enter `PL_CustomerDataRefresh`.
-
 4. Select **Create**.
 
 ### Pipeline Welcome Screen
@@ -261,21 +240,19 @@ The pipeline opens to a welcome screen with options:
   - **Practice with sample data** - Use sample templates.
   - **Templates** - Pre-built pipeline templates.
 
+![pipeline-home](.images/pipeline-home.png)
+
 ### Add Dataflow Activity
 
 1. Select **Pipeline activity** to start with a blank canvas.
-
 2. In the **Home** ribbon, select **Dataflow** from the toolbar.
-
 3. A Dataflow activity appears on the canvas.
-
 4. With the activity selected, configure in the properties pane below:
    - **General** tab → **Name**: `Run Customer Segmentation`
    - **Settings** tab → **Dataflow**: Select `DF_CustomerSegmentation`.
-
 5. Select **Save** in the toolbar (or press Ctrl+S).
 
-> 📷 **Screenshot**: Pipeline editor canvas showing Dataflow activity with properties pane displaying General and Settings tabs
+![dataflow-settings](.images/dataflow-settings.png)
 
 ---
 
@@ -284,9 +261,7 @@ The pipeline opens to a welcome screen with options:
 ### Open Schedule Settings
 
 1. From the pipeline editor, select **Schedule** in the toolbar.
-
 2. A settings panel opens on the right with tabs: **About**, **Endorsement**, **Schedule**.
-
 3. The **Schedule** tab shows:
    - **Refresh status**: Shows last successful refresh and a **Run now** button.
    - **Scheduled run**: Where you configure automated schedules.
@@ -294,7 +269,6 @@ The pipeline opens to a welcome screen with options:
 ### Add a Schedule
 
 1. Select **+ Add schedule**.
-
 2. Configure the schedule:
 
    | Setting | Value |
@@ -306,7 +280,6 @@ The pipeline opens to a welcome screen with options:
    | **Time zone** | Your local time zone |
 
 3. Select **Save** to save the schedule.
-
 4. For this lab, you can delete the schedule after testing (schedules incur compute costs).
 
 > **💡 Note**: You can also run the pipeline manually using the **Run now** button in the Refresh status section.
@@ -318,7 +291,6 @@ The pipeline opens to a welcome screen with options:
 ### Execute Pipeline
 
 1. In the pipeline editor, select **Run** in the **Home** ribbon.
-
 2. The pipeline starts executing immediately.
 
 ### Monitor Pipeline Run
@@ -334,19 +306,17 @@ The **Output** pane appears at the bottom of the screen showing:
   - **Duration**: How long the activity has been running.
 
 1. Wait for the **Pipeline status** to change to **Succeeded**.
-
 2. The **Activity status** for `Run Customer Segmentation` should also show **Succeeded**.
-
 3. If any activity fails, select it to view error details in the **Output** column.
 
-> 📷 **Screenshot**: Pipeline Output pane showing activity status progression (In progress → Succeeded) with duration and timestamps
+![pipeline-run](.images/pipeline-run.png)
 
 > **💡 Note**: The output pane auto-refreshes for 5 minutes while the pipeline is running. You can select **Turn off auto-refresh** to stop automatic updates.
 
 ---
 
 ## ✅ Validation Checklist
-
+V
 Before proceeding to Lab 04, verify:
 
 - [ ] Dataflow `DF_CustomerSegmentation` exists and runs successfully.

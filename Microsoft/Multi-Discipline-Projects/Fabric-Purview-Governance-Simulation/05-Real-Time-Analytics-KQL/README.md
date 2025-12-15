@@ -73,9 +73,7 @@ The skills you learn here apply directly to **Microsoft Sentinel** (security), *
 4. Select **Create**.
 5. Wait for provisioning (1-2 minutes).
 
-> **📝 Note**: Both an Eventhouse and its default child KQL database are created with the same name. The database name can be renamed at any time.
-
-> 📷 **Screenshot**: Eventhouse overview showing the container with its child KQL Database item listed
+![eventhouse-home](.images/eventhouse-home.png)
 
 ---
 
@@ -108,13 +106,14 @@ First, ensure you have the `streaming-events.json` file from the `data-templates
    - Enter table name: `IoTEvents`.
    - Drag and drop or browse to select `streaming-events.json`.
    - Select **Next**.
+
+![create-destination-table](.images/create-destination-table.png)
+
 4. In the **Inspect** step:
    - Review the data preview showing columns: `eventId`, `timestamp`, `deviceId`, `deviceType`, `location`, `sensorValue`, `unit`, `status`, `batteryLevel`, `signalStrength`.
    - Verify the mapping looks correct (IoTEvents_mapping).
    - Select **Finish** to complete ingestion.
    - On the **Summary** step, let the processes complete and then select **Close**.
-
-> 📷 **Screenshot**: Get data wizard Source step showing table name configuration, file selection, and data preview
 
 ### Verify Data Ingestion
 
@@ -134,8 +133,6 @@ First, ensure you have the `streaming-events.json` file from the `data-templates
 3. The queryset opens with default template queries. Select the **+** tab to create a new blank query tab.
 4. In the Explorer pane (left side), expand **IoTEventhouse** → **Tables** → **IoTEvents** to confirm your table is available.
 
-> 📷 **Screenshot**: KQL Queryset editor showing Explorer pane with table structure, query editor tab, and results area
-
 ### Query 1: Basic Data Exploration
 
 ```kql
@@ -146,6 +143,8 @@ IoTEvents
 
 1. Copy this query into the new query tab.
 2. Select **Run** or press Shift+Enter.
+
+![sample-kql-query](.images/sample-kql-query.png)
 
 ### Query 2: Event Count by Device
 
@@ -215,6 +214,8 @@ Materialized views pre-aggregate data for faster queries.
 
 After running, you'll see metadata about the view (Name, SourceTable, IsHealthy, etc.). To see the aggregated data:
 
+![create-materialized-view](.images/create-materialized-view.png)
+
 ```kql
 // Query the materialized view
 DeviceStats
@@ -260,7 +261,7 @@ IoTEvents
 | render barchart
 ```
 
-> 📷 **Screenshot**: KQL query results rendered as a bar chart showing sensor values by location
+![barchart](.images/barchart.png)
 
 ```kql
 // Event distribution as pie chart

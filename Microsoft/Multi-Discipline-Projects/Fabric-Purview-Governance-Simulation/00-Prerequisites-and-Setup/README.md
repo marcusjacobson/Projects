@@ -94,13 +94,8 @@ Microsoft Fabric and Purview Data Governance are licensed separately:
 ### Path A: Verify or Start Fabric Trial (Recommended)
 
 1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
-
 2. If prompted, click **Start trial** to activate your 60-day free trial.
-
-> 📷 **Screenshot**: Fabric home page showing the "Start trial" button or capacity indicator in the header
-
 3. If trial is already active or you have existing capacity, you'll see the Fabric home page.
-
 4. Click **Settings** (gear icon) → **Admin portal** → **Capacity settings** to verify your capacity.
 
 > **💡 Tip**: The Fabric trial provides full capabilities at no cost for 60 days. This is sufficient to complete all labs in this simulation.
@@ -110,18 +105,14 @@ Microsoft Fabric and Purview Data Governance are licensed separately:
 If your trial has expired or is unavailable:
 
 1. Go to [portal.azure.com](https://portal.azure.com).
-
 2. Search for **Microsoft Fabric** in the marketplace.
-
 3. Create a new Fabric capacity:
    - **SKU**: F2 (smallest, ~$0.36/hour).
    - **Region**: Same as your other Azure resources.
    - **Resource group**: Create new or use existing.
-
 4. After creation, **pause the capacity** immediately to stop billing:
    - Navigate to the Fabric capacity resource.
    - Click **Pause** in the command bar.
-
 5. **Resume only when actively using** for lab exercises.
 
 > **💰 Cost Control Tip**: With F2 and disciplined pause/resume, 4 hours/week × 4 weeks = 16 hours × $0.36 = **~$6/month**. Set up an Azure Automation runbook to auto-pause daily as a safety net.
@@ -143,14 +134,11 @@ If your trial has expired or is unavailable:
 ### Verify Fabric Admin Access
 
 1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
-
 2. Click the **Settings** gear icon (top right) and select **Admin portal**.
-
 3. If you can access the **Admin portal**, you have Fabric admin rights.
-
 4. Navigate to **Tenant settings** to verify you can view and modify settings.
 
-> 📷 **Screenshot**: Admin portal showing left navigation with "Tenant settings" selected and the Microsoft Fabric section visible
+![tenant-settings](.images/tenant-settings.png)
 
 > **⚠️ Not an Admin?** Contact your IT administrator to request temporary admin access for this simulation, or use a developer/trial tenant where you have full control.
 
@@ -159,17 +147,13 @@ If your trial has expired or is unavailable:
 The free version of Purview Data Governance provides "live view" discovery of Fabric assets.
 
 1. Go to [purview.microsoft.com](https://purview.microsoft.com).
-
 2. Accept the terms and privacy conditions if prompted, then select **Get started**.
-
 3. On the portal **home page**, verify you can see:
    - **Solution cards** showing available Purview solutions.
    - **Settings** option (gear icon).
-
 4. Check for **Data Governance** solutions:
    - Look for **Unified Catalog** or **Data Catalog** in available solutions.
    - If visible, you have access to the free data governance features.
-
 5. To verify your permissions:
    - Select **Settings** (gear icon) → **Roles and scopes**.
    - Look for your assigned role groups.
@@ -191,11 +175,8 @@ Microsoft Fabric requires a capacity (compute resources) to run workloads.
 ### Check Existing Capacity
 
 1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
-
 2. Click the **Settings** gear icon (top right).
-
 3. Select **Admin portal** → **Capacity settings**.
-
 4. Look for available capacities:
 
 | Capacity Type | Cost | Pause/Resume | Best For |
@@ -210,11 +191,8 @@ Microsoft Fabric requires a capacity (compute resources) to run workloads.
 If no capacity exists and trial is available:
 
 1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
-
 2. Click on any workspace or try to create a new item.
-
 3. You'll see a prompt: **"Start a Microsoft Fabric trial"**.
-
 4. Click **Start trial** - activates immediately for 60 days.
 
 > **💡 Note**: Trial capacity is shared across your organization. Check with colleagues before starting.
@@ -224,17 +202,13 @@ If no capacity exists and trial is available:
 If trial is expired or unavailable:
 
 1. Go to [portal.azure.com](https://portal.azure.com) → **Create a resource**.
-
 2. Search **Microsoft Fabric** → **Create**.
-
 3. Configure:
    - **Name**: `fabric-lab-capacity`
    - **Size**: F2 (smallest)
    - **Region**: Your preferred region
    - **Fabric capacity administrator**: Your account
-
 4. Click **Review + Create** → **Create**.
-
 5. **Immediately pause** the capacity after creation to avoid charges.
 
 > **💰 F2 Cost Management**:
@@ -288,13 +262,13 @@ If trial is expired or unavailable:
 2. Look for the **rocket icon** (🚀) in the top-right header near the Settings gear.
 3. Click the rocket and select **Get Started**.
    - Alternatively: **Settings** → **Account details** → configure billing.
-
-> 📷 **Screenshot**: Purview portal header showing the rocket icon (🚀) location next to the Settings gear
-
 4. Select your **Azure subscription** from the list (must be in the same tenant as your M365).
 5. Select or create a **Resource group**:
    - **Recommended**: Create a new resource group named `rg-purview-billing` or `rg-fabric-governance-lab`.
    - In Azure Portal: **Resource groups** → **+ Create** → Name: `rg-purview-billing` → Region: your region → **Create**.
+
+![payg-billing](.images/payg-billing.png)
+
 6. Complete the setup wizard.
 
 > **📝 Requirements**:
@@ -317,24 +291,24 @@ After completing the wizard:
 
 ## 🔧 Step 6: Register Fabric in Data Map (Required for Lab 07)
 
-> **📊 For Lineage Visibility**: Registering Fabric as a data source in Data Map enables lineage visualization in Lab 07. Complete this now so it's ready when needed.
+> **📊 For Asset Discovery**: Registering Fabric as a data source in Data Map enables Purview to scan and discover your Fabric assets in Lab 07. Complete this now so it's ready when needed.
 
 ### Register Fabric Data Source
 
 1. In the [Purview portal](https://purview.microsoft.com), navigate to **Data Map** in the left menu.
 2. Select **Data sources**.
 3. Click **Register**.
-4. In the **Register data source** panel:
-   - Search for and select **Fabric (Includes Power BI)**.
+4. In the **Register data source** panel, search for and select **Fabric (Includes Power BI)**.
 
-> 📷 **Screenshot**: Data Map → Data sources screen showing the "Register" button and the Fabric (Includes Power BI) option selected
+![register-data-source](.images/register-data-source.png)
 
-5. Configure the registration:
+5. Click **Continue**.
+6. Configure the registration:
    - **Data source name**: `Fabric-Lab`
    - **Tenant ID**: Auto-populated with your tenant ID.
    - **Domain**: Select your domain (e.g., `payg-billing`).
    - **Collection**: Leave as default (Select domain only).
-6. Click **Register**.
+7. Click **Register**.
 
 ### Verify Registration
 
@@ -391,27 +365,13 @@ Without this configuration, the Data Map scan in Lab 07 will fail with:
    - Click **Add groups** and search for `Purview-Fabric-Scanners`.
    - Add the group and click **Apply**.
 
-> 📷 **Screenshot**: Tenant settings → Admin API settings section showing "Allow service principals to use read-only admin APIs" toggle enabled with security group configured
+![admin-api-settings](.images/admin-api-settings.png)
 
 5. Verify these additional settings are enabled (should already be from Step 6):
    - **Enhance admin APIs responses with detailed metadata**: Enabled for the same security group.
    - **Enhance admin APIs responses with DAX and mashup expressions**: Enabled for the same security group.
 
 > **⏱️ Propagation Time**: Admin API settings can take **up to 15 minutes** to propagate. The scan configuration in Lab 07 won't work immediately after these changes.
-
-### Step 7.4: Grant Workspace Access to Purview MSI
-
-The Admin API settings allow Purview to call tenant-level APIs, but it also needs **direct workspace access** to scan workspace contents.
-
-1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
-2. Open your **Fabric-Purview-Lab** workspace (create it now if it doesn't exist).
-3. Click **Manage access** (in the workspace header or via **...** menu).
-4. Click **+ Add people or groups**.
-5. Search for `payg-billing` (your Purview Managed Identity).
-6. Assign **Viewer** role (minimum required for scanning).
-7. Click **Add**.
-
-> **💡 Why Viewer?** The Purview MSI needs to read workspace metadata and asset schemas. Viewer provides read-only access without modification permissions.
 
 ### Verify Security Group Configuration
 
@@ -424,7 +384,8 @@ After completing the steps above:
 | **Admin API Access** | Enabled for `Purview-Fabric-Scanners` security group |
 | **Detailed Metadata** | Enabled for `Purview-Fabric-Scanners` security group |
 | **DAX Expressions** | Enabled for `Purview-Fabric-Scanners` security group |
-| **Workspace Access** | `payg-billing` has Viewer role on `Fabric-Purview-Lab` workspace |
+
+> **💡 Note**: You'll grant workspace-level access to the Purview MSI in Lab 01 after creating the workspace.
 
 ---
 
@@ -447,33 +408,11 @@ Before proceeding to Lab 01, verify:
 - [ ] **Data Map Registration**: Fabric registered as data source (Step 6).
 - [ ] **Security Group**: `Purview-Fabric-Scanners` group created with Purview MSI as member (Step 7).
 - [ ] **Admin API Access**: Service principal read-only API access enabled for security group (Step 7).
-- [ ] **Workspace Access**: Purview MSI (`payg-billing`) has Viewer role on target workspace (Step 7.4).
 
 ### General Requirements
 
 - [ ] **Browser Setup**: Signed into correct account in Microsoft Edge or Chrome.
 - [ ] **Azure Access** (Path B only): Can access [portal.azure.com](https://portal.azure.com) to manage F2 capacity.
-
----
-
-## 🔧 Optional: Run Prerequisites Validation Script
-
-A PowerShell script is provided to automate prerequisites checking:
-
-```powershell
-# Navigate to the scripts directory
-cd "00-Prerequisites-and-Setup/scripts"
-
-# Run the prerequisites check
-.\Test-Prerequisites.ps1
-```
-
-The script validates:
-
-- PowerShell version (5.1+ or 7+).
-- Network connectivity to Microsoft services (Fabric, Purview, Power BI, Azure).
-- Azure CLI installation (optional - only used in cleanup lab).
-- Sample data files existence.
 
 ---
 
@@ -547,9 +486,8 @@ The script validates:
 **No** - The free version is sufficient for all labs in this simulation.
 
 - ✅ Live view discovers Fabric assets automatically.
-- ✅ Manual classification teaches the same governance concepts.
-- ✅ Glossary terms and annotations work in free version.
-- ✅ Data lineage is visible for Fabric workloads.
+- ✅ Data Map scanning enables asset discovery in Unified Catalog.
+- ✅ DLP policies work independently of Purview Enterprise features.
 
 **Consider Enterprise Only If**:
 

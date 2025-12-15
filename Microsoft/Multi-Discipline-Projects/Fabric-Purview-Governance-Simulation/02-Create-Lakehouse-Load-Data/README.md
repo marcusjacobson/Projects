@@ -58,21 +58,15 @@ Before creating a Lakehouse, understand its key components:
 ### Navigate to Workspace
 
 1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com).
-
 2. Select **Workspaces** in the left navigation.
-
 3. Select your **Fabric-Purview-Lab** workspace.
 
 ### Create New Lakehouse
 
 1. Select **+ New item**.
-
 2. In the **New item** pane, search for or select **Lakehouse**.
-
 3. Enter the Lakehouse name: `CustomerDataLakehouse`.
-
 4. Select **Create**.
-
 5. Wait for the Lakehouse to be provisioned (typically 10-30 seconds).
 
 ### Explore Lakehouse Interface
@@ -88,7 +82,7 @@ Once created, you'll see:
    - **New pipeline** - Create data orchestration pipelines.
 3. **Info banner** (top): Confirms a SQL analytics endpoint was created for SQL querying.
 
-> 📷 **Screenshot**: Lakehouse interface showing Explorer pane (Tables/Files folders) and the "Get data in your lakehouse" welcome screen with ingestion options
+![lakehouse-ui](.images/lakehouse-ui.png)
 
 ---
 
@@ -104,26 +98,23 @@ The sample data files are in the project's `data-templates` folder (at the repos
 ### Upload Files to Lakehouse
 
 1. In the Lakehouse Explorer, right-click on **Files**.
-
 2. Select **Upload** → **Upload files**.
 
-> 📷 **Screenshot**: Files folder context menu showing Upload → Upload files option
+![upload-files-menu](.images/upload-files-menu.png)
 
 3. Navigate to the `data-templates` folder in this project.
-
 4. Select `customers.csv` and select **Open**.
-
-5. Repeat for `transactions.csv`.
-
-6. Wait for uploads to complete (progress shown in notification area).
+5. Select **Upload**.
+6. Repeat for `transactions.csv`.
+7. Wait for uploads to complete (progress shown in notification area).
 
 ### Verify File Upload
 
 1. Expand the **Files** folder in Explorer.
-
 2. You should see both CSV files listed.
-
 3. Select a file to preview its contents in the main area.
+
+![files-verification](.images/files-verification.png)
 
 ---
 
@@ -132,9 +123,7 @@ The sample data files are in the project's `data-templates` folder (at the repos
 ### Load customers.csv to Table
 
 1. Right-click on `customers.csv` in the Files section.
-
 2. Select **Load to Tables** → **New table**.
-
 3. Configure the table:
 
    | Setting | Value |
@@ -143,17 +132,14 @@ The sample data files are in the project's `data-templates` folder (at the repos
    | **Use first row as headers** | ✅ Checked |
 
 4. Select **Load**.
-
 5. Wait for the load operation to complete.
 
-> 📷 **Screenshot**: Load to Tables dialog showing table name configuration and "Use first row as headers" checkbox
+![load-files](.images/load-files.png)
 
 ### Load transactions.csv to Table
 
 1. Right-click on `transactions.csv`.
-
 2. Select **Load to Tables** → **New table**.
-
 3. Configure the table:
 
    | Setting | Value |
@@ -162,17 +148,14 @@ The sample data files are in the project's `data-templates` folder (at the repos
    | **Use first row as headers** | ✅ Checked |
 
 4. Select **Load**.
-
 5. Wait for completion.
 
 ### Verify Table Creation
 
 1. Expand the **Tables** section in Explorer.
-
 2. You should see both tables:
    - `customers`
    - `transactions`
-
 3. Select a table to preview the data.
 
 ---
@@ -182,11 +165,9 @@ The sample data files are in the project's `data-templates` folder (at the repos
 ### View Table Schema
 
 1. In the Explorer pane, expand the `customers` table by selecting the arrow next to it.
-
 2. The column list displays with type icons:
    - **ABC** icon = string/text column
    - **123** icon = numeric column
-
 3. Review the columns and their inferred types:
 
    | Column | Icon | Type |
@@ -209,6 +190,8 @@ The sample data files are in the project's `data-templates` folder (at the repos
 
 4. Select the table name to preview data in **Table view** in the main area.
 
+![table-view](.images/table-view.png)
+
 ### Understand Data Types
 
 Delta Lake infers data types from CSV data. For this lab, all types should work correctly. In production, you might need to:
@@ -224,17 +207,15 @@ Delta Lake infers data types from CSV data. For this lab, all types should work 
 ### Access SQL Endpoint
 
 1. In the Lakehouse view, locate the item type dropdown in the toolbar (shows **Lakehouse**).
-
 2. Select the dropdown and choose **SQL analytics endpoint**.
 
-3. The view switches to SQL-based exploration with query capabilities.
+![sql-endpoint-menu](.images/sql-endpoint-menu.png)
 
-> 📷 **Screenshot**: SQL analytics endpoint view showing query editor with sample query and results pane
+3. The view switches to SQL-based exploration with query capabilities.
 
 ### Run Sample Queries
 
 1. Select **New SQL query**.
-
 2. Run this query to explore customer data:
 
    ```sql
@@ -251,7 +232,6 @@ Delta Lake infers data types from CSV data. For this lab, all types should work 
    ```
 
 3. Select **Run** to execute.
-
 4. Review results in the output pane.
 
 ### Query Transactions
@@ -271,6 +251,8 @@ Delta Lake infers data types from CSV data. For this lab, all types should work 
    ```
 
 2. Run and review results.
+
+![sample-query](.images/sample-query.png)
 
 ---
 

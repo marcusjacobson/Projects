@@ -444,8 +444,7 @@ Fabric-Purview-Governance-Simulation/
 │   ├── transactions.csv
 │   └── streaming-events.json
 ├── 00-Prerequisites-and-Setup/
-│   ├── README.md
-│   └── scripts/
+│   └── README.md
 ├── 01-Enable-Fabric-Create-Workspace/
 │   └── README.md
 ├── 02-Create-Lakehouse-Load-Data/

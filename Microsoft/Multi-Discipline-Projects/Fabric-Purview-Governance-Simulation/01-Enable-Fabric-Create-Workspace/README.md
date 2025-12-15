@@ -42,28 +42,21 @@ The workspace you create here mimics a **domain-specific analytics workspace** w
 ### Navigate to Admin Portal
 
 1. Go to [app.fabric.microsoft.com](https://app.fabric.microsoft.com) and sign in.
-
 2. Select the **Settings** (gear icon) in the top right corner.
-
 3. Select **Admin portal** from the menu.
-
 4. In the Admin portal, select **Tenant settings**.
 
 ### Enable Fabric for Users
 
 1. In Tenant settings, scroll to the **Microsoft Fabric** section.
-
 2. Expand **Users can create Fabric items**.
-
 3. Toggle the setting to **Enabled**.
-
 4. Choose the scope:
    - **The entire organization** - Recommended for labs.
    - **Specific security groups** - For controlled rollout.
-
 5. Select **Apply**.
 
-> 📷 **Screenshot**: Tenant settings page showing "Users can create Fabric items" toggle expanded with scope options visible
+![user-create-permission](.images/user-create-permission.png)
 
 > **💡 Tip**: For a lab environment, enabling for the entire organization is simplest. In production, use security groups for controlled access.
 
@@ -74,30 +67,22 @@ The workspace you create here mimics a **domain-specific analytics workspace** w
 ### Check Available Capacities
 
 1. In the Admin portal left menu, select **Capacity settings**.
-
 2. You should see at least one capacity:
    - **Trial** - Free 60-day Fabric trial capacity.
    - **F2-F2048** - Fabric capacities (F SKUs).
    - **P1-P5** - Power BI Premium capacities (also support Fabric).
-
 3. Note the capacity name for workspace assignment.
-
 4. If you have a capacity available, proceed to Step 3.
 
-> 📷 **Screenshot**: Capacity settings page showing available capacities (Trial or F-SKU) with status indicators
+![fabric-capacity-trial](.images/fabric-capacity-trial.png)
 
 ### Start Trial (If No Capacity Available)
 
 1. Close the Admin portal and return to the Fabric home page.
-
 2. Select **Workspaces** in the left navigation.
-
 3. Select **+ New workspace**.
-
 4. You'll see a prompt to start a Fabric trial.
-
 5. Select **Start trial**.
-
 6. The trial activates immediately (60 days free).
 
 ---
@@ -107,9 +92,7 @@ The workspace you create here mimics a **domain-specific analytics workspace** w
 ### Create New Workspace
 
 1. From the Fabric home page, select **Workspaces** in the left navigation.
-
 2. Select **+ New workspace** (at the bottom of the Workspaces pane).
-
 3. Configure the workspace:
 
    | Setting | Value |
@@ -118,21 +101,17 @@ The workspace you create here mimics a **domain-specific analytics workspace** w
    | **Description** | `Hands-on simulation for Fabric + Purview governance` |
 
 4. Expand **Advanced** settings.
-
 5. Under **License mode**, select:
    - **Trial** (if using trial capacity).
    - **Fabric capacity** and choose your capacity (if using paid F SKU).
-
 6. Select **Apply**.
 
-> 📷 **Screenshot**: New workspace dialog with Advanced section expanded showing License mode dropdown with Trial/Fabric capacity options
+![create-workspace](.images/create-workspace.png)
 
 ### Verify Workspace Creation
 
 1. The new workspace appears in the Workspaces list.
-
 2. Select the workspace to open it.
-
 3. Verify the workspace is empty and ready for content.
 
 ---
@@ -142,7 +121,6 @@ The workspace you create here mimics a **domain-specific analytics workspace** w
 ### Manage Workspace Access
 
 1. In your new workspace, select **Manage access** (top right of the workspace).
-
 2. Review the current access assignments:
 
    | Role | Capabilities |
@@ -153,34 +131,42 @@ The workspace you create here mimics a **domain-specific analytics workspace** w
    | **Viewer** | Read-only access |
 
 3. Your account should have **Admin** role.
-
 4. Select **X** or select outside the panel to close.
 
-> 📷 **Screenshot**: Manage access panel showing role assignments with Admin, Member, Contributor, and Viewer roles listed
+![manage-access](.images/manage-access.png)
 
 ### Access Workspace Settings
 
 1. Select **Workspace settings** (top right, next to **Manage access**).
-
 2. Review the available settings categories in the left panel.
 
 ### Verify License Info
 
 1. In workspace settings, select **License info** in the left panel.
-
 2. Confirm the workspace shows your Fabric capacity (Trial or F SKU) that you selected during creation.
 
 ---
 
-## 🔧 Step 5: Enable Git Integration (Optional)
+## 🔧 Step 5: Grant Purview MSI Workspace Access (Required for Lab 07)
 
-For version control of Fabric items:
+> **🔐 Required for Data Map Scanning**: The Purview Managed Identity needs workspace-level access to scan Fabric assets. Complete this now while you're configuring workspace access.
 
-1. In workspace settings, select **Git integration**.
+The Admin API settings configured in Lab 00 allow Purview to call tenant-level APIs, but it also needs **direct workspace access** to scan workspace contents.
 
-2. You can connect to Azure DevOps or GitHub.
+### Add Purview MSI to Workspace
 
-3. For this lab, this is **optional** - skip if not needed.
+1. In your **Fabric-Purview-Lab** workspace, select **Manage access** (top right).
+2. Select **+ Add people or groups**.
+3. Search for `payg-billing` (your Purview Managed Identity created in Lab 00 Step 5).
+4. Assign **Viewer** role (minimum required for scanning).
+5. Select **Add**.
+
+> **💡 Why Viewer?** The Purview MSI needs to read workspace metadata and asset schemas. Viewer provides read-only access without modification permissions.
+
+### Verify Access Added
+
+1. In the **Manage access** panel, verify `payg-billing` appears with **Viewer** role.
+2. Close the panel.
 
 ---
 
@@ -193,6 +179,7 @@ Before proceeding to Lab 02, verify:
 - [ ] Workspace `Fabric-Purview-Lab` is created.
 - [ ] Workspace is assigned to Fabric capacity.
 - [ ] You have Admin role on the workspace.
+- [ ] Purview MSI (`payg-billing`) has Viewer role on the workspace.
 
 ---
 

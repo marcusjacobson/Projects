@@ -63,7 +63,7 @@ In Lab 09, you'll validate:
    - ✅ `dbo` → `customers_segmented`
 4. Click **Confirm**.
 
-> 📷 **Screenshot**: New semantic model dialog showing table selection checkboxes with customers, transactions, and customers_segmented selected
+![new-semantic-model](.images/new-semantic-model.png)
 
 The semantic model opens in **Model view**.
 
@@ -99,7 +99,7 @@ The **Quick summary** view opens. Select fields from **both** DLP-protected tabl
 
 > 🎯 **Why these selections**: Using fields from both tables ensures the report lineage connects to all your DLP-protected data sources.
 
-> 📷 **Screenshot**: Report Quick summary view showing field selections from both customers and transactions tables with auto-generated visuals
+![powerbi-summary](.images/powerbi-summary.png)
 
 Power BI auto-generates visuals based on your selections. You'll see charts like:
 
@@ -131,7 +131,7 @@ To clean up the auto-generated report:
    - **Assign to task**: Leave as **Unassigned**.
 3. Click **Save**.
 
-> 📷 **Screenshot**: "Save your report" dialog with Fabric-Purview-Lab workspace selected and report name "Customer Analytics Report" entered
+![save-report](.images/save-report.png)
 
 ---
 

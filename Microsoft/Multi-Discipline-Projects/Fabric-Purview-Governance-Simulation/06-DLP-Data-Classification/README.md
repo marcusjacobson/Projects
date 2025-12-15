@@ -54,7 +54,7 @@ Enterprise DLP scenarios:
 
 ---
 
-## 🔧 Step 1: Understand DLP Coverage for Your Lab Items
+## 📋 DLP Coverage for Your Lab Items
 
 ### Which Items Get Scanned
 
@@ -84,12 +84,12 @@ Your sample data contains these detectable SITs:
 | **Credit Card Number** | 4532-1234-5678-9012 |
 
 > **📝 Note**: Not all SITs are supported for Fabric/Power BI locations. **SSN** and **Credit Card Number** are fully supported and will be used in this lab.
-
+>
 > **💡 Key Insight**: DLP scans the **actual data content** in Delta tables (Lakehouse), SQL tables (Warehouse), and KQL tables — not just file names or metadata.
 
 ---
 
-## 🔧 Step 2: Access Microsoft Purview Portal
+## 🔧 Step 1: Access Microsoft Purview Portal
 
 ### Navigate to DLP
 
@@ -103,13 +103,13 @@ Your sample data contains these detectable SITs:
 2. Select **Policies**.
 3. You should see the policy management interface with a **+ Create policy** button.
 
-> 📷 **Screenshot**: Purview portal showing Data loss prevention → Policies in left navigation with "+ Create policy" button visible
+![policies-main](.images/policies-main.png)
 
 > **❌ If you don't see DLP**: You may not have the required Compliance Administrator or Information Protection Admin role. Contact your tenant administrator.
 
 ---
 
-## 🔧 Step 3: Create a DLP Policy for Fabric
+## 🔧 Step 2: Create a DLP Policy for Fabric
 
 ### Start Policy Creation
 
@@ -122,7 +122,7 @@ Your sample data contains these detectable SITs:
    - This option covers Fabric, Power BI, SharePoint, OneDrive, and other M365 locations.
    - Click to continue.
 
-> 📷 **Screenshot**: "What info do you want to protect?" page with "Enterprise applications & devices" option selected
+![info-to-protect](.images/info-to-protect.png)
 
 > **📝 Note**: The "Inline web traffic" option is for Edge browser and network integrations — not needed for Fabric.
 
@@ -147,7 +147,7 @@ Your sample data contains these detectable SITs:
 
 ---
 
-## 🔧 Step 4: Select Fabric as the Location
+## 🔧 Step 3: Select Fabric as the Location
 
 ### Choose Location
 
@@ -157,20 +157,19 @@ This is the critical step — you must select **Fabric and Power BI workspaces**
    - Select **Fabric and Power BI workspaces** as the location.
    - All other locations will be automatically disabled — DLP policies for Fabric only support this location.
 
-> 📷 **Screenshot**: "Choose locations" page with "Fabric and Power BI workspaces" selected and other locations disabled
+![policy-location](.images/policy-location.png)
 
 2. **Scope to specific workspaces** (optional):
    - By default, the policy applies to all workspaces.
    - Click **Edit** to specify particular workspaces to include or exclude.
    - For this lab, leave as **All workspaces** or choose your specific `Fabric-Purview-Lab` workspace.
-
 3. Click **Next**.
 
 > **⚠️ Important**: DLP actions are only supported for workspaces hosted on **Fabric capacity** or **Premium capacity**. Shared capacity workspaces won't be scanned.
 
 ---
 
-## 🔧 Step 5: Configure Detection Rules
+## 🔧 Step 4: Configure Detection Rules
 
 ### Define Policy Settings
 
@@ -201,7 +200,7 @@ The **Conditions** section shows a **Content contains** group by default:
 | **U.S. Social Security Number (SSN)** | `SSN` or `social security` | customers.csv |
 | **Credit Card Number** | `credit card` | transactions.csv |
 
-> 📷 **Screenshot**: "Add sensitive info types" sidebar showing SSN and Credit Card Number selections
+![rule-conditions](.images/rule-conditions.png)
 
 > **⚠️ Note**: Some SITs like **All Full Names** are not supported for Fabric/Power BI locations. If you try to add them, you'll receive an error when saving the rule.
 
@@ -209,11 +208,6 @@ The **Conditions** section shows a **Content contains** group by default:
 5. For each SIT added, you can adjust:
    - **Instance count**: Default is 1-Any (keep default for lab).
    - **Confidence level**: Default is Medium 75% (keep default).
-6. Toggle **Quick summary** to **On** to verify your rule logic displays correctly.
-
-> 📷 **Screenshot**: Rule configuration showing "Quick summary" toggle enabled with human-readable rule logic displayed
-
-> **💡 Tip**: The Quick summary shows a human-readable version of your conditions — useful for validating complex rules.
 
 ### Configure Actions (Optional for Lab)
 
@@ -229,7 +223,7 @@ Under **Actions**:
 
 ---
 
-## 🔧 Step 6: Configure User Notifications and Overrides
+## 🔧 Step 5: Configure User Notifications and Overrides
 
 ### Enable User Notifications
 
@@ -248,7 +242,7 @@ Under **Actions**:
 
 ---
 
-## 🔧 Step 7: Configure Incident Reports (Admin Alerts)
+## 🔧 Step 6: Configure Incident Reports (Admin Alerts)
 
 ### Set Alert Severity
 
@@ -259,11 +253,9 @@ Under **Actions**:
 ### Enable Admin Alerts
 
 1. Toggle **Send an alert to admins when a rule match occurs** to **On**.
-
 2. Click **+ Add or remove users** to specify alert recipients:
    - Add your email address.
    - Add any compliance team members who should receive alerts.
-
 3. Choose alert frequency:
    - **Send alert every time an activity matches the rule** — good for testing (select this).
    - **Send alert when the volume of matched activities reaches a threshold** — better for production (reduces noise). Configure thresholds if selected.
@@ -271,22 +263,20 @@ Under **Actions**:
 ### Additional Options (Optional)
 
 1. **If there's a match for this rule, stop processing additional DLP policies and rules** — leave unchecked unless you want this rule to be the only one evaluated.
-
 2. **Evaluate rule per component** — leave **Off** for Fabric scenarios.
-
 3. **Priority** — leave as **0** (default) unless you have multiple rules and need ordering.
 
 ### Save the Rule
 
 1. Click **Save** to save the rule and return to the **Customize advanced DLP rules** page.
-
 2. You should see your `Detect PII in Fabric Data` rule listed.
-
 3. Click **Next** to continue to policy mode selection.
+
+![created-rule](.images/created-rule.png)
 
 ---
 
-## 🔧 Step 8: Review and Activate Policy
+## 🔧 Step 7: Review and Activate Policy
 
 ### Policy Mode
 
@@ -299,7 +289,7 @@ Under **Actions**:
 | **Turn it on right away** | Full enforcement | After validating detection |
 | **Keep it off** | Policy inactive | While still configuring |
 
-> 📷 **Screenshot**: "Policy mode" page showing the three mode options with "Run the policy in simulation mode" selected
+![policy-mode](.images/policy-mode.png)
 
 > **💡 Recommendation**: Start with **Run the policy in simulation mode** to validate detection, review matches in Activity Explorer, then switch to active mode.
 

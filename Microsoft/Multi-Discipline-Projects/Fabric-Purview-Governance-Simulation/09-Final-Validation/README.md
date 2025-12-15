@@ -56,8 +56,6 @@ Before triggering data changes, first verify your DLP policy simulation complete
 
 Review the **Simulation overview** tab:
 
-> 📷 **Screenshot**: Simulation overview tab showing status indicators, sync status, and match counts
-
 | Check | Expected Value | Notes |
 |-------|----------------|-------|
 | **Simulation status** | "Complete" or "In progress" | Status shows simulation ran |
@@ -73,8 +71,6 @@ According to [Microsoft's DLP deployment guidance](https://learn.microsoft.com/e
 - Navigate to the **Policy mode** section.
 - Change from **Run the policy in simulation mode** to **Turn it on right away**.
 - Click **Submit** to save changes.
-
-> 📷 **Screenshot**: Policy mode selection showing "Turn it on right away" option selected
 
 > **⚠️ Important**: Enabling the policy means DLP actions (alerts, notifications) will now be enforced. In a lab environment this is safe. In production, follow Microsoft's recommended deployment steps to gradually roll out policies.
 
@@ -105,7 +101,7 @@ Create a notebook to add test rows with sensitive data patterns:
 
 Add and run this cell to insert a test customer with SSN:
 
-> 📷 **Screenshot**: Spark notebook with %%sql cell and INSERT statement ready to execute
+![notebook-trigger](.images/notebook-trigger.png)
 
 ```sql
 %%sql
@@ -175,13 +171,13 @@ After the 15-30 minute wait, check Activity Explorer to confirm DLP detected sen
 
 - Go to [purview.microsoft.com](https://purview.microsoft.com).
 - Navigate to **Solutions** → **Data loss prevention** → **Activity explorer**.
-- Filter: **Workload** = `Power BI`, **Activity** = `DLP policy matched`.
+- Filter: **Activity** = `DLP policy matched`.
 
 ### Expected Results
 
 You should see DLP policy matches showing:
 
-> 📷 **Screenshot**: Activity Explorer filtered showing DLP policy matches with Lakehouse name and sensitive info types
+![dlp-match](.images/dlp-match.png)
 
 - **Item name**: `CustomerDataLakehouse`
 - **Policy matched**: `Fabric PII Detection - Lab`
@@ -205,9 +201,7 @@ Now investigate the alerts to confirm the sensitive data patterns detected.
 - Navigate to **Solutions** → **Data loss prevention** → **Alerts**.
 - Select an alert from your `Fabric PII Detection - Lab` policy.
 
-### Alert Detail Pane Tabs
-
-> 📷 **Screenshot**: Alert details pane showing Classifiers tab with detected sensitive info types
+![alert-classifiers](.images/alert-classifiers.png)
 
 | Tab | Information |
 |-----|-------------|

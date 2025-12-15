@@ -75,8 +75,6 @@ This architecture mirrors the **Medallion Architecture** (Bronze/Silver/Gold) us
 4. Select **Create**.
 5. Wait for the Warehouse to provision (30-60 seconds).
 
-> 📷 **Screenshot**: New item pane showing "Store data" section with Warehouse option highlighted
-
 ---
 
 ## 🔧 Step 2: Query Lakehouse Data Using Cross-Database Queries
@@ -110,6 +108,8 @@ FROM [CustomerDataLakehouse].[dbo].[customers];
 
 3. Select **Run** or press F5.
 4. You should see customer data from the Lakehouse.
+
+![sample-query](.images/sample-query.png)
 
 > **💡 Key Insight**: Cross-database queries provide zero-copy access to Lakehouse data. No data is duplicated—you're querying the source directly.
 
@@ -150,6 +150,8 @@ ORDER BY CustomerCount DESC;
 ```
 
 3. Select **Run** or press F5 to see results.
+
+![sample-distribution-query](.images/sample-distribution-query.png)
 
 ### Query 2: Transaction Analysis by Category
 
@@ -228,6 +230,8 @@ SELECT * FROM dbo.vw_HighValueCustomers
 ORDER BY TotalSpending DESC;
 ```
 
+![query-view](.images/query-view.png)
+
 ---
 
 ## 🔧 Step 5: Create a Stored Procedure
@@ -274,6 +278,8 @@ EXEC dbo.sp_CreditScoreReport;
 EXEC dbo.sp_CreditScoreReport @MinCreditScore = 700;
 ```
 
+![query-stored-procedure](.images/query-stored-procedure.png)
+
 ---
 
 ## 🔧 Step 6: Create View for Power BI
@@ -313,7 +319,7 @@ GROUP BY c.CustomerID, c.FirstName, c.LastName, c.State, c.CreditScore;
    - Select **OK** or **Save**.
 7. The view is saved in your Warehouse under **Views**.
 
-> 📷 **Screenshot**: Save as view dialog with name "vw_CustomerSpendingAnalysis" entered and query text highlighted in the editor
+![save-view](.images/save-view.png)
 
 > **⚠️ Important**: You must select/highlight the query text before clicking **Save as view**. If you click the button without selecting text, you'll see an error: "To save as a view, select the text of one SELECT statement."
 >
@@ -324,8 +330,6 @@ GROUP BY c.CustomerID, c.FirstName, c.LastName, c.State, c.CreditScore;
 1. In the Explorer pane (left side), expand **Schemas** → **dbo** → **Views** to see both views.
 2. Expand **Stored Procedures** to see the stored procedure.
 3. Close any open query tabs — the permanent objects are saved in the Warehouse.
-
-> 📷 **Screenshot**: Explorer pane showing Schemas → dbo → Views with vw_HighValueCustomers and vw_CustomerSpendingAnalysis listed
 
 ---
 

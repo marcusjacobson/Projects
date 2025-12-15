@@ -1,0 +1,51 @@
+CustomerID,FirstName,LastName,Email,Phone,SSN,DateOfBirth,Address,City,State,ZipCode,Country,CreditScore,AccountType,JoinDate
+C001,John,Smith,john.smith@example.com,(555) 123-4567,123-45-6789,1985-03-15,123 Main Street,New York,NY,10001,USA,750,Premium,2020-01-15
+C002,Sarah,Johnson,sarah.johnson@example.com,(555) 234-5678,234-56-7890,1990-07-22,456 Oak Avenue,Los Angeles,CA,90001,USA,680,Standard,2019-06-20
+C003,Michael,Williams,michael.williams@example.com,(555) 345-6789,345-67-8901,1978-11-08,789 Pine Road,Chicago,IL,60601,USA,720,Premium,2018-03-10
+C004,Emily,Brown,emily.brown@example.com,(555) 456-7890,456-78-9012,1995-02-28,321 Elm Street,Houston,TX,77001,USA,695,Standard,2021-08-05
+C005,David,Jones,david.jones@example.com,(555) 567-8901,567-89-0123,1982-09-14,654 Maple Lane,Phoenix,AZ,85001,USA,710,Premium,2017-12-18
+C006,Jessica,Garcia,jessica.garcia@example.com,(555) 678-9012,678-90-1234,1988-04-03,987 Cedar Court,Philadelphia,PA,19101,USA,735,Standard,2020-04-22
+C007,Christopher,Martinez,christopher.martinez@example.com,(555) 789-0123,789-01-2345,1975-12-25,147 Birch Way,San Antonio,TX,78201,USA,685,Premium,2019-09-30
+C008,Amanda,Rodriguez,amanda.rodriguez@example.com,(555) 890-1234,890-12-3456,1992-06-17,258 Spruce Drive,San Diego,CA,92101,USA,755,Standard,2018-11-14
+C009,Matthew,Wilson,matthew.wilson@example.com,(555) 901-2345,901-23-4567,1980-01-30,369 Willow Path,Dallas,TX,75201,USA,700,Premium,2021-02-28
+C010,Ashley,Anderson,ashley.anderson@example.com,(555) 012-3456,012-34-5678,1997-08-09,741 Aspen Circle,San Jose,CA,95101,USA,665,Standard,2020-07-12
+C011,Daniel,Thomas,daniel.thomas@example.com,(555) 123-4568,111-22-3333,1983-05-21,852 Hickory Lane,Austin,TX,78701,USA,740,Premium,2019-01-08
+C012,Stephanie,Jackson,stephanie.jackson@example.com,(555) 234-5679,222-33-4444,1991-10-12,963 Walnut Street,Jacksonville,FL,32201,USA,690,Standard,2018-06-25
+C013,Andrew,White,andrew.white@example.com,(555) 345-6790,333-44-5555,1977-03-07,174 Chestnut Avenue,Fort Worth,TX,76101,USA,725,Premium,2017-04-15
+C014,Nicole,Harris,nicole.harris@example.com,(555) 456-7891,444-55-6666,1994-07-19,285 Sycamore Road,Columbus,OH,43201,USA,705,Standard,2021-05-20
+C015,Joshua,Martin,joshua.martin@example.com,(555) 567-8902,555-66-7777,1986-12-02,396 Magnolia Court,Charlotte,NC,28201,USA,760,Premium,2020-10-08
+C016,Rachel,Thompson,rachel.thompson@example.com,(555) 678-9013,666-77-8888,1989-09-25,507 Poplar Drive,San Francisco,CA,94101,USA,680,Standard,2019-03-17
+C017,Ryan,Garcia,ryan.garcia@example.com,(555) 789-0124,777-88-9999,1981-04-14,618 Dogwood Lane,Indianapolis,IN,46201,USA,715,Premium,2018-08-22
+C018,Megan,Martinez,megan.martinez@example.com,(555) 890-1235,888-99-0000,1993-11-28,729 Redwood Path,Seattle,WA,98101,USA,745,Standard,2021-01-05
+C019,Kevin,Robinson,kevin.robinson@example.com,(555) 901-2346,999-00-1111,1976-06-08,840 Cypress Way,Denver,CO,80201,USA,695,Premium,2017-07-30
+C020,Lauren,Clark,lauren.clark@example.com,(555) 012-3457,100-20-3040,1998-02-15,951 Juniper Circle,Washington,DC,20001,USA,670,Standard,2020-12-14
+C021,Brandon,Rodriguez,brandon.rodriguez@example.com,(555) 135-7924,200-30-4050,1984-08-27,162 Palm Street,Boston,MA,02101,USA,730,Premium,2019-05-09
+C022,Amber,Lewis,amber.lewis@example.com,(555) 246-8035,300-40-5060,1990-01-18,273 Oak Hills Drive,El Paso,TX,79901,USA,700,Standard,2018-02-28
+C023,Justin,Lee,justin.lee@example.com,(555) 357-9146,400-50-6070,1979-10-05,384 Valley View Road,Nashville,TN,37201,USA,755,Premium,2021-09-16
+C024,Brittany,Walker,brittany.walker@example.com,(555) 468-0257,500-60-7080,1996-05-22,495 Mountain Lane,Detroit,MI,48201,USA,685,Standard,2020-03-25
+C025,Tyler,Hall,tyler.hall@example.com,(555) 579-1368,600-70-8090,1987-12-11,606 River Court,Oklahoma City,OK,73101,USA,720,Premium,2019-11-02
+C026,Kayla,Allen,kayla.allen@example.com,(555) 680-2479,700-80-9100,1992-07-04,717 Lake Drive,Portland,OR,97201,USA,695,Standard,2018-04-18
+C027,Jacob,Young,jacob.young@example.com,(555) 791-3580,800-90-1200,1974-02-20,828 Forest Path,Las Vegas,NV,89101,USA,740,Premium,2017-10-07
+C028,Samantha,Hernandez,samantha.hernandez@example.com,(555) 802-4691,900-10-2300,1999-09-13,939 Meadow Way,Memphis,TN,38101,USA,665,Standard,2021-06-21
+C029,Nathan,King,nathan.king@example.com,(555) 913-5702,110-20-3400,1985-04-06,150 Garden Circle,Louisville,KY,40201,USA,710,Premium,2020-01-30
+C030,Victoria,Wright,victoria.wright@example.com,(555) 024-6813,220-30-4500,1988-11-19,261 Beach Road,Baltimore,MD,21201,USA,750,Standard,2019-08-14
+C031,Zachary,Lopez,zachary.lopez@example.com,(555) 135-7925,330-40-5600,1980-06-01,372 Desert Drive,Milwaukee,WI,53201,USA,680,Premium,2018-01-22
+C032,Christina,Hill,christina.hill@example.com,(555) 246-8036,440-50-6700,1995-01-24,483 Canyon Lane,Albuquerque,NM,87101,USA,725,Standard,2021-04-09
+C033,Eric,Scott,eric.scott@example.com,(555) 357-9147,550-60-7800,1983-08-15,594 Prairie Path,Tucson,AZ,85701,USA,695,Premium,2020-09-03
+C034,Heather,Green,heather.green@example.com,(555) 468-0258,660-70-8900,1991-03-08,705 Coastal Way,Fresno,CA,93701,USA,760,Standard,2019-02-17
+C035,Adam,Adams,adam.adams@example.com,(555) 579-1369,770-80-9000,1978-10-28,816 Summit Circle,Sacramento,CA,95801,USA,705,Premium,2018-07-26
+C036,Michelle,Baker,michelle.baker@example.com,(555) 680-2470,880-90-1100,1994-05-11,927 Spring Lane,Mesa,AZ,85201,USA,735,Standard,2021-11-12
+C037,Steven,Gonzalez,steven.gonzalez@example.com,(555) 791-3581,990-10-2200,1986-12-23,138 Autumn Drive,Kansas City,MO,64101,USA,685,Premium,2017-06-05
+C038,Jennifer,Nelson,jennifer.nelson@example.com,(555) 802-4692,101-21-3210,1989-07-16,249 Winter Road,Virginia Beach,VA,23451,USA,750,Standard,2020-02-20
+C039,Brian,Carter,brian.carter@example.com,(555) 913-5703,202-32-4321,1977-02-09,360 Harbor View Court,Atlanta,GA,30301,USA,700,Premium,2019-10-28
+C040,Elizabeth,Mitchell,elizabeth.mitchell@example.com,(555) 024-6814,303-43-5432,1997-09-02,471 Hillside Path,Colorado Springs,CO,80901,USA,670,Standard,2018-05-15
+C041,Timothy,Perez,timothy.perez@example.com,(555) 136-8025,404-54-6543,1982-04-25,582 Woodland Way,Omaha,NE,68101,USA,745,Premium,2021-08-07
+C042,Amy,Roberts,amy.roberts@example.com,(555) 247-9136,505-65-7654,1990-11-18,693 Sunset Circle,Raleigh,NC,27601,USA,690,Standard,2020-05-23
+C043,Patrick,Turner,patrick.turner@example.com,(555) 358-0247,606-76-8765,1975-06-30,804 Sunrise Lane,Miami,FL,33101,USA,730,Premium,2019-12-10
+C044,Angela,Phillips,angela.phillips@example.com,(555) 469-1358,707-87-9876,1993-01-13,915 Moonlight Drive,Long Beach,CA,90801,USA,705,Standard,2018-09-28
+C045,Gregory,Campbell,gregory.campbell@example.com,(555) 570-2469,808-98-0987,1987-08-06,126 Starlight Road,Oakland,CA,94601,USA,765,Premium,2017-03-14
+C046,Laura,Parker,laura.parker@example.com,(555) 681-3570,909-09-1098,1992-03-29,237 Twilight Path,Minneapolis,MN,55401,USA,680,Standard,2021-10-01
+C047,Jeffrey,Evans,jeffrey.evans@example.com,(555) 792-4681,010-10-2109,1979-10-22,348 Dawn Court,Tulsa,OK,74101,USA,720,Premium,2020-06-18
+C048,Kimberly,Edwards,kimberly.edwards@example.com,(555) 803-5792,121-21-3210,1996-05-15,459 Dusk Lane,Arlington,TX,76001,USA,695,Standard,2019-01-25
+C049,Scott,Collins,scott.collins@example.com,(555) 914-6803,232-32-4321,1984-12-08,570 Nightfall Way,New Orleans,LA,70112,USA,755,Premium,2018-08-11
+C050,Rebecca,Stewart,rebecca.stewart@example.com,(555) 025-7914,343-43-5432,1991-07-01,681 Daybreak Circle,Wichita,KS,67201,USA,700,Standard,2021-03-27

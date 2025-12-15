@@ -1,0 +1,51 @@
+TransactionID,CustomerID,TransactionDate,TransactionTime,Amount,Currency,MerchantName,MerchantCategory,CreditCardNumber,CardType,PaymentMethod,Status,Description,Location
+TXN001,C001,2024-01-15,09:23:45,125.99,USD,Amazon Retail,E-Commerce,4532-1234-5678-9012,Visa,Credit Card,Completed,Online purchase - Electronics,New York NY
+TXN002,C002,2024-01-15,10:15:22,89.50,USD,Walmart Stores,Retail,5425-2345-6789-0123,Mastercard,Credit Card,Completed,Grocery shopping,Los Angeles CA
+TXN003,C003,2024-01-15,11:45:33,250.00,USD,Best Buy Electronics,Electronics,3782-345678-90123,American Express,Credit Card,Completed,Television purchase,Chicago IL
+TXN004,C004,2024-01-15,12:30:18,45.75,USD,Starbucks Coffee,Food & Beverage,4916-4567-8901-2345,Visa,Credit Card,Completed,Coffee and snacks,Houston TX
+TXN005,C005,2024-01-15,14:22:09,1500.00,USD,Delta Airlines,Travel,5412-5678-9012-3456,Mastercard,Credit Card,Completed,Flight booking LAX-JFK,Phoenix AZ
+TXN006,C001,2024-01-16,08:45:12,75.25,USD,Shell Gas Station,Fuel,4532-1234-5678-9012,Visa,Credit Card,Completed,Fuel purchase,New York NY
+TXN007,C006,2024-01-16,09:30:45,320.00,USD,Nordstrom Department,Retail,6011-6789-0123-4567,Discover,Credit Card,Completed,Clothing purchase,Philadelphia PA
+TXN008,C007,2024-01-16,10:55:28,55.99,USD,Netflix Subscription,Entertainment,5105-7890-1234-5678,Mastercard,Credit Card,Completed,Monthly subscription,San Antonio TX
+TXN009,C008,2024-01-16,11:20:33,890.00,USD,Apple Store,Electronics,4716-8901-2345-6789,Visa,Credit Card,Completed,iPhone accessories,San Diego CA
+TXN010,C009,2024-01-16,13:15:47,42.50,USD,Chipotle Mexican,Food & Beverage,3714-901234-56789,American Express,Credit Card,Completed,Lunch order,Dallas TX
+TXN011,C010,2024-01-17,09:10:22,175.00,USD,Target Stores,Retail,4532-0123-4567-8901,Visa,Credit Card,Completed,Home goods,San Jose CA
+TXN012,C011,2024-01-17,10:45:18,2500.00,USD,Marriott Hotels,Travel,5425-1234-5678-9012,Mastercard,Credit Card,Completed,Hotel reservation,Austin TX
+TXN013,C012,2024-01-17,11:30:55,65.00,USD,Spotify Premium,Entertainment,4916-2345-6789-0123,Visa,Credit Card,Completed,Annual subscription,Jacksonville FL
+TXN014,C013,2024-01-17,14:20:33,450.00,USD,Home Depot,Home Improvement,6011-3456-7890-1234,Discover,Credit Card,Completed,Power tools,Fort Worth TX
+TXN015,C014,2024-01-17,15:45:12,28.99,USD,Uber Rides,Transportation,5105-4567-8901-2345,Mastercard,Credit Card,Completed,Ride service,Columbus OH
+TXN016,C015,2024-01-18,08:30:45,1200.00,USD,Dell Technologies,Electronics,4716-5678-9012-3456,Visa,Credit Card,Completed,Laptop purchase,Charlotte NC
+TXN017,C016,2024-01-18,09:55:22,95.00,USD,Costco Wholesale,Retail,3782-678901-23456,American Express,Credit Card,Completed,Bulk groceries,San Francisco CA
+TXN018,C002,2024-01-18,10:20:18,35.50,USD,McDonald's,Food & Beverage,5425-2345-6789-0123,Mastercard,Credit Card,Completed,Fast food,Los Angeles CA
+TXN019,C017,2024-01-18,11:45:33,550.00,USD,REI Outdoor,Sporting Goods,4532-7890-1234-5678,Visa,Credit Card,Completed,Camping gear,Indianapolis IN
+TXN020,C018,2024-01-18,13:30:47,78.25,USD,CVS Pharmacy,Healthcare,5412-8901-2345-6789,Mastercard,Credit Card,Completed,Prescription pickup,Seattle WA
+TXN021,C019,2024-01-19,09:15:22,3200.00,USD,United Airlines,Travel,6011-9012-3456-7890,Discover,Credit Card,Completed,International flight,Denver CO
+TXN022,C020,2024-01-19,10:40:18,125.00,USD,Macy's,Retail,4916-0123-4567-8901,Visa,Credit Card,Completed,Department store,Washington DC
+TXN023,C003,2024-01-19,11:25:33,45.00,USD,Panera Bread,Food & Beverage,3714-123456-78901,American Express,Credit Card,Completed,Lunch catering,Chicago IL
+TXN024,C021,2024-01-19,14:10:47,680.00,USD,Lenovo Store,Electronics,5105-1234-5678-9012,Mastercard,Credit Card,Completed,Tablet purchase,Boston MA
+TXN025,C022,2024-01-19,15:35:12,92.50,USD,Whole Foods Market,Groceries,4716-2345-6789-0123,Visa,Credit Card,Completed,Organic groceries,El Paso TX
+TXN026,C023,2024-01-20,08:50:45,1850.00,USD,Hilton Hotels,Travel,4532-3456-7890-1234,Visa,Credit Card,Completed,Resort booking,Nashville TN
+TXN027,C024,2024-01-20,09:25:22,55.75,USD,Dunkin Donuts,Food & Beverage,5425-4567-8901-2345,Mastercard,Credit Card,Completed,Coffee order,Detroit MI
+TXN028,C025,2024-01-20,10:55:18,420.00,USD,Nike Store,Sporting Goods,3782-567890-12345,American Express,Credit Card,Completed,Athletic wear,Oklahoma City OK
+TXN029,C026,2024-01-20,12:20:33,15.99,USD,Hulu Streaming,Entertainment,6011-5678-9012-3456,Discover,Credit Card,Completed,Monthly subscription,Portland OR
+TXN030,C027,2024-01-20,14:45:47,750.00,USD,Wayfair Home,Furniture,5412-6789-0123-4567,Mastercard,Credit Card,Completed,Furniture delivery,Las Vegas NV
+TXN031,C028,2024-01-21,09:30:22,38.25,USD,Lyft Rides,Transportation,4916-7890-1234-5678,Visa,Credit Card,Completed,Ride service,Memphis TN
+TXN032,C029,2024-01-21,10:15:18,285.00,USD,Gap Clothing,Retail,4532-8901-2345-6789,Visa,Credit Card,Completed,Family clothing,Louisville KY
+TXN033,C030,2024-01-21,11:40:33,1100.00,USD,Samsung Store,Electronics,5105-9012-3456-7890,Mastercard,Credit Card,Completed,Smart TV,Baltimore MD
+TXN034,C004,2024-01-21,13:25:47,62.00,USD,Olive Garden,Food & Beverage,4916-4567-8901-2345,Visa,Credit Card,Completed,Family dinner,Houston TX
+TXN035,C031,2024-01-21,14:50:12,195.00,USD,Petco Pet Supplies,Pet Care,3714-012345-67890,American Express,Credit Card,Completed,Pet supplies,Milwaukee WI
+TXN036,C032,2024-01-22,08:45:45,2800.00,USD,Southwest Airlines,Travel,6011-0123-4567-8901,Discover,Credit Card,Completed,Family vacation,Albuquerque NM
+TXN037,C033,2024-01-22,09:20:22,145.50,USD,Trader Joes,Groceries,4716-1234-5678-9012,Visa,Credit Card,Completed,Weekly groceries,Tucson AZ
+TXN038,C034,2024-01-22,10:55:18,68.99,USD,HBO Max,Entertainment,5425-2345-6789-0123,Mastercard,Credit Card,Completed,Annual subscription,Fresno CA
+TXN039,C035,2024-01-22,12:30:33,520.00,USD,Lowe's Home,Home Improvement,4532-3456-7890-1234,Visa,Credit Card,Completed,Garden supplies,Sacramento CA
+TXN040,C036,2024-01-22,14:15:47,82.75,USD,Cheesecake Factory,Food & Beverage,3782-456789-01234,American Express,Credit Card,Completed,Birthday dinner,Mesa AZ
+TXN041,C037,2024-01-23,09:10:22,1650.00,USD,Microsoft Store,Electronics,5412-4567-8901-2345,Mastercard,Credit Card,Completed,Surface laptop,Kansas City MO
+TXN042,C038,2024-01-23,10:35:18,48.50,USD,Walgreens,Healthcare,6011-5678-9012-3456,Discover,Credit Card,Completed,OTC medicine,Virginia Beach VA
+TXN043,C039,2024-01-23,11:50:33,380.00,USD,Adidas Store,Sporting Goods,4916-6789-0123-4567,Visa,Credit Card,Completed,Running shoes,Atlanta GA
+TXN044,C040,2024-01-23,13:25:47,25.00,USD,Paramount Plus,Entertainment,5105-7890-1234-5678,Mastercard,Credit Card,Completed,Monthly subscription,Colorado Springs CO
+TXN045,C041,2024-01-23,14:40:12,890.00,USD,Pottery Barn,Furniture,4716-8901-2345-6789,Visa,Credit Card,Completed,Home decor,Omaha NE
+TXN046,C042,2024-01-24,08:55:45,32.25,USD,DoorDash,Food Delivery,4532-9012-3456-7890,Visa,Credit Card,Completed,Lunch delivery,Raleigh NC
+TXN047,C005,2024-01-24,09:30:22,2100.00,USD,American Airlines,Travel,5412-5678-9012-3456,Mastercard,Credit Card,Completed,Business class,Phoenix AZ
+TXN048,C043,2024-01-24,10:45:18,158.00,USD,JCPenney,Retail,3714-901234-56789,American Express,Credit Card,Completed,Home goods,Miami FL
+TXN049,C044,2024-01-24,12:20:33,72.50,USD,Sephora Beauty,Beauty,6011-0123-4567-8901,Discover,Credit Card,Completed,Cosmetics,Long Beach CA
+TXN050,C045,2024-01-24,14:05:47,445.00,USD,Williams Sonoma,Kitchen,5425-1234-5678-9012,Mastercard,Credit Card,Completed,Cookware,Oakland CA

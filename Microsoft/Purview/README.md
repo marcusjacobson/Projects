@@ -12,7 +12,7 @@ This directory contains **two comprehensive hands-on lab projects** designed to 
 
 ## 📚 Project Portfolio
 
-### [Purview Data Governance Simulation](./Purview-Data-Governance-Simulation/)
+### [Purview Discovery Methods Simulation](./Purview-Discovery-Methods-Simulation/)
 
 **Focus**: Data discovery automation with four discovery methods, modern eDiscovery portal, and API integration
 
@@ -387,7 +387,7 @@ The following capabilities require **enterprise-scale deployments**, **advanced 
 ### Quick Navigation
 
 **For Discovery Method Comparison & API Integration**:  
-→ Start with [Purview Data Governance Simulation](./Purview-Data-Governance-Simulation/)
+→ Start with [Purview Discovery Methods Simulation](./Purview-Discovery-Methods-Simulation/)
 
 **For Hybrid Data Governance**:  
 → Start with [Purview Skills Ramp](./Purview-Skills-Ramp-OnPrem-and-Cloud/)

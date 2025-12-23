@@ -1,0 +1,54 @@
+﻿"Help with this report"
+"https://aka.ms/eDiscoverySummaryReport"
+
+"Job ID","d5db6994d8924227803962ade2d6c2a8","A unique identifier assigned to each eDiscovery process for support reference purposes."
+"Case Name","Lab05c-Discovery-2025-11-24_113322","The name assigned to the eDiscovery case."
+"Search Name","Lab05c-SIT-Search-2025-11-24_113322","The name given to a specific search within an eDiscovery case at the time of the process run."
+"Export Name","Lab05c-Export-2025-11-24_113610","The name assigned to the export by the user."
+
+"Query","((SensitiveType=""a44669fe-0d48-453d-a9b1-2cc83f2cba77|1..500|1..100"")) OR ((SensitiveType=""50842eb7-edc8-4019-85dd-5a5c1f2bb085|1..500|1..100"")) OR ((SensitiveType=""dfeb356f-61cd-459e-bf0f-7c6d28b458c6|1..500|1..100"")) OR ((SensitiveType=""e55e2a32-f92d-4985-a35d-a0b269eb687b|1..500|1..100"")) OR ((SensitiveType=""cb353f78-2b72-4c3c-8827-92ebe4f69fdf|1..500|1..100"")) OR ((SensitiveType=""1771481d-a337-4dbf-8e64-af8da0cc3ee9|1..500|1..100"")) OR ((SensitiveType=""065bdd91-ef07-40d3-b8a4-0aea722eaa49|1..500|1..100"")) OR ((SensitiveType=""17066377-466d-43ff-997f-c9240414021c|1..500|1..100"")) OR ((SensitiveType=""20f3c48d-4ac1-4cd2-86bd-34ecc1826e9d|1..500|1..100"")) OR ((SensitiveType=""fc87b421-f437-4f8b-b739-29a735ead0d9|1..500|1..100""))"
+"StartTime","11/24/2025 7:36:25 PM"
+"EndTime","11/24/2025 8:15:27 PM"
+"SubmittedBySmtp","marcus@marcusj-dev.cloud"
+
+"Security Filter"
+"Security Filter Applied","No","Indicates whether permission filters were applied during the search. ""Yes"" means filters were used to limit results based on specified criteria set by an admin in PowerShell."
+"Location Restriction","","The filters applied to limit the search to specific locations. To understand which mailboxes are being filtered, you can use the provided query with the 'Get-Mailbox -Filter' or 'Get-Recipient -Filter' cmdlets. For example, if the filter is ""Department -eq 'marketing'"", you can retrieve the relevant mailboxes by running a query like Get-Recipient -Filter ""Department -eq 'marketing'"". The output would list all mailboxes that were allowed to be searched."
+"Content Restriction","","The query used to filter content during the search. Content matching this query was included in the search results. The provided query can also be used to perform KQL searches."
+
+
+"Name","Item Count","Description"
+
+"Search results","","Summary of number of items that matched your search query, including partially indexed items or items where advanced indexing was performed (depending on what setting you selected)."
+"Indexed items","4794","Number of items matching the query that were natively indexed by Exchange and SharePoint."
+"Partially indexed items","0","Number of partially indexed items that might not match the query. Included if you chose to include partially indexed items."
+"Advanced indexed items","0","Number of items matching the query if you chose to perform advanced indexing on partially indexed items."
+
+"Errors"
+"Retrieval exceptions","5","Access time outs, empty files, and other exceptions"
+
+"Warnings"
+"Items with processing errors","0","Number of items that experienced processing errors but were still exported or added to the review set. These errors could be caused by unsupported file types, decryption issues, etc."
+
+"Total","4794","Total number of items exported or added to the review set."
+
+"Informational","","Summary of factors that may have increased or decreased the item count in your export or review set compared to the estimated search statistics. Many of these factors correspond to settings you selected when submitting your 'export' or 'add to review set' process."
+"Cloud attachments","0","Number of cloud attachments in email messages and Teams conversations that originated from links shared through SharePoint or OneDrive. Maps to the setting ""Access links(cloud attachments) in messages""."
+"Cloud attachment versions","0","Number of cloud attachment versions that were collected depending on whether you chose to include more than just the latest version in your query."
+"Cloud attachment versions at time of sharing","0","Number of cloud attachments versions that represent the original version shared from SharePoint or OneDrive. This applies only to cloud attachments that have a retention label applied, which retains a copy of the file at the time of sharing."
+"Contextual conversation","0","Number of contextual chat messages that were collected along with the message that matched your query. Maps to the setting ""Include Teams and Viva Engage conversations""."
+"Teams conversations consolidated into transcripts","None","Teams chat conversations that were converted to HTML transcript files. Maps to the setting ""Organize conversations into HTML transcripts""."
+"SharePoint file versions","0","Number of SharePoint file versions that were collected depending on whether you chose to include more than just the latest version."
+"SharePoint list items collected as .csv files","None","Matches from the same SharePoint list are exported or added to review set as a single SharePoint list csv item. Maps to the setting ""Collect files attached to SharePoint lists and their child items""."
+"List attachments","0","Number of list attachments collected. Maps to the setting ""Include list attachments"" when collecting files attached to SharePoint lists."
+"Items in SharePoint folders","None","Number of items expanded from SharePoint folders that matched your query. Maps to setting  ""collect all items (even if they don't match search query)""."
+"Items extracted from parent items","0","Number of embedded or attached items that were extracted from parent items. For example, this might include attachments or embedded images from an email that matched your query."
+
+"Consumption summary"
+"Name","Value","Description"
+"Non M365 AI subscription check","OFF","Determines whether the subscription for Pay-as-you-go meters are available in the tenant"
+
+"Totals"
+"Name","Value","Description"
+"M365 content data size","3442437","Relates to size of all Microsoft 365 data including M365 Copilot data."
+"Non M365 AI content data size","0","Relates to size of all non-Microsoft 365 AI data including Fabric Copilot, Security Copilot, etc and other Enterprise AI and Cloud AI apps data."

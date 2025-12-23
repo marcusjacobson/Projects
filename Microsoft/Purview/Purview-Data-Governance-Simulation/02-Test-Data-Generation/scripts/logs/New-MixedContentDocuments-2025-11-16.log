@@ -1,7 +1,0 @@
-[2025-11-16 18:15:51] [Info] [New-MixedContentDocuments] Configuration loaded for mixed-format document generation
-[2025-11-16 18:16:18] [Success] [New-MixedContentDocuments] Mixed documents generated: 1100 documents, 4865 PII patterns
-[2025-11-16 18:20:51] [Info] [New-MixedContentDocuments] Configuration loaded for mixed-format document generation
-[2025-11-16 18:21:13] [Success] [New-MixedContentDocuments] Mixed documents generated: 1100 documents, 4977 PII patterns
-[2025-11-16 18:23:36] [Info] [New-MixedContentDocuments] Configuration loaded for mixed-format document generation
-[2025-11-16 18:26:35] [Info] [New-MixedContentDocuments] Configuration loaded for mixed-format document generation
-[2025-11-16 18:26:58] [Success] [New-MixedContentDocuments] Mixed documents generated: 1100 documents, 4833 PII patterns

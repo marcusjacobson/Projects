@@ -1,0 +1,64 @@
+{
+  "FullyValidatedSites": 5,
+  "Results": [
+    {
+      "OwnerCorrect": true,
+      "SiteName": "HR-Simulation",
+      "MetadataConfigured": true,
+      "Accessible": true,
+      "DocumentLibraryExists": true,
+      "WriteAccessValidated": true,
+      "Issues": [],
+      "ExternalSharingDisabled": true,
+      "SiteUrl": "https://marcusjcloud.sharepoint.com/sites/HR-Simulation"
+    },
+    {
+      "OwnerCorrect": true,
+      "SiteName": "Finance-Simulation",
+      "MetadataConfigured": true,
+      "Accessible": true,
+      "DocumentLibraryExists": true,
+      "WriteAccessValidated": true,
+      "Issues": [],
+      "ExternalSharingDisabled": true,
+      "SiteUrl": "https://marcusjcloud.sharepoint.com/sites/Finance-Simulation"
+    },
+    {
+      "OwnerCorrect": true,
+      "SiteName": "Legal-Simulation",
+      "MetadataConfigured": true,
+      "Accessible": true,
+      "DocumentLibraryExists": true,
+      "WriteAccessValidated": true,
+      "Issues": [],
+      "ExternalSharingDisabled": true,
+      "SiteUrl": "https://marcusjcloud.sharepoint.com/sites/Legal-Simulation"
+    },
+    {
+      "OwnerCorrect": true,
+      "SiteName": "Marketing-Simulation",
+      "MetadataConfigured": true,
+      "Accessible": true,
+      "DocumentLibraryExists": true,
+      "WriteAccessValidated": true,
+      "Issues": [],
+      "ExternalSharingDisabled": true,
+      "SiteUrl": "https://marcusjcloud.sharepoint.com/sites/Marketing-Simulation"
+    },
+    {
+      "OwnerCorrect": true,
+      "SiteName": "IT-Simulation",
+      "MetadataConfigured": true,
+      "Accessible": true,
+      "DocumentLibraryExists": true,
+      "WriteAccessValidated": true,
+      "Issues": [],
+      "ExternalSharingDisabled": true,
+      "SiteUrl": "https://marcusjcloud.sharepoint.com/sites/IT-Simulation"
+    }
+  ],
+  "TenantUrl": "https://marcusjcloud.sharepoint.com/",
+  "SitesVerified": 5,
+  "AccessibleSites": 5,
+  "Timestamp": "2025-12-22 22:56:14"
+}

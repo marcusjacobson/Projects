@@ -21,7 +21,7 @@ This repository serves as a professional portfolio showcasing a growing expertis
 
 * ✅ **Deployed Enterprise AI Security:** Secured Azure OpenAI workloads with Defender for Cloud.
 * ✅ **Automated SOC Operations:** Built a cloud-native SIEM with Microsoft Sentinel and Logic App automation.
-* ✅ **Enforced Data Governance:** Implemented comprehensive data governance simulation with Microsoft Purview.
+* ✅ **Enforced Data Governance:** Implemented comprehensive discovery methods simulation with Microsoft Purview.
 * ✅ **Protected Analytics Data:** Configured DLP and Data Map scanning for Microsoft Fabric workloads.
 * ✅ **Streamlined DevSecOps:** Established automated synchronization between Azure DevOps and GitHub for hybrid workflows.
 

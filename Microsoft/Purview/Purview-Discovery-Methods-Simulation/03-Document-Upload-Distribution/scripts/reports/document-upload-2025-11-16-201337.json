@@ -1,0 +1,38 @@
+{
+  "Configuration": {
+    "CategoryFilter": "",
+    "ForceMode": false,
+    "ResumeMode": false
+  },
+  "Summary": {
+    "SuccessfulUploads": null,
+    "StartTime": "2025-11-16 20:13:37",
+    "TotalDuration": "00:00:00",
+    "CompletedOn": "2025-11-16 20:13:37",
+    "TotalDocuments": null,
+    "FailedUploads": null
+  },
+  "Errors": [
+    {
+      "Error": "SharePoint connection failed. Ensure you have SharePoint Administrator permissions and valid browser authentication.",
+      "Phase": "HR",
+      "Timestamp": "2025-11-16 20:13:37"
+    },
+    {
+      "Error": "Cannot bind argument to parameter 'Documents' because it is null.",
+      "Phase": "Financial",
+      "Timestamp": "2025-11-16 20:13:37"
+    },
+    {
+      "Error": "SharePoint connection failed. Ensure you have SharePoint Administrator permissions and valid browser authentication.",
+      "Phase": "Identity",
+      "Timestamp": "2025-11-16 20:13:37"
+    },
+    {
+      "Error": "SharePoint connection failed. Ensure you have SharePoint Administrator permissions and valid browser authentication.",
+      "Phase": "Mixed",
+      "Timestamp": "2025-11-16 20:13:37"
+    }
+  ],
+  "ByCategory": {}
+}

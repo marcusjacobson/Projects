@@ -1,13 +1,13 @@
-# Purview Data Governance Simulation Project - Creation Prompt Template
+# Purview Discovery Methods Simulation Project - Creation Prompt Template
 
-This specialized prompt template provides structured guidance for creating a comprehensive Microsoft Purview data governance simulation project. It focuses on scripted SharePoint site creation, realistic HR/PII data generation, classification workflows, and DLP policy implementation using PowerShell automation.
+This specialized prompt template provides structured guidance for creating a comprehensive Microsoft Purview discovery methods simulation project. It focuses on scripted SharePoint site creation, realistic HR/PII data generation, classification workflows, and DLP policy implementation using PowerShell automation.
 
 ---
 
-## 🎯 Purview Data Governance Simulation Project Creation Prompt
+## 🎯 Purview Discovery Methods Simulation Project Creation Prompt
 
 ```markdown
-I need your help creating a Microsoft Purview Data Governance Simulation project from scratch. This project will simulate enterprise data governance scenarios through scripted site creation, bulk document generation with HR-related PII data, and comprehensive classification/DLP workflows. Please follow this structured approach:
+I need your help creating a Microsoft Purview Discovery Methods Simulation project from scratch. This project will simulate enterprise discovery method scenarios through scripted site creation, bulk document generation with HR-related PII data, and comprehensive classification/DLP workflows. Please follow this structured approach:
 
 ## PROJECT CONTEXT
 
@@ -1201,6 +1201,6 @@ Before suggesting any code or technical procedures:
 
 ## 🤖 AI-Assisted Content Generation
 
-This specialized Purview Data Governance Simulation project creation prompt template was created with the assistance of **GitHub Copilot** powered by advanced AI language models. The content was generated, structured, and refined through iterative collaboration between human expertise and AI assistance within **Visual Studio Code**, incorporating Microsoft Purview simulation strategies, configuration-driven architecture patterns, browser-based authentication requirements, and comprehensive coverage of HR-related Sensitive Information Types validated against current Microsoft Learn documentation as of November 2025.
+This specialized Purview Discovery Methods Simulation project creation prompt template was created with the assistance of **GitHub Copilot** powered by advanced AI language models. The content was generated, structured, and refined through iterative collaboration between human expertise and AI assistance within **Visual Studio Code**, incorporating Microsoft Purview simulation strategies, configuration-driven architecture patterns, browser-based authentication requirements, and comprehensive coverage of HR-related Sensitive Information Types validated against current Microsoft Learn documentation as of November 2025.
 
-*AI tools were used to enhance productivity and ensure comprehensive coverage of Purview data governance simulation requirements while maintaining technical accuracy, reflecting established repository PowerShell and Markdown style guide standards, and incorporating enterprise-grade automation patterns for SharePoint site provisioning, realistic data generation with HR/PII content, and flexible classification/DLP workflows suitable for demonstrations, testing, and professional consulting portfolios.*
+*AI tools were used to enhance productivity and ensure comprehensive coverage of Purview discovery methods simulation requirements while maintaining technical accuracy, reflecting established repository PowerShell and Markdown style guide standards, and incorporating enterprise-grade automation patterns for SharePoint site provisioning, realistic data generation with HR/PII content, and flexible classification/DLP workflows suitable for demonstrations, testing, and professional consulting portfolios.*

@@ -1,0 +1,49 @@
+{
+  "CurrentTime": "2025-12-23 00:14:10",
+  "WindowStartTime": "2025-12-21 00:14:10",
+  "HoursChecked": 48,
+  "IndexingThresholdHours": 24,
+  "IndexingCutoffTime": "2025-12-22 00:14:10",
+  "SitesScanned": 5,
+  "TotalRecentFiles": 780,
+  "OldestFileAge": -7.1,
+  "OldestFileName": "BenefitsEnrollment_EMP-10004_2025-03-03.docx",
+  "OldestFileSite": "HR-Simulation",
+  "ReadinessScore": -30.0,
+  "IsReady": false,
+  "Status": "Not Ready",
+  "RecommendedWaitHours": 31.1,
+  "CheckBackTime": "2025-12-24 07:20:06",
+  "SiteBreakdown": [
+    {
+      "Site": "HR-Simulation",
+      "TotalFiles": 310,
+      "RecentFiles": 310,
+      "OldestRecent": "2025-12-23T07:20:06Z"
+    },
+    {
+      "Site": "Finance-Simulation",
+      "TotalFiles": 280,
+      "RecentFiles": 280,
+      "OldestRecent": "2025-12-23T07:25:40Z"
+    },
+    {
+      "Site": "Legal-Simulation",
+      "TotalFiles": 190,
+      "RecentFiles": 190,
+      "OldestRecent": "2025-12-23T07:30:47Z"
+    },
+    {
+      "Site": "Marketing-Simulation",
+      "TotalFiles": 0,
+      "RecentFiles": 0,
+      "OldestRecent": null
+    },
+    {
+      "Site": "IT-Simulation",
+      "TotalFiles": 0,
+      "RecentFiles": 0,
+      "OldestRecent": null
+    }
+  ]
+}

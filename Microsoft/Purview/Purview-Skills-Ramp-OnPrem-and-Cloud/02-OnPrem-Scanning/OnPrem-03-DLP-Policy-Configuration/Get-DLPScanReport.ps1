@@ -149,18 +149,31 @@ Write-Host "   Total files in report: $totalFiles" -ForegroundColor Gray
 # Filter for DLP matches (check for DLP-related columns)
 $dlpMatchFiles = @()
 
-# Check if report has DLP columns
+# Check if report has DLP columns (actual column names from scanner reports)
+# Common column names: "DLP Mode", "Information Type Name", "DLP Rule Name", "DLP Status"
 $hasDlpColumns = $reportData | Get-Member -MemberType NoteProperty | 
-                 Where-Object { $_.Name -match "DLP|Policy|SensitiveInfoType" }
+                 Where-Object { $_.Name -match "DLP|Information Type" }
 
 if ($hasDlpColumns) {
     Write-Host "   ✅ Report contains DLP analysis columns" -ForegroundColor Green
     
-    # Filter files with DLP matches (non-empty DLP policy or sensitive info type fields)
+    # Show available DLP-related columns for debugging
+    $dlpColumns = $reportData | Get-Member -MemberType NoteProperty | 
+                  Where-Object { $_.Name -match "DLP|Information Type" } |
+                  Select-Object -ExpandProperty Name
+    Write-Host "   DLP Columns found: $($dlpColumns -join ', ')" -ForegroundColor Gray
+    
+    # Filter files with DLP matches using actual column names from scanner
+    # Primary indicator: "Information Type Name" is populated (indicates sensitive data detected)
+    # Secondary indicators: "DLP Mode" is populated (Test/Enforce)
     $dlpMatchFiles = $reportData | Where-Object {
-        ($_.DLPPolicyName -and $_.DLPPolicyName -ne '') -or
+        # Check "Information Type Name" column (primary DLP detection indicator)
+        ($_.'Information Type Name' -and $_.'Information Type Name' -ne '' -and $_.'Information Type Name' -ne 'N/A') -or
+        # Check "DLP Mode" column (indicates DLP was evaluated)
+        ($_.'DLP Mode' -and $_.'DLP Mode' -ne '' -and $_.'DLP Mode' -ne 'N/A') -or
+        # Fallback: Check legacy column names
         ($_.SensitiveInfoType -and $_.SensitiveInfoType -ne '') -or
-        ($_.DLPMatchCount -and [int]$_.DLPMatchCount -gt 0)
+        ($_.DLPPolicyName -and $_.DLPPolicyName -ne '')
     }
     
 } else {
@@ -214,18 +227,31 @@ if ($dlpMatchFiles.Count -gt 0) {
         }
     }
     
-    # Group by sensitive info type (if available)
-    $sensitiveTypeColumn = $reportData | Get-Member -MemberType NoteProperty | 
-                           Where-Object { $_.Name -match "SensitiveInfoType|InfoType" } | Select-Object -First 1
+    # Group by sensitive info type (using actual column name "Information Type Name")
+    Write-Host "`n   📋 Detected Sensitive Information Types:" -ForegroundColor Yellow
+    $infoTypeGroups = $dlpMatchFiles | Where-Object { $_.'Information Type Name' -and $_.'Information Type Name' -ne '' } | 
+                      Group-Object 'Information Type Name' | Sort-Object Count -Descending
     
-    if ($sensitiveTypeColumn) {
-        Write-Host "`n   📋 Detected Sensitive Information Types:" -ForegroundColor Yellow
-        $infoTypeGroups = $dlpMatchFiles | Where-Object { $_.$($sensitiveTypeColumn.Name) } | 
-                          Group-Object $sensitiveTypeColumn.Name | Sort-Object Count -Descending
-        
+    if ($infoTypeGroups) {
         foreach ($infoType in $infoTypeGroups) {
             Write-Host "      $($infoType.Name): $($infoType.Count) files" -ForegroundColor Gray
         }
+    } else {
+        Write-Host "      (No information type data available)" -ForegroundColor DarkGray
+    }
+    
+    # Group by DLP Mode
+    Write-Host "`n   🔐 DLP Mode Distribution:" -ForegroundColor Yellow
+    $dlpModeGroups = $dlpMatchFiles | Where-Object { $_.'DLP Mode' -and $_.'DLP Mode' -ne '' } | 
+                     Group-Object 'DLP Mode' | Sort-Object Count -Descending
+    
+    if ($dlpModeGroups) {
+        foreach ($mode in $dlpModeGroups) {
+            $modeColor = if ($mode.Name -eq 'Enforce') { 'Red' } elseif ($mode.Name -eq 'Test') { 'Yellow' } else { 'Gray' }
+            Write-Host "      $($mode.Name): $($mode.Count) files" -ForegroundColor $modeColor
+        }
+    } else {
+        Write-Host "      (No DLP mode data available)" -ForegroundColor DarkGray
     }
     
     # Show sample files (first 5)
@@ -233,11 +259,15 @@ if ($dlpMatchFiles.Count -gt 0) {
     $sampleFiles = $dlpMatchFiles | Select-Object -First 5
     
     foreach ($file in $sampleFiles) {
-        Write-Host "`n      File: $($file.Name)" -ForegroundColor Cyan
-        Write-Host "         Path: $($file.Path)" -ForegroundColor Gray
+        $fileName = if ($file.'File Name') { $file.'File Name' } elseif ($file.Name) { $file.Name } else { "(unknown)" }
+        $filePath = if ($file.'File Path') { $file.'File Path' } elseif ($file.Path) { $file.Path } else { "(unknown)" }
+        
+        Write-Host "`n      File: $fileName" -ForegroundColor Cyan
+        Write-Host "         Path: $filePath" -ForegroundColor Gray
         if ($file.Repository) { Write-Host "         Repository: $($file.Repository)" -ForegroundColor Gray }
-        if ($file.DLPPolicyName) { Write-Host "         DLP Policy: $($file.DLPPolicyName)" -ForegroundColor Gray }
-        if ($file.SensitiveInfoType) { Write-Host "         Info Type: $($file.SensitiveInfoType)" -ForegroundColor Gray }
+        if ($file.'Information Type Name') { Write-Host "         Info Type: $($file.'Information Type Name')" -ForegroundColor Yellow }
+        if ($file.'DLP Mode') { Write-Host "         DLP Mode: $($file.'DLP Mode')" -ForegroundColor $(if ($file.'DLP Mode' -eq 'Enforce') { 'Red' } else { 'Yellow' }) }
+        if ($file.'DLP Rule Name' -and $file.'DLP Rule Name' -ne '') { Write-Host "         DLP Rule: $($file.'DLP Rule Name')" -ForegroundColor Gray }
     }
 }
 

@@ -52,12 +52,37 @@ if ($env:ENTRAID_APP_ID) {
                 $appClientId = Read-Host "   Enter the Client ID (Application ID) from the output above"
                 
             } catch {
+                $errorMsg = $_.Exception.Message
                 Write-Host ""
-                Write-Host "   [ERROR] Automatic registration failed: $($_.Exception.Message)" -ForegroundColor Red
-                Write-Host "   This likely means your PowerShell version is older than 7.4" -ForegroundColor Yellow
-                Write-Host "   Falling back to manual registration instructions..." -ForegroundColor Yellow
-                Write-Host ""
-                $choice = "2"
+                
+                if ($errorMsg -match "already exists") {
+                    # App already exists - this is fine, user just needs to provide the Client ID
+                    Write-Host "   [INFO] App '$appName' already exists in your tenant." -ForegroundColor Yellow
+                    Write-Host "   You can find the Client ID in Azure Portal:" -ForegroundColor Yellow
+                    Write-Host "   1. Go to https://portal.azure.com" -ForegroundColor White
+                    Write-Host "   2. Navigate: Entra ID -> App registrations -> $appName" -ForegroundColor White
+                    Write-Host "   3. Copy the Application (client) ID from the Overview page" -ForegroundColor White
+                    Write-Host ""
+                    $appClientId = Read-Host "   Enter the Client ID (Application ID) from Azure Portal"
+                } else {
+                    Write-Host "   [ERROR] Automatic registration failed: $errorMsg" -ForegroundColor Red
+                    Write-Host "   Falling back to manual registration..." -ForegroundColor Yellow
+                    Write-Host ""
+                    Write-Host "   📋 Manual App Registration Steps:" -ForegroundColor Yellow
+                    Write-Host "   1. Go to https://portal.azure.com" -ForegroundColor White
+                    Write-Host "   2. Navigate: Entra ID -> App registrations -> + New registration" -ForegroundColor White
+                    Write-Host "   3. Name: $appName" -ForegroundColor White
+                    Write-Host "   4. Account type: Single tenant" -ForegroundColor White
+                    Write-Host "   5. Redirect URI: Public client/native -> http://localhost" -ForegroundColor White
+                    Write-Host "   6. Click Register, then COPY the Application (client) ID" -ForegroundColor White
+                    Write-Host "   7. Add API Permissions:" -ForegroundColor White
+                    Write-Host "      - SharePoint: AllSites.FullControl, User.ReadWrite.All (Delegated)" -ForegroundColor Gray
+                    Write-Host "      - Microsoft Graph: Group.ReadWrite.All, User.ReadWrite.All (Delegated)" -ForegroundColor Gray
+                    Write-Host "   8. Grant admin consent" -ForegroundColor White
+                    Write-Host "   9. Authentication -> Allow public client flows -> Yes" -ForegroundColor White
+                    Write-Host ""
+                    $appClientId = Read-Host "   Enter the Client ID (Application ID) from Azure Portal"
+                }
             }
         }
         "2" {
@@ -265,7 +290,8 @@ No confidential data included in this document.
     
     # Create Word document locally
     $fileName = "TestDoc_$docNumber.docx"
-    $tempPath = "$env:TEMP\$fileName"
+    $tempFolder = [System.IO.Path]::GetTempPath()
+    $tempPath = Join-Path $tempFolder $fileName
     
     try {
         # Validate Word application is still available
@@ -285,8 +311,9 @@ No confidential data included in this document.
         $range = $doc.Range()
         $range.Text = $content
         
-        # Save and close document
-        $doc.SaveAs([ref]$tempPath)
+        # Save as .docx format (wdFormatXMLDocument = 12)
+        $wdFormatDocx = 12
+        $doc.SaveAs($tempPath, $wdFormatDocx)
         $doc.Close($false)  # Close without saving again
         
         # Release document COM object immediately
@@ -314,7 +341,15 @@ No confidential data included in this document.
         
     } catch {
         $failCount++
-        Write-Warning "Failed to create/upload document $docNumber : $($_.Exception.Message)"
+        $errorDetails = $_.Exception.Message
+        $errorLine = $_.InvocationInfo.ScriptLineNumber
+        Write-Warning "Failed to create/upload document $docNumber : $errorDetails (line $errorLine)"
+        
+        # Show temp path for debugging on first failure
+        if ($failCount -eq 1) {
+            Write-Host "   Debug: Temp path = $tempPath" -ForegroundColor Gray
+            Write-Host "   Debug: Temp folder exists = $(Test-Path $tempFolder)" -ForegroundColor Gray
+        }
         
         # Attempt to recreate Word if we have too many consecutive failures
         if ($failCount % 5 -eq 0) {

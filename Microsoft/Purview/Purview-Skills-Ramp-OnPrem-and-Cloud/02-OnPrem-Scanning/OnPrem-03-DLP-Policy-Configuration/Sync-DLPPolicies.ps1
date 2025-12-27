@@ -26,7 +26,8 @@
     - Windows PowerShell 5.1 running as Administrator
     - Information Protection Scanner installed and configured
     - DLP policies created in Purview portal (Standard Path) OR existing DLP policies (Alternative Path)
-    - EnableDLP=On configured (run Enable-ScannerDLP.ps1 first)
+    - For portal-configured scanners: Enable DLP policy rules = On in Content Scan Job settings
+    - For local-configured scanners: EnableDLP=On configured (run Enable-ScannerDLP.ps1 first)
     - Internet connectivity to Microsoft 365 services
     
     Script development orchestrated using GitHub Copilot.
@@ -48,24 +49,34 @@ param()
 Write-Host "`n🔄 Synchronizing DLP Policies from Purview Portal" -ForegroundColor Cyan
 Write-Host "================================================" -ForegroundColor Cyan
 
-# Step 1: Verify DLP is enabled
-Write-Host "`n📋 Step 1: Verifying DLP configuration..." -ForegroundColor Cyan
+# Step 1: Verify scanner configuration and online mode
+Write-Host "`n📋 Step 1: Verifying scanner configuration..." -ForegroundColor Cyan
 
 try {
     $scannerConfig = Get-ScannerContentScan -ErrorAction Stop
+    $onlineConfig = Get-ScannerConfiguration -ErrorAction Stop
     
-    if ($scannerConfig.EnableDlp -ne 'On') {
-        Write-Host "   ❌ DLP is not enabled (current: $($scannerConfig.EnableDlp))" -ForegroundColor Red
-        Write-Host "`n⚠️  Prerequisite Missing:" -ForegroundColor Yellow
-        Write-Host "   Run Enable-ScannerDLP.ps1 first to enable DLP" -ForegroundColor Gray
-        exit 1
+    # Check if scanner is in Online mode (portal-configured)
+    if ($onlineConfig.OnlineConfiguration -eq 'On') {
+        Write-Host "   ✅ Scanner is portal-configured (OnlineConfiguration = On)" -ForegroundColor Green
+        Write-Host "   📋 DLP settings are managed in Purview portal" -ForegroundColor Gray
+        Write-Host "   💡 Verify 'Enable DLP policy rules' is On in Content Scan Job settings" -ForegroundColor Yellow
+    } else {
+        # Local configuration mode - check EnableDlp setting
+        if ($scannerConfig.EnableDlp -ne 'On') {
+            Write-Host "   ❌ DLP is not enabled (current: $($scannerConfig.EnableDlp))" -ForegroundColor Red
+            Write-Host "`n⚠️  Prerequisite Missing:" -ForegroundColor Yellow
+            Write-Host "   For local configuration: Run Enable-ScannerDLP.ps1 first" -ForegroundColor Gray
+            Write-Host "   For portal configuration: Enable DLP in Content Scan Job settings" -ForegroundColor Gray
+            exit 1
+        }
+        Write-Host "   ✅ DLP is enabled (local configuration)" -ForegroundColor Green
     }
     
-    Write-Host "   ✅ DLP is enabled" -ForegroundColor Green
-    Write-Host "   RepositoryOwner: $($scannerConfig.RepositoryOwner)" -ForegroundColor Gray
+    Write-Host "   ContentScanJob: $($scannerConfig.JobName)" -ForegroundColor Gray
     
 } catch {
-    Write-Host "   ❌ Failed to check DLP configuration: $_" -ForegroundColor Red
+    Write-Host "   ❌ Failed to check scanner configuration: $_" -ForegroundColor Red
     exit 1
 }
 

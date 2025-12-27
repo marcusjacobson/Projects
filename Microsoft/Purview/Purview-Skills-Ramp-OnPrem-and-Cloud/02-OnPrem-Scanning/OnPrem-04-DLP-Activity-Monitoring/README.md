@@ -107,6 +107,8 @@ Activity Explorer provides real-time monitoring of DLP events. This step teaches
 
 #### Configure Filters
 
+![activity-explorer-dashboard](.images/activity-explorer-dashboard.png)
+
 Apply the following filters to isolate on-premises scanner activity (excluding cloud data):
 
 **Primary Filters** (Required):
@@ -163,6 +165,8 @@ After applying filters, review the Activity Explorer interface to validate DLP d
 
 #### Success Validation
 
+![activity-explorer-filtered](.images/activity-explorer-filtered.png)
+
 ✅ **Validation Criteria:**
 
 - DLP events present in Activity Explorer timeline (time period after OnPrem-03 scan).
@@ -188,131 +192,100 @@ Activity Explorer is one of three DLP reporting sources. Use these complementary
 
 ### Step 3: Export Activity Data for Compliance Reporting
 
-Activity Explorer data can be exported to CSV for stakeholder reporting, compliance audits, and executive dashboards. By customizing the visible columns, you can include sensitive info type details in your export.
-
-**Customize Columns to Include Sensitive Info Types:**
-
-Before exporting, configure Activity Explorer to show the sensitive info type data:
-
-- In Activity Explorer, click **Customize columns** (gear icon or column settings).
-- Enable the following columns for export:
-  - ✅ **Activity** (default)
-  - ✅ **File** (default)
-  - ✅ **Location** (default)
-  - ✅ **User** (default)
-  - ✅ **Happened** (default)
-  - ✅ **Sensitive info type** ← **Add this column to see what was detected**
-  - ✅ **Policy** (optional - typically empty for on-premises)
-  - ✅ **Rule** (optional - typically empty for on-premises)
-- Click **Apply** or **Save** to update the view.
-
-> **💡 Critical Step**: The **Sensitive info type** column is **not included by default** in Activity Explorer exports. You must use **Customize columns** to add it, otherwise your CSV will only show file paths without indicating what sensitive data was detected.
+Activity Explorer data can be exported to CSV for stakeholder reporting, compliance audits, and trend analysis. The export captures the filtered activity data visible in the current view.
 
 **Export Activity Data to CSV:**
 
-After customizing columns:
+- Ensure filters are applied (Location = **Endpoint devices**, Activity = **FileDiscovered**).
+- Click **Export** (located above the activity list, below the chart).
+- The CSV file downloads automatically to your Downloads folder.
 
-- Ensure filters are applied (Location = Endpoint devices).
-- Click **Export** button (top right of Activity Explorer interface).
-- Select export format: **CSV**.
-- Wait for export to generate (may take 1-2 minutes for large datasets).
-- Download the CSV file when ready.
+> **💡 Tip**: Apply a **Sensitive info type** filter before exporting to focus on specific data types. While the export won't include a sensitive info type column, filtering first ensures you're exporting only relevant activities.
 
 **Review Exported Data Structure:**
 
-Open the exported CSV file in Excel or a text editor. With the Sensitive info type column enabled, your Activity Explorer export will contain:
+Open the exported CSV file in Excel or a text editor. Activity Explorer exports contain the following columns:
 
-**Activity Explorer CSV Export Columns (With Customization):**
+**Activity Explorer CSV Export Columns:**
 
 | Column Name | Sample Data | Use in Reporting |
 |-------------|-------------|------------------|
 | **Activity** | File discovered | Activity type for filtering and grouping |
-| **File** | `\\COMPUTERNAME\Finance\CustomerPayments.txt` | Full UNC path to scanned file |
+| **File** | `\\YOURSERVER\Share\FileName.txt` | Full UNC path to scanned file |
 | **Location** | Endpoint devices | Confirms on-premises vs cloud workloads |
+| **Enforcement plane** | (Empty for discovery scans) | Shows enforcement context if applicable |
 | **User** | scanner-svc@yourdomain.com | Service account running scanner |
-| **Happened** | XXXX-XX-XXT00:00:00.000Z | ISO 8601 timestamp of detection event |
-| **Sensitive info type** | Credit Card Number/Social Security Number | **What sensitive data was detected** |
-| **Policy** | (Empty for on-premises scanners) | DLP policy name (may not populate) |
-| **Rule** | (Empty for on-premises scanners) | DLP rule name (may not populate) |
+| **Happened** | YYYY-MM-DDTHH:MM:SS.000Z | ISO 8601 timestamp of detection event |
+| **Policy** | (Empty for on-premises scanners) | DLP policy name (typically empty for on-prem) |
+| **Rule** | (Empty for on-premises scanners) | DLP rule name (typically empty for on-prem) |
+
+> **⚠️ Important**: The Activity Explorer CSV export does **not** include a **Sensitive info type** column. To determine what sensitive data was detected in each file, use the **DetailedReport CSV** from the scanner's local Reports directory (see [OnPrem-02](../OnPrem-02-Discovery-Scans/README.md)), which includes DLP rule matches and sensitive info type details.
 
 **Expected Export Data (OnPrem-03 Lab Files):**
 
-Based on the OnPrem-03 lab, your Activity Explorer export should show multiple "File discovered" events with sensitive info types:
+Based on the OnPrem-03 lab, your Activity Explorer export should show multiple "File discovered" events for your test files:
 
-- `\\COMPUTERNAME\Finance\CustomerPayments.txt` - **Credit Card Number**.
-- `\\COMPUTERNAME\HR\EmployeeRecords.txt` - **U.S. Social Security Number (SSN)**.
-- `\\COMPUTERNAME\Projects\PhoenixProject.txt` - **Credit Card Number**.
+- `\\YOURSERVER\Finance\CustomerPayments.txt`
+- `\\YOURSERVER\HR\EmployeeRecords.txt`
+- `\\YOURSERVER\Projects\PhoenixProject.txt`
 
-> **💡 Multiple Events Per File**: You may see duplicate entries for the same file with different timestamps. This occurs when the scanner runs multiple times. Use PowerShell to deduplicate and generate unique file summaries.
+> **💡 Multiple Events Per File**: You may see duplicate entries for the same file with different timestamps. This occurs when the scanner runs multiple times (e.g., manual scans, scheduled rescans). Each scan generates new activity events.
 
 **Create Stakeholder-Ready Reports:**
 
-Use the exported CSV with sensitive info type data to create executive summaries:
+**Combine Data Sources for Complete Reporting:**
 
-#### Option 1: Excel Pivot Table Summary
+Since Activity Explorer exports don't include sensitive info types, combine multiple data sources:
 
-```excel
-1. Open exported CSV in Excel
-2. Insert > PivotTable
-3. Rows: Sensitive info type
-4. Values: Count of File (shows unique file count per sensitive data type)
-5. Add filter: Location = "Endpoint devices"
-6. Result: Executive summary showing "Credit Card Number: 2 files, SSN: 1 file"
-```
+#### Option 1: Activity Explorer for Activity Tracking
 
-#### Option 2: PowerShell Executive Summary (Personal workstation, NOT VM)
+Use Activity Explorer exports to track:
 
-On your development/admin machine (not Scanner VM), open PowerShell and run:
+- **When** files were discovered (timestamps)
+- **Where** files are located (UNC paths)
+- **Who** ran the scan (service account)
+- **How many** times files were scanned
 
-```powershell
-cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\02-OnPrem-Scanning\OnPrem-04-DLP-Enforcement-Validation"
-.\Generate-DLPExecutiveSummary.ps1
-```
+#### Option 2: DetailedReport CSV for Sensitive Info Types
 
-> **💡 Script Functionality**: This script automatically finds the most recent Activity Explorer export in your Downloads folder, processes the data to identify sensitive information types, and generates two comprehensive reports in C:\Reports directory: an executive summary and a detailed file-level report.
+The scanner's local DetailedReport CSV (from OnPrem-02) includes:
 
-**Expected PowerShell Output:**
+- **Sensitive info types** detected in each file
+- **DLP Mode** and **DLP Status**
+- **DLP Rule Name** that matched
+- **Match confidence** and **count**
+
+**Combine Both Sources:**
 
 ```text
-========== ON-PREMISES DLP EXECUTIVE SUMMARY ==========
-Report Date: 2025-10-27
-Scope: On-Premises File Repositories (Endpoint Devices)
-
-Sensitive Data Type              Unique Files Detected Total Detection Events Sample Files
---------------------              --------------------- --------------------- ------------
-Credit Card Number                                   2                    12 \\vm-purview-scan\Finance\CustomerPayments.txt; \\vm-purview-scan\Projects\PhoenixProject.txt
-U.S. Social Security Number (SSN)                   1                     6 \\vm-purview-scan\HR\EmployeeRecords.txt
-
-========== DETAILED FILE-LEVEL REPORT ==========
-File Name             Repository Sensitive Data Type
----------             ---------- --------------------
-CustomerPayments.txt  Finance    Credit Card Number
-PhoenixProject.txt    Projects   Credit Card Number
-EmployeeRecords.txt   HR         U.S. Social Security Number (SSN)
+Activity Explorer → Activity tracking, timestamps, scan history
+DetailedReport CSV → Sensitive info types, DLP rules, technical details
 ```
 
 #### Compliance Audit Trail Template
 
 For compliance documentation, combine Activity Explorer exports with local scanner reports:
 
-**Executive Summary Template** (from Activity Explorer CSV):
+**Executive Summary Template:**
 
 - **Report Date**: [Current date]
 - **Scope**: On-premises file repositories (Endpoint devices only)
-- **Detection Summary**:
+- **Detection Summary** (from DetailedReport CSV):
   - Credit Card Numbers: X unique files detected
   - Social Security Numbers: Y unique files detected
   - Total sensitive files: Z unique files
-- **Data Source**: Activity Explorer export with Customize columns (Sensitive info type enabled)
-- **Export Date Range**: [Start date] to [End date]
+- **Activity Tracking** (from Activity Explorer):
+  - Total scan events: N events
+  - Date range: [Start date] to [End date]
+  - Files scanned: [List of UNC paths]
 
-**Supporting Documentation**:
+**Supporting Documentation:**
 
-- **Activity Explorer CSV**: Shows what was detected and when (sensitive info types visible)
-- **DetailedReport CSV** (Local scanner): Shows DLP Mode, DLP Status, DLP Rule Name for technical validation
+- **Activity Explorer CSV**: Shows scan activity, timestamps, file paths (no sensitive info types)
+- **DetailedReport CSV** (Local scanner): Shows DLP Mode, DLP Status, DLP Rule Name, **Sensitive Info Types**
 - **Audit Log**: Long-term compliance records accessible via Purview portal > Audit
 
-> **📊 Best Practice**: Activity Explorer exports with the **Sensitive info type** column provide stakeholder-ready summaries. Use local DetailedReport CSV for technical troubleshooting and Audit Log for regulatory compliance documentation requiring long-term retention.
+> **📊 Best Practice**: Use **Activity Explorer** for scan activity tracking and timestamps. Use **DetailedReport CSV** from the scanner for sensitive info type details and stakeholder-ready summaries. Use **Audit Log** for regulatory compliance documentation requiring long-term retention.
 
 ---
 
@@ -332,7 +305,7 @@ For ongoing compliance monitoring, establish a regular Activity Explorer review 
 
 - Review Activity Explorer weekly for trends.
 - Export activity data for weekly compliance reports.
-- Track sensitive info type distribution over time.
+- Compare DetailedReport CSV from scanner for sensitive info type breakdowns.
 
 **Monthly Monitoring** (Low-Risk Environments):
 
@@ -340,20 +313,7 @@ For ongoing compliance monitoring, establish a regular Activity Explorer review 
 - Compare month-over-month trends.
 - Identify repositories with recurring sensitive data issues.
 
-**PowerShell Monitoring Script Example:**
-
-On your development/admin machine, open PowerShell and run:
-
-```powershell
-cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\02-OnPrem-Scanning\OnPrem-04-DLP-Enforcement-Validation"
-.\Invoke-WeeklyDLPMonitoring.ps1
-```
-
-This script provides a quick summary from the previously generated reports:
-
-> **💡 Script Functionality**: Analyzes the most recent executive summary and detailed reports from C:\Reports directory, displays sensitive data detection statistics by type and repository, and provides monitoring dashboard for weekly compliance reviews.
-
-> **💡 Monitoring Tip**: Combine Activity Explorer monitoring with scanner DetailedReport CSV reviews for comprehensive visibility. Activity Explorer provides audit trails, while scanner reports provide file-level detail.
+> **💡 Monitoring Tip**: Combine Activity Explorer monitoring with scanner DetailedReport CSV reviews for comprehensive visibility. Activity Explorer provides activity tracking (when/where), while DetailedReport CSV provides sensitive info type details (what was detected).
 
 ---
 
@@ -373,28 +333,24 @@ Complete the following validation steps to ensure successful lab completion:
 - [ ] **Date range filter** configured to include OnPrem-03 scan date
 - [ ] **Activity type filter** shows **File discovered** for on-premises scanner events
 - [ ] DLP events visible in Activity Explorer timeline after applying filters
-- [ ] **Sensitive info types identified** in activity data (Credit Card Number, SSN)
-- [ ] **File count matches scanner reports** from OnPrem-03 (4 files expected)
+- [ ] **Sensitive info types identified** via Activity Explorer filters (Credit Card Number, SSN)
+- [ ] **File count matches scanner reports** from OnPrem-03 (3 test files expected)
 - [ ] Activity timestamps correspond to OnPrem-03 scan completion time
 
-> **✅ Success Indicator**: If Activity Explorer shows **File discovered** events with **sensitive information types** (Credit Card Number, SSN) for Endpoint devices location, DLP monitoring is working correctly. Policy/rule names may be generic or missing - this is expected for on-premises scanners.
+> **✅ Success Indicator**: If Activity Explorer shows **File discovered** events for **Endpoint devices** location with files from your on-premises repositories, DLP monitoring is working correctly. Use the **Sensitive info type** filter to verify specific data types were detected. Policy/Rule columns are typically empty for on-premises scanners.
 
 ### Activity Data Export (Step 3)
 
-- [ ] **Customize columns** configured to include **Sensitive info type** column before export
 - [ ] Activity data exported to CSV successfully from Activity Explorer
-- [ ] CSV contains expected columns including **Sensitive info type** (Activity, File, Location, User, Happened, Sensitive info type, Policy, Rule)
+- [ ] CSV contains expected columns: Activity, File, Location, Enforcement plane, User, Happened, Policy, Rule
 - [ ] CSV filtered to show only on-premises repository data (Endpoint devices)
-- [ ] PowerShell executive summary script executed successfully
-- [ ] Executive summary and detailed reports generated in `C:\Reports` directory
-- [ ] Reports show sensitive data types grouped by category (Credit Card Number, SSN)
+- [ ] Understand that sensitive info type details require **DetailedReport CSV** from scanner (not Activity Explorer export)
 
 ### Monitoring Cadence (Step 4)
 
 - [ ] Reviewed recommended monitoring cadence options (daily, weekly, monthly)
-- [ ] PowerShell weekly monitoring script executed successfully
-- [ ] Monitoring script displays executive summary from generated reports
-- [ ] Repository breakdown shows files grouped by location and sensitive data type
+- [ ] Understand Activity Explorer provides activity tracking (when/where)
+- [ ] Understand DetailedReport CSV provides sensitive info type details (what was detected)
 - [ ] Regular monitoring schedule established for ongoing compliance
 
 ---
@@ -414,7 +370,7 @@ Complete the following validation steps to ensure successful lab completion:
 **Quick Resolution**:
 
 - Wait 30 minutes after OnPrem-03 scan completion, then refresh Activity Explorer (Ctrl+F5).
-- Apply **Location = On-premises repositories** filter.
+- Apply **Location = Endpoint devices** filter.
 - Verify OnPrem-03 scanner reports show populated **Information Type Name** column.
 
 ---
@@ -426,49 +382,22 @@ Complete the following validation steps to ensure successful lab completion:
 **Resolution**:
 
 1. Click **Filters** in Activity Explorer
-2. Set **Location** = **On-premises repositories** (not SharePoint, OneDrive, Exchange, Teams)
+2. Set **Location** = **Endpoint devices** (not SharePoint, OneDrive, Exchange, Teams)
 3. Click **Apply** to refresh results
 
 ---
 
-### Issue: Exported CSV Missing Sensitive Info Type Column
+### Issue: Need Sensitive Info Type Details Not in Activity Explorer Export
 
-**Symptoms**: Activity Explorer export CSV lacks the **Sensitive info type** column needed for analysis
-
-**Resolution**:
-
-1. In Activity Explorer, click **Customize columns** button
-2. Enable **Sensitive info type** checkbox
-3. Click **Export** to download CSV with all required columns
-4. Verify exported CSV includes: Activity, File, Location, User, Happened, **Sensitive info type**
-
----
-
-### Issue: PowerShell Script "CSV File Not Found" Error
-
-**Symptoms**: Executive summary script fails to find Activity Explorer export in Downloads folder
+**Symptoms**: Activity Explorer export CSV doesn't include sensitive info type data needed for stakeholder reports
 
 **Resolution**:
 
-1. Verify you exported Activity Explorer data to CSV (Step 3 - Option 1)
-2. Check Downloads folder contains: `Activity explorer _ Microsoft Purview*.csv`
-3. If export in different location, update script line: `$downloadsDir = "C:\Users\$env:USERNAME\Downloads"`
+Activity Explorer exports don't include a Sensitive info type column. Use these alternatives:
 
----
-
-### Issue: Monitoring Script Shows 0 Events/Files
-
-**Symptoms**: Weekly monitoring script displays no DLP activity despite having data
-
-**Resolution**:
-
-1. **MUST run Step 3 - Option 2 PowerShell script first** to generate reports
-2. Verify `C:\Reports` directory contains:
-   - `OnPrem-DLP-Executive-Summary-[date].csv`
-   - `OnPrem-DLP-Detailed-Report-[date].csv`
-3. If reports missing, run executive summary script before monitoring script
-
-**Workflow**: Export Activity Explorer → Run Executive Summary Script → Run Monitoring Script
+1. **Use DetailedReport CSV** from the scanner VM: `%localappdata%\Microsoft\MSIP\Scanner\Reports\DetailedReport\`
+2. **Apply Sensitive info type filter** in Activity Explorer before exporting to limit results to specific data types
+3. **Combine sources**: Activity Explorer for timestamps/activity tracking + DetailedReport CSV for sensitive info type details
 
 ---
 
@@ -480,28 +409,20 @@ After completing this lab successfully, you should have:
 
 - **Access**: Navigated to Activity Explorer and located DLP activity monitoring interface in Microsoft Purview portal
 - **Filter and Analyze**: Configured filters to isolate on-premises scanner events (Endpoint devices location, File discovered activity type) and interpreted DLP activity data
-- **Export with Customize Columns**: Enabled **Sensitive info type** column visibility before export to ensure all critical data is captured in CSV
+- **Export and Reporting**: Exported activity data and understand how to combine with DetailedReport CSV for complete compliance documentation
 - **Monitoring Cadence**: Established regular monitoring schedule for ongoing DLP compliance tracking
 
 ### ✅ DLP Reporting Automation Capabilities
 
-- **PowerShell Executive Summary Script**:
-  - Automatic latest Activity Explorer export file selection (handles multiple downloads with browser suffixes)
-  - Error handling with clear user guidance for missing files or directories
-  - Automated report directory creation (`C:\Reports`)
-  - Generates executive summary grouped by sensitive data type (Credit Card Number, SSN)
-  - Creates detailed repository breakdown showing file distribution across locations
-  
-- **PowerShell Weekly Monitoring Script**:
-  - Reads processed executive summary and detailed reports (not raw Activity Explorer exports)
-  - Displays DLP activity summary by sensitive data type with unique file counts and total event counts
-  - Shows repository breakdown with files grouped by location and data type
-  - Provides actionable next steps guidance for ongoing monitoring
-  
-- **Reporting Sources**: Understand the three primary DLP reporting sources for comprehensive compliance validation
-  - **Activity Explorer** (Portal) - Real-time monitoring and filtering
-  - **DetailedReport CSV** (Local scanner) - Technical details with DLP columns
+- **Reporting Sources**: Understand the three primary DLP reporting sources for comprehensive compliance validation:
+  - **Activity Explorer** (Portal) - Real-time activity monitoring, timestamps, file paths
+  - **DetailedReport CSV** (Local scanner) - Sensitive info types, DLP rules, technical details
   - **Audit Log** (Portal/PowerShell) - Long-term compliance records
+
+- **Combined Reporting Strategy**:
+  - Use Activity Explorer for **when/where** questions (timestamps, file locations, scan history)
+  - Use DetailedReport CSV for **what** questions (sensitive info types detected, DLP rule matches)
+  - Use Audit Log for regulatory compliance documentation requiring long-term retention
 
 ### ✅ On-Premises vs Cloud Data Distinction
 
@@ -518,7 +439,7 @@ After completing this lab successfully, you should have:
 
 1. **Establish Regular Monitoring**: Set up weekly Activity Explorer reviews for ongoing DLP compliance
 2. **Create Report Templates**: Build Excel templates for monthly DLP detection summaries
-3. **Automate Exports**: Schedule Activity Explorer exports and PowerShell analysis scripts
+3. **Document Reporting Workflow**: Combine Activity Explorer exports with DetailedReport CSV for complete compliance documentation
 
 **Future Learning Paths:**
 

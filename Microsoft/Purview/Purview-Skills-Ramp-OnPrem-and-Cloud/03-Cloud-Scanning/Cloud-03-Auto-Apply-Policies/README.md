@@ -72,7 +72,7 @@ Microsoft 365 processes auto-apply policies in the background:
 - Complete Cloud-03 configuration today (30-45 minutes).
 - Proceed to Cloud-04 (eDiscovery - independent of auto-apply processing) and remaining labs.
 - Return in 7 days to validate label application.
-- Or check Reporting-01 (Activity Explorer) for early signs of processing during the wait period.
+- Or check Activity Explorer for early signs of processing during the wait period.
 
 ## 🚀 Lab Steps
 
@@ -225,6 +225,8 @@ After adding the sensitive info types, you'll see them listed with configuration
 >
 > **📚 Instance Count**: This defines how many unique instances of the sensitive info type must be present. Setting "From: 1" means even a single occurrence will trigger the policy. Adjust based on your risk tolerance and data patterns.
 
+![auto-label-classification-group](.images/auto-label-classification-group.png)
+
 **Review Classification Group:**
 
 - Verify your group configuration:
@@ -298,6 +300,8 @@ For this lab:
 ---
 
 #### Wizard Step 9: Decide Whether to Test or Run Your Policy (Mode)
+
+![auto-label-test-policy](.images/auto-label-test-policy.png)
 
 **Policy Mode Options:**
 
@@ -557,8 +561,7 @@ Auto-apply policy created! While waiting for processing:
 **Then continue**:
 
 - Complete Cloud-04 (30-45 minutes).
-- Complete Reporting-01, Reporting-02, Reporting-03 (3-4 hours).
-- Complete Supplemental labs if desired (11-16 hours).
+- Complete Supplemental labs if desired.
 - **Return to this lab after up to 7 days** to validate retention label application.
 
 ### Option 2: Manual Label Testing (Immediate Alternative)

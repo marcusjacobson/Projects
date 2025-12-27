@@ -195,6 +195,9 @@ On the **Query** tab, you'll configure which content locations to search. For th
 
 - Click **Add sources** to begin configuring data sources.
 - The **Add data sources** pane opens with **Filter** options on the left side:
+
+![ediscovery-case-sources](.images/ediscovery-case-sources.png)
+
 - Use the filters to scope your data sources:
   - **Scope items by**: Select **All sources in the tenant** (default).
     - **Note**: The default list shows 100 random people or groups. To find specific data sources, use the search bar in the next step.
@@ -228,6 +231,8 @@ In the **Search** section (right side of the pane):
 **Define Search Conditions**:
 
 This is where you specify what content to search for using Keyword Query Language (KQL).
+
+![ediscovery-case-query](.images/ediscovery-case-query.png)
 
 For this lab, we'll search for sensitive information types (credit cards and SSNs) that we created sample files for in Cloud-01:
 

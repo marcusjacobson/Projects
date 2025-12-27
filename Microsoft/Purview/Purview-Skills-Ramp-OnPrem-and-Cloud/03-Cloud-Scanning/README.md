@@ -40,7 +40,7 @@ Complete these labs in order for a full cloud data governance deployment:
 **Key Deliverables**:
 
 - SharePoint "Retention Testing" team site created.
-- Sensitive Data Archive folder with Excel and Word sample files.
+- Sensitive Data Archive folder with sample files (CSV, text).
 - Test documents containing detectable sensitive information types.
 - Understanding of cloud-only data governance scope.
 
@@ -135,7 +135,7 @@ Complete these labs in order for a full cloud data governance deployment:
 | **Wait Periods** | Up to 7 days (auto-apply processing) |
 | **Total End-to-End** | 7-10 days (includes processing wait) |
 
-**💡 Pro Tip**: Start Cloud-03 auto-apply policy early in your learning path, then complete Cloud-04 and Section 4 (Reporting) labs during the 7-day wait period.
+**💡 Pro Tip**: Start Cloud-03 auto-apply policy early in your learning path, then complete Cloud-04 and other labs during the 7-day wait period.
 
 ---
 
@@ -151,7 +151,7 @@ Track your progress through the cloud data governance learning path:
 **Post-Wait Period Validation** (after 7 days):
 
 - [ ] Return to Cloud-03 and verify retention labels automatically applied to sample documents
-- [ ] Review Activity Explorer (Reporting-01) for auto-labeling activity events
+- [ ] Review Activity Explorer for auto-labeling activity events
 - [ ] Validate label application via SharePoint document properties
 
 ---

@@ -142,6 +142,17 @@ cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Clo
 - Distributes file creation dates across 3-year period for realistic testing.
 - Provides progress updates every 50 documents.
 
+> **⚠️ Existing App Registration**: If you already have a **PnP PowerShell Interactive** app registration in your tenant, you must manually add the **Sites.ReadWrite.All** (or **Sites.FullControl.All**) delegated permission and **grant admin consent** before running this script:
+>
+> 1. Go to **Azure Portal** → **Entra ID** → **App registrations** → **PnP PowerShell Interactive**
+> 2. Click **API permissions** → **+ Add a permission** → **SharePoint** → **Delegated permissions**
+> 3. Select **Sites.ReadWrite.All** (or **Sites.FullControl.All**) → **Add permissions**
+> 4. Click **Grant admin consent for [your tenant]** (blue button)
+> 5. Verify green checkmark appears next to the permission
+> 6. **Important**: If you were already connected to SharePoint, you must **restart your PowerShell session** to get a new token with the updated permissions
+>
+> **💡 Document Library Name**: When prompted for the document library name, use **Shared Documents** (the default). Even though SharePoint displays "Documents" in the left navigation, the actual library name in the API is "Shared Documents". This is a common SharePoint naming quirk.
+
 **Expected Output:**
 
 ```text
@@ -189,6 +200,56 @@ Cleaning up Word COM object...
 | **Office Format** | .docx files ensure reliable SIT detection and DLP policy matching |
 
 **Next Steps**: After creating test data, wait 1-2 hours for automatic SharePoint crawl, then proceed to the steps below.
+
+---
+
+### 📁 Sample Data for Script Testing
+
+This lab includes pre-built sample CSV files that allow you to test the PowerShell analysis scripts **without waiting for SharePoint indexing and Purview explorers to sync with your live data**. SharePoint crawls and Purview's Content Explorer / Activity Explorer typically require **24-48 hours** to populate after uploading documents.
+
+**Sample Files Location**: `./sample-data/`
+
+| File | Purpose | Script |
+|------|---------|--------|
+| `Sample_ContentExplorer_SIT_Export.csv` | Content Explorer export with SIT detections | `Generate-SITAnalysisReport.ps1` |
+| `Sample_ActivityExplorer_DLP_Export.csv` | Activity Explorer export with DLP events | `Generate-DLPEffectivenessReport.ps1` |
+
+**When to Use Sample Data:**
+
+- ✅ **Immediate script testing** - Test PowerShell scripts right after uploading documents (no 24-48 hour wait).
+- ✅ **Learning the workflow** - Understand script output format before running with production data.
+- ✅ **Offline demonstration** - Show stakeholders the analysis capabilities without live tenant access.
+- ✅ **Validation baseline** - Compare sample output to actual tenant exports.
+
+**Sample Data Contents:**
+
+| Sample File | Records | SIT Types | Key Columns |
+|-------------|---------|-----------|-------------|
+| `Sample_ContentExplorer_SIT_Export.csv` | 20 files | SSN, Credit Card, Bank Account | Name, Location, Sensitive info type, Trainable classifiers |
+| `Sample_ActivityExplorer_DLP_Export.csv` | 25 DLP events | SSN, Credit Card | File, Rule, Happened, User, Activity, Workload |
+
+**Run Scripts with Sample Data:**
+
+```powershell
+# Navigate to lab directory
+cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\Supplemental-Labs\Advanced-SharePoint-SIT-Analysis"
+
+# Test SIT Analysis Report script
+.\Generate-SITAnalysisReport.ps1 -ExportPath ".\sample-data\Sample_ContentExplorer_SIT_Export.csv"
+
+# Test DLP Effectiveness Report script  
+.\Generate-DLPEffectivenessReport.ps1 -ExportPath ".\sample-data\Sample_ActivityExplorer_DLP_Export.csv"
+```
+
+> **💡 Interactive Mode**: Both scripts also support interactive path entry. Run without parameters and the script will prompt you to enter the file path.
+
+**When Your Live Data Is Ready:**
+
+After 24-48 hours, export your actual tenant data from Purview:
+
+1. **Content Explorer**: Export → Save as `ContentExplorer_SIT_Export.csv`
+2. **Activity Explorer**: Export → Save as `ActivityExplorer_DLP_Export.csv`
+3. Run scripts with your exported files to analyze real detections.
 
 ---
 
@@ -242,24 +303,31 @@ Establish DLP policies to provide **real-time protection** for your SharePoint d
 
 **DLP Policy Creation Wizard:**
 
-**Step 1: Choose what type of data to protect**:
+#### Choose What Type of Data to Protect
 
-- Select **Data stored in connected sources**.
+The policy creation wizard starts with a splash screen asking "What info do you want to protect?" with two tile options.
+
+- Select the **Enterprise applications & devices** tile (left option).
+- Click the tile to proceed.
+
+> **💡 Option Context**:
+>
+> - **Enterprise applications & devices** = Protection for data across all connected sources including Microsoft 365 locations (SharePoint, OneDrive, Exchange), Microsoft Copilot experiences, data connectors, enterprise-registered apps, managed apps accessed with Edge for Business browser, and on-premises repositories.
+> - **Inline web traffic** = Protection for data transferred in real-time with unmanaged cloud apps through Edge for Business browser and network SASE/SSE integrations.
+>
+> For SharePoint Online protection, **Enterprise applications & devices** is the correct choice as it includes all Microsoft 365 locations.
+
+#### Select Policy Template
+
+- Under **Categories**, select: **Custom**.
+- Under **Regulations**, select: **Custom policy** (allows full control over rules and conditions).
 - Click **Next**.
 
-> **💡 Data Type Options**: Other options include "Data in browser activity" (for Edge for Business), "Data in AI apps", and category-specific options. For SharePoint/OneDrive protection, always choose "Data stored in connected sources".
+> **💡 Template Options**: Microsoft provides pre-built templates for Financial, Medical/Health, and Privacy regulations. Custom policy gives you complete control over sensitive information types, conditions, and actions.
 
-**Step 2: Start with a template or create custom policy**:
+#### Name Your Policy
 
-- Select **Custom** from the **Categories** list.
-- Select **Custom policy** from the **Regulations** list.
-- Click **Next**.
-
-> **💡 Template Options**: You can choose pre-built templates like "U.S. Financial Data" or "GDPR" for faster setup, but custom policies provide maximum flexibility for lab scenarios.
-
-**Step 3: Name your DLP policy**:
-
-- **Name**: `SharePoint Sensitive Data Protection - Lab` (or add timestamp if recreating: `SharePoint Sensitive Data Protection - Lab 2025-11-07`)
+- **Name**: `SharePoint Sensitive Data Protection - Lab`
 - **Description**: `DLP policy for lab SharePoint site - detects credit cards and SSNs with immediate protection`
 - Click **Next**.
 
@@ -275,58 +343,67 @@ Establish DLP policies to provide **real-time protection** for your SharePoint d
 >
 > **Option 2 - Use Unique Name**:
 >
-> - Add date/timestamp to policy name: `SharePoint Sensitive Data Protection - Lab 2025-11-07`
-> - Or add version number: `SharePoint Sensitive Data Protection - Lab v2`
+> - Add date/timestamp to policy name: `SharePoint Sensitive Data Protection - Lab 2025-12-26`
 > - Continue with wizard using unique name
 
-**Step 4: Assign admin units** (if applicable):
+#### Assign Admin Units
 
-- Keep default: **Full directory**.
+- **Full directory** is selected by default (applies policy to all users and groups).
+- For this lab, keep the default **Full directory** selection.
 - Click **Next**.
 
-**Step 5: Choose locations to apply the policy**:
+> **📚 Note**: Admin units allow scoping DLP policies to specific organizational units within your Microsoft Entra ID tenant. Full directory applies the policy across your entire organization, which is appropriate for lab scenarios.
 
-Configure location settings:
+#### Configure Locations
 
-- **Status**: Turn **OFF** for **Exchange email**
-- **Status**: Turn **OFF** for **OneDrive accounts**
-- **Status**: Turn **OFF** for **Teams chat and channel messages**
-- **Status**: Turn **OFF** for **Instances**
-- **Status**: Turn **OFF** for **On-premises repositories**
-- **Status**: Turn **OFF** for **Power BI workspaces**
+DLP policies can apply to multiple locations. For this lab, we focus exclusively on SharePoint sites.
 
-- **Status**: Turn **ON** for **SharePoint sites**
-  - Click **Choose sites** (under SharePoint sites)
-  - Search for and select your lab SharePoint site (the site where you uploaded 1000 test documents)
-  - Click **+** to confirm selection
-  - Click **Done** to return to location selection
+By default, several locations are checked (enabled). **Uncheck all locations EXCEPT SharePoint sites:**
 
-- Click **Next**.
+1. Click to **uncheck** the following locations (toggle them to OFF):
+   - **Exchange email** → Uncheck
+   - **OneDrive accounts** → Uncheck
+   - **Teams chat and channel messages** → Uncheck
+   - **Instances** → Uncheck
+   - **On-premises repositories** → Uncheck
+   - **Power BI workspaces** → Uncheck (if shown)
+
+2. Keep **ONLY** this location checked:
+   - ✅ **SharePoint sites** → Keep checked (ON)
+
+3. Configure the SharePoint location:
+   - Click **Choose sites** (under SharePoint sites)
+   - Search for and select your lab SharePoint site (the site where you uploaded 1000 test documents)
+   - Click **+** to confirm selection
+   - Click **Done** to return to location selection
+
+4. Click **Next**.
 
 > **💡 Lab Approach**: Targeting only your specific SharePoint site limits DLP policy scope to test data. In production, you would target specific sites, all sites, or use sensitivity labels to determine policy application.
 
-**Step 6: Define policy settings**:
+#### Select Rule Configuration Method
 
 - Select **Create or customize advanced DLP rules**.
 - Click **Next**.
 
-**Step 7: Customize advanced DLP rules**:
+You'll now create two DLP rules: one for Credit Card data (with blocking) and one for SSN data (with auditing).
+
+#### Add First Rule - Credit Card Detection
 
 Click **+ Create rule** to define detection and action settings:
 
 **Rule Name and Description:**
 
-- **Name**: `High Severity - Credit Card Detection`
+- **Name**: `Block-Credit-Card-External-Sharing`
 - **Description**: `Block external sharing of documents containing credit card numbers`
 
-**Conditions:**
+**Configure Conditions:**
 
 Add **FIRST condition** (required for external blocking):
 
 Under **Conditions**, click **+ Add condition** → **Content is shared from Microsoft 365**:
 
 - Select **with people outside my organization**.
-- Click **Add**.
 
 > **⚠️ Required Condition**: When using "Block people outside your organization" action, you MUST include "Content is shared from Microsoft 365 with people outside my organization" as a condition. This tells DLP to trigger the rule only during external sharing attempts.
 
@@ -336,112 +413,98 @@ Click **+ Add condition** → **Content contains**:
 
 - Click **Add** → **Sensitive info types**.
 - Search for and select **Credit Card Number**.
-- Set instance count:
-  - **From**: `1`
-  - **To**: `Any`
-- **Confidence level**: Select **High confidence**
-  - **High confidence** (recommended): 85%+ accuracy, minimizes false positives
-  - **Medium confidence**: 75-84% accuracy, balanced approach
-  - **Low confidence**: Below 75%, more detections but higher false positive rate
 - Click **Add**.
-
-> **💡 Confidence Level Best Practice - Credit Cards**: Use **High confidence** for credit card detection. Credit card numbers follow strict Luhn algorithm validation, making high-confidence detection very accurate (~95%+ accuracy). This minimizes false positives while catching actual payment card data.
+- **Instance count**:
+  - From: `1`
+  - To: `Any`
 
 Verify **Condition Logic**:
 
 - Ensure conditions are combined with **AND** operator (default).
 - Rule triggers when: External sharing attempt **AND** Content contains credit cards.
 
-**Actions:**
+**Configure Actions:**
 
 Under **Actions**, click **+ Add an action** → **Restrict access or encrypt the content in Microsoft 365 locations**:
 
 - Select **Block people outside your organization**.
 - The action will prevent external sharing when conditions are met.
 
-**User notifications:**
+**User Notifications:**
 
 - Enable **User notifications**: Turn toggle **On**.
 - Check: **Notify the user who sent, shared, or last modified the content**.
 
-**Incident reports:**
+**Incident Reports:**
 
-- Keep default settings (send alerts to admins).
-
-**Rule Priority:**
-
-- Set to **High**.
+- **Severity level**: Select **High** from the dropdown.
+- **Send alert every time an activity matches the rule**: Selected.
 
 Click **Save** to create the first rule.
 
-**Create Second Rule - Low Severity SSN Detection:**
+#### Add Second Rule - SSN Detection (Audit Mode)
 
 Click **+ Create rule** again:
 
-- **Name**: `Low Severity - SSN Detection`
+- **Name**: `Audit-SSN-External-Sharing`
 - **Description**: `Audit documents containing U.S. Social Security Numbers`
 
-**Conditions:**
+**Configure Conditions:**
 
-Add **FIRST condition** (required for external blocking):
+Add **FIRST condition**:
 
 Under **Conditions**, click **+ Add condition** → **Content is shared from Microsoft 365**:
 
 - Select **with people outside my organization**.
-- Click **Add**.
 
-Add **SECOND condition** (sensitive content detection):
+Add **SECOND condition**:
 
 Click **+ Add condition** → **Content contains**:
 
 - Click **Add** → **Sensitive info types**.
 - Search for and select **U.S. Social Security Number (SSN)**.
-- Set instance count:
-  - **From**: `1`
-  - **To**: `Any`
-- **Confidence level**: Select **High confidence**
-  - **High confidence** (recommended): 85%+ accuracy, reduces false positives from similar number patterns
-  - **Medium confidence**: 75-84% accuracy, may catch more SSNs but increases false positives
-  - **Low confidence**: Below 75%, detects SSN-like patterns but high false positive rate
 - Click **Add**.
+- **Instance count**:
+  - From: `1`
+  - To: `Any`
 
-> **💡 Confidence Level Best Practice - SSNs**: Use **High confidence** for SSN detection. While SSNs lack checksum validation (unlike credit cards), high-confidence detection uses contextual patterns (keywords like "SSN:", "Social Security:", document structure) to achieve ~90%+ accuracy. Medium/Low confidence often triggers on dates (MM-DD-YYYY), employee IDs, and other 9-digit patterns, creating excessive false positives.
+**Configure Actions (Audit Only):**
 
-Verify **Condition Logic**:
+For audit-only monitoring, **do NOT add any actions**:
 
-- Ensure conditions are combined with **AND** operator (default).
-- Rule triggers when: External sharing attempt **AND** Content contains SSNs.
+- Under **Actions**, you will see **+ Add an action** option.
+- **Do not click** this for the SSN audit rule.
+- Leave the Actions section empty (no actions configured).
 
-**Actions:**
+> **💡 Audit vs Enforcement**:
+>
+> - **Audit-only rule** (SSN): No actions configured → DLP detects and logs SSN files but doesn't block sharing
+> - **Enforcement rule** (Credit Card): Actions configured → DLP detects files AND blocks external sharing
+>
+> Leaving Actions empty creates a monitoring/discovery rule that logs activity in Activity Explorer without disrupting user access.
 
-Under **Actions**, click **+ Add an action** → **Restrict access or encrypt the content in Microsoft 365 locations**:
-
-- Select **Block people outside your organization**.
-- The action will prevent external sharing when conditions are met.
-
-**User notifications:**
+**User Notifications:**
 
 - Enable **User notifications**: Turn toggle **On**.
 - Notify users with policy tip.
 
-**Incident reports:**
+**Incident Reports:**
 
-- Keep default settings.
+- **Severity level**: Select **Medium** from the dropdown.
+- **Send alert every time an activity matches the rule**: Selected.
 
-**Rule Priority:**
+Click **Save** to create the second rule.
 
-- Set to **Low**.
+Click **Next** to advance to Policy mode.
 
-Click **Save**.
-
-**Step 8: Policy mode**:
+#### Policy Mode
 
 - Select **Turn the policy on immediately**.
 - Click **Next**.
 
-> **⚠️ Production Note**: For production deployments, use **Test it out first** mode to review matches before enforcement. For this lab, immediate enforcement demonstrates DLP blocking behavior.
+> **⚠️ Production Note**: For production deployments, use **Run the policy in simulation mode** to review matches before enforcement. For this lab, immediate enforcement demonstrates DLP blocking behavior.
 
-**Step 9: Review and finish**:
+#### Review and Finish
 
 - Review policy configuration.
 - Click **Submit** to create the DLP policy.
@@ -453,7 +516,7 @@ Click **Save**.
 - DLP policy created: "SharePoint Sensitive Data Protection - Lab".
 - Policy status: Active.
 - Locations: Your SharePoint lab site.
-- Rules: 2 (High severity credit cards, Low severity SSNs).
+- Rules: 2 (Credit card blocking, SSN auditing).
 
 > **⏱️ DLP Processing Time**: Allow **15-30 minutes** for DLP policy to perform initial scan of your SharePoint site. During this time, DLP analyzes all 1000 documents and identifies matches for policy rules.
 
@@ -549,17 +612,25 @@ For deeper analysis beyond the Activity Explorer UI, run the DLP effectiveness a
 
 ```powershell
 cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\Supplemental-Labs\Advanced-SharePoint-SIT-Analysis"
+
+# Interactive mode - script will prompt for file path
 .\Generate-DLPEffectivenessReport.ps1
+
+# Or specify the export path directly
+.\Generate-DLPEffectivenessReport.ps1 -ExportPath "C:\PurviewLab\ActivityExplorer_DLP_Export.csv"
 ```
+
+> **💡 Can't Wait for Live Data?** Use the sample data to test the script immediately:
+> `.\Generate-DLPEffectivenessReport.ps1 -ExportPath ".\sample-data\Sample_ActivityExplorer_DLP_Export.csv"`
 
 This script provides comprehensive DLP policy analysis including:
 
-- **Detection Summary**: Total matches, unique files, detection rate vs expected test data
-- **Severity Distribution**: High severity (credit cards) vs Low severity (SSNs) rule matches
-- **Sensitive Info Type Breakdown**: Credit Card vs SSN detection counts
+- **Detection Summary**: Total matches, unique files, detection rate vs expected test data.
+- **Severity Distribution**: High severity (credit cards) vs Low severity (SSNs) rule matches.
+- **Sensitive Info Type Breakdown**: Credit Card vs SSN detection counts.
 - **Timing Analysis**: First/last detection timestamps, detection window duration.
 - **Recommendations**: Policy optimization suggestions based on detection patterns.
-- **Automated Report**: Exports detailed analysis to `C:\PurviewLab\DLP_Effectiveness_Report.txt`.
+- **Automated Report**: Exports detailed analysis to the same directory as your export file.
 
 **Compare DLP Detection vs Expected Test Data:**
 
@@ -714,24 +785,32 @@ Now that you have exported SIT detection data from Content Explorer, build advan
 
 > **💻 Execute From**: **Admin Machine (your workstation)**
 >
-> **Prerequisites**: Content Explorer CSV export saved to `C:\PurviewLab\ContentExplorer_SIT_Export.csv`
+> **Prerequisites**: Content Explorer CSV export saved locally (e.g., `C:\PurviewLab\ContentExplorer_SIT_Export.csv`)
 
 Run the comprehensive SIT analysis script to generate detailed reports:
 
 ```powershell
 cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\Supplemental-Labs\Advanced-SharePoint-SIT-Analysis"
+
+# Interactive mode - script will prompt for file path
 .\Generate-SITAnalysisReport.ps1
+
+# Or specify the export path directly
+.\Generate-SITAnalysisReport.ps1 -ExportPath "C:\PurviewLab\ContentExplorer_SIT_Export.csv"
 ```
+
+> **💡 Can't Wait for Live Data?** Use the sample data to test the script immediately:
+> `.\Generate-SITAnalysisReport.ps1 -ExportPath ".\sample-data\Sample_ContentExplorer_SIT_Export.csv"`
 
 > **✅ Updated for New Content Explorer Format**: This script has been updated to parse the new JSON array format introduced by Microsoft in Content Explorer exports. The script now correctly extracts SIT names, confidence levels (high/medium/low), and instance counts from the JSON structure.
 >
 > **Script Capabilities**:
 >
-> - **Parses JSON Arrays**: Automatically extracts SIT objects from the "Sensitive info type" column
-> - **Confidence Breakdown**: Reports high/medium/low confidence detections instead of percentage scores
-> - **Instance Calculation**: Calculates total instances per file from JSON (low + medium + high counts)
-> - **Location Handling**: Gracefully handles exports with or without the Location column
-> - **Accurate Statistics**: All reports reflect actual data from your Content Explorer export
+> - **Parses JSON Arrays**: Automatically extracts SIT objects from the "Sensitive info type" column.
+> - **Confidence Breakdown**: Reports high/medium/low confidence detections instead of percentage scores.
+> - **Instance Calculation**: Calculates total instances per file from JSON (low + medium + high counts).
+> - **Location Handling**: Gracefully handles exports with or without the Location column.
+> - **Accurate Statistics**: All reports reflect actual data from your Content Explorer export.
 
 **Expected Console Output:**
 

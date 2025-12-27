@@ -33,6 +33,8 @@ This **capstone lab** integrates advanced reporting and analysis from two prereq
 - Wait **24-48 hours** after completing **Advanced-Remediation Step 1** (test data generation) for Activity Explorer "File discovered" events to fully sync.
 - Wait **15-30 minutes** after completing **Advanced-SharePoint-SIT-Analysis Step 2** (DLP policy deployment) for cloud DLP policy initial scan to complete.
 
+> **💡 Can't Wait for Live Data?** This lab includes **sample data files** that allow you to test the cross-platform analysis scripts immediately without waiting for Activity Explorer to sync. See the **Sample Data for Script Testing** section below.
+
 > **💡 Capstone Architecture**: This lab demonstrates your ability to perform **unified cross-platform SIT governance** by comparing detection patterns, platform capabilities, and monitoring strategies across hybrid environments. Both prerequisite labs must be completed to provide the comparative data foundation.
 
 ### Lab Architecture
@@ -85,13 +87,57 @@ This lab requires **two Activity Explorer CSV exports** in `C:\PurviewLab\`:
 
 **How to Obtain These Files:**
 
-- **Option A (Recommended)**: Complete the prerequisite labs (**Advanced-Remediation Step 1** and **Advanced-SharePoint-SIT-Analysis Step 2**), which include Activity Explorer export instructions and generate these files automatically
-- **Option B**: If you already completed the prerequisite labs but didn't export the Activity Explorer data, use the **Optional Data Export Procedures** below to extract the data manually
+- **Option A (Recommended)**: Complete the prerequisite labs (**Advanced-Remediation Step 1** and **Advanced-SharePoint-SIT-Analysis Step 2**), which include Activity Explorer export instructions and generate these files automatically.
+- **Option B**: If you already completed the prerequisite labs but didn't export the Activity Explorer data, use the **Optional Data Export Procedures** below to extract the data manually.
+- **Option C (Immediate Testing)**: Use the **sample data files** included with this lab to test the scripts without waiting for Activity Explorer sync.
 
 **Workflow Overview:**
 
-1. **Verify Data Files**: Confirm both CSV files exist in C:\PurviewLab
-2. **Generate Cross-Platform Report**: Run PowerShell script to analyze both data sources and generate comprehensive executive report
+1. **Verify Data Files**: Confirm both CSV files exist in C:\PurviewLab (or use sample data).
+2. **Generate Cross-Platform Report**: Run PowerShell script to analyze both data sources and generate comprehensive executive report.
+
+---
+
+### 📁 Sample Data for Script Testing
+
+This lab includes pre-built sample CSV files that allow you to test the cross-platform analysis scripts **without waiting for Activity Explorer to sync with your live data**. Activity Explorer typically requires **24-48 hours** to populate after completing the prerequisite labs.
+
+**Sample Files Location**: `./sample-data/`
+
+| File | Purpose | Events |
+|------|---------|--------|
+| `Sample_ActivityExplorer_OnPrem_Export.csv` | On-premises scanner "File discovered" events | 18 events across 4 file shares |
+| `Sample_ActivityExplorer_DLP_Export.csv` | SharePoint DLP "DLP rule matched" events | 20 events with Credit Card and SSN detections |
+
+**When to Use Sample Data:**
+
+- ✅ **Immediate script testing** - Test PowerShell scripts right after setting up infrastructure (no 24-48 hour wait).
+- ✅ **Learning the workflow** - Understand script output format before running with production data.
+- ✅ **Offline demonstration** - Show stakeholders the cross-platform analysis capabilities without live tenant access.
+- ✅ **Validation baseline** - Compare sample output to actual tenant exports.
+
+**Run Scripts with Sample Data:**
+
+```powershell
+# Navigate to lab directory
+cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\Supplemental-Labs\Advanced-Cross-Platform-SIT-Analysis"
+
+# Verify sample data files
+.\Verify-DataFiles.ps1 -UseSampleData
+
+# Generate cross-platform report using sample data
+.\Generate-CrossPlatform-Report.ps1 -UseSampleData
+```
+
+> **💡 Interactive Mode**: Both scripts also support custom file paths via `-OnPremExportPath` and `-SharePointExportPath` parameters if you have exports in non-standard locations.
+
+**When Your Live Data Is Ready:**
+
+After 24-48 hours, export your actual tenant data from Activity Explorer:
+
+1. **On-Premises Scanner**: Filter by "File discovered" → Export → Save as `ActivityExplorer_Export.csv`.
+2. **SharePoint DLP**: Filter by "DLP rule matched" → Export → Save as `ActivityExplorer_DLP_Export.csv`.
+3. Move both files to `C:\PurviewLab\` and run scripts without the `-UseSampleData` flag.
 
 ---
 
@@ -207,7 +253,7 @@ The following steps are required for all users.
 
 ### Step 1: Verify Required Data Files
 
-Before beginning analysis, verify that both required CSV files exist in `C:\PurviewLab\`.
+Before beginning analysis, verify that both required CSV files exist in `C:\PurviewLab\` or use sample data for immediate testing.
 
 **Run File Verification Script:**
 
@@ -215,30 +261,42 @@ Navigate to the lab directory and execute:
 
 ```powershell
 cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\Supplemental-Labs\Advanced-Cross-Platform-SIT-Analysis"
+
+# Option 1: Verify live data files in C:\PurviewLab
 .\Verify-DataFiles.ps1
+
+# Option 2: Use sample data for immediate testing
+.\Verify-DataFiles.ps1 -UseSampleData
 ```
 
-**Expected Output:**
+> **💡 Can't Wait for Live Data?** Use the `-UseSampleData` flag to test with sample files immediately.
+
+**Expected Output (with sample data):**
 
 ```text
 🔍 Verifying Activity Explorer Data Files
 =========================================
 
-✅ Found ActivityExplorer_Export.csv (114 events)
+📁 Using sample data files for testing
 
-✅ Found ActivityExplorer_DLP_Export.csv (351 events)
+✅ Found on-premises data: ...\sample-data\Sample_ActivityExplorer_OnPrem_Export.csv
+   Events: 18
+   
+✅ Found SharePoint DLP data: ...\sample-data\Sample_ActivityExplorer_DLP_Export.csv
+   Events: 20
 
 =========================================
 ✅ All required data files present - Ready for cross-platform analysis!
 
-Next Step: Run .\Generate-CrossPlatform-Report.ps1
+Next Step: Run .\Generate-CrossPlatform-Report.ps1 -UseSampleData
 ```
 
 > **⚠️ If Files Missing**: If either file is missing, the script will display specific guidance:
 >
-> - **Missing on-premises data**: Use Export Procedure A above
-> - **Missing SharePoint data**: Use Export Procedure B above
-> - **Missing C:\PurviewLab directory**: Create it first with `mkdir C:\PurviewLab`
+> - **Use sample data**: `.\Verify-DataFiles.ps1 -UseSampleData`
+> - **Missing on-premises data**: Use Export Procedure A above.
+> - **Missing SharePoint data**: Use Export Procedure B above.
+> - **Missing C:\PurviewLab directory**: Create it first with `mkdir C:\PurviewLab`.
 
 ---
 
@@ -248,10 +306,7 @@ Next Step: Run .\Generate-CrossPlatform-Report.ps1
 
 The PowerShell script performs unified cross-platform analysis by loading both CSV files and comparing detection patterns across environments.
 
-> **⚠️ Prerequisites**: Ensure both CSV files exist in `C:\PurviewLab\` (verified in Step 1):
->
-> - `ActivityExplorer_Export.csv`
-> - `ActivityExplorer_DLP_Export.csv`
+> **⚠️ Prerequisites**: Ensure both CSV files exist in `C:\PurviewLab\` (verified in Step 1), OR use `-UseSampleData` for immediate testing.
 
 **Run the Integrated Analysis Script:**
 
@@ -259,8 +314,15 @@ Navigate to the lab directory and execute:
 
 ```powershell
 cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\Supplemental-Labs\Advanced-Cross-Platform-SIT-Analysis"
+
+# Option 1: Use live data from C:\PurviewLab
 .\Generate-CrossPlatform-Report.ps1
+
+# Option 2: Use sample data for immediate testing
+.\Generate-CrossPlatform-Report.ps1 -UseSampleData
 ```
+
+> **💡 Can't Wait for Live Data?** Use the `-UseSampleData` flag to generate a report with sample data immediately.
 
 **Expected Output:**
 

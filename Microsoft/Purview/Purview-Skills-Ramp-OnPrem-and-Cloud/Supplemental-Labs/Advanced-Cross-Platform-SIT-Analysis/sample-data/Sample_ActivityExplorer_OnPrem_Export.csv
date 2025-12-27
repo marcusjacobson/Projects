@@ -1,0 +1,19 @@
+File,Happened,User,Activity,Workload,Sensitive info type
+\\FILESERVER01\Finance\Q4-Budget-Analysis.xlsx,2025-12-20T09:15:23Z,DOMAIN\scanner-svc,File discovered,Endpoint devices,Credit Card Number
+\\FILESERVER01\Finance\Payroll-December-2025.xlsx,2025-12-20T09:15:45Z,DOMAIN\scanner-svc,File discovered,Endpoint devices,U.S. Social Security Number (SSN)
+\\FILESERVER01\Finance\Employee-Benefits-Summary.docx,2025-12-20T09:16:12Z,DOMAIN\scanner-svc,File discovered,Endpoint devices,U.S. Social Security Number (SSN)
+\\FILESERVER01\Finance\Vendor-Payment-Records.xlsx,2025-12-20T09:16:38Z,DOMAIN\scanner-svc,File discovered,Endpoint devices,Credit Card Number
+\\FILESERVER01\Finance\Tax-Forms-2025.pdf,2025-12-20T09:17:05Z,DOMAIN\scanner-svc,File discovered,Endpoint devices,U.S. Social Security Number (SSN)
+\\FILESERVER01\HR\New-Hire-Onboarding-John-Smith.docx,2025-12-20T09:18:22Z,DOMAIN\scanner-svc,File discovered,Endpoint devices,U.S. Social Security Number (SSN)
+\\FILESERVER01\HR\Performance-Reviews-Q4.xlsx,2025-12-20T09:18:45Z,DOMAIN\scanner-svc,File discovered,Endpoint devices,U.S. Social Security Number (SSN)
+\\FILESERVER01\HR\Benefits-Enrollment-Forms.pdf,2025-12-20T09:19:10Z,DOMAIN\scanner-svc,File discovered,Endpoint devices,U.S. Social Security Number (SSN)
+\\FILESERVER01\HR\Termination-Records-2025.docx,2025-12-20T09:19:35Z,DOMAIN\scanner-svc,File discovered,Endpoint devices,U.S. Social Security Number (SSN)
+\\FILESERVER01\HR\Employee-Directory-Full.xlsx,2025-12-20T09:20:02Z,DOMAIN\scanner-svc,File discovered,Endpoint devices,U.S. Social Security Number (SSN)
+\\FILESERVER01\HR\I9-Verification-Records.pdf,2025-12-20T09:20:28Z,DOMAIN\scanner-svc,File discovered,Endpoint devices,U.S. Social Security Number (SSN)
+\\FILESERVER01\Projects\Client-Acme-Contract.docx,2025-12-20T09:21:15Z,DOMAIN\scanner-svc,File discovered,Endpoint devices,Credit Card Number
+\\FILESERVER01\Projects\Vendor-Payment-Portal-Specs.xlsx,2025-12-20T09:21:42Z,DOMAIN\scanner-svc,File discovered,Endpoint devices,Credit Card Number
+\\FILESERVER01\Projects\Customer-Database-Export.csv,2025-12-20T09:22:08Z,DOMAIN\scanner-svc,File discovered,Endpoint devices,Credit Card Number
+\\FILESERVER01\Projects\Invoice-Processing-Guide.docx,2025-12-20T09:22:35Z,DOMAIN\scanner-svc,File discovered,Endpoint devices,Credit Card Number
+\\FILESERVER01\Legal\Employee-Settlement-Agreement.docx,2025-12-20T09:23:50Z,DOMAIN\scanner-svc,File discovered,Endpoint devices,U.S. Social Security Number (SSN)
+\\FILESERVER01\Legal\Insurance-Claims-2025.pdf,2025-12-20T09:24:15Z,DOMAIN\scanner-svc,File discovered,Endpoint devices,U.S. Social Security Number (SSN)
+\\FILESERVER01\Legal\Vendor-Background-Checks.xlsx,2025-12-20T09:24:42Z,DOMAIN\scanner-svc,File discovered,Endpoint devices,U.S. Social Security Number (SSN)

@@ -183,6 +183,8 @@ Review and create:
 - Wait for deployment to complete (typically 5-7 minutes).
 - You'll see deployment progress with status updates.
 
+![vm-review-create](.images/vm-review-create.png)
+
 Post-deployment:
 
 - Once deployment completes, click **Go to resource** button.
@@ -235,17 +237,19 @@ Download SQL Server Express:
 
 - Open **Microsoft Edge** browser on the VM.
 - Navigate to: [https://www.microsoft.com/en-us/sql-server/sql-server-downloads](https://www.microsoft.com/en-us/sql-server/sql-server-downloads).
-- Scroll to the **SQL Server 2022 Express** section.
+- Scroll to the **SQL Server 2025 Express** section.
 - Click the **Download now** button under Express edition.
-- The file `SQL2022-SSEI-Expr.exe` will download to your Downloads folder.
+- The file `SQL2025-SSEI-Expr.exe` will download to your Downloads folder.
 - Wait for the download to complete.
 
-> **💡 Download Page Note**: The SQL Server downloads page layout is updated periodically. Look for the "SQL Server 2022 Express" card or section with a "Download now" button. As of January 2025, it's typically in the "Get started with SQL Server on-premises or in the cloud" section.
+![sql-2025-download](.images/sql-2025-download.png)
+
+> **💡 Download Page Note**: The SQL Server downloads page layout is updated periodically. Look for the "SQL Server 2025 Express" card or section with a "Download now" button. As of January 2025, it's typically in the "Get started with SQL Server on-premises or in the cloud" section.
 
 Install SQL Server:
 
 - Navigate to your Downloads folder.
-- Run the downloaded `SQL2022-SSEI-Expr.exe` installer.
+- Run the downloaded `SQL2025-SSEI-Expr.exe` installer.
 - Select **Basic** installation type.
 - Click **Accept** to agree to license terms.
 - **Install location**: Accept default (`C:\Program Files\Microsoft SQL Server`).
@@ -265,6 +269,8 @@ Configure SQL Server networking:
 - Press **Windows key**, search for **SQL Server Configuration Manager**.
 - Expand **SQL Server Network Configuration**.
 - Click **Protocols for SQLEXPRESS**.
+
+![sql-tcp-ip](.images/sql-tcp-ip.png)
 
 Enable TCP/IP:
 
@@ -286,6 +292,8 @@ Close SQL Server Configuration Manager.
 - Ready for Purview scanner configuration.
 
 ### Step 5: Create Local File Shares and Sample Data
+
+> **⚠️ Perform on VM**: All steps in this section must be performed **on the Azure VM** via your RDP session, not on your local PC. The file shares and sample data need to exist on the VM where the Purview scanner will be installed.
 
 Create folder structure:
 
@@ -311,14 +319,147 @@ Create sample files with sensitive information:
   - Right-click **Windows PowerShell**.
   - Select **Run as administrator**.
 
-Run the sample data creation script:
+Copy and paste the following script to create sample test data files:
 
 ```powershell
-cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\01-Setup\Setup-02-Azure-Infrastructure"
-.\Create-SampleTestData.ps1
+# =============================================================================
+# Create Sample Test Data Files
+# =============================================================================
+
+Write-Host "Creating Finance Sample Data..." -ForegroundColor Green
+
+$financeContent = @"
+ACME CORPORATION - CUSTOMER PAYMENT RECORDS
+Generated: $(Get-Date -Format 'yyyy-MM-dd')
+Classification: CONFIDENTIAL
+
+CUSTOMER PAYMENT INFORMATION
+
+Transaction ID: TXN-2024-001
+Customer Name: John Smith
+Email: john.smith@email.com
+Credit Card Number: 4532-1234-5678-9010
+Expiration Date: 12/2026
+CVV: 123
+Amount: `$5,000.00
+Date: 2024-10-15
+
+Transaction ID: TXN-2024-002
+Customer Name: Jane Doe
+Email: jane.doe@email.com
+Credit Card Number: 5425-2334-5566-7788
+Expiration Date: 03/2027
+CVV: 456
+Amount: `$3,250.00
+Date: 2024-10-16
+
+Transaction ID: TXN-2024-003
+Customer Name: Robert Johnson
+Email: robert.j@email.com
+Credit Card Number: 3782-822463-10005
+Expiration Date: 08/2025
+CVV: 789
+Amount: `$1,875.50
+Date: 2024-10-17
+"@
+$financeContent | Out-File -FilePath "C:\PurviewScanner\Finance\CustomerPayments.txt" -Encoding UTF8
+Write-Host "   Created: CustomerPayments.txt (Credit Cards)" -ForegroundColor Green
+
+Write-Host "Creating HR Sample Data..." -ForegroundColor Green
+
+$hrContent = @"
+ACME CORPORATION - EMPLOYEE PERSONAL RECORDS
+HR Department - RESTRICTED ACCESS
+Last Updated: $(Get-Date -Format 'yyyy-MM-dd')
+
+EMPLOYEE INFORMATION DATABASE
+
+Employee ID: EMP-001
+Full Name: Sarah Johnson
+Social Security Number: 123-45-6789
+Date of Birth: 01/15/1985
+Home Address: 123 Main Street, Anytown, ST 12345
+Phone Number: (555) 123-4567
+Email: sarah.johnson@acme.com
+Hire Date: 03/10/2020
+Department: Engineering
+Salary: `$95,000
+
+Employee ID: EMP-002
+Full Name: Michael Chen
+Social Security Number: 987-65-4321
+Date of Birth: 08/22/1990
+Home Address: 456 Oak Avenue, Somewhere, ST 67890
+Phone Number: (555) 987-6543
+Email: michael.chen@acme.com
+Hire Date: 06/15/2019
+Department: Finance
+Salary: `$88,000
+
+Employee ID: EMP-003
+Full Name: Emily Rodriguez
+Social Security Number: 456-78-9012
+Date of Birth: 11/30/1988
+Home Address: 789 Pine Road, Another Town, ST 11223
+Phone Number: (555) 456-7890
+Email: emily.rodriguez@acme.com
+Hire Date: 01/20/2021
+Department: Marketing
+Salary: `$72,000
+"@
+$hrContent | Out-File -FilePath "C:\PurviewScanner\HR\EmployeeRecords.txt" -Encoding UTF8
+Write-Host "   Created: EmployeeRecords.txt (SSN, PII)" -ForegroundColor Green
+
+Write-Host "Creating Projects Sample Data (Archived)..." -ForegroundColor Green
+
+$projectContent = @"
+PROJECT PHOENIX - ARCHIVED TECHNICAL DOCUMENTATION
+Status: ARCHIVED - DEPRECATED
+Last Access: 2020-01-15
+Classification: CONFIDENTIAL - DO NOT DISTRIBUTE
+
+LEGACY SYSTEM INFORMATION
+
+Project Code: PHOENIX-2019
+Classification Level: Highly Confidential
+Data Retention: EXPIRED - CANDIDATE FOR DELETION
+
+TECHNICAL SPECIFICATIONS:
+- Internal Server IP: 192.168.100.50
+- Database Connection: SERVER=db-prod-01;UID=sa;PWD=P@ssw0rd123
+- API Key: SAMPLE_API_KEY_NOT_REAL_12345ABCDEF67890
+- Encryption Key: AES256_KEY_0x4B3F9E2D8C1A7F5E
+
+PROPRIETARY ALGORITHMS:
+The Phoenix algorithm uses a three-stage processing pipeline:
+1. Data ingestion with AES-256 encryption
+2. Processing using proprietary compression (Patent Pending)
+3. Output to secure storage with versioning
+
+CUSTOMER DATA SAMPLES:
+Customer 001: Social Security: 111-22-3333
+Customer 002: Credit Card: 4111-1111-1111-1111
+
+WARNING: THIS PROJECT WAS DECOMMISSIONED IN 2020
+ALL SYSTEMS SHUT DOWN - DATA SHOULD BE ARCHIVED OR DELETED
+RETENTION POLICY: 3 YEARS FROM LAST ACCESS
+CURRENT STATUS: PAST RETENTION PERIOD - DELETION CANDIDATE
+"@
+$projectContent | Out-File -FilePath "C:\PurviewScanner\Projects\PhoenixProject.txt" -Encoding UTF8
+
+# Set file to 3+ years old (simulates old data discovery)
+$oldFile = Get-Item "C:\PurviewScanner\Projects\PhoenixProject.txt"
+$oldDate = (Get-Date).AddYears(-3).AddMonths(-2)
+$oldFile.LastWriteTime = $oldDate
+$oldFile.LastAccessTime = $oldDate
+$oldFile.CreationTime = $oldDate
+Write-Host "   Created: PhoenixProject.txt (timestamped 3+ years old)" -ForegroundColor Green
+
+Write-Host "`nSample files created successfully!" -ForegroundColor Green
 ```
 
 This script creates:
+
 - **Finance\CustomerPayments.txt** - Credit card data (3 transactions)
 - **HR\EmployeeRecords.txt** - PII/SSN data (3 employees)
 - **Projects\PhoenixProject.txt** - Old archived data (timestamped 3+ years ago)
@@ -326,17 +467,49 @@ This script creates:
 Verify file creation:
 
 ```powershell
-cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\01-Setup\Setup-02-Azure-Infrastructure"
-.\Verify-SampleTestData.ps1
+# Verify sample files were created with expected content
+Get-ChildItem "C:\PurviewScanner" -Recurse -File | Select-Object FullName, Length, LastWriteTime | Format-Table -AutoSize
 ```
-
-This script validates files contain expected sensitive information type patterns and verifies the Phoenix Project file has the correct old timestamp.
 
 Create SMB shares:
 
+> **⚠️ Administrator Required**: SMB share creation requires elevated privileges. Ensure your PowerShell window is running as Administrator. If you get "Access is denied" errors, close PowerShell and reopen it by right-clicking **Windows PowerShell** and selecting **Run as administrator**.
+
+Copy and paste the following script to create SMB shares:
+
 ```powershell
-cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\01-Setup\Setup-02-Azure-Infrastructure"
-.\Create-SMBShares.ps1
+# =============================================================================
+# Create SMB Shares for Scanner Access
+# =============================================================================
+
+Write-Host "Creating SMB shares..." -ForegroundColor Green
+
+# Create Finance Share
+try {
+    New-SmbShare -Name "Finance" -Path "C:\PurviewScanner\Finance" -FullAccess "Everyone" -Description "Finance department files - LAB ONLY" -ErrorAction Stop
+    Write-Host "   Created: \\$env:COMPUTERNAME\Finance" -ForegroundColor Green
+} catch {
+    Write-Host "   Finance share may already exist: $_" -ForegroundColor Yellow
+}
+
+# Create HR Share
+try {
+    New-SmbShare -Name "HR" -Path "C:\PurviewScanner\HR" -FullAccess "Everyone" -Description "HR department files - LAB ONLY" -ErrorAction Stop
+    Write-Host "   Created: \\$env:COMPUTERNAME\HR" -ForegroundColor Green
+} catch {
+    Write-Host "   HR share may already exist: $_" -ForegroundColor Yellow
+}
+
+# Create Projects Share
+try {
+    New-SmbShare -Name "Projects" -Path "C:\PurviewScanner\Projects" -FullAccess "Everyone" -Description "Project archive files - LAB ONLY" -ErrorAction Stop
+    Write-Host "   Created: \\$env:COMPUTERNAME\Projects" -ForegroundColor Green
+} catch {
+    Write-Host "   Projects share may already exist: $_" -ForegroundColor Yellow
+}
+
+Write-Host "`nSMB shares created. Verify with:" -ForegroundColor Cyan
+Get-SmbShare | Where-Object {$_.Name -in @("Finance", "HR", "Projects")} | Format-Table Name, Path -AutoSize
 ```
 
 This script creates network shares for Finance, HR, and Projects folders, enabling scanner access via UNC paths.
@@ -348,6 +521,8 @@ This script creates network shares for Finance, HR, and Projects folders, enabli
 ## 🌐 Azure Files Setup
 
 ### Step 6: Create Azure Files Storage Account
+
+> **💻 Perform on Local PC**: This step is performed on your **local machine** (admin PC), not the VM. You'll switch back to the VM later to mount the share.
 
 Return to Azure Portal on your local machine (not in VM):
 
@@ -415,6 +590,8 @@ Review and create:
 - Click **Create**.
 - Wait for deployment (2-3 minutes).
 
+![storage-account-create](.images/storage-account-create.png)
+
 Create file share:
 
 - Once deployed, click **Go to resource**.
@@ -454,6 +631,8 @@ Get connection script:
 - Click **Show script**.
 - Copy the PowerShell script displayed (it contains your storage account key).
 
+![file-share-connect](.images/file-share-connect.png)
+
 Mount share on VM:
 
 - Switch back to your VM RDP session.
@@ -464,16 +643,68 @@ Mount share on VM:
 
 Create sample data on Azure Files:
 
+Copy and paste the following script to create sample data on the Azure Files share:
+
 ```powershell
-cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\01-Setup\Setup-02-Azure-Infrastructure"
-.\Create-AzureFilesSampleData.ps1
+# =============================================================================
+# Create Sample Data on Azure Files Share
+# =============================================================================
+
+# Verify Z: drive is mounted
+if (-not (Test-Path "Z:\")) {
+    Write-Host "ERROR: Z: drive not found - Azure Files share not mounted" -ForegroundColor Red
+    Write-Host "Please mount the Azure Files share first using the connection script from Azure Portal" -ForegroundColor Yellow
+    return
+}
+
+Write-Host "Creating sample data on Azure Files share..." -ForegroundColor Green
+
+$cloudContent = @"
+ACME CORPORATION - CLOUD MIGRATION PROJECT
+Cloud Infrastructure Team
+Classification: Internal Use Only
+Last Modified: $(Get-Date -Format 'yyyy-MM-dd')
+
+MIGRATION PROJECT STATUS
+
+Project Name: Cloud Migration Initiative 2024
+Status: Phase 2 - In Progress
+Lead: Cloud Operations Team
+
+MIGRATION PHASES:
+Phase 1: Assessment & Planning - COMPLETE (2024-Q1)
+Phase 2: Pilot Migration - IN PROGRESS (2024-Q3)
+Phase 3: Full Production Migration - PENDING (2025-Q1)
+
+AZURE RESOURCE INFORMATION:
+Subscription ID: 12345678-1234-1234-1234-123456789abc
+Resource Group: rg-prod-migration
+Location: East US
+Storage Account: stprodmigration001
+
+CONTACT INFORMATION:
+Project Manager: cloudops@acme.com
+Technical Lead: infrastructure@acme.com
+Security Contact: security@acme.com
+
+NOTES:
+This file simulates data stored on cloud storage (Azure Files, Nasuni, etc.)
+accessible via SMB protocol from on-premises scanner.
+"@
+
+$cloudContent | Out-File -FilePath "Z:\CloudMigration.txt" -Encoding UTF8
+Write-Host "   Created: Z:\CloudMigration.txt" -ForegroundColor Green
+
+# Verify
+Write-Host "`nFiles on Azure Files share:" -ForegroundColor Cyan
+Get-ChildItem Z:\ | Format-Table Name, Length, LastWriteTime -AutoSize
 ```
 
 This script:
+
 - Verifies Z: drive is mounted (Azure Files share).
 - Creates CloudMigration.txt with sample cloud migration project data.
 - Validates file creation.
-- Provides Azure Portal verification instructions.
 
 Verify mount in Azure Portal:
 
@@ -492,6 +723,8 @@ Verify mount in Azure Portal:
 > - The file was written to the Azure Files share (not just a local drive)
 > - The SMB connection is working properly
 
+![purview-files-doc](.images/purview-files-doc.png)
+
 Alternative verification in File Explorer on VM:
 
 - On the VM, open **File Explorer**.
@@ -505,6 +738,8 @@ Alternative verification in File Explorer on VM:
 ## 🔌 Scanner Prerequisites Installation
 
 ### Step 7: Install Scanner Prerequisites
+
+> **⚠️ Perform on VM**: Switch back to your **Azure VM** via RDP for this step. All scanner prerequisites must be installed on the VM.
 
 On the VM, download and install Microsoft Office IFilter:
 
@@ -540,16 +775,14 @@ Install Azure CLI:
 Verify Azure CLI installation:
 
 ```powershell
-cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\01-Setup\Setup-02-Azure-Infrastructure"
-.\Verify-AzureCLI.ps1
+# Verify Azure CLI is installed and accessible
+az --version
 ```
 
-This script:
+If the command is not recognized, ensure you:
 
-- Checks if `az` command is available.
-- Displays version information if installed.
-- Provides installation instructions if missing.
-- Reminds about PowerShell restart requirement.
+1. Closed and reopened PowerShell after installation.
+2. Opened PowerShell as Administrator.
 
 > **⚠️ PowerShell Version Requirement**: The Purview Information Protection scanner requires **Windows PowerShell 5.1** and is **not compatible with PowerShell 7**. Windows Server 2022 includes PowerShell 5.1 by default. Do not install PowerShell 7 for this lab, as it will cause scanner installation and authentication failures in later labs.
 

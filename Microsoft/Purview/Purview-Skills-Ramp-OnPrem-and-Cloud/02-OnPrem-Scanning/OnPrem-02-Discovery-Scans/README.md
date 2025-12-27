@@ -23,13 +23,84 @@
 
 ## ✅ Quick Validation: Verify OnPrem-01 Completion
 
-Before starting OnPrem-02, verify that OnPrem-01 was completed successfully:
+Before starting OnPrem-02, verify that OnPrem-01 was completed successfully.
 
-**On VM, in Windows PowerShell 5.1 as Administrator:**
+> **🖥️ Scanner VM Execution Required**: This validation script checks scanner service status and must run on the Scanner VM where the scanner is installed.
+
+**Copy and Execute on Scanner VM:**
+
+1. **RDP to your Scanner VM**.
+2. Open **Windows PowerShell 5.1** as Administrator.
+3. Copy and paste the following script:
 
 ```powershell
-cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\02-OnPrem-Scanning\OnPrem-02-Discovery-Scans"
-.\Verify-OnPrem01Completion.ps1
+# =============================================================================
+# Verify OnPrem-01 scanner deployment completion
+# =============================================================================
+
+$ComputerName = $env:COMPUTERNAME
+
+Write-Host "`n🔍 Validating OnPrem-01 Completion" -ForegroundColor Cyan
+Write-Host "===================================" -ForegroundColor Cyan
+
+# Check 1: Verify scanner service exists and is running
+Write-Host "`n📋 Checking scanner service status..." -ForegroundColor Cyan
+try {
+    $service = Get-Service -Name "MIPScanner" -ErrorAction Stop
+    
+    if ($service.Status -eq "Running") {
+        Write-Host "   ✅ Scanner service is running" -ForegroundColor Green
+    } else {
+        Write-Host "   ❌ Scanner service exists but is not running" -ForegroundColor Red
+        Write-Host "   Status: $($service.Status)" -ForegroundColor Yellow
+        Write-Host "`n   Return to OnPrem-01 and ensure scanner service starts successfully." -ForegroundColor Yellow
+        return
+    }
+} catch {
+    Write-Host "   ❌ Scanner service not found" -ForegroundColor Red
+    Write-Host "   Error: $_" -ForegroundColor Yellow
+    Write-Host "`n   Return to OnPrem-01 and complete scanner installation (Install-Scanner)." -ForegroundColor Yellow
+    return
+}
+
+# Check 2: Verify scanner authentication and diagnostics
+Write-Host "`n📋 Running scanner diagnostics..." -ForegroundColor Cyan
+Write-Host "   You will be prompted for scanner service account credentials" -ForegroundColor Gray
+Write-Host "   Username format: $ComputerName\scanner-svc" -ForegroundColor Gray
+
+try {
+    # Prompt for scanner service account credentials
+    $scannerCreds = Get-Credential "$ComputerName\scanner-svc"
+    
+    # Run comprehensive scanner diagnostics
+    Start-ScannerDiagnostics -OnBehalfOf $scannerCreds
+    
+    Write-Host "`n   ✅ Scanner diagnostics completed successfully" -ForegroundColor Green
+    Write-Host "   All checks passed:" -ForegroundColor Green
+    Write-Host "   - Connectivity checks completed" -ForegroundColor Gray
+    Write-Host "   - Database check completed" -ForegroundColor Gray
+    Write-Host "   - Authentication check completed" -ForegroundColor Gray
+    Write-Host "   - Content scan job check completed" -ForegroundColor Gray
+    Write-Host "   - Configuration check completed" -ForegroundColor Gray
+    
+} catch {
+    Write-Host "`n   ❌ Scanner diagnostics failed" -ForegroundColor Red
+    Write-Host "   Error: $_" -ForegroundColor Yellow
+    Write-Host "`n   Return to OnPrem-01 and complete the following:" -ForegroundColor Yellow
+    Write-Host "   1. Verify scanner authentication (Set-Authentication -OnBehalfOf)" -ForegroundColor Gray
+    Write-Host "   2. Confirm content scan job created in Purview portal" -ForegroundColor Gray
+    Write-Host "   3. Check scanner service account credentials" -ForegroundColor Gray
+    return
+}
+
+# Validation complete
+Write-Host "`n✅ OnPrem-01 Validation Complete" -ForegroundColor Green
+Write-Host "================================" -ForegroundColor Green
+Write-Host "`n📚 OnPrem-01 completed successfully!" -ForegroundColor Cyan
+Write-Host "   Scanner service is running" -ForegroundColor Gray
+Write-Host "   Scanner diagnostics passed all checks" -ForegroundColor Gray
+Write-Host "   Ready to proceed with OnPrem-02 Discovery Scans" -ForegroundColor Gray
+Write-Host "`n⏭️  Continue with OnPrem-02 Step 1: Add Repository to Content Scan Job" -ForegroundColor Yellow
 ```
 
 > **⚠️ If any validation fails**: Return to **[OnPrem-01: Scanner Deployment](../OnPrem-01-Scanner-Deployment/README.md)** and complete the missing steps before continuing.
@@ -70,6 +141,9 @@ Add the Finance share as the first repository to scan.
 - Click the **Content scan jobs** tab.
 - Click on the content scan job: **Lab-OnPrem-Scan**.
 - Click the **Repositories** tab.
+
+![ip-scanner-repositories](.images/ip-scanner-repositories.png)
+
 - Click **+ Add** to add a new repository.
 - Enter the repository details:
   - **Path**: `\\COMPUTERNAME\Finance` (replace COMPUTERNAME with your VM's actual computer name).

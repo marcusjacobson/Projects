@@ -44,6 +44,14 @@
 Write-Host "🔍 Step 1: Connecting to Exchange Online PowerShell" -ForegroundColor Green
 Write-Host "===================================================" -ForegroundColor Green
 
+# Reset module and disable WAM broker to avoid msalruntime DLL issues
+# Environment variables must be set BEFORE the module is imported
+Disconnect-ExchangeOnline -Confirm:$false -ErrorAction SilentlyContinue
+Remove-Module ExchangeOnlineManagement -Force -ErrorAction SilentlyContinue
+$env:AZURE_IDENTITY_DISABLE_MSALRUNTIME = "1"
+$env:MSAL_DISABLE_WAM = "1"
+Import-Module ExchangeOnlineManagement -Force
+
 try {
     Connect-ExchangeOnline -ErrorAction Stop
     Write-Host "   ✅ Connected to Exchange Online successfully" -ForegroundColor Green

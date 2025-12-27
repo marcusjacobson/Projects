@@ -10,17 +10,17 @@
 
 .PARAMETER ExportPath
     Path to the Content Explorer CSV export file.
-    Default: C:\PurviewLab\ContentExplorer_SIT_Export.csv
+    If not provided, the script will prompt for the file location.
 
 .EXAMPLE
     .\Generate-SITAnalysisReport.ps1
     
-    Analyzes Content Explorer export using default path and generates stakeholder report.
+    Prompts for Content Explorer export file location and generates stakeholder report.
 
 .EXAMPLE
-    .\Generate-SITAnalysisReport.ps1 -ExportPath "C:\Custom\Path\Export.csv"
+    .\Generate-SITAnalysisReport.ps1 -ExportPath "C:\purview-lab\ContentExplorer_Export.csv"
     
-    Analyzes Content Explorer export from custom location.
+    Analyzes Content Explorer export from specified location.
 
 .NOTES
     Author: Marcus Jacobson
@@ -34,19 +34,18 @@
     Requirements:
     - Content Explorer CSV export from Microsoft Purview
     - PowerShell 5.1+ or PowerShell 7+
-    - C:\PurviewLab\ directory for output reports
     
     Script development orchestrated using GitHub Copilot.
 
 .OUTPUTS
     - Console display of SIT distribution, location analysis, confidence scores, and risk assessment
-    - C:\PurviewLab\SIT_Analysis_Stakeholder_Report.txt - Executive compliance summary report
+    - Stakeholder report saved to same directory as input CSV file
 #>
 
 [CmdletBinding()]
 param (
     [Parameter(Mandatory = $false)]
-    [string]$ExportPath = "C:\PurviewLab\ContentExplorer_SIT_Export.csv"
+    [string]$ExportPath
 )
 
 # =============================================================================
@@ -56,25 +55,41 @@ param (
 Write-Host "🔍 Step 1: Environment Validation" -ForegroundColor Green
 Write-Host "=================================" -ForegroundColor Green
 
+# If no path provided, prompt for file location
+if (-not $ExportPath) {
+    Write-Host "📁 Content Explorer Export File Selection" -ForegroundColor Cyan
+    Write-Host "   No file path provided. Please enter the full path to your Content Explorer CSV export." -ForegroundColor Yellow
+    Write-Host ""
+    Write-Host "   Common locations:" -ForegroundColor Gray
+    Write-Host "   - C:\purview-lab\ContentExplorer_Export.csv" -ForegroundColor Gray
+    Write-Host "   - C:\Downloads\ContentExplorer_Export.csv" -ForegroundColor Gray
+    Write-Host "   - C:\PurviewLab\ContentExplorer_SIT_Export.csv" -ForegroundColor Gray
+    Write-Host ""
+    $ExportPath = Read-Host "   Enter full path to Content Explorer CSV file"
+    Write-Host ""
+}
+
 # Verify Content Explorer export exists
 if (-not (Test-Path $ExportPath)) {
     Write-Host "❌ ERROR: Content Explorer export not found" -ForegroundColor Red
-    Write-Host "   Expected location: $ExportPath" -ForegroundColor Yellow
+    Write-Host "   Specified location: $ExportPath" -ForegroundColor Yellow
     Write-Host "" 
-    Write-Host "   Please complete these steps first:" -ForegroundColor Yellow
-    Write-Host "   1. Export Content Explorer data (click Export button)" -ForegroundColor Gray
-    Write-Host "   2. Save CSV to: $ExportPath" -ForegroundColor Gray
+    Write-Host "   Please verify:" -ForegroundColor Yellow
+    Write-Host "   1. The file path is correct (check spelling and case)" -ForegroundColor Gray
+    Write-Host "   2. Content Explorer data was exported (click Export button in Purview portal)" -ForegroundColor Gray
+    Write-Host "   3. The CSV file exists at the specified location" -ForegroundColor Gray
     return
 }
 
-# Ensure output directory exists
-$outputDir = "C:\PurviewLab"
+# Set output directory to same location as input file
+$outputDir = Split-Path -Parent $ExportPath
 if (-not (Test-Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
     Write-Host "   ✅ Created output directory: $outputDir" -ForegroundColor Green
 }
 
-Write-Host "   ✅ Content Explorer export found" -ForegroundColor Green
+Write-Host "   ✅ Content Explorer export found: $ExportPath" -ForegroundColor Green
+Write-Host "   📂 Output directory: $outputDir" -ForegroundColor Cyan
 Write-Host ""
 
 # =============================================================================

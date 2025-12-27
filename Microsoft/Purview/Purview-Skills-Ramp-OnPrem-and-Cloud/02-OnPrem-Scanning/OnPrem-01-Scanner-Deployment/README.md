@@ -107,6 +107,8 @@ Scanner clusters organize scanner nodes and manage scanning operations centrally
   - Select **Information protection** from the left navigation
   - Then select **Information protection scanner**
 
+![purview-ip-scanner](.images/purview-ip-scanner.png)
+
 > **💡 Portal Note**: The Microsoft Purview portal interface was redesigned in 2024. The scanner configuration is now accessed through Settings > Information protection. The steps below reflect the current portal as of October 2025.
 
 > **⚠️ Azure Information Protection Client Requirement**: When you access the **Information protection scanner** page, you may see a notice that "The information protection scanner uses Azure Information Protection. To access this functionality, first deploy Azure Information Protection from the Microsoft Download Center."
@@ -120,6 +122,9 @@ Scanner clusters organize scanner nodes and manage scanning operations centrally
 From the **Information protection scanner** page:
 
 - Select the **Clusters** tab at the top.
+
+![ip-scanner-clusters](.images/ip-scanner-clusters.png)
+
 - Click **Add** button (or **+ Add** icon).
 - **Cluster name**: `Lab-Scanner-Cluster`
 - **Description** (optional): `Weekend lab scanner for on-prem file shares and Azure Files`
@@ -145,9 +150,17 @@ Content scan jobs define what to scan, when to scan, and what policies to apply 
 
 - **Schedule**: **Manual** (for testing; use scheduled scans in production)
 - **Info types to be discovered**: **Policy only** (uses SITs defined in your tenant's DLP policies)
+- **Treat recommended labeling as automatic**: **Off**
+- **Enable DLP policy rules**: **On** ⬅️ **Critical for OnPrem-03**
+- **Enforce sensitivity labeling policy**: **On**
+- **Label files based on content**: **On**
+- **Default label**: **Policy default**
+- **Relabel files**: **Off**
 - **Configure repositories**: Leave empty for now (we'll add these in OnPrem-02 after scanner installation)
 - Click **Save**.
 
+> **⚠️ Critical - Enable DLP**: The **Enable DLP policy rules** setting must be **On** for the scanner to evaluate files against DLP policies in OnPrem-03. If left Off, DLP policies will not be applied during scans.
+>
 > **💡 Production Tip**: For production deployments, configure scheduled scans during off-peak hours to minimize impact on file server performance.
 
 ---
@@ -172,13 +185,15 @@ Invoke-WebRequest -Uri $downloadUrl -OutFile $installerPath
 Write-Host "📦 Installing Office iFilter..." -ForegroundColor Cyan
 Start-Process -FilePath $installerPath -ArgumentList "/quiet", "/norestart" -Wait
 
-# Verify installation
+# Verify installation by checking for filter DLLs (more reliable than Win32_Product)
 Write-Host "✅ Verifying Office iFilter installation..." -ForegroundColor Green
-$iFilter = Get-WmiObject -Class Win32_Product | Where-Object {$_.Name -like "*Office*Filter*"}
-if ($iFilter) {
-    Write-Host "   Office iFilter installed: $($iFilter.Name)" -ForegroundColor Green
+$filterPath = "C:\Program Files\Common Files\microsoft shared\Filters"
+if (Test-Path "$filterPath\offfiltx.dll") {
+    Write-Host "   Office iFilter installed successfully" -ForegroundColor Green
+    Write-Host "   Filter DLLs found in: $filterPath" -ForegroundColor Cyan
 } else {
-    Write-Host "   WARNING: Office iFilter not detected!" -ForegroundColor Yellow
+    Write-Host "   WARNING: Office iFilter DLLs not found at expected location" -ForegroundColor Yellow
+    Write-Host "   If you installed manually, this may be OK - check $filterPath" -ForegroundColor Yellow
 }
 ```
 
@@ -531,6 +546,9 @@ Before proceeding to OnPrem-02 (Discovery Scans), verify:
 - [ ] Scan job associated with `Lab-Scanner-Cluster`
 - [ ] Schedule set to **Manual**
 - [ ] Info types set to **Policy only**
+- [ ] **Enable DLP policy rules** set to **On** (critical for OnPrem-03)
+- [ ] **Enforce sensitivity labeling policy** set to **On**
+- [ ] **Label files based on content** set to **On**
 
 ### Step 4: Scanner Service Installation
 

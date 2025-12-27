@@ -34,7 +34,7 @@
 **On-Premises File Remediation Options**:
 
 - Manual label application through scanner (limited capabilities).
-- PowerShell scripting for bulk file operations (Reporting-03).
+- PowerShell scripting for bulk file operations.
 - Cloud migration to SharePoint enables full retention features.
 - Hybrid approach: Scanner discovers, SharePoint applies retention.
 
@@ -56,21 +56,34 @@
 
 - Select **Team site** (to create a Microsoft 365 group-connected team site).
 - Alternatively, you can select **Browse more sites** to see additional templates.
+
+![sharepoint-templates](.images/sharepoint-templates.png)
+
 - Browse and select a template: Choose **Standard team** template.
 - Click **Use template**.
 
 **Site Details**:
 
 - **Site name**: `Retention Testing`
-- **Site owner**: Your admin account (enter email address)
+- **Site description**: `Sample SharePoint site to test Retention Labels`
+- **Group email address**: `RetentionTesting` (auto-populated from site name)
+- **Site address**: Verify it shows as available (e.g., `/sites/RetentionTesting`)
+- **Group owner**: Your admin account (start typing to search and select)
+- Click **Next**.
+
+**Privacy and Additional Settings** (next page):
+
+- **Privacy settings**: **Private** (recommended for lab environment)
 - **Language**: English (or your preferred language)
-- **Privacy settings**: **Private** (recommended for lab environment - only members can access)
-  - **Public** option allows anyone in organization to access.
-  - **Private** option restricts access to invited members only.
 - Click **Create site**.
 
-> **⚠️ Site Address Note**: If you enter "Retention Testing" as the site name and another site already exists at `/sites/RetentionTesting`, the site address will be automatically changed to an available address like `/sites/RetentionTesting2`. The wizard will show a warning: "This site address is available with modification".
+**Add Site Owners and Members** (final page):
 
+- **Add members**: Skip this for the lab - no additional members needed.
+- Click **Finish** to complete site creation.
+
+> **⚠️ Site Address Note**: If you enter "Retention Testing" as the site name and another site already exists at `/sites/RetentionTesting`, the site address will be automatically changed to an available address like `/sites/RetentionTesting2`. The wizard will show a warning: "This site address is available with modification".
+>
 > **💡 Portal Note**: The SharePoint admin center interface may vary based on your tenant configuration. Some tenants show "New site" instead of "+ Create". The core functionality remains the same.
 
 **Wait for Site Creation**:
@@ -84,55 +97,34 @@
 **Create a Dedicated Folder for Sensitive Data**:
 
 - In your new Retention Testing site, click **Documents** from the left menu.
-  - Or use the Quick Launch on the left side.
 - Click **+ New** > **Folder**.
-- **Folder name**: `Sensitive Data Archive`.
+- **Folder name**: `Sensitive Data Archive`
 - Click **Create**.
 - Open the newly created **Sensitive Data Archive** folder.
 
-> **💡 Folder Purpose**: Using a descriptive folder name helps organize test data and makes it easier to identify files during auto-apply policy validation in Cloud-03. In production scenarios, you'd use meaningful folder structures aligned with business units or data classifications.
+> **💡 Folder Purpose**: Using a descriptive folder name helps organize test data and makes it easier to identify files during auto-apply policy validation in Cloud-03.
 
-**Create Sample Files with Sensitive Information**:
+**Upload Sample Files with Sensitive Information**:
 
-Navigate into the **Sensitive Data Archive** folder, then create two sample files:
+Sample files are provided in this lab's `sample-files` folder. Upload them to the **Sensitive Data Archive** folder:
 
-**File 1 - Employee SSN Archive (Excel)**:
+- Click **Upload** > **Files**.
+- Navigate to: `03-Cloud-Scanning\Cloud-01-SharePoint-Foundation\sample-files\`
+- Select both files:
+  - `EmployeeSSNArchive.csv` - Contains sample SSN data patterns
+  - `OldCreditCardTransactions.txt` - Contains sample credit card number patterns
+- Click **Open** to upload.
 
-- Click **+ New** > **Excel workbook**.
-- Name the file: `EmployeeSSNArchive.xlsx`.
-- Add sample data with SSN patterns:
-  - Column A: Employee Name (e.g., "John Smith", "Jane Doe", "Bob Johnson").
-  - Column B: SSN (e.g., "123-45-6789", "987-65-4321", "555-12-3456").
-  - Add 3-5 rows of sample data.
-- Save and close the file.
+**Verify Upload**:
 
-**File 2 - Old Credit Card Transactions (Text)**:
+- Both files should appear in the **Sensitive Data Archive** folder.
+- Click on each file to verify content is visible.
 
-- Click **+ New** > **Text document** (or upload a .txt file).
-- Name the file: `OldCreditCardTransactions.txt`.
-- Add sample credit card transaction data:
-  
-```text
-  Transaction Archive - Old Credit Card Data
-  ==========================================
-  Date: 2022-03-15
-  Card: 4532-1234-5678-9010
-  Amount: $45.67
-  
-  Date: 2022-04-22
-  Card: 5425-2334-3010-9877
-  Amount: $123.45
-  
-  Date: 2022-05-10
-  Card: 3782-822463-10005
-  Amount: $89.99
-```
+![sharepoint-documents](.images/sharepoint-documents.png)
 
-- Save and close the file.
-
-> **💡 Lab File Names**: These intentionally descriptive file names (`EmployeeSSNArchive.xlsx`, `OldCreditCardTransactions.txt`) make it easier to identify test files during policy testing and validation. In real-world scenarios, users would use more generic names, but for lab purposes, explicit naming helps track retention label application in Cloud-03.
+> **💡 Sample File Contents**: These files contain fictitious sensitive data patterns (SSNs: `123-45-6789`, Credit Cards: `4532-1234-5678-9010`) that Microsoft Purview's sensitive information type detection will recognize. This ensures auto-apply policies in Cloud-03 will correctly identify and label these files.
 >
-> **⚠️ Sensitive Data Patterns**: The sample SSNs and credit card numbers follow format patterns that Microsoft Purview's sensitive information type detection will recognize. This ensures auto-apply policies in Cloud-03 will correctly identify and label these files.
+> **⚠️ Lab Files Only**: These are sample files for lab purposes only. Never use real sensitive data in test environments.
 
 ### Step 3: Configure Site Permissions (Optional)
 
@@ -170,7 +162,7 @@ Before proceeding to Cloud-02 (Retention Labels), verify:
 - [ ] Documents library exists and accessible
 - [ ] **Sensitive Data Archive** folder created in Documents library
 - [ ] Folder visible with folder icon
-- [ ] `EmployeeSSNArchive.xlsx` uploaded with SSN data
+- [ ] `EmployeeSSNArchive.csv` uploaded with SSN data
 - [ ] `OldCreditCardTransactions.txt` uploaded with credit card transaction data
 - [ ] Both files display with correct icons (Excel icon, text file icon)
 - [ ] Files can be opened in SharePoint (Excel Online, browser preview)
@@ -250,7 +242,7 @@ Before proceeding to Cloud-02 (Retention Labels), verify:
 
 2. **Check file name characters**:
    - Avoid special characters in file names: `\ / : * ? " < > | # %`
-   - Use simple names like "EmployeeSSNArchive.xlsx" (already follows this pattern)
+   - Use simple names like "EmployeeSSNArchive.csv" (already follows this pattern)
    - SharePoint automatically blocks invalid characters
 
 3. **Try alternative upload method**:
@@ -292,7 +284,7 @@ Before proceeding to Cloud-02 (Retention Labels), verify:
 
 - Keep site simple with minimal customization.
 - Use clear naming: "Retention Testing" immediately indicates purpose.
-- Use descriptive folder/file names for easy tracking: "Sensitive Data Archive", "EmployeeSSNArchive.xlsx".
+- Use descriptive folder/file names for easy tracking: "Sensitive Data Archive", "EmployeeSSNArchive.csv".
 - Include sensitive data patterns (SSNs, credit cards) to test Purview detection in Cloud-03.
 - Acknowledge lab-friendly naming is intentionally unrealistic but optimal for learning scenarios.
 
@@ -312,7 +304,7 @@ SharePoint foundation ready! You now have:
 
 - ✅ SharePoint Online team site created.
 - ✅ Document library with **Sensitive Data Archive** folder structure.
-- ✅ Sample files with sensitive data patterns uploaded (`EmployeeSSNArchive.xlsx`, `OldCreditCardTransactions.txt`).
+- ✅ Sample files with sensitive data patterns uploaded (`EmployeeSSNArchive.csv`, `OldCreditCardTransactions.txt`).
 - ✅ Site accessible and permissions configured.
 - ✅ Cloud repository ready for retention label testing.
 

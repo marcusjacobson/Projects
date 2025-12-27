@@ -652,7 +652,7 @@ az ad app list --display-name "Purview-Scanner-App" --output table
 - Scanner VM: Enable-ScannerDLP, Sync-DLPPolicies, Start-DLPScanWithReset, Monitor-DLPScan, Get-DLPScanReport.
 - Admin Machine: Verify-OnPrem02Completion, Test-DLPPolicySync, Verify-ActivityExplorerSync.
 
-**Lab 04 - OnPrem-04 DLP Enforcement Validation** (2 scripts):
+**Lab 04 - OnPrem-04 DLP Activity Monitoring** (2 scripts):
 
 - Admin Machine: Generate-DLPExecutiveSummary, Invoke-WeeklyDLPMonitoring.
 

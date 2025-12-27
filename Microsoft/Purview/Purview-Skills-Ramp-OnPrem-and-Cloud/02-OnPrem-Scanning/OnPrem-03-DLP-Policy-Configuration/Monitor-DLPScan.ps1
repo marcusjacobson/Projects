@@ -62,132 +62,154 @@ Write-Host "   Press Ctrl+C to stop monitoring" -ForegroundColor Gray
 
 $scanStartTime = Get-Date
 $iterationCount = 0
+$previousScanEndTime = $null
 
-# Monitoring loop
-while ($true) {
-    $iterationCount++
-    $currentTime = Get-Date
-    $elapsedTime = $currentTime - $scanStartTime
-    
-    Clear-Host
-    
-    Write-Host "`n📊 DLP Scanner Status Monitor" -ForegroundColor Cyan
-    Write-Host "=============================" -ForegroundColor Cyan
-    Write-Host "   Refresh: #$iterationCount" -ForegroundColor Gray
-    Write-Host "   Time: $($currentTime.ToString('HH:mm:ss'))" -ForegroundColor Gray
-    Write-Host "   Elapsed: $([math]::Floor($elapsedTime.TotalMinutes)) minutes, $($elapsedTime.Seconds) seconds" -ForegroundColor Gray
-    
-    try {
-        $status = Get-AIPScannerStatus -ErrorAction Stop
-        
-        # Display scan status
-        Write-Host "`n🔍 Current Scan Status:" -ForegroundColor Yellow
-        Write-Host "   =====================" -ForegroundColor Yellow
-        
-        $statusColor = if ($status.ScanStatus -eq 'Running') { 'Green' } 
-                      elseif ($status.ScanStatus -eq 'Idle') { 'Cyan' } 
-                      else { 'Yellow' }
-        
-        Write-Host "   Status: " -NoNewline
-        Write-Host $status.ScanStatus -ForegroundColor $statusColor
-        
-        # Display repository info
-        if ($status.CurrentRepository) {
-            Write-Host "`n📁 Current Repository:" -ForegroundColor Yellow
-            Write-Host "   $($status.CurrentRepository)" -ForegroundColor Gray
-        }
-        
-        # Display file counts
-        Write-Host "`n📊 File Statistics:" -ForegroundColor Yellow
-        Write-Host "   =================" -ForegroundColor Yellow
-        
-        if ($null -ne $status.ScannedFiles) {
-            Write-Host "   Files Scanned: $($status.ScannedFiles)" -ForegroundColor Gray
-        }
-        
-        if ($null -ne $status.FailedFiles -and $status.FailedFiles -gt 0) {
-            Write-Host "   Failed Files: $($status.FailedFiles)" -ForegroundColor Yellow
-        }
-        
-        if ($null -ne $status.SkippedFiles -and $status.SkippedFiles -gt 0) {
-            Write-Host "   Skipped Files: $($status.SkippedFiles)" -ForegroundColor Gray
-        }
-        
-        # Display DLP-specific info
-        Write-Host "`n🔐 DLP Configuration:" -ForegroundColor Yellow
-        Write-Host "   ==================" -ForegroundColor Yellow
-        
-        try {
-            $scannerConfig = Get-ScannerContentScan -ErrorAction SilentlyContinue
-            if ($scannerConfig) {
-                Write-Host "   EnableDLP: $($scannerConfig.EnableDlp)" -ForegroundColor Gray
-                Write-Host "   Enforce: $($scannerConfig.Enforce)" -ForegroundColor Gray
-                Write-Host "   RepositoryOwner: $($scannerConfig.RepositoryOwner)" -ForegroundColor Gray
-            }
-        } catch {
-            Write-Host "   (Configuration not accessible during scan)" -ForegroundColor DarkGray
-        }
-        
-        # Check if scan completed
-        if ($status.ScanStatus -eq 'Idle') {
-            Write-Host "`n✅ Scan Completed!" -ForegroundColor Green
-            Write-Host "   ===============" -ForegroundColor Green
-            Write-Host ""
-            Write-Host "   Total Time: $([math]::Floor($elapsedTime.TotalMinutes)) minutes" -ForegroundColor Gray
-            
-            if ($null -ne $status.ScannedFiles) {
-                Write-Host "   Total Files Scanned: $($status.ScannedFiles)" -ForegroundColor Gray
-                
-                if ($elapsedTime.TotalSeconds -gt 0) {
-                    $filesPerMinute = [math]::Round($status.ScannedFiles / $elapsedTime.TotalMinutes, 2)
-                    Write-Host "   Average Rate: $filesPerMinute files/minute" -ForegroundColor Gray
-                }
-            }
-            
-            Write-Host "`n📊 Scan Report Location:" -ForegroundColor Yellow
-            $reportsPath = "C:\Users\scanner-svc\AppData\Local\Microsoft\MSIP\Scanner\Reports"
-            Write-Host "   $reportsPath" -ForegroundColor Gray
-            
-            # Check for latest report
-            try {
-                $latestReport = Get-ChildItem $reportsPath -Filter "DetailedReport_*.csv" -ErrorAction SilentlyContinue | 
-                                Sort-Object LastWriteTime -Descending | 
-                                Select-Object -First 1
-                
-                if ($latestReport) {
-                    Write-Host "`n   Latest Report:" -ForegroundColor Cyan
-                    Write-Host "      $($latestReport.Name)" -ForegroundColor Gray
-                    Write-Host "      Created: $($latestReport.LastWriteTime.ToString('yyyy-MM-dd HH:mm:ss'))" -ForegroundColor Gray
-                    Write-Host "      Size: $([math]::Round($latestReport.Length / 1KB, 2)) KB" -ForegroundColor Gray
-                }
-            } catch {
-                Write-Host "   (Could not check for report file)" -ForegroundColor DarkGray
-            }
-            
-            Write-Host "`n⏭️  Next Steps:" -ForegroundColor Yellow
-            Write-Host "   1. Run Get-DLPScanReport.ps1 to analyze DLP detection results" -ForegroundColor Gray
-            Write-Host "   2. Review DLP policy matches in DetailedReport.csv" -ForegroundColor Gray
-            Write-Host "   3. Check for sensitive information type detections" -ForegroundColor Gray
-            Write-Host "   4. Proceed to OnPrem-04 for DLP enforcement validation" -ForegroundColor Gray
-            
-            break
-        }
-        
-        # If scan is running, show refresh countdown
-        if ($status.ScanStatus -eq 'Running') {
-            Write-Host "`n⏱️  Next refresh in $RefreshInterval seconds..." -ForegroundColor Gray
-            Write-Host "   (Press Ctrl+C to exit monitoring)" -ForegroundColor DarkGray
-        }
-        
-    } catch {
-        Write-Host "`n❌ Failed to retrieve scanner status: $_" -ForegroundColor Red
-        Write-Host "   Scanner service may not be running" -ForegroundColor Gray
-        Write-Host "   Check service status: Get-Service MIPScanner" -ForegroundColor Gray
-        break
-    }
-    
-    # Wait before next check
-    Start-Sleep -Seconds $RefreshInterval
+# Get initial scan state to track changes
+try {
+    $initialStatus = Get-AIPScannerStatus -ErrorAction SilentlyContinue
+    $previousScanEndTime = $initialStatus.LastScanEndTime
+} catch {
+    # Continue anyway - we'll detect scan completion in the loop
 }
 
-Write-Host "`n✅ Monitoring Complete" -ForegroundColor Green
+# Monitoring loop
+try {
+    while ($true) {
+        $iterationCount++
+        $currentTime = Get-Date
+        $elapsedTime = $currentTime - $scanStartTime
+        
+        Clear-Host
+        
+        Write-Host "`n📊 DLP Scanner Status Monitor" -ForegroundColor Cyan
+        Write-Host "=============================" -ForegroundColor Cyan
+        Write-Host "   Refresh: #$iterationCount" -ForegroundColor Gray
+        Write-Host "   Time: $($currentTime.ToString('HH:mm:ss'))" -ForegroundColor Gray
+        Write-Host "   Elapsed: $([math]::Floor($elapsedTime.TotalMinutes)) minutes, $($elapsedTime.Seconds) seconds" -ForegroundColor Gray
+        
+        try {
+            $status = Get-AIPScannerStatus -ErrorAction Stop
+            
+            # Display scan status
+            Write-Host "`n🔍 Current Scan Status:" -ForegroundColor Yellow
+            Write-Host "   =====================" -ForegroundColor Yellow
+            Write-Host "   Last Scan Start: $($status.LastScanStartTime)" -ForegroundColor Gray
+            Write-Host "   Last Scan End: $($status.LastScanEndTime)" -ForegroundColor Gray
+            
+            # Determine if scan is running
+            $scanIsRunning = ($null -eq $status.LastScanEndTime) -or 
+                             ($status.LastScanStartTime -gt $status.LastScanEndTime)
+            
+            if ($scanIsRunning) {
+                Write-Host "   Status: " -NoNewline
+                Write-Host "SCANNING IN PROGRESS" -ForegroundColor Green
+            } else {
+                Write-Host "   Status: " -NoNewline
+                Write-Host "IDLE (Scan Complete)" -ForegroundColor Cyan
+            }
+            
+            # Display repository info
+            if ($status.CurrentRepository) {
+                Write-Host "`n📁 Current Repository:" -ForegroundColor Yellow
+                Write-Host "   $($status.CurrentRepository)" -ForegroundColor Gray
+            }
+            
+            # Display file counts
+            Write-Host "`n📊 File Statistics:" -ForegroundColor Yellow
+            Write-Host "   =================" -ForegroundColor Yellow
+            Write-Host "   Files Scanned: $($status.ScannedFileCount)" -ForegroundColor Gray
+            Write-Host "   Failed Files: $($status.FailedFileCount)" -ForegroundColor Gray
+            
+            if ($status.SkippedRepositories -and $status.SkippedRepositories.Count -gt 0) {
+                Write-Host "`n⚠️  Skipped Repositories:" -ForegroundColor Yellow
+                $status.SkippedRepositories | ForEach-Object {
+                    Write-Host "   - $_" -ForegroundColor Red
+                }
+            }
+            
+            # Display DLP-specific info (note: empty values expected for portal-configured scanners)
+            Write-Host "`n🔐 DLP Configuration:" -ForegroundColor Yellow
+            Write-Host "   ==================" -ForegroundColor Yellow
+            
+            try {
+                $onlineConfig = Get-ScannerConfiguration -ErrorAction SilentlyContinue
+                if ($onlineConfig.OnlineConfiguration -eq 'On') {
+                    Write-Host "   Mode: Portal-Configured (OnlineConfiguration = On)" -ForegroundColor Gray
+                    Write-Host "   💡 DLP settings managed in Purview portal" -ForegroundColor Yellow
+                } else {
+                    $scannerConfig = Get-ScannerContentScan -ErrorAction SilentlyContinue
+                    if ($scannerConfig) {
+                        Write-Host "   EnableDLP: $($scannerConfig.EnableDlp)" -ForegroundColor Gray
+                        Write-Host "   Enforce: $($scannerConfig.Enforce)" -ForegroundColor Gray
+                    }
+                }
+            } catch {
+                Write-Host "   (Configuration not accessible during scan)" -ForegroundColor DarkGray
+            }
+            
+            # Check if a NEW scan has completed (compare end times)
+            if (-not $scanIsRunning -and $status.LastScanEndTime -and 
+                ($null -eq $previousScanEndTime -or $status.LastScanEndTime -gt $previousScanEndTime)) {
+                
+                Write-Host "`n✅ Scan Completed!" -ForegroundColor Green
+                Write-Host "   ===============" -ForegroundColor Green
+                Write-Host "   Completed at: $($status.LastScanEndTime)" -ForegroundColor Gray
+                Write-Host "   Total Files Scanned: $($status.ScannedFileCount)" -ForegroundColor Gray
+                
+                Write-Host "`n📊 Scan Report Location:" -ForegroundColor Yellow
+                $reportsPath = "C:\Users\scanner-svc\AppData\Local\Microsoft\MSIP\Scanner\Reports"
+                Write-Host "   $reportsPath" -ForegroundColor Gray
+                
+                # Check for latest report
+                try {
+                    $latestReport = Get-ChildItem $reportsPath -Filter "DetailedReport_*.csv" -ErrorAction SilentlyContinue | 
+                                    Sort-Object LastWriteTime -Descending | 
+                                    Select-Object -First 1
+                    
+                    if ($latestReport) {
+                        Write-Host "`n   Latest Report:" -ForegroundColor Cyan
+                        Write-Host "      $($latestReport.Name)" -ForegroundColor Gray
+                        Write-Host "      Created: $($latestReport.LastWriteTime.ToString('yyyy-MM-dd HH:mm:ss'))" -ForegroundColor Gray
+                    }
+                } catch {
+                    # Ignore report check errors
+                }
+                
+                Write-Host "`n⏭️  Next Steps:" -ForegroundColor Yellow
+                Write-Host "   1. Run Get-DLPScanReport.ps1 to analyze DLP detection results" -ForegroundColor Gray
+                Write-Host "   2. Review DLP policy matches in DetailedReport.csv" -ForegroundColor Gray
+                Write-Host "   3. Proceed to OnPrem-04 for DLP activity monitoring" -ForegroundColor Gray
+                
+                Write-Host "`n✅ Monitoring Complete" -ForegroundColor Green
+                break
+            }
+            
+            # If scan is not running and we're on first iteration, no active scan to monitor
+            if (-not $scanIsRunning -and $iterationCount -eq 1) {
+                Write-Host "`n💡 No active scan detected." -ForegroundColor Yellow
+                Write-Host "   Last scan completed at: $($status.LastScanEndTime)" -ForegroundColor Gray
+                Write-Host "`n   To start a new scan, run: Start-DLPScanWithReset.ps1" -ForegroundColor Gray
+                Write-Host "`n✅ Monitoring Complete" -ForegroundColor Green
+                break
+            }
+            
+            # Only show refresh message if scan is still running
+            if ($scanIsRunning) {
+                Write-Host "`n⏱️  Next refresh in $RefreshInterval seconds..." -ForegroundColor Gray
+                Write-Host "   (Press Ctrl+C to exit monitoring)" -ForegroundColor DarkGray
+            }
+            
+        } catch {
+            Write-Host "`n❌ Failed to retrieve scanner status: $_" -ForegroundColor Red
+            Write-Host "   Scanner service may not be running" -ForegroundColor Gray
+            Write-Host "   Check service status: Get-Service MIPScanner" -ForegroundColor Gray
+        }
+        
+        # Wait before next check (only if scan is running)
+        if ($scanIsRunning) {
+            Start-Sleep -Seconds $RefreshInterval
+        }
+    }
+} finally {
+    # Only show this if interrupted (Ctrl+C), not on normal exit
+}

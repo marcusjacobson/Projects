@@ -40,11 +40,12 @@ Navigate to Microsoft 365 Admin Center:
 
 - Open browser and go to [https://admin.microsoft.com](https://admin.microsoft.com).
 - Sign in with Global Admin credentials.
-- The admin center may display in **Simplified view** or **Dashboard view**.
-- If using **Simplified view**: Select **Billing**, then select **Add more products**.
-- If using **Dashboard view**: Go to **Billing** > **Purchase services** (some tenants may see **Marketplace** instead).
+- In the left navigation, select **Marketplace** (its own section, not under Billing).
+- This opens the product catalog where you can search for and start trials.
 
-> **💡 Navigation Note**: Microsoft has introduced a Simplified view option in the M365 Admin Center. The steps below work for both views.
+![marketplace](.images/marketplace.png)
+
+> **💡 Navigation Note**: Marketplace is a dedicated section in the left navigation, separate from Billing. The Billing section contains Your products, Licenses, and payment management.
 
 Search for Microsoft 365 license options:
 
@@ -55,6 +56,8 @@ Search for Microsoft 365 license options:
 - If you see **Microsoft 365 E5**, select that option (it includes all Compliance features).
 - If you only see **Microsoft 365 E5 Compliance**, select that option (designed to add Purview capabilities to E3).
 - Click **Details** button.
+
+![m365-trial](.images/m365-trial.png)
 
 Start the trial:
 
@@ -67,8 +70,10 @@ Start the trial:
 
 Verify and assign licenses:
 
-- In the Admin Center, navigate to **Billing** > **Licenses** (or **Billing** > **Your products** depending on view).
-- Confirm your Microsoft 365 E5 license appears with available licenses (either **Microsoft 365 E5** or **Microsoft 365 E5 Compliance**).
+- In the Admin Center, navigate to **Billing** > **Your products**.
+- Confirm your Microsoft 365 E5 license appears with **Active** status (either **Microsoft 365 E5** or **Microsoft 365 E5 Compliance**).
+- Note the **Available licenses** column to confirm you have licenses to assign.
+- To assign licenses, navigate to **Billing** > **Licenses**.
 - Click on the license name to view details.
 - Select **Assign licenses** or the **Assignments** tab.
 - Add your admin account.
@@ -103,6 +108,8 @@ Check for auditing banner:
 
 - If you see a banner stating: *"To use this feature, turn on auditing so we can start recording user and admin activity in your organization"*, proceed to enable auditing.
 - If you do NOT see the banner, auditing is already enabled - you're done with this lab!
+
+![activity-explorer-auditing](.images/activity-explorer-auditing.png)
 
 **Enable Auditing (If Required):**
 

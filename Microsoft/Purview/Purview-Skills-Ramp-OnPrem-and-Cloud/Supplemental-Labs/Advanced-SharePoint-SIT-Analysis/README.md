@@ -1,4 +1,4 @@
-# Supplemental Lab 02: Advanced SharePoint SIT Detection and Analysis
+# Advanced-SharePoint-SIT-Analysis: SharePoint SIT Detection and Analysis
 
 > **⚠️ Terminology Clarification**: This lab focuses on **Sensitive Information Types (SITs)** - pattern-based detection of structured data like credit cards, SSNs, and passport numbers.
 
@@ -1305,19 +1305,17 @@ Before proceeding, verify you have completed all core objectives:
 | **Find files with credit cards, SSNs, passport numbers** | **Content Explorer (Classic)** + Activity Explorer | Uses DLP detection engine for pattern matching |
 | **Monitor DLP policy matches** | **Activity Explorer** | Shows DLP events within 24-48 hours |
 | **Generate compliance report of SIT detections** | **Content Explorer (Classic) export** | Provides file inventory with SIT details |
-| **Categorize documents by type (Resumes, Financial Statements)** | **On-Demand Classification** (Supplemental Lab 03) | Uses ML models for document type classification |
-| **Create custom detection patterns** | **Custom SITs** (Supplemental Lab 03 Part A) | Regex-based pattern definitions |
-| **Train ML model for document categorization** | **Trainable Classifiers** (Supplemental Lab 03 Part B) | Requires training samples and ML model creation |
+| **Categorize documents by type (Resumes, Financial Statements)** | **[Trainable Classifiers](https://learn.microsoft.com/en-us/purview/classifier-learn-about)** | Uses ML models for document type classification |
+| **Create custom detection patterns** | **[Custom SITs](https://learn.microsoft.com/en-us/purview/create-a-custom-sensitive-information-type)** | Regex-based pattern definitions |
+| **Train ML model for document categorization** | **[Trainable Classifiers](https://learn.microsoft.com/en-us/purview/classifier-get-started-with)** | Requires training samples and ML model creation |
 
-**Key Principle**: **SITs** (pattern detection like credit cards) → Use **DLP + Content Explorer**. **Trainable Classifiers** (ML document categorization like "Resume") → Use **On-Demand Classification** (covered in Supplemental Lab 03).
+**Key Principle**: **SITs** (pattern detection like credit cards) → Use **DLP + Content Explorer**. **Trainable Classifiers** (ML document categorization like "Resume") → Use **On-Demand Classification** (see [Microsoft Learn](https://learn.microsoft.com/en-us/purview/classifier-learn-about) for details).
 
 ---
 
 ## 🎯 Key Learning Outcomes
 
 After completing this lab, you have demonstrated the following production-level competencies:
-
-**Technical Skills:**
 
 **Technical Skills:**
 
@@ -1354,11 +1352,11 @@ Before moving to the next lab or cleanup, verify:
 - [ ] PowerShell SIT distribution analysis executed with results saved.
 - [ ] Stakeholder compliance report generated and reviewed.
 - [ ] Understand Content Explorer is correct tool for SITs (not on-demand classification).
-- [ ] Know when to use Supplemental Lab 03 for Trainable Classifiers and on-demand classification.
+- [ ] Understand when Trainable Classifiers are appropriate (document categorization, not pattern-based SIT detection).
 
 ---
 
-## 🎯 Lab 02 Completion Summary
+## 🎯 Advanced-SharePoint-SIT-Analysis Completion Summary
 
 **Skills Acquired:**
 
@@ -1380,8 +1378,8 @@ Before moving to the next lab or cleanup, verify:
 **What This Lab Did NOT Cover (Trainable Classifiers):**
 
 - ❌ **On-Demand Classification**: Not appropriate for SIT detection (designed for Trainable Classifiers).
-- ❌ **Custom Trainable Classifiers**: ML-based document categorization (see Supplemental Lab 03 Part B).
-- ❌ **Custom SIT Creation**: Regex-based pattern definitions (see Supplemental Lab 03 Part A).
+- ❌ **Custom Trainable Classifiers**: ML-based document categorization (see [Learn about trainable classifiers](https://learn.microsoft.com/en-us/purview/classifier-learn-about)).
+- ❌ **Custom SIT Creation**: Regex-based pattern definitions (see [Create custom SITs](https://learn.microsoft.com/en-us/purview/create-a-custom-sensitive-information-type)).
 - ❌ **Document Type Classification**: Categorizing files as "Resumes", "Financial Statements", etc..
 
 **Project Alignment:**
@@ -1397,16 +1395,16 @@ This lab provides production-ready skills for:
 
 | Lab | Integration Point | Benefit |
 |-----|-------------------|---------|
-| **Module 03 (Cloud-03)** | Basic SIT detection foundation | Advanced reporting and analysis builds on Module 03 basics |
-| **Supplemental Lab 03** | Custom SITs + Trainable Classifiers | Create custom detection patterns and ML document categorization |
-| **Advanced Reporting Lab** | Cross-platform analysis | Combine SharePoint SIT data with on-premises scanner results |
-| **Advanced Remediation Lab** | Remediation automation | Use Content Explorer exports to drive automated cleanup workflows |
+| **Cloud-03** | Basic SIT detection foundation | Advanced reporting and analysis builds on Cloud-03 basics |
+| **Advanced-Cross-Platform-SIT-Analysis** | Cross-platform analysis | Combine SharePoint SIT data with on-premises scanner results |
+| **Advanced-Remediation** | Remediation automation | Use Content Explorer exports to drive automated cleanup workflows |
+
+> **📚 Trainable Classifiers**: For ML-based document categorization (e.g., identifying "Resumes" or "Financial Statements"), see [Learn about trainable classifiers](https://learn.microsoft.com/en-us/purview/classifier-learn-about) and [Create custom SITs](https://learn.microsoft.com/en-us/purview/create-a-custom-sensitive-information-type) on Microsoft Learn.
 
 **Next Steps:**
 
-- **Supplemental Lab 03: Custom-Classification**: Learn Custom SITs (Part A) and Trainable Classifiers (Part B) with on-demand classification
-- **Advanced Reporting Lab**: Combine SharePoint SIT detections with on-premises scanner results for unified reporting
-- **Advanced Remediation Lab**: Use Content Explorer exports to build automated sensitive data remediation workflows
+- **Advanced-Cross-Platform-SIT-Analysis**: Combine SharePoint SIT detections with on-premises scanner results for unified reporting
+- **Advanced-Remediation**: Use Content Explorer exports to build automated sensitive data remediation workflows
 
 ---
 
@@ -1419,7 +1417,8 @@ All lab steps are validated against current Microsoft Learn documentation (Novem
 - [Content explorer in Microsoft Purview](https://learn.microsoft.com/en-us/purview/data-classification-content-explorer)
 - [Sensitive information type entity definitions](https://learn.microsoft.com/en-us/purview/sensitive-information-type-entity-definitions)
 - [Learn about trainable classifiers](https://learn.microsoft.com/en-us/purview/classifier-learn-about)
-- [On-demand classification in Microsoft Purview](https://learn.microsoft.com/en-us/purview/on-demand-classification) (for Trainable Classifiers - covered in Supplemental Lab 03)
+- [Create a custom sensitive information type](https://learn.microsoft.com/en-us/purview/create-a-custom-sensitive-information-type)
+- [On-demand classification in Microsoft Purview](https://learn.microsoft.com/en-us/purview/on-demand-classification)
 
 ---
 

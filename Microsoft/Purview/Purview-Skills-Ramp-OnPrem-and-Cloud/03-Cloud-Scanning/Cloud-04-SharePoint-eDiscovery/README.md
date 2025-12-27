@@ -741,11 +741,7 @@ eDiscovery search completed! You now have:
 - Auto-apply policies with up-to-7-day processing timeline (Cloud-03).
 - eDiscovery content search (Cloud-04).
 
-Proceed to **[Section 5: Supplemental Labs](../../05-Supplemental-Labs/README.md)** for optional advanced topics including Activity Explorer analysis, Data Classification dashboards, cross-platform reporting, and executive stakeholder reports.
-
-**Optional Supplemental Lab**:
-
-1. **[Advanced Reporting & Cross-Platform Analysis](../../05-Supplemental-Labs/Advanced-Reporting-Cross-Platform-Analysis/README.md)** - Activity Explorer analysis, Data Classification dashboards, and executive reporting combining on-prem scanner and cloud retention label results
+Proceed to **[Supplemental Labs](../../Supplemental-Labs/README.md)** for optional advanced topics including SharePoint SIT analysis, cross-platform reporting, and production remediation workflows.
 
 > **⏰ Return Reminder**: Come back to Cloud-03 after up to 7 days to validate auto-apply retention label application to your SharePoint files.
 

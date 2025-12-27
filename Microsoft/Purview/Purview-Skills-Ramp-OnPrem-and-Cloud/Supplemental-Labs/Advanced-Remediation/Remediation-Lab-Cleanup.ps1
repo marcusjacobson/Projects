@@ -140,19 +140,25 @@ $outputPath = "C:\PurviewLab"
 
 if (Test-Path $outputPath) {
     try {
-        $csvFiles = Get-ChildItem -Path $outputPath -Filter "Lab05-*.csv" -ErrorAction SilentlyContinue
-        $reportFiles = Get-ChildItem -Path $outputPath -Filter "Lab05-*.txt" -ErrorAction SilentlyContinue
+        # Legacy Lab05 patterns (from older script versions)
+        $legacyCsvFiles = Get-ChildItem -Path $outputPath -Filter "Lab05-*.csv" -ErrorAction SilentlyContinue
+        $legacyTxtFiles = Get-ChildItem -Path $outputPath -Filter "Lab05-*.txt" -ErrorAction SilentlyContinue
+        
+        # Current output file patterns from Advanced-Remediation lab
+        $currentCsvFiles = Get-ChildItem -Path $outputPath -Filter "*.csv" -ErrorAction SilentlyContinue | 
+            Where-Object { $_.Name -match "^(RemediationPlan|Duplicates|SharePoint-Deletions|ActivityExplorer).*\.csv$" }
+        
         $tempUpload = Join-Path $outputPath "Step3-SharePointUpload"
         
-        $totalFiles = $csvFiles.Count + $reportFiles.Count
+        $allFiles = @()
+        if ($legacyCsvFiles) { $allFiles += $legacyCsvFiles }
+        if ($legacyTxtFiles) { $allFiles += $legacyTxtFiles }
+        if ($currentCsvFiles) { $allFiles += $currentCsvFiles }
         
-        # Remove CSV files
-        foreach ($file in $csvFiles) {
-            Remove-Item -Path $file.FullName -Force -ErrorAction SilentlyContinue
-        }
+        $totalFiles = $allFiles.Count
         
-        # Remove report files
-        foreach ($file in $reportFiles) {
+        # Remove all matched files
+        foreach ($file in $allFiles) {
             Remove-Item -Path $file.FullName -Force -ErrorAction SilentlyContinue
         }
         
@@ -232,8 +238,10 @@ $summary = @"
 ✅ REMOVED:
    - Test data files (Step 1, Step 2 on-prem)
    - Tombstone files (*.DELETED_*.txt)
-   - CSV outputs (Lab05-*.csv)
-   - Report files (Lab05-*.txt)
+   - CSV outputs (RemediationPlan.csv, Duplicates.csv, etc.)
+   - Activity Explorer exports (ActivityExplorer*.csv)
+   - SharePoint deletion logs (SharePoint-Deletions.csv)
+   - Legacy Lab05-* files (from older script versions)
    - Temp upload directories
 
 ✅ PRESERVED:

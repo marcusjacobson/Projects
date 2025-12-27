@@ -1,4 +1,4 @@
-# Lab 02 - Part 1: DLP Policy Creation
+# OnPrem-03: DLP Policy Creation
 
 ## 📋 Overview
 
@@ -14,7 +14,7 @@
 - Configure user notifications and admin alerts.
 - Verify DLP policy creation and sync status.
 
-**Prerequisites from Lab 01:**
+**Prerequisites from OnPrem-02:**
 
 - ✅ Information Protection Scanner deployed and operational.
 - ✅ Discovery scan completed successfully showing sensitive data.
@@ -131,7 +131,7 @@ By default, several locations are checked (enabled):
 
 4. Click **Next**.
 
-> **⚠️ Important**: On-premises repository DLP requires the Information Protection Scanner to be deployed and scanning the repositories. Without the scanner, DLP policies cannot be enforced on file shares. We performed this action in lab 01.
+> **⚠️ Important**: On-premises repository DLP requires the Information Protection Scanner to be deployed and scanning the repositories. Without the scanner, DLP policies cannot be enforced on file shares. We performed this action in OnPrem-02.
 >
 > **💡 Lab Focus**: We're unchecking cloud locations (Exchange, SharePoint, OneDrive, Teams, Instances) to focus exclusively on on-premises file shares for this lab. In production environments, you would typically enable multiple locations to protect data across your entire organization.
 
@@ -486,7 +486,7 @@ The final screen displays a comprehensive summary of your policy configuration. 
 >
 > - Refresh the **Policies** page in Purview portal (or check the **Policy sync status** tab in policy details)
 > - The "Sync in progress" message should disappear once sync completes (typically within 1-2 hours)
-> - **Only after sync completes**, proceed to Lab 02 - Part 2 for DLP enforcement configuration
+> - **Only after sync completes**, proceed to OnPrem-04 for DLP enforcement configuration
 
 ---
 

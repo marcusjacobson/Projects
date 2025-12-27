@@ -153,22 +153,22 @@ Before using these export procedures, you **must** have the following Purview da
 
 **For On-Premises Scanner Export** (`ActivityExplorer_Export.csv`):
 
-- **Required Infrastructure Setup**: Complete **Lab 02 - OnPrem-02 through OnPrem-04** (Main Lab Series)
+- **Required Infrastructure Setup**: Complete **Section 2 - OnPrem-02 through OnPrem-04** (Main Lab Series)
   - **OnPrem-02**: On-premises scanner installation and configuration
   - **OnPrem-03**: Scanner content scan jobs and enforcement scanning
   - **OnPrem-04**: Verification of scanner Activity Explorer data sync
 - **Required Test Data**: Complete **Advanced-Remediation Step 1** (Supplemental Lab)
   - Creates RemediationTestData test files for scanner to discover
 - **Activity Explorer Data Requirements**:
-  - Scanner must be installed, configured, and have completed enforcement runs (Main Labs 02-04)
+  - Scanner must be installed, configured, and have completed enforcement runs (Section 2 labs)
   - Test files must exist on file shares for scanner to detect (Advanced-Remediation Step 1)
   - **24-48 hours** wait time after scanner runs for Activity Explorer data sync
-  - **Without Main Labs 02-04 scanner setup, Activity Explorer will have no "File discovered" events to export**
+  - **Without Section 2 labs scanner setup, Activity Explorer will have no "File discovered" events to export**
 - **What This Export Contains**: ~114 "File discovered" events from on-premises scanner detecting RemediationTestData test files
 
 **For SharePoint DLP Export** (`ActivityExplorer_DLP_Export.csv`):
 
-- **Required Infrastructure Setup**: Complete **Lab 03 - Cloud-01 through Cloud-04** (Main Lab Series)
+- **Required Infrastructure Setup**: Complete **Section 3 - Cloud-01 through Cloud-04** (Main Lab Series)
   - **Cloud-01**: SharePoint site creation and DLP policy fundamentals
   - **Cloud-02**: DLP policy deployment to SharePoint workloads
   - **Cloud-03**: DLP policy testing and validation
@@ -176,10 +176,10 @@ Before using these export procedures, you **must** have the following Purview da
 - **Required Test Data**: Complete **Advanced-SharePoint-SIT-Analysis Step 2** (Supplemental Lab)
   - Creates 1000 SharePoint test documents with Credit Card/SSN patterns for DLP to detect
 - **Activity Explorer Data Requirements**:
-  - DLP policies must be deployed to SharePoint (Main Labs 03-04)
+  - DLP policies must be deployed to SharePoint (Section 3 labs)
   - Test documents must exist in SharePoint for DLP to scan (Advanced-SharePoint-SIT-Analysis Step 2)
   - **15-30 minutes** wait time after DLP policy deployment for initial scan and Activity Explorer data sync
-  - **Without Main Labs 03-04 DLP setup, Activity Explorer will have no "DLP rule matched" events to export**
+  - **Without Section 3 labs DLP setup, Activity Explorer will have no "DLP rule matched" events to export**
 - **What This Export Contains**: ~351 "DLP rule matched" events from SharePoint DLP policy detecting sensitive data patterns
 
 > **💡 Data Sync Timing**: Activity Explorer requires time to sync detection events. Ensure you've waited the appropriate time period after completing the prerequisite lab steps before attempting export.

@@ -1,11 +1,11 @@
-# Lab 02 - Part 2: DLP Activity Monitoring & Reporting
+# OnPrem-04: DLP Activity Monitoring & Reporting
 
 > **🛑 BEFORE YOU BEGIN**: You MUST complete OnPrem-03 (DLP Policy Configuration) and verify that DLP detection is working before starting this lab.
 >
 > **Required Prerequisites**:
 >
 > - ✅ OnPrem-03 completed with DLP scan showing **Information Type Name** populated
-> - ✅ Microsoft 365 auditing enabled (covered in Lab 00 - Step 2)
+> - ✅ Microsoft 365 auditing enabled (covered in Setup-01)
 > - ✅ At least **15-30 minutes** have passed since completing OnPrem-03 DLP scan
 > - ✅ Scanner reports confirm DLP detection is working (Credit Card, SSN detected)
 >
@@ -33,7 +33,7 @@
 
 - ✅ DLP policy **Lab-OnPrem-Sensitive-Data-Protection** created and synced.
 - ✅ DLP scan completed showing Information Type Name populated in scanner reports.
-- ✅ Microsoft 365 auditing enabled (Lab 00 - Step 2).
+- ✅ Microsoft 365 auditing enabled (Setup-01).
 - ✅ 15-30 minutes elapsed since DLP scan completion (for Activity Explorer data sync).
 
 > **💡 What This Lab Covers**: This lab teaches how to use **Activity Explorer for real-time DLP monitoring**, complemented by local DetailedReport CSV files and Audit Log for comprehensive compliance reporting. Scanning operations were covered in OnPrem-03. Cloud data monitoring will be covered in dedicated cloud modules.
@@ -65,7 +65,7 @@ By the end of this lab, you will be able to:
 
 Activity Explorer provides comprehensive DLP activity monitoring and audit trail visualization for compliance reporting.
 
-> **⚠️ PREREQUISITE - Auditing Must Be Enabled**: Activity Explorer requires Microsoft 365 auditing to be enabled to display DLP activity data from the scanner. If you followed **Lab 00 - Step 2: Enable Microsoft 365 Auditing**, auditing should already be active and you can proceed immediately.
+> **⚠️ PREREQUISITE - Auditing Must Be Enabled**: Activity Explorer requires Microsoft 365 auditing to be enabled to display DLP activity data from the scanner. If you followed **Setup-01: Enable Microsoft 365 Auditing**, auditing should already be active and you can proceed immediately.
 >
 > **If you see a banner** stating *"To use this feature, turn on auditing"*:
 >

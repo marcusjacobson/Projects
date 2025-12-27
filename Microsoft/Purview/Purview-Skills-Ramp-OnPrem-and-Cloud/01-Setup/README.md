@@ -4,7 +4,7 @@
 
 This section establishes all foundational prerequisites required for the remaining labs. It includes time-sensitive components (auditing activation) and Azure infrastructure deployment. **All three setup labs must be completed sequentially before proceeding to on-premises or cloud scanning.**
 
-**Critical Success Factor**: Enable auditing early (Setup-01) as it requires 2-24 hours to activate and is essential for Activity Explorer functionality in Section 4.
+**Critical Success Factor**: Enable auditing early (Setup-01) as it requires 2-24 hours to activate and is essential for Activity Explorer functionality in OnPrem-04 and Supplemental Labs.
 
 ---
 
@@ -46,7 +46,7 @@ This section establishes all foundational prerequisites required for the remaini
 
 **These labs MUST be completed in order**:
 
-1. **Setup-01** → Enables auditing (2-24 hr activation for Activity Explorer in Section 4)
+1. **Setup-01** → Enables auditing (2-24 hr activation for Activity Explorer in OnPrem-04)
 2. **Setup-02** → Deploys Azure infrastructure (VM, SQL, file shares) required for scanner in Section 2
 3. **Setup-03** → Creates service account with proper licensing for scanner authentication
 
@@ -63,7 +63,7 @@ Before proceeding to Section 2 (On-Prem Scanning) or Section 3 (Cloud Scanning),
 - [ ] Microsoft 365 E5 (or E5 Compliance) trial activated
 - [ ] Licenses assigned to admin account
 - [ ] Auditing enabled in Purview portal (banner dismissed in Activity Explorer)
-- [ ] 2-24 hours elapsed since auditing enablement (or accept incomplete Activity Explorer data in Section 4)
+- [ ] 2-24 hours elapsed since auditing enablement (or accept incomplete Activity Explorer data in OnPrem-04)
 
 ### Setup-02 Complete
 

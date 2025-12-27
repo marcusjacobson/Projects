@@ -136,7 +136,7 @@ For this lab, select:
 > - A file might be created in 2018 and never accessed again (should be deleted)
 > - Last modified time doesn't reflect actual usage patterns
 >
-> **For access-time-based remediation**, you must use **PowerShell scripting** (covered in Lab 04 and Lab 05) instead of retention labels.
+> **For access-time-based remediation**, you must use **PowerShell scripting** (covered in the Advanced-Remediation supplemental lab) instead of retention labels.
 
 **Choose what happens during the retention period:**
 

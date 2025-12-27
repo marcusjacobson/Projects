@@ -54,7 +54,7 @@ if (-not (Test-Path $reportPath)) {
     Write-Host "   This script requires a completed scanner scan." -ForegroundColor Yellow
     Write-Host "   Expected location: C:\Users\scanner-svc\AppData\Local\Microsoft\MSIP\Scanner\Reports" -ForegroundColor Yellow
     Write-Host "`n   To resolve:" -ForegroundColor Cyan
-    Write-Host "   1. Verify scanner has run at least once (from Lab 02)" -ForegroundColor Cyan
+    Write-Host "   1. Verify scanner has run at least once (from OnPrem-02)" -ForegroundColor Cyan
     Write-Host "   2. Check scanner service account name (may differ from 'scanner-svc')" -ForegroundColor Cyan
     Write-Host "   3. Run: Get-ChildItem 'C:\Users\*\AppData\Local\Microsoft\MSIP\Scanner\Reports' -ErrorAction SilentlyContinue" -ForegroundColor Cyan
     return
@@ -65,7 +65,7 @@ $latestReport = Get-ChildItem -Path $reportPath -Filter 'DetailedReport*.csv' -E
 
 if (-not $latestReport) {
     Write-Host "❌ No scanner reports found in: $reportPath" -ForegroundColor Red
-    Write-Host "   Run a scanner scan first (Lab 02) to generate DetailedReport CSV files." -ForegroundColor Yellow
+    Write-Host "   Run a scanner scan first (OnPrem-02) to generate DetailedReport CSV files." -ForegroundColor Yellow
     return
 }
 

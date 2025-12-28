@@ -1,0 +1,5 @@
+variables:
+  - name: SITName
+    value: "Retail Loyalty ID"
+  - name: RegexPattern
+    value: "RET-\d{6}-[A-Z]"

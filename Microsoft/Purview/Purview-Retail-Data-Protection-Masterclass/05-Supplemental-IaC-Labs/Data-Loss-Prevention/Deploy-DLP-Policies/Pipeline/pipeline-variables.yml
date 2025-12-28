@@ -1,0 +1,5 @@
+variables:
+  - name: PolicyName
+    value: "Global PCI-DSS Block"
+  - name: State
+    value: "Test"

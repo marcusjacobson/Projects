@@ -1,0 +1,23 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  - template: pipeline-variables.yml
+  - group: 'Purview-Service-Connection' # Assumes a variable group with auth details
+
+steps:
+  - task: PowerShell@2
+    displayName: 'Deploy Sensitivity Label'
+    inputs:
+      targetType: 'filePath'
+      filePath: '$(System.DefaultWorkingDirectory)/05-Supplemental-IaC-Labs/Information-Protection/Deploy-Sensitivity-Labels/Scripts/New-SensitivityLabel.ps1'
+      arguments: >
+        -TenantId $(TenantId)
+        -AppId $(AppId)
+        -CertificateThumbprint $(CertificateThumbprint)
+        -LabelName "$(LabelName)"
+        -Tooltip "$(Tooltip)"
+      pwsh: true

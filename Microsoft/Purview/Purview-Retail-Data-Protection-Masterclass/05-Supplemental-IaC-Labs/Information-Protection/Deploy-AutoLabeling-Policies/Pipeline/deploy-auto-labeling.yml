@@ -1,0 +1,35 @@
+name: Deploy-Purview-AutoLabeling-$(Date:yyyyMMdd)$(Rev:.r)
+
+trigger:
+  paths:
+    include:
+      - Microsoft/Purview/Purview-Retail-Data-Protection-Masterclass/05-Supplemental-IaC-Labs/Scripts/New-AutoLabelingPolicy.ps1
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  - group: 'Purview-Configuration'
+
+steps:
+  - task: PowerShell@2
+    displayName: 'Install Microsoft Graph Module'
+    inputs:
+      targetType: 'inline'
+      script: |
+        Install-Module -Name Microsoft.Graph.Authentication -Force -AllowClobber -Scope CurrentUser
+        Install-Module -Name Microsoft.Graph.Compliance -Force -AllowClobber -Scope CurrentUser
+
+  - task: PowerShell@2
+    displayName: 'Deploy Auto-Labeling Policy'
+    inputs:
+      filePath: '$(System.DefaultWorkingDirectory)/Microsoft/Purview/Purview-Retail-Data-Protection-Masterclass/05-Supplemental-IaC-Labs/Scripts/New-AutoLabelingPolicy.ps1'
+      arguments: >
+        -TenantId "$(TenantId)"
+        -AppId "$(AppId)"
+        -CertificateThumbprint "$(CertificateThumbprint)"
+        -PolicyName "Auto-Label PII (IaC)"
+        -LabelName "Confidential"
+        -Mode "Simulation"
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)

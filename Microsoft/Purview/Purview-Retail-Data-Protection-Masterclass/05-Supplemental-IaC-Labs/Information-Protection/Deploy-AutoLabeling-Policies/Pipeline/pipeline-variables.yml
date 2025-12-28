@@ -1,0 +1,7 @@
+variables:
+  - name: PolicyName
+    value: "Auto-Labeling - Financial Data"
+  - name: LabelName
+    value: "Confidential"
+  - name: Mode
+    value: "Audit"

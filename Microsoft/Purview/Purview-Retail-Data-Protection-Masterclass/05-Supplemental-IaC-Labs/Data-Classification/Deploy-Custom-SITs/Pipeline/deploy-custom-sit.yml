@@ -1,0 +1,37 @@
+name: Deploy-Purview-CustomSIT-$(Date:yyyyMMdd)$(Rev:.r)
+
+trigger:
+  paths:
+    include:
+      - Microsoft/Purview/Purview-Retail-Data-Protection-Masterclass/05-Supplemental-IaC-Labs/Scripts/New-PurviewCustomSIT.ps1
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  - group: 'Purview-Configuration' # Assumes a variable group exists with TenantId, AppId, etc.
+
+steps:
+  - task: PowerShell@2
+    displayName: 'Install Microsoft Graph Module'
+    inputs:
+      targetType: 'inline'
+      script: |
+        Install-Module -Name Microsoft.Graph.Authentication -Force -AllowClobber -Scope CurrentUser
+        Install-Module -Name Microsoft.Graph.Compliance -Force -AllowClobber -Scope CurrentUser
+
+  - task: PowerShell@2
+    displayName: 'Deploy Custom SIT'
+    inputs:
+      filePath: '$(System.DefaultWorkingDirectory)/Microsoft/Purview/Purview-Retail-Data-Protection-Masterclass/05-Supplemental-IaC-Labs/Scripts/New-PurviewCustomSIT.ps1'
+      arguments: >
+        -TenantId "$(TenantId)"
+        -AppId "$(AppId)"
+        -CertificateThumbprint "$(CertificateThumbprint)"
+        -SITName "Retail Loyalty ID"
+        -RegexPattern "RET-\d{6}-[A-Z]"
+    env:
+      # Map secret variables if needed, though Cert Thumbprint is usually enough if cert is in store
+      # For hosted agents, we might need to pass the Certificate Content as a secret variable and install it.
+      # For this lab, we assume the user handles the cert installation or uses a self-hosted agent.
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)

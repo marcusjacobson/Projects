@@ -12,7 +12,7 @@ This directory contains **two comprehensive hands-on lab projects** designed to 
 
 ## 📚 Project Portfolio
 
-### [Purview Data Governance Simulation](./Purview-Data-Governance-Simulation/)
+### [Purview Discovery Methods Simulation](./Purview-Discovery-Methods-Simulation/)
 
 **Focus**: Data discovery automation with four discovery methods, modern eDiscovery portal, and API integration
 
@@ -57,7 +57,6 @@ This directory contains **two comprehensive hands-on lab projects** designed to 
 - Retention labels with last access time triggers (SharePoint Online)
 - Activity Explorer cross-platform analysis
 - Advanced remediation workflows (PnP PowerShell)
-- Custom classification (regex SITs, trainable classifiers)
 
 **Learning Paths**:
 
@@ -65,7 +64,9 @@ This directory contains **two comprehensive hands-on lab projects** designed to 
 - **Full Functional** (1-2 weeks): Complete with policy activation
 - **Production Deployment** (2-4 weeks): Enterprise-ready with automation
 
-**Coverage Depth**: ~48% of Purview landscape
+**Coverage Depth**: ~40% of Purview landscape
+
+> 💡 **Sample Data**: Supplemental Labs include sample CSV files for immediate script testing while waiting for Activity Explorer sync (24-48 hours).
 
 ---
 
@@ -92,7 +93,6 @@ This directory contains **two comprehensive hands-on lab projects** designed to 
 
 3. **Weeks 3-4**: Complete Skills-Ramp Supplemental Labs
    - Advanced remediation workflows (multi-tier severity)
-   - Trainable classifiers (ML-based, 24hr training)
    - Activity Explorer and Content Explorer mastery
    - Production-grade automation frameworks
 
@@ -126,7 +126,7 @@ This directory contains **two comprehensive hands-on lab projects** designed to 
 
 **Unique Value from Combined Approach**:
 
-- Comprehensive classification expertise (built-in SITs → custom regex → trainable classifiers)
+- Comprehensive classification expertise (built-in SITs → custom regex patterns)
 - Multiple discovery methods (immediate → 24hr → 7-day classification → APIs)
 - Hybrid deployment experience (on-premises scanner + cloud governance)
 - Complete lifecycle understanding (policy creation → enforcement → monitoring → remediation)
@@ -146,9 +146,9 @@ This matrix shows which project covers each Purview capability, with specific la
 |------------|------------|---------------------|-------------------------------------|-----------------|
 | **Information Protection Scanner** | INTERMEDIATE | ✅ OnPrem-01, OnPrem-02 (deployment, discovery scans) | Not covered | ✅ EXTENSIVE |
 | **Built-in SITs** | BASIC | ✅ OnPrem-02, OnPrem-03, OnPrem-04 (DLP policies) | ✅ Labs 02/05 (generation & discovery) | ✅ EXTENSIVE |
-| **Custom SITs (Regex)** | INTERMEDIATE | ✅ Supplemental: Custom-Classification (Boost.RegEx patterns) | ✅ Lab 05a (scripted regex discovery) | ✅ COMPREHENSIVE |
+| **Custom SITs (Regex)** | INTERMEDIATE | Not covered | ✅ Lab 05a (scripted regex discovery) | ✅ COMPREHENSIVE |
 | **Exact Data Match (EDM)** | ADVANCED | Not covered | Not covered | ❌ Not Covered |
-| **Trainable Classifiers (ML)** | EXPERT | ✅ Supplemental: Custom-Classification (300 samples, 24hr training) | Not covered | ✅ COMPREHENSIVE |
+| **Trainable Classifiers (ML)** | EXPERT | Not covered | Not covered | ❌ Not Covered |
 | **Activity Explorer** | INTERMEDIATE | ✅ Supplemental: Advanced-Cross-Platform-SIT-Analysis (trending, dashboards) | Not covered | ✅ EXTENSIVE |
 | **Content Explorer** | INTERMEDIATE | ✅ Supplemental: Advanced-SharePoint-SIT-Analysis (reporting, exports) | ✅ Lab 04 (7-day portal validation) | ✅ COMPREHENSIVE |
 | **On-Demand Classification** | INTERMEDIATE | ✅ Supplemental: Advanced-SharePoint-SIT-Analysis (SharePoint re-indexing) | ✅ Lab 04 (7-day portal-based, estimation) | ✅ COMPREHENSIVE |
@@ -343,7 +343,6 @@ The following capabilities require **enterprise-scale deployments**, **advanced 
 - ✅ **DLP policy implementation** (on-prem and SharePoint)
 - ✅ **Azure infrastructure skills** (VM, Storage, RBAC)
 - ✅ **Advanced remediation workflows** (production-grade automation)
-- ✅ **Trainable classifiers** (ML-based classification)
 - ✅ **Cross-platform analysis** (Activity Explorer proficiency)
 - ✅ **Azure/Bicep IaC knowledge**
 
@@ -371,7 +370,7 @@ The following capabilities require **enterprise-scale deployments**, **advanced 
 
 - ✅ **Extensive Purview expertise** (extensive capability coverage)
 - ✅ **Hybrid + cloud proficiency** (on-prem scanner + SharePoint governance)
-- ✅ **Advanced classification skills** (built-in SITs, custom regex, trainable classifiers)
+- ✅ **Advanced classification skills** (built-in SITs, custom regex patterns)
 - ✅ **Multiple discovery methods** (immediate, 24hr, 7-day classification, APIs)
 - ✅ **Production-ready workflows** (DLP enforcement, retention automation, remediation, API integration)
 - ✅ **API integration expertise** (Microsoft Graph, SharePoint Search, OAuth 2.0)
@@ -387,7 +386,7 @@ The following capabilities require **enterprise-scale deployments**, **advanced 
 ### Quick Navigation
 
 **For Discovery Method Comparison & API Integration**:  
-→ Start with [Purview Data Governance Simulation](./Purview-Data-Governance-Simulation/)
+→ Start with [Purview Discovery Methods Simulation](./Purview-Discovery-Methods-Simulation/)
 
 **For Hybrid Data Governance**:  
 → Start with [Purview Skills Ramp](./Purview-Skills-Ramp-OnPrem-and-Cloud/)
@@ -405,7 +404,7 @@ Completing both projects demonstrates proficiency in:
 
 **Core Technical Competencies**:
 
-- Information Protection (scanner deployment, custom SITs, trainable classifiers)
+- Information Protection (scanner deployment, built-in SITs)
 - Data Discovery (three methods: immediate regex, 24hr eDiscovery, 24hr APIs)
 - API Integration (Microsoft Graph, OAuth 2.0, SIEM connectivity)
 - Modern eDiscovery Portal (purview.microsoft.com, Cases preview, Condition builder)
@@ -423,7 +422,6 @@ Completing both projects demonstrates proficiency in:
 
 **Advanced Specializations**:
 
-- Machine Learning (trainable classifiers, 24-hour model training)
 - Data Analytics (pattern recognition, regex development, executive reporting)
 - Enterprise Architecture (hybrid design, scalable automation frameworks)
 - Production Operations (remediation workflows, deduplication, progress tracking)

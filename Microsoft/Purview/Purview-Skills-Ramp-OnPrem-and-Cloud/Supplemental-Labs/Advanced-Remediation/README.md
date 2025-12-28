@@ -16,11 +16,11 @@
 
 **Prerequisites for Remediation Labs:**
 
-- All main labs (Lab 01-04) completed successfully.
+- All main labs in Sections 1-3 (Setup, OnPrem-Scanning, Cloud-Scanning) completed successfully.
 - Scanner reports available in `%LOCALAPPDATA%\Microsoft\MSIP\Scanner\Reports\`.
-- Azure Files share deployed with test files (from Lab 01).
+- Azure Files share deployed with test files (from OnPrem-01).
 - VM has direct network access to on-prem shares (`\\COMPUTERNAME\Projects`).
-- SharePoint test site created (from Supplemental Lab: SharePoint Classification).
+- SharePoint test site created (from Cloud-01).
 - **PowerShell 5.1** (required for Purview scanner compatibility - do NOT upgrade to PowerShell 7).
 
 **Additional Prerequisites for Step 5 (Progress Tracking from External Admin Machine):**
@@ -181,8 +181,8 @@ By the end of this lab, you will be able to:
 > **Requirements**:
 >
 > - Write access to `\\COMPUTERNAME\Projects` share
-> - Azure Files share configured (from Lab 01) with UNC path access
-> - SharePoint site with document library (from Supplemental Lab: SharePoint Classification)
+> - Azure Files share configured (from OnPrem-01) with UNC path access
+> - SharePoint site with document library (from Cloud-01)
 > - SharePointPnPPowerShellOnline module: `Install-Module -Name SharePointPnPPowerShellOnline -Scope CurrentUser`
 > - **PowerShell 5.1** (do NOT use PowerShell 7 - Purview scanner requires 5.1)
 >
@@ -934,7 +934,7 @@ After running this progress tracking dashboard script, you should see:
 
 ## 🎯 Key Learning Outcomes
 
-After completing Lab 05, you should understand:
+After completing Advanced-Remediation, you should understand:
 
 1. **Severity-Based Remediation**: How to classify and handle data differently based on sensitivity (HIGH/MEDIUM/LOW)
 2. **Dual-Source Management**: Techniques for handling on-prem + cloud storage scenarios with deduplication
@@ -960,14 +960,14 @@ The techniques learned in this lab form the foundation for enterprise data gover
 
 **Progress Tracking**: Multi-month remediation projects use velocity metrics to justify costs, adjust timelines, and report progress to stakeholders.
 
-### Integration with Labs 01-04
+### Integration with Section 2 Labs
 
 This lab builds upon skills from earlier labs in the Purview Skills Ramp series:
 
-- **Lab 01 (Scanner)**: The severity classification in Step 1 relies on scanner-discovered data
-- **Lab 02 (DLP)**: Remediation plans use DLP classifications to identify sensitive data requiring deletion
+- **OnPrem-02 (Scanner)**: The severity classification in Step 1 relies on scanner-discovered data
+- **OnPrem-03 (DLP)**: Remediation plans use DLP classifications to identify sensitive data requiring deletion
 
-> **💡 Recommended Preparation**: Complete Labs 01-04 before attempting this advanced lab to ensure you have foundational Purview scanning and classification experience.
+> **💡 Recommended Preparation**: Complete Sections 1-3 before attempting this advanced lab to ensure you have foundational Purview scanning and classification experience.
 
 ### Additional Resources
 

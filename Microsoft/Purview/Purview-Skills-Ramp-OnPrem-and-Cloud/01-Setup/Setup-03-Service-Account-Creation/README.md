@@ -49,7 +49,7 @@ The Purview Information Protection scanner uses a dual authentication model:
 
 On your local machine (not VM), open Microsoft Entra Admin Center:
 
-- Navigate to **Microsoft Entra ID** (formerly Azure AD).
+- Navigate to **Microsoft Entra ID**.
 - In left menu, click **Users**.
 - Click **+ New user** > **Create new user**.
 
@@ -169,6 +169,8 @@ After the secret is created, **immediately copy and save the Value (secret strin
 
 - Save this securely in a password manager or secure note.
 - You cannot retrieve this value later.
+
+![scanner-secret](.images/scanner-secret.png)
 
 ---
 

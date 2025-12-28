@@ -115,6 +115,8 @@ For this lab, select:
 
 **Start Retention Based On:**
 
+![label-retention](.images/label-retention.png)
+
 - Select **When items were last modified**.
 
 > **📚 Retention Trigger Options**:
@@ -134,7 +136,7 @@ For this lab, select:
 > - A file might be created in 2018 and never accessed again (should be deleted)
 > - Last modified time doesn't reflect actual usage patterns
 >
-> **For access-time-based remediation**, you must use **PowerShell scripting** (covered in Lab 04 and Lab 05) instead of retention labels.
+> **For access-time-based remediation**, you must use **PowerShell scripting** (covered in the Advanced-Remediation supplemental lab) instead of retention labels.
 
 **Choose what happens during the retention period:**
 
@@ -147,13 +149,7 @@ For this lab choose **Retain items even if users delete**. Click **Next**.
 
 **Choose What Happens After the Retention Period:**
 
-You'll choose one of five actions:
-
-- **Delete items automatically** - Items are permanently deleted when the retention period expires, with no manual review required.
-- **Start a disposition review** - Designated reviewers receive notifications to manually approve or deny permanent deletion, ensuring human oversight for critical content.
-- **Change the label** - Automatically apply a different retention label with new retention settings, enabling multi-stage retention workflows.
-- **Run a Power Automate flow** - Trigger custom automated workflows for actions like sending notifications, moving items, or integrating with external systems.
-- **Deactivate retention settings** - Remove retention restrictions while keeping the label applied for classification purposes only.
+![label-setting-after](.images/label-setting-after.png)
 
 For this lab choose **Delete items automatically**. Click **Next**.
 

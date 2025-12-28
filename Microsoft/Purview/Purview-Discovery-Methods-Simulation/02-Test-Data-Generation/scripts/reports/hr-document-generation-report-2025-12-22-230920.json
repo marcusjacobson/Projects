@@ -1,0 +1,2497 @@
+{
+  "OutputPath": ".\\generated-documents\\HR",
+  "EmployeeCount": 100.0,
+  "Documents": [
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:13.555424-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10016",
+      "FileName": "DirectDeposit_EMP-10016_2025-04-20.docx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:13.5736171-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10023",
+      "FileName": "DirectDeposit_EMP-10023_2025-04-08.docx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:13.593691-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10069",
+      "FileName": "DirectDeposit_EMP-10069_2025-03-15.docx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:13.6134825-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10084",
+      "FileName": "W4Form_EMP-10084_2025-09-12.docx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:13.6335185-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10084",
+      "FileName": "PayrollDocument_EMP-10084_2025-06-22.docx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:13.6557686-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10047",
+      "FileName": "PersonnelRecord_EMP-10047_2025-04-09.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:13.6733362-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10032",
+      "FileName": "NewHirePaperwork_EMP-10032_2025-01-09.docx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:13.693239-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10027",
+      "FileName": "W4Form_EMP-10027_2025-06-15.docx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:13.7098707-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10010",
+      "FileName": "DirectDeposit_EMP-10010_2025-12-05.docx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:13.7488641-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10009",
+      "FileName": "W4Form_EMP-10009_2025-12-15.docx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:13.7581943-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10073",
+      "FileName": "DirectDeposit_EMP-10073_2025-02-08.docx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:13.7671115-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10086",
+      "FileName": "I9Form_EMP-10086_2025-12-19.docx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:13.776225-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10052",
+      "FileName": "PersonnelRecord_EMP-10052_2025-03-15.docx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:13.7874656-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10009",
+      "FileName": "BenefitsEnrollment_EMP-10009_2025-10-22.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:13.8087783-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10010",
+      "FileName": "NewHirePaperwork_EMP-10010_2025-03-11.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:13.8337007-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10083",
+      "FileName": "EmployeeHandbook_EMP-10083_2025-01-15.docx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:13.8638041-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10054",
+      "FileName": "PayrollDocument_EMP-10054_2025-02-11.docx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:13.8921471-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10068",
+      "FileName": "DirectDeposit_EMP-10068_2025-05-09.docx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:13.9152165-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10053",
+      "FileName": "I9Form_EMP-10053_2025-04-27.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:13.9279448-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10035",
+      "FileName": "EmployeeHandbook_EMP-10035_2025-12-05.docx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:13.9449545-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10095",
+      "FileName": "PersonnelRecord_EMP-10095_2025-11-25.docx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:13.9594013-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10065",
+      "FileName": "PayrollDocument_EMP-10065_2025-02-20.docx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:13.9719956-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10023",
+      "FileName": "DirectDeposit_EMP-10023_2025-01-29.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:13.985836-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10052",
+      "FileName": "NewHirePaperwork_EMP-10052_2025-05-15.docx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:14.0023406-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10077",
+      "FileName": "PayrollDocument_EMP-10077_2025-02-26.docx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:14.0189891-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10042",
+      "FileName": "PayrollDocument_EMP-10042_2025-09-11.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:14.0380462-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10081",
+      "FileName": "NewHirePaperwork_EMP-10081_2025-06-01.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:14.0631285-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10078",
+      "FileName": "EmployeeHandbook_EMP-10078_2025-04-01.docx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:14.097441-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10048",
+      "FileName": "I9Form_EMP-10048_2025-02-11.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:14.1222026-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10092",
+      "FileName": "EmployeeHandbook_EMP-10092_2025-10-04.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:14.1414953-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10010",
+      "FileName": "NewHirePaperwork_EMP-10010_2025-04-16.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:14.1563247-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10093",
+      "FileName": "EmployeeHandbook_EMP-10093_2025-07-07.docx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:14.179256-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10004",
+      "FileName": "I9Form_EMP-10004_2025-04-14.docx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:14.1936142-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10065",
+      "FileName": "W4Form_EMP-10065_2025-11-11.docx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:14.2087238-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10065",
+      "FileName": "DirectDeposit_EMP-10065_2025-03-24.docx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:14.2261698-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10072",
+      "FileName": "PayrollDocument_EMP-10072_2025-08-06.docx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:14.244342-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10019",
+      "FileName": "PayrollDocument_EMP-10019_2025-07-19.docx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:14.2707452-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10004",
+      "FileName": "BenefitsEnrollment_EMP-10004_2025-03-03.docx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:14.2919518-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10012",
+      "FileName": "BenefitsEnrollment_EMP-10012_2025-12-01.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:14.3069794-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10095",
+      "FileName": "EmployeeHandbook_EMP-10095_2025-01-02.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:14.3222326-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10099",
+      "FileName": "NewHirePaperwork_EMP-10099_2025-11-13.docx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:14.3377868-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10078",
+      "FileName": "DirectDeposit_EMP-10078_2025-10-27.docx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:14.3621034-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10083",
+      "FileName": "PayrollDocument_EMP-10083_2025-06-10.docx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:14.3842498-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10060",
+      "FileName": "BenefitsEnrollment_EMP-10060_2025-04-03.docx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:14.4074798-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10079",
+      "FileName": "PersonnelRecord_EMP-10079_2025-10-18.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:14.4282074-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10072",
+      "FileName": "EmployeeHandbook_EMP-10072_2025-02-14.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:14.4499552-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10016",
+      "FileName": "NewHirePaperwork_EMP-10016_2025-11-13.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:14.471313-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10085",
+      "FileName": "NewHirePaperwork_EMP-10085_2025-04-17.docx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:14.4865581-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10099",
+      "FileName": "W4Form_EMP-10099_2025-02-10.docx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:14.5115645-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10003",
+      "FileName": "W4Form_EMP-10003_2025-11-21.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:14.5267598-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10031",
+      "FileName": "EmployeeHandbook_EMP-10031_2025-08-26.docx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:14.5447464-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10057",
+      "FileName": "BenefitsEnrollment_EMP-10057_2025-11-16.docx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:14.5636462-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10020",
+      "FileName": "W4Form_EMP-10020_2025-06-02.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:14.5898165-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10064",
+      "FileName": "EmployeeHandbook_EMP-10064_2025-04-19.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:14.6204431-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10036",
+      "FileName": "EmployeeHandbook_EMP-10036_2025-01-11.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:14.6477913-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10063",
+      "FileName": "EmployeeHandbook_EMP-10063_2025-08-29.docx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:14.6663036-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10079",
+      "FileName": "PersonnelRecord_EMP-10079_2025-04-10.docx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:14.6789585-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10045",
+      "FileName": "W4Form_EMP-10045_2025-08-09.docx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:14.6999234-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10046",
+      "FileName": "I9Form_EMP-10046_2025-03-20.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:14.722644-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10026",
+      "FileName": "NewHirePaperwork_EMP-10026_2024-12-23.docx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:14.7367163-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10018",
+      "FileName": "PayrollDocument_EMP-10018_2025-12-19.docx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:14.75396-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10020",
+      "FileName": "I9Form_EMP-10020_2025-09-12.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:14.7685531-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10095",
+      "FileName": "EmployeeHandbook_EMP-10095_2025-07-04.docx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:14.7937739-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10006",
+      "FileName": "W4Form_EMP-10006_2025-03-07.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:14.8181812-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10041",
+      "FileName": "NewHirePaperwork_EMP-10041_2025-11-05.docx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:14.8328221-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10075",
+      "FileName": "I9Form_EMP-10075_2025-04-12.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:14.8450407-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10012",
+      "FileName": "EmployeeHandbook_EMP-10012_2025-02-20.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:14.8608789-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10080",
+      "FileName": "EmployeeHandbook_EMP-10080_2025-12-14.docx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:14.8760675-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10051",
+      "FileName": "BenefitsEnrollment_EMP-10051_2025-08-12.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:14.8955886-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10085",
+      "FileName": "NewHirePaperwork_EMP-10085_2025-08-13.docx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:14.9141972-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10068",
+      "FileName": "BenefitsEnrollment_EMP-10068_2025-08-03.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:14.9303397-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10066",
+      "FileName": "NewHirePaperwork_EMP-10066_2025-12-16.docx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:14.9449137-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10065",
+      "FileName": "BenefitsEnrollment_EMP-10065_2025-01-28.docx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:14.9608832-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10010",
+      "FileName": "PayrollDocument_EMP-10010_2025-02-14.docx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:14.976671-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10086",
+      "FileName": "BenefitsEnrollment_EMP-10086_2025-09-14.docx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:14.9927217-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10034",
+      "FileName": "BenefitsEnrollment_EMP-10034_2025-09-19.docx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:15.006838-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10063",
+      "FileName": "DirectDeposit_EMP-10063_2025-01-23.docx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:15.0218524-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10048",
+      "FileName": "BenefitsEnrollment_EMP-10048_2025-11-20.docx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:15.0343542-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10027",
+      "FileName": "W4Form_EMP-10027_2025-11-19.docx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:15.0483482-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10092",
+      "FileName": "PayrollDocument_EMP-10092_2025-10-16.docx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:15.0623542-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10086",
+      "FileName": "I9Form_EMP-10086_2025-06-30.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:15.0736285-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10032",
+      "FileName": "NewHirePaperwork_EMP-10032_2025-10-11.docx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:15.0880436-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10063",
+      "FileName": "BenefitsEnrollment_EMP-10063_2025-09-04.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:15.1068472-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10066",
+      "FileName": "NewHirePaperwork_EMP-10066_2025-05-29.docx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:15.1287272-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10096",
+      "FileName": "W4Form_EMP-10096_2025-03-25.docx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:15.1449252-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10071",
+      "FileName": "BenefitsEnrollment_EMP-10071_2025-08-02.docx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:15.1612988-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10059",
+      "FileName": "DirectDeposit_EMP-10059_2025-06-14.docx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:15.1820649-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10041",
+      "FileName": "DirectDeposit_EMP-10041_2025-09-18.docx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:15.2171813-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10011",
+      "FileName": "W4Form_EMP-10011_2025-11-11.docx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:15.2408811-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10092",
+      "FileName": "BenefitsEnrollment_EMP-10092_2025-11-19.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:15.2597779-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10048",
+      "FileName": "EmployeeHandbook_EMP-10048_2025-09-07.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:15.2774598-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10022",
+      "FileName": "NewHirePaperwork_EMP-10022_2025-08-26.docx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:15.3049463-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10084",
+      "FileName": "W4Form_EMP-10084_2025-07-01.docx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:15.3218193-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10065",
+      "FileName": "BenefitsEnrollment_EMP-10065_2025-07-14.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:15.3386531-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10021",
+      "FileName": "NewHirePaperwork_EMP-10021_2025-09-21.docx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:15.355777-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10014",
+      "FileName": "DirectDeposit_EMP-10014_2025-09-22.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:15.3728074-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10079",
+      "FileName": "EmployeeHandbook_EMP-10079_2025-04-01.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:15.3897141-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10067",
+      "FileName": "EmployeeHandbook_EMP-10067_2025-02-12.docx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:15.407284-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10056",
+      "FileName": "W4Form_EMP-10056_2025-04-13.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:15.4252708-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10066",
+      "FileName": "NewHirePaperwork_EMP-10066_2025-10-10.docx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:15.442817-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10022",
+      "FileName": "PersonnelRecord_EMP-10022_2025-09-23.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:15.4598317-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10074",
+      "FileName": "NewHirePaperwork_EMP-10074_2025-08-04.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:15.4785319-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10042",
+      "FileName": "EmployeeHandbook_EMP-10042_2025-09-06.docx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:15.500882-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10069",
+      "FileName": "DirectDeposit_EMP-10069_2025-04-29.docx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:15.5217953-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10028",
+      "FileName": "PersonnelRecord_EMP-10028_2025-04-10.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:15.5423612-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10085",
+      "FileName": "NewHirePaperwork_EMP-10085_2025-08-31.docx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:15.5597272-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10032",
+      "FileName": "I9Form_EMP-10032_2025-04-29.docx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:15.5774283-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10027",
+      "FileName": "PayrollDocument_EMP-10027_2025-01-21.docx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:15.598894-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10049",
+      "FileName": "PayrollDocument_EMP-10049_2025-09-22.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:15.6316907-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10093",
+      "FileName": "EmployeeHandbook_EMP-10093_2025-11-04.docx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:15.650248-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10089",
+      "FileName": "W4Form_EMP-10089_2025-07-07.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:15.6682803-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10087",
+      "FileName": "EmployeeHandbook_EMP-10087_2025-06-24.docx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:15.6909896-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10072",
+      "FileName": "I9Form_EMP-10072_2025-07-14.docx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:15.7191431-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10077",
+      "FileName": "BenefitsEnrollment_EMP-10077_2025-06-09.docx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:15.7424343-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10051",
+      "FileName": "BenefitsEnrollment_EMP-10051_2025-10-08.docx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:15.7633805-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10075",
+      "FileName": "W4Form_EMP-10075_2025-03-03.docx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:15.8001843-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10080",
+      "FileName": "I9Form_EMP-10080_2025-10-28.docx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:15.824103-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10090",
+      "FileName": "DirectDeposit_EMP-10090_2025-06-02.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:15.8485086-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10027",
+      "FileName": "NewHirePaperwork_EMP-10027_2025-08-22.docx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:15.8694789-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10097",
+      "FileName": "PersonnelRecord_EMP-10097_2025-03-24.docx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:15.8869275-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10006",
+      "FileName": "PayrollDocument_EMP-10006_2025-11-28.docx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:15.9070993-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10006",
+      "FileName": "PersonnelRecord_EMP-10006_2025-09-09.docx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:15.9203822-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10044",
+      "FileName": "PersonnelRecord_EMP-10044_2025-12-09.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:15.9321103-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10052",
+      "FileName": "EmployeeHandbook_EMP-10052_2025-11-28.docx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:15.9443965-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10054",
+      "FileName": "I9Form_EMP-10054_2025-03-29.docx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:15.9565882-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10071",
+      "FileName": "PersonnelRecord_EMP-10071_2025-08-01.docx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:15.9696055-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10085",
+      "FileName": "PersonnelRecord_EMP-10085_2025-11-29.docx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:15.9833377-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10048",
+      "FileName": "W4Form_EMP-10048_2025-02-16.docx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:15.9953588-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10058",
+      "FileName": "I9Form_EMP-10058_2025-05-08.docx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:16.0164173-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10092",
+      "FileName": "BenefitsEnrollment_EMP-10092_2025-07-16.docx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:16.0369651-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10098",
+      "FileName": "DirectDeposit_EMP-10098_2025-02-11.docx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:16.0616779-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10084",
+      "FileName": "PayrollDocument_EMP-10084_2025-02-07.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:16.0802328-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10054",
+      "FileName": "NewHirePaperwork_EMP-10054_2025-12-13.docx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:16.0957844-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10036",
+      "FileName": "NewHirePaperwork_EMP-10036_2025-11-24.docx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:16.1128277-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10021",
+      "FileName": "EmployeeHandbook_EMP-10021_2025-10-12.docx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:16.144509-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10004",
+      "FileName": "PayrollDocument_EMP-10004_2025-12-05.docx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:16.1616776-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10006",
+      "FileName": "PayrollDocument_EMP-10006_2025-02-21.docx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:16.1816843-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10093",
+      "FileName": "BenefitsEnrollment_EMP-10093_2025-08-06.docx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:16.2054149-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10080",
+      "FileName": "PersonnelRecord_EMP-10080_2025-02-23.docx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:16.2270724-08:00",
+      "FileType": "docx",
+      "EmployeeID": "EMP-10100",
+      "FileName": "DirectDeposit_EMP-10100_2024-12-29.docx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:16.2511143-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10040",
+      "FileName": "PayrollDocument_EMP-10040_2025-03-24.xlsx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:16.2714102-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10036",
+      "FileName": "NewHirePaperwork_EMP-10036_2025-03-19.xlsx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:16.2909499-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10032",
+      "FileName": "NewHirePaperwork_EMP-10032_2025-11-11.xlsx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:16.3126479-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10033",
+      "FileName": "PayrollDocument_EMP-10033_2025-01-05.xlsx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:16.3375684-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10083",
+      "FileName": "I9Form_EMP-10083_2025-03-22.xlsx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:16.3582689-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10037",
+      "FileName": "EmployeeHandbook_EMP-10037_2025-05-05.xlsx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:16.3971011-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10063",
+      "FileName": "NewHirePaperwork_EMP-10063_2025-06-19.xlsx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:16.4313519-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10015",
+      "FileName": "DirectDeposit_EMP-10015_2025-03-26.xlsx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:16.4577766-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10074",
+      "FileName": "PayrollDocument_EMP-10074_2025-04-27.xlsx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:16.4776339-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10076",
+      "FileName": "EmployeeHandbook_EMP-10076_2025-08-15.xlsx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:16.4962323-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10062",
+      "FileName": "PayrollDocument_EMP-10062_2025-05-29.xlsx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:16.5073327-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10059",
+      "FileName": "DirectDeposit_EMP-10059_2025-10-01.xlsx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:16.5213984-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10088",
+      "FileName": "I9Form_EMP-10088_2025-06-30.xlsx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:16.5367806-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10013",
+      "FileName": "PayrollDocument_EMP-10013_2025-01-14.xlsx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:16.5572439-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10080",
+      "FileName": "EmployeeHandbook_EMP-10080_2025-02-26.xlsx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:16.5807475-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10063",
+      "FileName": "DirectDeposit_EMP-10063_2025-02-11.xlsx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:16.6072127-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10071",
+      "FileName": "DirectDeposit_EMP-10071_2025-09-06.xlsx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:16.6402965-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10003",
+      "FileName": "DirectDeposit_EMP-10003_2025-11-20.xlsx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:16.66365-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10072",
+      "FileName": "PayrollDocument_EMP-10072_2025-06-02.xlsx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:16.6833098-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10031",
+      "FileName": "PayrollDocument_EMP-10031_2025-09-17.xlsx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:16.7061482-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10076",
+      "FileName": "W4Form_EMP-10076_2025-01-16.xlsx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:16.7229314-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10093",
+      "FileName": "PersonnelRecord_EMP-10093_2025-10-28.xlsx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:16.7462834-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10090",
+      "FileName": "PayrollDocument_EMP-10090_2025-09-16.xlsx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:16.7688906-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10033",
+      "FileName": "EmployeeHandbook_EMP-10033_2025-01-03.xlsx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:16.7929803-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10100",
+      "FileName": "W4Form_EMP-10100_2025-10-31.xlsx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:16.8259503-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10094",
+      "FileName": "W4Form_EMP-10094_2025-05-14.xlsx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:16.8496421-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10037",
+      "FileName": "DirectDeposit_EMP-10037_2025-03-05.xlsx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:16.8648411-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10080",
+      "FileName": "I9Form_EMP-10080_2025-01-28.xlsx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:16.8804508-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10009",
+      "FileName": "BenefitsEnrollment_EMP-10009_2025-06-13.xlsx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:16.9071591-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10079",
+      "FileName": "BenefitsEnrollment_EMP-10079_2025-10-11.xlsx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:16.9456191-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10026",
+      "FileName": "EmployeeHandbook_EMP-10026_2025-06-18.xlsx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:16.9822105-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10038",
+      "FileName": "PayrollDocument_EMP-10038_2025-06-18.xlsx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:17.0048917-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10043",
+      "FileName": "DirectDeposit_EMP-10043_2025-01-20.xlsx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:17.0283533-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10059",
+      "FileName": "PersonnelRecord_EMP-10059_2025-06-27.xlsx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:17.0463472-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10009",
+      "FileName": "I9Form_EMP-10009_2025-07-29.xlsx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:17.060955-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10085",
+      "FileName": "PayrollDocument_EMP-10085_2025-12-10.xlsx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:17.0786625-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10048",
+      "FileName": "DirectDeposit_EMP-10048_2025-09-29.xlsx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:17.1080626-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10100",
+      "FileName": "DirectDeposit_EMP-10100_2025-11-16.xlsx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:17.1265346-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10048",
+      "FileName": "DirectDeposit_EMP-10048_2025-02-02.xlsx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:17.1392169-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10043",
+      "FileName": "BenefitsEnrollment_EMP-10043_2025-05-02.xlsx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:17.1568514-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10065",
+      "FileName": "BenefitsEnrollment_EMP-10065_2025-06-19.xlsx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:17.1796765-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10065",
+      "FileName": "PayrollDocument_EMP-10065_2025-05-30.xlsx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:17.1969207-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10007",
+      "FileName": "NewHirePaperwork_EMP-10007_2025-08-21.xlsx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:17.2173829-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10067",
+      "FileName": "PayrollDocument_EMP-10067_2025-05-23.xlsx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:17.2437454-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10008",
+      "FileName": "BenefitsEnrollment_EMP-10008_2025-06-27.xlsx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:17.2645338-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10074",
+      "FileName": "NewHirePaperwork_EMP-10074_2025-02-14.xlsx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:17.2893698-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10078",
+      "FileName": "BenefitsEnrollment_EMP-10078_2025-08-25.xlsx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:17.315976-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10021",
+      "FileName": "EmployeeHandbook_EMP-10021_2025-10-13.xlsx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:17.3489219-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10057",
+      "FileName": "BenefitsEnrollment_EMP-10057_2025-06-13.xlsx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:17.3742403-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10095",
+      "FileName": "W4Form_EMP-10095_2025-09-13.xlsx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:17.3918955-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10045",
+      "FileName": "NewHirePaperwork_EMP-10045_2025-07-25.xlsx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:17.411084-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10083",
+      "FileName": "PersonnelRecord_EMP-10083_2025-05-24.xlsx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:17.4349075-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10026",
+      "FileName": "I9Form_EMP-10026_2025-01-23.xlsx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:17.4600153-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10024",
+      "FileName": "PersonnelRecord_EMP-10024_2025-01-28.xlsx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:17.4834353-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10024",
+      "FileName": "EmployeeHandbook_EMP-10024_2025-08-09.xlsx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:17.5048742-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10091",
+      "FileName": "DirectDeposit_EMP-10091_2025-06-22.xlsx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:17.5251863-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10027",
+      "FileName": "DirectDeposit_EMP-10027_2025-09-16.xlsx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:17.5478627-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10068",
+      "FileName": "PersonnelRecord_EMP-10068_2025-04-10.xlsx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:17.5796266-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10076",
+      "FileName": "PersonnelRecord_EMP-10076_2025-11-04.xlsx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:17.6113563-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10025",
+      "FileName": "NewHirePaperwork_EMP-10025_2025-05-10.xlsx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:17.6334567-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10073",
+      "FileName": "I9Form_EMP-10073_2025-08-13.xlsx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:17.6533311-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10018",
+      "FileName": "PayrollDocument_EMP-10018_2025-04-04.xlsx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:17.6684097-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10068",
+      "FileName": "I9Form_EMP-10068_2025-08-07.xlsx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:17.6833957-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10093",
+      "FileName": "DirectDeposit_EMP-10093_2025-07-10.xlsx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:17.6976791-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10055",
+      "FileName": "PersonnelRecord_EMP-10055_2025-07-26.xlsx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:17.7114839-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10054",
+      "FileName": "DirectDeposit_EMP-10054_2025-08-30.xlsx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:17.730876-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10039",
+      "FileName": "BenefitsEnrollment_EMP-10039_2025-06-22.xlsx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:17.7535148-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10032",
+      "FileName": "W4Form_EMP-10032_2025-07-08.xlsx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:17.7717166-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10006",
+      "FileName": "NewHirePaperwork_EMP-10006_2025-11-24.xlsx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:17.7925169-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10049",
+      "FileName": "PersonnelRecord_EMP-10049_2025-01-20.xlsx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:17.8168157-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10067",
+      "FileName": "PersonnelRecord_EMP-10067_2025-08-28.xlsx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:17.8438774-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10071",
+      "FileName": "BenefitsEnrollment_EMP-10071_2025-08-17.xlsx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:17.8787703-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10030",
+      "FileName": "I9Form_EMP-10030_2025-01-18.xlsx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:17.9003358-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10094",
+      "FileName": "I9Form_EMP-10094_2025-06-22.xlsx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:17.9222111-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10022",
+      "FileName": "PersonnelRecord_EMP-10022_2025-07-26.xlsx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:17.9491131-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10049",
+      "FileName": "BenefitsEnrollment_EMP-10049_2025-09-07.xlsx"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:17.9710948-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10064",
+      "FileName": "PayrollDocument_EMP-10064_2025-03-24.xlsx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:17.9922429-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10088",
+      "FileName": "EmployeeHandbook_EMP-10088_2025-03-07.xlsx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:18.0147053-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10046",
+      "FileName": "EmployeeHandbook_EMP-10046_2025-06-26.xlsx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:18.0382362-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10092",
+      "FileName": "NewHirePaperwork_EMP-10092_2025-09-01.xlsx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:18.0712223-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10016",
+      "FileName": "EmployeeHandbook_EMP-10016_2025-07-14.xlsx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:18.0858726-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10013",
+      "FileName": "EmployeeHandbook_EMP-10013_2025-04-19.xlsx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:18.1048065-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10072",
+      "FileName": "EmployeeHandbook_EMP-10072_2025-12-20.xlsx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:18.1230225-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10063",
+      "FileName": "DirectDeposit_EMP-10063_2024-12-24.xlsx"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:18.1490744-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10005",
+      "FileName": "PersonnelRecord_EMP-10005_2025-07-08.xlsx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:18.1794499-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10051",
+      "FileName": "DirectDeposit_EMP-10051_2025-11-14.xlsx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:18.208026-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10094",
+      "FileName": "DirectDeposit_EMP-10094_2025-11-18.xlsx"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:18.2337415-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10064",
+      "FileName": "W4Form_EMP-10064_2025-01-03.xlsx"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:18.254957-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10098",
+      "FileName": "I9Form_EMP-10098_2025-02-02.xlsx"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:18.2709963-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10002",
+      "FileName": "EmployeeHandbook_EMP-10002_2025-09-07.xlsx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:18.2862494-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10091",
+      "FileName": "NewHirePaperwork_EMP-10091_2025-01-15.xlsx"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:18.3084551-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10036",
+      "FileName": "NewHirePaperwork_EMP-10036_2025-11-19.xlsx"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:18.3406596-08:00",
+      "FileType": "xlsx",
+      "EmployeeID": "EMP-10076",
+      "FileName": "BenefitsEnrollment_EMP-10076_2025-01-08.xlsx"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:18.3652702-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10079",
+      "FileName": "DirectDeposit_EMP-10079_2025-12-01.pdf"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:18.3904757-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10038",
+      "FileName": "EmployeeHandbook_EMP-10038_2025-07-30.pdf"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:18.4045823-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10092",
+      "FileName": "PayrollDocument_EMP-10092_2025-04-05.pdf"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:18.4172656-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10072",
+      "FileName": "NewHirePaperwork_EMP-10072_2025-11-13.pdf"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:18.4304922-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10064",
+      "FileName": "W4Form_EMP-10064_2025-08-19.pdf"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:18.4418311-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10081",
+      "FileName": "NewHirePaperwork_EMP-10081_2025-08-06.pdf"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:18.4551466-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10038",
+      "FileName": "I9Form_EMP-10038_2025-07-23.pdf"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:18.4732097-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10034",
+      "FileName": "PayrollDocument_EMP-10034_2025-02-20.pdf"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:18.4935765-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10078",
+      "FileName": "I9Form_EMP-10078_2024-12-27.pdf"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:18.5175361-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10059",
+      "FileName": "PayrollDocument_EMP-10059_2025-01-04.pdf"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:18.5357974-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10046",
+      "FileName": "BenefitsEnrollment_EMP-10046_2025-10-22.pdf"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:18.5498086-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10040",
+      "FileName": "PersonnelRecord_EMP-10040_2025-12-03.pdf"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:18.5685905-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10007",
+      "FileName": "PayrollDocument_EMP-10007_2025-08-02.pdf"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:18.5865636-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10020",
+      "FileName": "PayrollDocument_EMP-10020_2025-05-15.pdf"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:18.6048955-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10069",
+      "FileName": "DirectDeposit_EMP-10069_2025-12-08.pdf"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:18.6237843-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10014",
+      "FileName": "BenefitsEnrollment_EMP-10014_2025-08-21.pdf"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:18.6424715-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10089",
+      "FileName": "W4Form_EMP-10089_2025-04-29.pdf"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:18.6604781-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10037",
+      "FileName": "NewHirePaperwork_EMP-10037_2025-01-17.pdf"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:18.68291-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10072",
+      "FileName": "PayrollDocument_EMP-10072_2025-06-17.pdf"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:18.7035747-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10074",
+      "FileName": "NewHirePaperwork_EMP-10074_2025-09-14.pdf"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:18.7240631-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10019",
+      "FileName": "PayrollDocument_EMP-10019_2025-01-28.pdf"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:18.7528119-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10034",
+      "FileName": "PayrollDocument_EMP-10034_2025-06-23.pdf"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:18.7845025-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10019",
+      "FileName": "DirectDeposit_EMP-10019_2025-08-28.pdf"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:18.8171638-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10053",
+      "FileName": "PayrollDocument_EMP-10053_2025-08-09.pdf"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:18.8515129-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10030",
+      "FileName": "W4Form_EMP-10030_2025-02-23.pdf"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:18.8807989-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10083",
+      "FileName": "DirectDeposit_EMP-10083_2025-02-12.pdf"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:18.9046437-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10064",
+      "FileName": "BenefitsEnrollment_EMP-10064_2025-07-13.pdf"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:18.9253416-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10068",
+      "FileName": "PayrollDocument_EMP-10068_2025-07-30.pdf"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:18.9406421-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10001",
+      "FileName": "I9Form_EMP-10001_2025-07-27.pdf"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:18.969487-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10014",
+      "FileName": "I9Form_EMP-10014_2025-05-23.pdf"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:18.9825467-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10059",
+      "FileName": "BenefitsEnrollment_EMP-10059_2025-08-27.pdf"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:18.9951656-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10026",
+      "FileName": "DirectDeposit_EMP-10026_2025-11-15.pdf"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:19.0067545-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10054",
+      "FileName": "I9Form_EMP-10054_2025-06-07.pdf"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:19.0221623-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10048",
+      "FileName": "PersonnelRecord_EMP-10048_2025-04-19.pdf"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:19.0359737-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10008",
+      "FileName": "I9Form_EMP-10008_2025-04-26.pdf"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:19.0531514-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10044",
+      "FileName": "I9Form_EMP-10044_2025-09-16.pdf"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:19.0649781-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10064",
+      "FileName": "DirectDeposit_EMP-10064_2025-06-08.pdf"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:19.0814595-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10098",
+      "FileName": "NewHirePaperwork_EMP-10098_2025-07-26.pdf"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:19.1010477-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10065",
+      "FileName": "BenefitsEnrollment_EMP-10065_2025-06-18.pdf"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:19.1202684-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10048",
+      "FileName": "W4Form_EMP-10048_2025-01-19.pdf"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:19.1416585-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10067",
+      "FileName": "PersonnelRecord_EMP-10067_2025-01-20.pdf"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:19.1594126-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10079",
+      "FileName": "PersonnelRecord_EMP-10079_2025-06-08.pdf"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:19.1773047-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10075",
+      "FileName": "PayrollDocument_EMP-10075_2025-10-16.pdf"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:19.1947418-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10079",
+      "FileName": "PersonnelRecord_EMP-10079_2025-03-05.pdf"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:19.207251-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10022",
+      "FileName": "DirectDeposit_EMP-10022_2025-01-07.pdf"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:19.2243132-08:00",
+      "FileType": "pdf",
+      "EmployeeID": "EMP-10010",
+      "FileName": "EmployeeHandbook_EMP-10010_2025-09-12.pdf"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:19.2422084-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10093",
+      "FileName": "DirectDeposit_EMP-10093_2025-10-01.txt"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:19.2585464-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10057",
+      "FileName": "W4Form_EMP-10057_2025-04-24.txt"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:19.2783527-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10079",
+      "FileName": "EmployeeHandbook_EMP-10079_2025-04-19.txt"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:19.2950746-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10009",
+      "FileName": "DirectDeposit_EMP-10009_2025-07-11.txt"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:19.3146177-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10095",
+      "FileName": "W4Form_EMP-10095_2025-07-03.txt"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:19.347256-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10098",
+      "FileName": "PayrollDocument_EMP-10098_2025-11-14.txt"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:19.374656-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10046",
+      "FileName": "W4Form_EMP-10046_2025-01-03.txt"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:19.4022328-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10032",
+      "FileName": "EmployeeHandbook_EMP-10032_2025-08-15.txt"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:19.4242125-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10063",
+      "FileName": "PersonnelRecord_EMP-10063_2025-09-23.txt"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:19.4459512-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10013",
+      "FileName": "I9Form_EMP-10013_2025-12-09.txt"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:19.4639793-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10077",
+      "FileName": "W4Form_EMP-10077_2025-11-25.txt"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:19.4791771-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10030",
+      "FileName": "W4Form_EMP-10030_2025-04-16.txt"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:19.4899675-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10060",
+      "FileName": "DirectDeposit_EMP-10060_2025-04-11.txt"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:19.5055749-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10092",
+      "FileName": "PayrollDocument_EMP-10092_2025-01-26.txt"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:19.5232707-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10040",
+      "FileName": "W4Form_EMP-10040_2025-04-23.txt"
+    },
+    {
+      "DocumentType": "DirectDeposit",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:19.5452213-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10037",
+      "FileName": "DirectDeposit_EMP-10037_2025-04-08.txt"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:19.5649112-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10051",
+      "FileName": "EmployeeHandbook_EMP-10051_2025-09-08.txt"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:19.5898926-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10091",
+      "FileName": "NewHirePaperwork_EMP-10091_2025-02-20.txt"
+    },
+    {
+      "DocumentType": "I9Form",
+      "SSNCount": 1,
+      "Created": "2025-12-22T23:09:19.618477-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10079",
+      "FileName": "I9Form_EMP-10079_2025-09-08.txt"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:19.6549615-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10048",
+      "FileName": "W4Form_EMP-10048_2025-04-01.txt"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:19.6894627-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10017",
+      "FileName": "NewHirePaperwork_EMP-10017_2025-02-12.txt"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:19.7148839-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10059",
+      "FileName": "W4Form_EMP-10059_2025-03-10.txt"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:19.7342317-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10012",
+      "FileName": "W4Form_EMP-10012_2025-02-24.txt"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:19.7478864-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10045",
+      "FileName": "NewHirePaperwork_EMP-10045_2024-12-24.txt"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:19.7722215-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10076",
+      "FileName": "PayrollDocument_EMP-10076_2025-02-12.txt"
+    },
+    {
+      "DocumentType": "PayrollDocument",
+      "SSNCount": 8,
+      "Created": "2025-12-22T23:09:19.78668-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10060",
+      "FileName": "PayrollDocument_EMP-10060_2025-10-27.txt"
+    },
+    {
+      "DocumentType": "W4Form",
+      "SSNCount": 2,
+      "Created": "2025-12-22T23:09:19.8077611-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10057",
+      "FileName": "W4Form_EMP-10057_2025-08-07.txt"
+    },
+    {
+      "DocumentType": "PersonnelRecord",
+      "SSNCount": 6,
+      "Created": "2025-12-22T23:09:19.8217858-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10059",
+      "FileName": "PersonnelRecord_EMP-10059_2025-10-07.txt"
+    },
+    {
+      "DocumentType": "EmployeeHandbook",
+      "SSNCount": 3,
+      "Created": "2025-12-22T23:09:19.8380699-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10095",
+      "FileName": "EmployeeHandbook_EMP-10095_2025-09-01.txt"
+    },
+    {
+      "DocumentType": "NewHirePaperwork",
+      "SSNCount": 5,
+      "Created": "2025-12-22T23:09:19.8612014-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10071",
+      "FileName": "NewHirePaperwork_EMP-10071_2025-06-01.txt"
+    },
+    {
+      "DocumentType": "BenefitsEnrollment",
+      "SSNCount": 4,
+      "Created": "2025-12-22T23:09:19.899477-08:00",
+      "FileType": "txt",
+      "EmployeeID": "EMP-10037",
+      "FileName": "BenefitsEnrollment_EMP-10037_2025-11-22.txt"
+    }
+  ],
+  "SSNPatternCount": 1227,
+  "GenerationDuration": "00:00:06",
+  "FileTypeDistribution": {
+    "XLSX": 93,
+    "PDF": 46,
+    "TXT": 31,
+    "DOCX": 140
+  },
+  "TotalDocuments": 310,
+  "Timestamp": "2025-12-22 23:09:20",
+  "DocumentType": "HR"
+}

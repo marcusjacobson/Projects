@@ -203,7 +203,7 @@ Write-Host "`n   After confirming Activity Explorer sync:" -ForegroundColor Gray
 Write-Host "   1. Document DLP events visible in Activity Explorer" -ForegroundColor Gray
 Write-Host "   2. Verify sensitive information types are populated" -ForegroundColor Gray
 Write-Host "   3. Take screenshots for validation records" -ForegroundColor Gray
-Write-Host "   4. Proceed to OnPrem-04-DLP-Enforcement for enforcement mode testing" -ForegroundColor Gray
+Write-Host "   4. Proceed to OnPrem-04-DLP-Activity-Monitoring for activity monitoring" -ForegroundColor Gray
 
 Write-Host "`n   If sync not complete after 2-3 hours:" -ForegroundColor Gray
 Write-Host "   1. Review troubleshooting steps above" -ForegroundColor Gray

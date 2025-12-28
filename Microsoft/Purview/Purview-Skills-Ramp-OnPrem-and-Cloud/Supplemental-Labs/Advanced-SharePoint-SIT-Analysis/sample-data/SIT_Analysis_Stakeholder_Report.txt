@@ -1,0 +1,73 @@
+================================================================================
+SHAREPOINT SIT DETECTION ANALYSIS REPORT
+================================================================================
+Generated: 2025-12-26 17:53:52
+Data Source: Microsoft Purview Content Explorer
+Analysis Scope: SharePoint Online Test Site
+
+EXECUTIVE SUMMARY
+-----------------
+Total Files with Sensitive Information: 20
+Unique SIT Types Detected: 3
+Total SIT Instances: 42
+High Confidence Detections: 21 instances (50%)
+High-Risk Files (3+ SIT instances): 7
+
+SENSITIVE INFORMATION TYPE BREAKDOWN
+------------------------------------
+  U.S. Social Security Number (SSN): 13 files (18 instances)
+  Credit Card Number: 12 files (19 instances)
+  U.S. Bank Account Number: 5 files (5 instances)
+
+
+SHAREPOINT SITE DISTRIBUTION
+----------------------------
+  : 1 files with sensitive data
+  : 1 files with sensitive data
+  : 1 files with sensitive data
+
+
+DETECTION CONFIDENCE ANALYSIS
+-----------------------------
+  High Confidence (detailed pattern match): 21 instances
+  Medium Confidence (probable match): 15 instances
+  Low Confidence (possible false positive): 6 instances
+
+RISK ASSESSMENT
+---------------
+High-Risk Files (3+ SIT instances): 7 files
+Files with Multiple SIT types: 14 files
+Average SIT Instances per File: 2.1
+
+COMPLIANCE IMPLICATIONS
+-----------------------
+✅ DLP Policy Active: Real-time protection enabled (external sharing blocked)
+✅ Activity Explorer Monitoring: DLP events tracked for audit trail
+✅ Content Explorer Inventory: Comprehensive SIT detection catalog available
+⚠️  Remediation Required: 21 high confidence detections require review
+⚠️  User Training: Sensitive data handling training recommended for file owners
+
+RECOMMENDED NEXT STEPS
+----------------------
+1. Review 7 high-risk files for legitimate business need vs unnecessary data retention
+2. Apply sensitivity labels to 20 files containing sensitive information
+3. Configure retention policies based on 3 detected SIT types
+4. Implement user training program for sensitive data handling
+5. Schedule periodic Content Explorer reviews (quarterly recommended)
+6. Integrate Content Explorer exports with SIEM/compliance reporting tools
+
+TECHNICAL DETAILS
+-----------------
+Detection Engine: Microsoft Purview DLP + Content Explorer
+Data Collection Period: Past 7 days (Activity Explorer) + 24-48 hours (Content Explorer sync)
+SIT Pattern Matching: Built-in Microsoft SIT definitions
+Confidence Scoring: Microsoft ML models (pattern strength: High/Medium/Low)
+Export Format: CSV with JSON arrays (sensitive info type, trainable classifiers)
+
+REPORT VALIDATION
+-----------------
+Files Analyzed: 20
+SIT Types Found: 3
+Total Detections: 42
+Detection Rate: 5% of expected test data
+Analysis Status: ✅ Detection completed successfully

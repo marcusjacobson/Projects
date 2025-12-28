@@ -1,5 +1,118 @@
-# Import Activity Explorer export
-$dlpEvents = Import-Csv "C:\PurviewLab\ActivityExplorer_DLP_Export.csv"
+<#
+.SYNOPSIS
+    Analyzes Activity Explorer DLP event data and generates effectiveness reports.
+
+.DESCRIPTION
+    This script imports Activity Explorer CSV export data and performs detailed analysis of 
+    DLP policy effectiveness including severity distribution, sensitive info type detection,
+    timing analysis, and compliance recommendations.
+
+.PARAMETER ExportPath
+    Path to the Activity Explorer DLP CSV export file.
+    If not provided, the script will prompt for the file location.
+
+.EXAMPLE
+    .\Generate-DLPEffectivenessReport.ps1
+    
+    Prompts for Activity Explorer export file location and generates effectiveness report.
+
+.EXAMPLE
+    .\Generate-DLPEffectivenessReport.ps1 -ExportPath "C:\purview-lab\ActivityExplorer_DLP_Export.csv"
+    
+    Analyzes Activity Explorer export from specified location.
+
+.NOTES
+    Author: Marcus Jacobson
+    Version: 1.1.0
+    Created: 2025-11-09
+    Last Modified: 2025-12-26
+    
+    Copyright (c) 2025 Marcus Jacobson. All rights reserved.
+    Licensed under the MIT License.
+    
+    Requirements:
+    - Activity Explorer CSV export from Microsoft Purview
+    - PowerShell 5.1+ or PowerShell 7+
+    
+    Script development orchestrated using GitHub Copilot.
+
+.OUTPUTS
+    - Console display of DLP effectiveness metrics and recommendations
+    - Stakeholder report saved to same directory as input CSV file
+#>
+
+[CmdletBinding()]
+param (
+    [Parameter(Mandatory = $false)]
+    [string]$ExportPath
+)
+
+# =============================================================================
+# Step 1: Environment Validation
+# =============================================================================
+
+Write-Host "🔍 Step 1: Environment Validation" -ForegroundColor Green
+Write-Host "=================================" -ForegroundColor Green
+
+# If no path provided, prompt for file location
+if (-not $ExportPath) {
+    Write-Host "📁 Activity Explorer Export File Selection" -ForegroundColor Cyan
+    Write-Host "   No file path provided. Please enter the full path to your Activity Explorer DLP CSV export." -ForegroundColor Yellow
+    Write-Host ""
+    Write-Host "   Common locations:" -ForegroundColor Gray
+    Write-Host "   - C:\purview-lab\ActivityExplorer_DLP_Export.csv" -ForegroundColor Gray
+    Write-Host "   - C:\Downloads\ActivityExplorer_Export.csv" -ForegroundColor Gray
+    Write-Host ""
+    $ExportPath = Read-Host "   Enter full path to Activity Explorer CSV file"
+    Write-Host ""
+}
+
+# Verify Activity Explorer export exists
+if (-not (Test-Path $ExportPath)) {
+    Write-Host "❌ ERROR: Activity Explorer export not found" -ForegroundColor Red
+    Write-Host "   Specified location: $ExportPath" -ForegroundColor Yellow
+    Write-Host "" 
+    Write-Host "   Please verify:" -ForegroundColor Yellow
+    Write-Host "   1. The file path is correct (check spelling and case)" -ForegroundColor Gray
+    Write-Host "   2. Activity Explorer data was exported (click Export button in Purview portal)" -ForegroundColor Gray
+    Write-Host "   3. The CSV file exists at the specified location" -ForegroundColor Gray
+    return
+}
+
+# Set output directory to same location as input file
+$outputDir = Split-Path -Parent $ExportPath
+
+Write-Host "   ✅ Activity Explorer export found: $ExportPath" -ForegroundColor Green
+Write-Host "   📂 Output directory: $outputDir" -ForegroundColor Cyan
+Write-Host ""
+
+# =============================================================================
+# Step 2: Import and Analyze Data
+# =============================================================================
+
+Write-Host "📥 Step 2: Import Activity Explorer Data" -ForegroundColor Green
+Write-Host "========================================" -ForegroundColor Green
+
+try {
+    # Import Activity Explorer export
+    $dlpEvents = Import-Csv $ExportPath
+    
+    if ($dlpEvents.Count -eq 0) {
+        Write-Host "   ⚠️  WARNING: Activity Explorer export is empty (0 rows)" -ForegroundColor Yellow
+        Write-Host "   This may indicate no DLP events detected or incorrect export" -ForegroundColor Gray
+        return
+    }
+    
+    Write-Host "   ✅ Loaded Activity Explorer data: $($dlpEvents.Count) DLP events" -ForegroundColor Green
+    Write-Host ""
+} catch {
+    Write-Host "   ❌ ERROR: Failed to import Activity Explorer data: $_" -ForegroundColor Red
+    return
+}
+
+# =============================================================================
+# Step 3: DLP Analysis
+# =============================================================================
 
 # Analyze by policy rule severity (using 'Rule' column from Activity Explorer)
 $highSeverity = $dlpEvents | Where-Object {$_.Rule -like "*High Severity*"}
@@ -114,5 +227,6 @@ RECOMMENDATIONS
 "@
 
 # Save report to file
-$report | Out-File "C:\PurviewLab\DLP_Effectiveness_Report.txt" -Encoding UTF8
-Write-Host "`n📄 Report saved to: C:\PurviewLab\DLP_Effectiveness_Report.txt" -ForegroundColor Green
+$reportPath = Join-Path $outputDir "DLP_Effectiveness_Report.txt"
+$report | Out-File $reportPath -Encoding UTF8
+Write-Host "`n📄 Report saved to: $reportPath" -ForegroundColor Green

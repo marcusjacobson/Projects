@@ -60,7 +60,7 @@ c:\REPO\GitHub\Projects\                          ← Repository root
             │   ├── OnPrem-01-Scanner-Deployment\
             │   ├── OnPrem-02-Discovery-Scans\
             │   ├── OnPrem-03-DLP-Policy-Configuration\
-            │   └── OnPrem-04-DLP-Enforcement-Validation\
+            │   └── OnPrem-04-DLP-Activity-Monitoring\
             ├── 03-Cloud-Scanning\
             │   └── [Cloud labs with retention and eDiscovery]
             └── Supplemental-Labs\
@@ -73,7 +73,7 @@ c:\REPO\GitHub\Projects\                          ← Repository root
 # Navigate to specific lab directories
 cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\01-Setup\Setup-02-Azure-Infrastructure"
 cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\02-OnPrem-Scanning\OnPrem-02-Discovery-Scans"
-cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\Supplemental-Labs\Custom-Classification"
+cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\Supplemental-Labs\Advanced-Remediation"
 ```
 
 > **📁 Lab Data Files**: Some labs generate CSV exports and data files. The default storage location is `C:\PurviewLab\` (examples: `ActivityExplorer_Export.csv`, `SITAnalysisReport_*.csv`). Create this directory before starting the labs:
@@ -208,7 +208,7 @@ This project is organized into **3 main sections plus optional supplemental labs
 | **OnPrem-01-Scanner-Deployment** | 2-3 hours | Install Purview client, Create app registration, Configure scanner cluster, Create scan job |
 | **OnPrem-02-Discovery-Scans** | 1-2 hours | Add repositories (UNC paths + Azure Files), Execute discovery scan, Analyze results |
 | **OnPrem-03-DLP-Policy-Configuration** | 1 hour | Create DLP policy, Configure SIT rules, Set enforcement actions, **Wait 1-2 hours** |
-| **OnPrem-04-DLP-Enforcement-Validation** | 2-3 hours | Run enforcement scan, Verify policy detection, Review Activity Explorer |
+| **OnPrem-04-DLP-Activity-Monitoring** | 2-3 hours | Run enforcement scan, Verify policy detection, Review Activity Explorer |
 
 **Prerequisites**: Section 1 completed  
 **Technical Focus**: Hybrid scanning (on-prem + cloud storage), Built-in SITs, DLP enforcement  
@@ -240,18 +240,20 @@ This project is organized into **3 main sections plus optional supplemental labs
 
 **Purpose**: Optional advanced topics and production patterns (assumes Sections 1-3 complete)
 
-**Duration**: 11-14 hours | **Wait Period**: 24-48 hours (Activity Explorer) + 24 hours (trainable classifier training)
+**Duration**: 8-11 hours | **Wait Period**: 24-48 hours (Activity Explorer)
+
+> 💡 **Sample Data Available**: Labs with Activity Explorer dependencies include sample CSV files for immediate script testing while waiting for Purview sync. See each lab's `sample-data/` directory.
 
 | Lab | Duration | Key Activities |
 |-----|----------|----------------|
 | **Advanced-Cross-Platform-SIT-Analysis** | 45-60 min | Activity Explorer cross-platform analysis, Data Classification dashboards, Capstone integration, Executive reporting |
 | **Advanced-Remediation** | 4-6 hours | Multi-tier severity matrix, Dual-source deduplication, PnP PowerShell, Tombstones, Progress tracking dashboards |
 | **Advanced-SharePoint-SIT-Analysis** | 3-4 hours | DLP deployment for SIT protection, Activity Explorer validation (24-48 hrs), Content Explorer reporting (24-48 hrs), PowerShell SIT distribution analysis |
-| **Custom-Classification** | 3-4 hours | Custom SITs (Boost.RegEx 5.1.3), Trainable Classifiers (ML), **24-hour ML training**, Sample curation (300 documents) |
 
 **Prerequisites**: Sections 1-3 completed (Advanced-Cross-Platform-SIT-Analysis requires OnPrem-04 from Section 2 and Advanced-SharePoint-SIT-Analysis Step 2)  
-**Flexible Ordering**: ✅ **Complete in any order** - all 4 labs are fully independent (recommended: Advanced-SharePoint → Advanced-Remediation → Advanced-Cross-Platform → Custom-Classification)  
-**Technical Focus**: Cross-platform SIT analysis, Production automation, SharePoint DLP optimization, Organization-specific classification
+**Flexible Ordering**: ✅ **Complete in any order** - all 3 labs are fully independent (recommended: Advanced-SharePoint → Advanced-Remediation → Advanced-Cross-Platform)  
+**Technical Focus**: Cross-platform SIT analysis, Production automation, SharePoint DLP optimization  
+**Sample Data**: Available in `Advanced-SharePoint-SIT-Analysis/sample-data/` and `Advanced-Cross-Platform-SIT-Analysis/sample-data/`
 
 ---
 
@@ -365,9 +367,8 @@ Completing this project demonstrates proficiency in the following industry-recog
 **Information Protection & Data Governance:**
 
 - Microsoft Purview Information Protection Scanner (deployment, configuration, administration).
-- Sensitive Information Types (SIT) detection and classification (built-in and custom regex patterns).
+- Sensitive Information Types (SIT) detection and classification (built-in patterns).
 - Data Loss Prevention (DLP) policy design, implementation, and enforcement.
-- Trainable Classifiers development (machine learning-based document classification).
 - Data Classification tools (Activity Explorer, Content Explorer, On-Demand Classification).
 - SharePoint Online data governance and compliance management.
 - Retention Labels and auto-apply policies for data lifecycle management.
@@ -409,13 +410,6 @@ Completing this project demonstrates proficiency in the following industry-recog
 
 #### **Advanced Specializations**
 
-**Machine Learning & AI:**
-
-- Trainable classifier model training and validation (24-hour ML workflows).
-- Training dataset curation (positive/negative sample management).
-- Model accuracy assessment and performance tuning.
-- AI-driven content classification for unstructured data.
-
 **Data Analytics & Reporting:**
 
 - CSV data analysis and executive summary generation.
@@ -443,7 +437,7 @@ This project provides hands-on experience aligned with:
 
 For maximum visibility on LinkedIn and applicant tracking systems (ATS), this project covers:
 
-`Microsoft Purview` • `Data Loss Prevention (DLP)` • `Information Protection` • `Data Governance` • `Compliance Management` • `Microsoft 365 Administration` • `Azure Administration` • `PowerShell Scripting` • `PnP PowerShell` • `SharePoint Online` • `Microsoft Entra ID` • `Azure Active Directory` • `Sensitive Information Types` • `Trainable Classifiers` • `Machine Learning` • `Content Classification` • `eDiscovery` • `Retention Policies` • `GDPR Compliance` • `Data Privacy` • `Cloud Security` • `Hybrid Cloud Architecture` • `Infrastructure as Code (IaC)` • `Azure Bicep` • `REST API` • `Microsoft Graph API` • `KQL (Keyword Query Language)` • `Compliance Reporting` • `Risk Management` • `Audit & Compliance` • `Technical Documentation` • `Cost Optimization`
+`Microsoft Purview` • `Data Loss Prevention (DLP)` • `Information Protection` • `Data Governance` • `Compliance Management` • `Microsoft 365 Administration` • `Azure Administration` • `PowerShell Scripting` • `PnP PowerShell` • `SharePoint Online` • `Microsoft Entra ID` • `Azure Active Directory` • `Sensitive Information Types` • `Content Classification` • `eDiscovery` • `Retention Policies` • `GDPR Compliance` • `Data Privacy` • `Cloud Security` • `Hybrid Cloud Architecture` • `Infrastructure as Code (IaC)` • `Azure Bicep` • `REST API` • `Microsoft Graph API` • `KQL (Keyword Query Language)` • `Compliance Reporting` • `Risk Management` • `Audit & Compliance` • `Technical Documentation` • `Cost Optimization`
 
 ---
 
@@ -456,10 +450,9 @@ This project provides **hands-on practical experience with core Microsoft Purvie
 - **Retention Labels** (lifecycle management)
 - **eDiscovery** (basic content search and export)
 - **Data Classification** (Activity Explorer, Content Explorer)
-- **Custom Classification** (custom SITs, trainable classifiers)
 - **Production Automation** (remediation workflows, PnP PowerShell)
 
-**Coverage Depth**: ~48% of total Microsoft Purview capability landscape with **deep hands-on experience** in covered areas (not superficial overview).
+**Coverage Depth**: ~40% of total Microsoft Purview capability landscape with **deep hands-on experience** in covered areas (not superficial overview).
 
 **Project Focus**: Hands-on practical labs suitable for IT professionals, consultants, and compliance administrators building foundational to intermediate Purview skills.
 
@@ -471,9 +464,6 @@ This project provides **hands-on practical experience with core Microsoft Purvie
 |------------|----------------|-------------------|
 | **Information Protection Scanner** | ✅ EXTENSIVE | Section 2 (OnPrem-01, OnPrem-02) |
 | **Built-in Sensitive Information Types (SITs)** | ✅ EXTENSIVE | Section 2 (OnPrem-02, OnPrem-03, OnPrem-04) |
-| **Custom SITs (Regex-based)** | ✅ COMPREHENSIVE | Supplemental (Custom-Classification) |
-| **Trainable Classifiers** | ✅ COMPREHENSIVE | Supplemental (Custom-Classification) |
-| **ML Model Training** | ✅ DETAILED | Supplemental (Custom-Classification) |
 | **Activity Explorer** | ✅ EXTENSIVE | Supplemental (Advanced-Cross-Platform-SIT-Analysis) |
 | **Content Explorer** | ✅ EXTENSIVE | Supplemental (Advanced-SharePoint-SIT-Analysis) |
 | **Data Classification Dashboards** | ✅ COMPREHENSIVE | Supplemental (Advanced-Cross-Platform-SIT-Analysis) |
@@ -607,7 +597,6 @@ The following capabilities require **enterprise-scale deployments**, **advanced 
 - Retention label configuration with auto-apply and simulation capabilities.
 - Basic eDiscovery for content search and export.
 - Activity Explorer and Content Explorer for data classification insights.
-- Custom classification with SITs and trainable classifiers (ML-based).
 - Production-ready remediation workflows with PnP PowerShell automation.
 
 **What You Won't Learn** (Requires Separate Study/Certification):

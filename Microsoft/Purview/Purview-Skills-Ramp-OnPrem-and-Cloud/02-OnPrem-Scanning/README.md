@@ -16,7 +16,7 @@ By completing this section, you will:
 - **Discover** sensitive information (credit cards, SSNs, PII) in on-premises file shares
 - **Protect** sensitive data using DLP policies synchronized from the Purview portal
 - **Monitor** DLP activity using Activity Explorer and generate compliance reports
-- **Automate** reporting workflows with PowerShell scripts for ongoing monitoring
+- **Report** on sensitive data findings using multiple data sources (Activity Explorer, scanner reports, audit logs)
 
 ---
 
@@ -84,25 +84,24 @@ Complete these labs in order for a full on-premises scanning deployment:
 
 ---
 
-### [OnPrem-04: DLP Activity Monitoring & Reporting](./OnPrem-04-DLP-Enforcement-Validation)
+### [OnPrem-04: DLP Activity Monitoring & Reporting](./OnPrem-04-DLP-Activity-Monitoring)
 
 **Duration**: 15-20 minutes | **Objective**: Monitor DLP activity and generate compliance reports
 
 **What You'll Learn**:
 
 - Navigate Activity Explorer and filter for on-premises DLP activity (Endpoint devices).
-- Configure **Customize columns** to include Sensitive info type for comprehensive reporting.
-- Export Activity Explorer data to CSV for stakeholder reporting.
-- Generate executive summaries and detailed reports using PowerShell automation.
-- Establish weekly monitoring cadence for ongoing compliance.
+- Export Activity Explorer data to CSV for activity tracking and compliance documentation.
+- Understand the three DLP reporting sources: Activity Explorer, DetailedReport CSV, and Audit Log.
+- Combine Activity Explorer exports with scanner DetailedReport CSV for complete reporting.
+- Establish monitoring cadence for ongoing compliance.
 - Distinguish between on-premises scanner activity and cloud workload activity.
 
 **Key Deliverables**:
 
 - Activity Explorer configured to display on-premises DLP events.
-- CSV exports with sensitive data type information.
-- PowerShell-generated executive summary and detailed reports.
-- Weekly monitoring workflow established.
+- Understanding of how to combine data sources for complete compliance reporting.
+- Monitoring workflow established for ongoing DLP compliance.
 
 **Prerequisites**: OnPrem-03 must be completed with DLP detection working, auditing enabled, and 15-30 minutes elapsed for data sync
 
@@ -147,7 +146,7 @@ Track your progress through the on-premises scanning learning path:
 - Differentiate between discovery and enforcement scan modes.
 - Navigate DLP policy synchronization timing requirements.
 - Distinguish on-premises scanner activity from cloud workload activity.
-- Implement automated reporting workflows with PowerShell.
+- Combine multiple reporting sources for comprehensive compliance documentation.
 
 **Compliance & Reporting**:
 

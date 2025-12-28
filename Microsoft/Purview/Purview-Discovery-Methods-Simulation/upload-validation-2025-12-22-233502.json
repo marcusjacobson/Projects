@@ -1,0 +1,43 @@
+{
+  "AllCountsMatch": true,
+  "SiteResults": [
+    {
+      "ActualCount": 310,
+      "ExpectedCount": null,
+      "MatchStatus": "❓ Unknown",
+      "SiteName": "HR-Simulation",
+      "Department": "HR"
+    },
+    {
+      "ActualCount": 280,
+      "ExpectedCount": null,
+      "MatchStatus": "❓ Unknown",
+      "SiteName": "Finance-Simulation",
+      "Department": "Finance"
+    },
+    {
+      "ActualCount": 190,
+      "ExpectedCount": null,
+      "MatchStatus": "❓ Unknown",
+      "SiteName": "Legal-Simulation",
+      "Department": "Legal"
+    },
+    {
+      "ActualCount": 0,
+      "ExpectedCount": null,
+      "MatchStatus": "❓ Unknown",
+      "SiteName": "Marketing-Simulation",
+      "Department": "Marketing"
+    },
+    {
+      "ActualCount": 0,
+      "ExpectedCount": null,
+      "MatchStatus": "❓ Unknown",
+      "SiteName": "IT-Simulation",
+      "Department": "IT"
+    }
+  ],
+  "TotalSites": 5,
+  "TotalDocumentsExpected": 0,
+  "TotalDocumentsFound": 780
+}

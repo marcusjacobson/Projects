@@ -1,0 +1,85 @@
+================================================================================
+             CROSS-PLATFORM SENSITIVE DATA DISCOVERY ANALYSIS
+================================================================================
+
+Report Generated: 2025-12-26 18:00:52
+Data Sources: Activity Explorer (On-Premises Scanner + SharePoint DLP)
+
+EXECUTIVE SUMMARY
+-----------------
+Total Events Analyzed: 38
+- On-Premises Scanner: 18 events (18 unique files)
+- SharePoint DLP: 20 events (20 unique files)
+
+
+ON-PREMISES SCANNER ANALYSIS (File Share Detection)
+----------------------------------------------------
+
+Detection Breakdown by Share:
+  HR: 6 events (5 unique files)
+  Finance: 5 events (5 unique files)
+  Projects: 4 events (5 unique files)
+  Legal: 3 events (5 unique files)
+
+SHAREPOINT DLP ANALYSIS (Sensitive Information Type Detection)
+---------------------------------------------------------------
+
+SIT Detection Breakdown by Type:
+  SharePoint Sensitive Data - Low Severity - SSN: 11 events (11 unique files)
+  SharePoint Sensitive Data - High Severity - Credit Card: 9 events (11 unique files)
+
+CROSS-PLATFORM COMPARISON
+--------------------------
+
+Platform Characteristics:
+  
+  On-Premises Scanner:
+  - Detection Method: Batch scheduled scans
+  - Activity Type: "File discovered"
+  - Coverage: File shares, network storage
+  - Timing: Scanner schedule-based (typically daily/weekly)
+  
+  SharePoint DLP:
+  - Detection Method: Real-time policy evaluation
+  - Activity Type: "DLP rule matched"  
+  - Coverage: SharePoint Online documents
+  - Timing: Real-time during user access
+
+Detection Patterns:
+  - On-Premises shows distribution across 4 file shares
+  - SharePoint shows 2 distinct SIT types detected
+  - Combined coverage provides hybrid environment visibility
+
+KEY INSIGHTS
+------------
+
+1. On-Premises Coverage:
+   Highest activity in "HR" share (6 events)
+   
+2. SharePoint SIT Detection:
+   Primary detection type: "SharePoint Sensitive Data - Low Severity - SSN" (11 events)
+
+3. Detection Methodology:
+   - Scanner provides batch discovery for existing files
+   - DLP provides real-time enforcement for cloud documents
+   - Both methods complement each other for comprehensive governance
+
+
+RECOMMENDATIONS
+---------------
+
+Immediate Actions:
+✓ Review on-premises files in high-activity shares for remediation
+✓ Validate SharePoint DLP policies are appropriately scoped
+✓ Ensure scanner schedules remain active and consistent
+
+Strategic Guidance:
+→ Expand DLP coverage to additional M365 workloads (OneDrive, Teams)
+→ Optimize scanner schedules based on file change patterns
+→ Establish baseline metrics for ongoing monitoring
+→ Cross-reference detections with compliance requirements
+
+
+================================================================================
+                              END OF REPORT
+================================================================================

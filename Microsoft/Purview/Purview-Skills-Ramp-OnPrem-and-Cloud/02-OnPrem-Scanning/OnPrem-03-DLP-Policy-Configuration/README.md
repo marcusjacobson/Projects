@@ -1,4 +1,4 @@
-# Lab 02 - Part 1: DLP Policy Creation
+# OnPrem-03: DLP Policy Creation
 
 ## 📋 Overview
 
@@ -14,7 +14,7 @@
 - Configure user notifications and admin alerts.
 - Verify DLP policy creation and sync status.
 
-**Prerequisites from Lab 01:**
+**Prerequisites from OnPrem-02:**
 
 - ✅ Information Protection Scanner deployed and operational.
 - ✅ Discovery scan completed successfully showing sensitive data.
@@ -38,342 +38,12 @@ By the end of OnPrem-03, you will be able to:
 
 ---
 
-## � Alternative Path: Existing DLP Policies with New Scanner Environment
-
-**Use this section if:**
-
-- ✅ You already have DLP policies configured in your tenant from previous setup.
-- ✅ You completed OnPrem-01 (Scanner Deployment) and OnPrem-02 (Discovery Scans) on a fresh/recreated VM.
-- ✅ You want to validate the new scanner environment is ready to use existing DLP policies.
-
-**Skip this section if:**
-
-- ❌ This is your first time creating DLP policies → Follow the standard Step-by-Step Instructions below.
-
----
-
-### Why This Section Exists
-
-**DLP Policy Architecture Explained:**
-
-- **DLP policies** are stored at the **tenant level** in the Microsoft Purview portal (cloud-based).
-- **Scanner** is a **local agent** that syncs and enforces these tenant-level policies.
-- **When you recreate a scanner**: Policies persist in the portal, but the new scanner needs configuration to USE them.
-
-**Critical Distinction:**
-
-| Component | Storage Location | Survives VM Recreation? |
-|-----------|------------------|------------------------|
-| DLP Policies | Purview portal (tenant-level) | ✅ Yes |
-| Content Scan Job DLP Settings | Scanner local database | ❌ No - must reconfigure |
-
-### Validation & Configuration Steps
-
-> **🖥️ Execution Environment**: Steps 2-6 must be executed **on the Purview Scanner VM** where the Microsoft Information Protection Scanner service is installed. Step 1 can be performed from any machine with portal access.
-
-#### Step 1: Verify Existing DLP Policies in Portal
-
-Confirm your DLP policies still exist in the tenant.
-
-**Portal Verification:**
-
-- Navigate to [Microsoft Purview portal](https://purview.microsoft.com).
-- Go to **Solutions** > **Data loss prevention** > **Policies**.
-- Verify your policy appears in the list (e.g., `Lab-OnPrem-Sensitive-Data-Protection`).
-- Note the policy **Status** (should be "On" or "Test mode").
-
-**Expected Policy Details:**
-
-| Property | Expected Value |
-|----------|----------------|
-| **Policy Name** | Lab-OnPrem-Sensitive-Data-Protection |
-| **Location** | On-premises repositories |
-| **Rules** | Block-Credit-Card-Access, Audit-SSN-Access |
-| **Status** | On (or Test mode if you left it in simulation) |
-
-✅ **If your policy exists**: Continue to Step 2
-
-❌ **If your policy is missing**: Follow the standard Step-by-Step Instructions below to recreate it
-
-#### Step 2: Verify Scanner Discovery Scan Completed (OnPrem-02)
-
-Confirm the new scanner environment completed discovery scans successfully.
-
-**PowerShell Verification:**
-
-```powershell
-cd "c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\02-OnPrem-Scanning\OnPrem-03-DLP-Policy-Configuration"
-.\Verify-OnPrem02Completion.ps1
-```
-
-**Expected Results:**
-
-- Recent DetailedReport CSV from within last 24 hours.
-- Repositories scanned: Finance, HR, Projects.
-- File count > 0.
-
-✅ **If discovery scan completed with repositories**: Continue to Step 3
-
-❌ **If no recent scan or empty repositories**: Return to OnPrem-02 and complete discovery scan first
-
-#### Step 3: Enable DLP in Content Scan Job
-
-**Critical Configuration Required:**
-
-Your new scanner needs the content scan job configured to evaluate DLP policies. This is LOCAL to the scanner and was NOT carried over from your previous setup.
-
-**Enable DLP in Scanner:**
-
-> **🖥️ Scanner VM Execution Required**: This script uses AIP Scanner cmdlets and must run on the Scanner VM.
-
-**Copy and Execute on Scanner VM:**
-
-1. On your **development/admin machine**, open the script file:
-
-   ```powershell
-   c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\02-OnPrem-Scanning\OnPrem-03-DLP-Policy-Configuration\Enable-ScannerDLP.ps1
-   ```
-
-2. Copy the entire script content (Ctrl+A, Ctrl+C)
-3. **RDP to your Scanner VM**
-4. Open **PowerShell ISE** as Administrator on the Scanner VM
-5. Paste the script content and save as `Enable-ScannerDLP.ps1`
-6. Run the script:
-
-   ```powershell
-   .\Enable-ScannerDLP.ps1
-   ```
-
-The script will:
-
-- Check current DLP configuration.
-- Set OnlineConfiguration Off (for PowerShell-based configuration).
-- Enable DLP with RepositoryOwner setting.
-- Verify configuration applied successfully.
-
-> **💡 Using Variables**: This script uses `$env:COMPUTERNAME` to automatically get your VM's actual computer name, handling Windows' 15-character name truncation (e.g., `vm-purview-scanner` becomes `VM-PURVIEW-SCAN`).
->
-> **💡 Online Configuration**: The script sets `OnlineConfiguration Off` when switching from portal-based scanner configuration to PowerShell cmdlet-based configuration.
-
-**What These Settings Do:**
-
-| Setting | Purpose | Required For |
-|---------|---------|--------------|
-| **EnableDLP = On** | Enables DLP policy evaluation during scans | All DLP functionality |
-| **RepositoryOwner** | Sets owner for DLP "make private" actions | DLP enforcement (blocking) |
-| **Enforce = Off** | Audit mode (log matches but don't block) | Keep Off until OnPrem-04 |
-
-> **💡 Why This Matters**: Without `EnableDLP = On`, the scanner won't evaluate files against your DLP policies, even though the policies exist in the portal.
-
-#### Step 4: Sync Policies to Scanner
-
-Force the scanner to download your existing DLP policies from the portal.
-
-**Update Scanner Configuration:**
-
-> **🖥️ Scanner VM Execution Required**: This script must be run **on the Purview Scanner VM**.
-
-**Copy and Execute on Scanner VM:**
-
-1. Open the script on your admin machine:
-
-   ```powershell
-   c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\02-OnPrem-Scanning\OnPrem-03-DLP-Policy-Configuration\Sync-DLPPolicies.ps1
-   ```
-
-2. Copy entire script content.
-3. **RDP to Scanner VM**, open PowerShell as Administrator.
-4. Paste script content and save as `Sync-DLPPolicies.ps1`.
-5. Run: `.\Sync-DLPPolicies.ps1`.
-
-**Expected Results:**
-
-- Policy sync completed successfully.
-- Scanner service restarted.
-- Verification instructions for Purview portal to check sync status.
-
-#### Step 5: Run Scan with DLP Enabled
-
-Run a new scan with DLP evaluation enabled.
-
-> **⚠️ Important - Full Rescan Required**: After enabling DLP policies, you must run a **full rescan** using the `-Reset` parameter. By default, the scanner only scans new or changed files. Previously scanned files will show as "Already scanned" and won't have DLP policies applied unless you force a full rescan.
-
-> **🖥️ Scanner VM Execution Required**: Both scripts must be run **on the Purview Scanner VM**.
-
-**Start Full DLP Scan with Reset:**
-
-1. Open the script on your admin machine:
-
-   ```powershell
-   c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\02-OnPrem-Scanning\OnPrem-03-DLP-Policy-Configuration\Start-DLPScanWithReset.ps1
-   ```
-
-2. Copy entire script content
-3. **RDP to Scanner VM**, open PowerShell as Administrator
-4. Paste script content and save as `Start-DLPScanWithReset.ps1`
-5. Run: `.\Start-DLPScanWithReset.ps1`
-
-> **💡 Why -Reset is Required**: The scanner performs incremental scans by default, only scanning new or changed files. When you add or modify DLP policies, you need to run `Start-Scan -Reset` to apply those policies to all files, including previously scanned ones. This ensures fresh DLP policy evaluation and prevents "Already scanned" status from skipping files.
-
-⏳ **Scan Duration**: Expect 5-15 minutes depending on repository size (same as OnPrem-02 discovery scan)
-
-**Monitor Scan Progress:**
-
-1. Open the script on your admin machine:
-
-   ```powershell
-   c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\02-OnPrem-Scanning\OnPrem-03-DLP-Policy-Configuration\Monitor-DLPScan.ps1
-   ```
-
-2. Copy entire script content
-3. In the same PowerShell window on Scanner VM (or open new as Administrator)
-4. Paste script content and save as `Monitor-DLPScan.ps1`
-5. Run: `.\Monitor-DLPScan.ps1`
-
-The monitoring script will continuously display:
-
-- Current scan status.
-- Repository being scanned.
-- File counts.
-- DLP configuration settings.
-- Automatic refresh every 30 seconds.
-
-> **✅ Scan Complete Indicators**:
->
-> - Monitor script shows Status = 'Idle'.
-> - New DetailedReport file appears in reports directory.
-> - Script displays completion summary with file counts.
-
-Wait until the scan completes (scanner returns to Idle status).
-
-#### Step 6: Verify DLP Policy Sync (Critical Validation)
-
-> **🖥️ Scanner VM Execution Required**: This script must be run **on the Purview Scanner VM** to access scanner reports directory.
-
-**Analyze DLP Scan Results:**
-
-1. Open the script on your admin machine:
-
-   ```powershell
-   c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\02-OnPrem-Scanning\OnPrem-03-DLP-Policy-Configuration\Get-DLPScanReport.ps1
-   ```
-
-2. Copy entire script content
-3. **RDP to Scanner VM**, open PowerShell as Administrator
-4. Paste script content and save as `Get-DLPScanReport.ps1`
-5. Run: `.\Get-DLPScanReport.ps1`
-
-The script will:
-
-- Locate latest DetailedReport.csv (handles both loose CSV and ZIP archives).
-- Extract and analyze DLP policy matches.
-- Display sensitive information type detections.
-- Group results by repository, policy, and info type.
-- Show sample files with DLP matches.
-
-**Expected Output (DLP Successfully Synced):**
-
-- Files with DLP matches identified.
-- Sensitive information types populated (Credit Card Number, SSN).
-- DLP Mode = "Test" (audit-only).
-- Repository groupings showing match distribution.
-
-> **⚠️ On-Premises Scanner Limitation - Empty DLP Columns**: For on-premises scanners, **DLP Rule Name and DLP Status columns are typically empty or show "Skipped"** even when DLP policies are working correctly. This is **expected behavior** and does NOT indicate a problem.
->
-> **Why These Columns Are Empty**:
->
-> - **Test mode limitation**: On-premises scanners run DLP in "Test" mode only - actual enforcement (blocking access) only works in Microsoft 365 cloud services
-> - **Detection-only operation**: The scanner detects sensitive information types and logs matches but doesn't populate detailed enforcement metadata
-> - **Policy metadata not synced**: DLP Rule Name and DLP Status require full enforcement mode which isn't available for on-premises repositories
->
-> **Primary Success Indicator**: If **Information Type Name** column is populated with values like "Credit Card Number" or "U.S. Social Security Number (SSN)", **DLP detection is working correctly**.
-
-**Key Indicators:**
-
-| Column | What to Look For | Meaning |
-|--------|------------------|---------|
-| **Information Type Name** | Sensitive info type names | **PRIMARY VALIDATION** - DLP detection working |
-| **DLP Mode** | "Test" | Scanner detects but doesn't block (expected for on-premises) |
-| **DLP Rule Name** | Usually **empty/blank** | **EXPECTED** - Not populated in Test mode for on-premises |
-| **DLP Status** | Usually **empty/blank** or "Skipped" | **EXPECTED** - Not populated in Test mode for on-premises |
-
-✅ **If you see DLP Mode = "Test" and Information Type Name populated**: DLP detection successfully working! (Empty DLP Rule Name and DLP Status are expected)
-
-❌ **If Information Type Name column is completely empty**:
-
-- Verify `EnableDLP = On` in Step 3.
-- Re-run `Update-AIPScanner` and `Start-Scan`.
-- Wait 1-2 hours and check again (policy sync can be delayed).
-
-#### Step 7: Wait for Complete Policy Sync (Mandatory)
-
-⏳ **STOP**: Even though DLP Mode and Information Type Name columns are populated, wait **1-2 hours** for complete policy synchronization before proceeding to OnPrem-04.
-
-**Why This Wait is Required:**
-
-- Scanner downloads basic DLP detection capability immediately (visible as DLP Mode = "Test" and populated Information Type Name).
-- **Full policy sync to Activity Explorer** happens asynchronously and takes 1-2 hours.
-- Activity Explorer updates require processing time for DLP events to appear.
-- Complete policy distribution ensures DLP events are logged and reportable.
-
-**What to Do During Wait Time:**
-
-- ✅ Review OnPrem-04 overview section.
-- ✅ Review your existing DLP policy rules in the Purview portal.
-- ✅ Verify scan reports show expected sensitive files detected.
-- ❌ Do NOT change DLP policy settings during sync.
-- ❌ Do NOT restart scanner service during sync.
-- ❌ Do NOT run additional scans during sync.
-
-**Verify Sync Completion:**
-
-After 1-2 hours, check Activity Explorer for DLP events:
-
-- Navigate to [Purview portal](https://purview.microsoft.com) > **Solutions** > **Data loss prevention** > **Activity explorer**.
-- Filter: **Activities** = "File accessed from on-premises repository".
-- Look for your repositories (Finance, HR, Projects).
-- Verify DLP events appear (sensitive information type matches logged).
-
-> **💡 Activity Explorer Note**: Like the DetailedReport CSV, Activity Explorer may not show detailed DLP rule names for on-premises scanners. The presence of DLP events with matched sensitive information types (Credit Card Number, SSN) confirms the policy sync is complete.
-
-✅ **If Activity Explorer shows DLP events with sensitive info types**: Policy sync complete, proceed to OnPrem-04
-
-❌ **If no Activity Explorer events after 2 hours**:
-
-- Verify scanner service running: `Get-Service MIPScanner`.
-- Check latest scan completed successfully.
-- Wait another hour and check again.
-
-### Summary: You're Ready for OnPrem-04
-
-**What You've Accomplished:**
-
-✅ Verified existing DLP policies persist in tenant.
-✅ Enabled DLP evaluation in content scan job (`EnableDLP = On`).
-✅ Configured repository owner for enforcement (`RepositoryOwner`).
-✅ Synced tenant policies to new scanner (`Update-AIPScanner`).
-✅ Ran DLP-enabled scan and verified sensitive information type detection.
-✅ Confirmed DLP Mode = "Test" and Information Type Name populated in DetailedReport.csv.
-✅ Waited 1-2 hours for complete policy sync to Activity Explorer.
-
-**Next Steps:**
-
-➡️ **Proceed to OnPrem-04**: DLP Enforcement Configuration
-
-OnPrem-04 will cover:
-
-- Setting `Enforce = On` to enable blocking actions.
-- Testing DLP enforcement with credit card file access.
-- Reviewing NTFS permission changes from DLP "make private" actions.
-- Monitoring DLP events in Activity Explorer and audit logs.
-
----
-
-## �📖 Step-by-Step Instructions
-
 ## 📖 Step-by-Step Instructions
 
-> **🖥️ Execution Environment**: 
+> **🔀 Already Have DLP Policies?** If you completed this lab previously and already have a DLP policy (`Lab-OnPrem-Sensitive-Data-Protection`) configured in your tenant, skip directly to **[Step 2: Verify DLP is Enabled](#step-2-verify-dlp-is-enabled-in-content-scan-job)**. DLP policies persist at the tenant level and don't need to be recreated.
+
+> **🖥️ Execution Environment**:
+>
 > - **Step 1** (Policy Creation): Portal-based, can be done from any machine
 > - **Steps 2-3** (Enable DLP & Run Scan): Must be executed **on the Purview Scanner VM** where the Microsoft Information Protection Scanner service is installed
 
@@ -393,15 +63,19 @@ OnPrem-04 will cover:
 
 #### Choose What Type of Data to Protect
 
-The policy creation wizard starts by asking what type of data you want to protect.
+The policy creation wizard starts with a splash screen asking "What info do you want to protect?" with two tile options.
 
-- Select: **Data stored in connected sources**.
-- Click **Next**.
+![dlp-new-policy-infotype](.images/dlp-new-policy-infotype.png)
+
+- Select the **Enterprise applications & devices** tile (left option).
+- Click the tile to proceed.
 
 > **💡 Option Context**:
 >
-> - **Data stored in connected sources** = On-premises repositories, devices, cloud apps.
-> - **Data created, received or shared in Microsoft 365** = Exchange, SharePoint, OneDrive, Teams.
+> - **Enterprise applications & devices** = Protection for data across all connected sources including Microsoft 365 locations, Microsoft Copilot experiences, data connectors, enterprise-registered apps, managed apps accessed with Edge for Business browser, and **on-premises repositories**.
+> - **Inline web traffic** = Protection for data transferred in real-time with unmanaged cloud apps through Edge for Business browser and network SASE/SSE integrations.
+>
+> For on-premises file share protection, **Enterprise applications & devices** is the correct choice as it includes all connected sources in your organization.
 
 #### Select Policy Template
 
@@ -452,9 +126,12 @@ By default, several locations are checked (enabled):
    - ✅ **On-premises repositories** → Keep checked (ON).
 
 3. Verify **On-premises repositories** is the ONLY location with a checkmark.
+
+![dlp-policy-locations](.images/dlp-policy-locations.png)
+
 4. Click **Next**.
 
-> **⚠️ Important**: On-premises repository DLP requires the Information Protection Scanner to be deployed and scanning the repositories. Without the scanner, DLP policies cannot be enforced on file shares. We performed this action in lab 01.
+> **⚠️ Important**: On-premises repository DLP requires the Information Protection Scanner to be deployed and scanning the repositories. Without the scanner, DLP policies cannot be enforced on file shares. We performed this action in OnPrem-02.
 >
 > **💡 Lab Focus**: We're unchecking cloud locations (Exchange, SharePoint, OneDrive, Teams, Instances) to focus exclusively on on-premises file shares for this lab. In production environments, you would typically enable multiple locations to protect data across your entire organization.
 
@@ -484,43 +161,53 @@ Under **Conditions**, click **+ Add condition**:
   - From: `1`.
   - To: `Any`.
 
+![dlp-policy-conditions](.images/dlp-policy-conditions.png)
+
 This condition triggers when the scanner detects at least one credit card number in a file.
 
 **Configure Actions:**
 
-Under **Actions**, click **+ Add an action** and configure enforcement for on-premises repositories:
+Under **Actions**, click **+ Add an action** and select **Restrict access or remove on-premises files**.
 
-1. **Select action**: **Restrict access or remove on-premises files**
+![dlp-actions-add-onprem](.images/dlp-actions-add-onprem.png)
 
-2. **Choose restriction method** - You have four options:
+The Actions panel expands to show the **Restrict access or remove on-premises files** section with a checkbox and radio button options:
 
-   **Option 1: Block people from accessing file stored in on-premises scanner**:
+1. **Check the box**: ☑️ **Restrict access or remove on-premises files**
 
-   - **Block everyone**: Blocks all accounts except content owner, last modifier, repository owner, and admin.
-   - **Block only people who have access to your on-premises network and users in your organization who weren't granted explicit access**: Removes "Everyone", "NT AUTHORITY\authenticated users", and "Domain Users" from file ACL.
+2. **Choose restriction method** - Select one of these four radio button options:
 
-   **Option 2: Set permissions on the file**:
+   **Option 1: Block people from accessing files stored in on-premises repositories** (selected by default):
+
+   When this option is selected, two sub-options appear:
+
+   - ○ **Block everyone. Only the content owner, last modifier, and admin will continue to have access** - Most restrictive option that removes all permissions except essential accounts.
+   - ● **Block only people who have access to your on-premises network and users in your organization who weren't granted explicit access to the files** - Removes broad access groups (Everyone, Domain Users, Authenticated Users) but preserves explicit user/group permissions.
+
+   **Option 2: Set permissions on the file (permissions will be inherited from the parent folder)**:
 
    - Forces the file to inherit permissions from its parent folder.
-   - Only applies if parent folder permissions are more restrictive than current file permissions.
-   - Optional: Check **Inherit even if parent permissions are less restrictive** to force inheritance regardless.
+   - Useful for standardizing access based on folder-level permissions.
 
-   **Option 3: Remove the file from improper location**:
+   **Option 3: Move file from where it's stored to a quarantine folder**:
 
    - Moves original file to a quarantine folder.
    - Replaces original file with a `.txt` stub file.
-   - Useful for isolating sensitive files from general access.
+   - Most restrictive option - completely isolates sensitive files.
 
 3. **For this lab**, select:
-   - **Block people from accessing file stored in on-premises repositories**.
-   - Choose: **Block everyone** (most restrictive for lab demonstration).
+   - ☑️ **Restrict access or remove on-premises files** (checkbox checked).
+   - ● **Block people from accessing files stored in on-premises repositories** (first radio button).
+   - ○ **Block everyone. Only the content owner, last modifier, and admin will continue to have access** (sub-option for most restrictive lab demonstration).
+
+![dlp-actions-block](.images/dlp-actions-block.png)
 
 > **💡 Action Explanation**:
 >
-> - **Block everyone**: Removes all NTFS/SharePoint permissions except file owner, repository owner (from scan job settings), last modifier, admin, and scanner account
-> - **Block only people with network access**: Removes broad access groups (Everyone, Domain Users, Authenticated Users) but preserves explicit user/group permissions
-> - **Set permissions**: Makes file inherit parent folder permissions (useful for standardizing access)
-> - **Remove file**: Quarantines sensitive files completely - most restrictive option
+> - **Block everyone**: Removes all NTFS/SharePoint permissions except file owner, last modifier, admin, and scanner account.
+> - **Block only people with network access**: Removes broad access groups (Everyone, Domain Users, Authenticated Users) but preserves explicit user/group permissions.
+> - **Set permissions (inherit from parent)**: Makes file inherit parent folder permissions (useful for standardizing access).
+> - **Move to quarantine**: Quarantines sensitive files completely - most restrictive option that removes files from their original location.
 >
 > **💡 Production Consideration**: In production, "Block only people who have access to your on-premises network" is often preferred as it removes broad access while preserving legitimate explicit permissions. "Block everyone" is more restrictive and may require additional permission management.
 
@@ -799,74 +486,30 @@ The final screen displays a comprehensive summary of your policy configuration. 
 >
 > - Refresh the **Policies** page in Purview portal (or check the **Policy sync status** tab in policy details)
 > - The "Sync in progress" message should disappear once sync completes (typically within 1-2 hours)
-> - **Only after sync completes**, proceed to Lab 02 - Part 2 for DLP enforcement configuration
+> - **Only after sync completes**, proceed to OnPrem-04 for DLP enforcement configuration
 
 ---
 
-### Step 2: Enable DLP in Content Scan Job
+### Step 2: Verify DLP is Enabled in Content Scan Job
 
-Before waiting for the policy sync to complete, you must enable DLP functionality in the scanner's content scan job. This is a **required configuration** that enables the scanner to evaluate files against DLP policies.
+Before running a DLP-enabled scan, verify that **Enable DLP policy rules** was configured correctly in OnPrem-01.
 
-> **⚠️ Critical Requirement**: Without enabling DLP in the content scan job, the scanner will NOT evaluate files against your DLP policies, even after the policies sync successfully. This configuration must be completed before running a DLP-enabled scan.
->
-> **🖥️ Scanner VM Execution Required**: This script must be run **on the Purview Scanner VM**.
+> **📋 Prerequisite Check**: The **Enable DLP policy rules** setting should have been enabled when you created the content scan job in **[OnPrem-01 Step 3](../OnPrem-01-Scanner-Deployment/README.md#step-3-create-content-scan-job)**. This step verifies that configuration.
 
-**Enable DLP in Content Scan Job:**
+**Quick Verification in Purview Portal:**
 
-1. Open the script on your admin machine:
+- Navigate to **Settings** > **Information protection** > **Information protection scanner**
+- Click on **Content scan jobs** tab > **Lab-OnPrem-Scan**
+- Verify **Enable DLP policy rules** is set to **On**
+- If not enabled, toggle it **On** and click **Save**
 
-   ```powershell
-   c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\02-OnPrem-Scanning\OnPrem-03-DLP-Policy-Configuration\Enable-ScannerDLP.ps1
-   ```
-
-2. Copy entire script content
-3. **RDP to Scanner VM**, open PowerShell as Administrator
-4. Paste script content and save as `Enable-ScannerDLP.ps1`
-5. Run: `.\Enable-ScannerDLP.ps1`
-
-This script will:
-
-- Check current DLP configuration (`Get-ScannerContentScan`).
-- Skip configuration if DLP is already enabled.
-- Enable DLP with proper settings if not configured.
-- Verify configuration after changes.
-
-> **💡 Using Variables**: This pattern uses `$computerName = $env:COMPUTERNAME` (same as OnPrem-02) to automatically get your VM's actual computer name, handling Windows' 15-character name truncation (e.g., `vm-purview-scanner` becomes `VM-PURVIEW-SCAN`).
->
-> **💡 Online Configuration**: The `Set-ScannerConfiguration -OnlineConfiguration Off` command is required when switching from portal-based scanner configuration (from OnPrem-02) to PowerShell cmdlet-based configuration. This allows the `Set-ScannerContentScan` cmdlet to modify scanner settings that were originally configured through the Purview portal.
-
-**What These Settings Do:**
-
-| Setting | Purpose | Impact |
-|---------|---------|--------|
-| **EnableDLP = On** | Enables DLP policy evaluation during scans | All DLP functionality |
-| **RepositoryOwner** | Account for "make private" DLP actions | Sets owner for restricted files |
-| **Enforce = Off** | Audit mode (default) | Logs policy matches without blocking |
-
-> **💡 Why This Matters**: Without `EnableDLP = On`, the scanner won't evaluate files against your DLP policies, even though the policies exist in the portal.
-
-**Verify Configuration Applied:**
-
-```powershell
-# Confirm DLP is now enabled
-Get-ScannerContentScan | Select-Object EnableDlp, RepositoryOwner, Enforce
-```
-
-**Expected Output After Configuration:**
-
-```text
-EnableDlp RepositoryOwner              Enforce
---------- ---------------              -------
-On        PURVIEWDEMO\scanner-svc      Off
-```
-
-> **✅ Configuration Complete**: With `EnableDLP = On`, your scanner is now ready to evaluate files against DLP policies once the policy sync completes.
+> **⚠️ If DLP was not enabled in OnPrem-01**: Toggle **Enable DLP policy rules** to **On** now, then run `Update-AIPScanner` on the Scanner VM to sync the updated configuration before proceeding.
 
 ---
 
 ### Step 3: Sync Policies to Scanner and Run DLP-Enabled Scan
 
-After enabling DLP in the content scan job, you must sync the DLP policies from the portal and run a scan to validate DLP detection is working.
+With DLP enabled in the content scan job (verified in Step 2), sync the new DLP policies and run a scan to validate DLP detection is working.
 
 > **🖥️ Scanner VM Execution Required**: All three scripts must be run **on the Purview Scanner VM**.
 
@@ -879,7 +522,7 @@ After enabling DLP in the content scan job, you must sync the DLP policies from 
    ```
 
 2. Copy entire script content
-3. **RDP to Scanner VM**, open PowerShell as Administrato
+3. **RDP to Scanner VM**, open PowerShell as Administrator
 4. Paste script content and save as `Sync-DLPPolicies.ps1`
 5. Run: `.\Sync-DLPPolicies.ps1`
 
@@ -913,47 +556,107 @@ After enabling DLP in the content scan job, you must sync the DLP policies from 
 4. Paste script content and save as `Monitor-DLPScan.ps1`.
 5. Run: `.\Monitor-DLPScan.ps1`.
 
-- Extract and analyze DetailedReport.csv for DLP matches.
-- Show files grouped by repository, policy name, and sensitive info type.
-- Display sample files with DLP matches.
-- Open full CSV for detailed review.
+The monitor script will:
+
+- Display real-time scan status (Running/Idle).
+- Show file counts and progress.
+- Exit automatically when scan completes (or if no active scan).
+
+**Expected Output (Scan Complete):**
+
+```text
+📊 DLP Scanner Status Monitor
+=============================
+   Refresh: #1
+   Time: 14:50:30
+   Elapsed: 0 minutes, 0 seconds
+
+🔍 Current Scan Status:
+   =====================
+   Last Scan Start: 12/26/2025 14:35:00
+   Last Scan End: 12/26/2025 14:45:44
+   Status: IDLE (Scan Complete)
+
+📊 File Statistics:
+   =================
+   Files Scanned: 15
+   Failed Files: 0
+
+🔐 DLP Configuration:
+   ==================
+   Mode: Portal-Configured (OnlineConfiguration = On)
+   💡 DLP settings managed in Purview portal
+
+💡 No active scan detected.
+   Last scan completed at: 12/26/2025 14:45:44
+
+   To start a new scan, run: Start-DLPScanWithReset.ps1
+
+✅ Monitoring Complete
+```
+
+**Analyze DLP Results (After Scan Completes):**
+
+1. Open the script on your admin machine:
+
+   ```powershell
+   c:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Skills-Ramp-OnPrem-and-Cloud\02-OnPrem-Scanning\OnPrem-03-DLP-Policy-Configuration\Get-DLPScanReport.ps1
+   ```
+
+2. Copy entire script content.
+3. In the same PowerShell window on Scanner VM (or open new as Administrator).
+4. Paste script content and save as `Get-DLPScanReport.ps1`.
+5. Run: `.\Get-DLPScanReport.ps1`.
+
+This script will:
+
+- Locate the latest DetailedReport.csv (handles both loose CSV and ZIP archives).
+- Extract and analyze DLP matches.
+- Show files grouped by repository and sensitive info type.
+- Display DLP mode distribution (Test vs Enforce).
 
 > **📦 Report Format**: The scanner may create loose DetailedReport CSV files or ZIP archives containing CSV files. The script handles both formats automatically.
 
 **Expected Output (DLP Detection Working):**
 
 ```text
-Repository                 File                                           Info Type                         DLP Mode
-----------                 ----                                           ---------                         --------
-\\vm-purview-scan\Finance  \\vm-purview-scan\Finance\CustomerPayments.txt Credit Card Number                Test
-\\vm-purview-scan\HR       \\vm-purview-scan\HR\EmployeeRecords.txt       U.S. Social Security Number (SSN) Test
-\\vm-purview-scan\Projects \\vm-purview-scan\Projects\PhoenixProject.txt  Credit Card Number                Test
+📊 DLP Analysis Summary:
+   ====================
+
+   Total files scanned: 3
+   Files with DLP matches: 3
+
+   ⚠️  Sensitive data detected!
+
+   📁 Matches by Repository:
+      \\VM-PURVIEW-SCAN\HR: 1 files
+      \\VM-PURVIEW-SCAN\Finance: 1 files
+      \\VM-PURVIEW-SCAN\Projects: 1 files
+
+   📋 Detected Sensitive Information Types:
+      Credit Card Number: 2 files
+      U.S. Social Security Number (SSN): 1 files
+
+   🔐 DLP Mode Distribution:
+      Enforce: 2 files
+      Test: 1 files
+
+✅ DLP Scan Report Analysis Complete
 ```
 
-> **⚠️ On-Premises Scanner Limitation - Empty DLP Columns**: For on-premises scanners, **DLP Rule Name and DLP Status columns are typically empty or show "Skipped"** even when DLP policies are working correctly. This is **expected behavior** and does NOT indicate a problem.
->
-> **Why These Columns Are Empty**:
->
-> - **Test mode limitation**: On-premises scanners run DLP in "Test" mode only - actual enforcement (blocking access) only works in Microsoft 365 cloud services
-> - **Detection-only operation**: The scanner detects sensitive information types and logs matches but doesn't populate detailed enforcement metadata
-> - **Policy metadata not synced**: DLP Rule Name and DLP Status require full enforcement mode which isn't available for on-premises repositories
->
-> **Primary Success Indicator**: If **Information Type Name** column is populated with values like "Credit Card Number" or "U.S. Social Security Number (SSN)", **DLP detection is working correctly**.
+**Key Success Indicators:**
 
-**Key Indicators:**
+| Indicator | What to Look For | Meaning |
+|-----------|------------------|---------|
+| **Files with DLP matches** | Count > 0 | DLP detection is working |
+| **Information Types** | Sensitive info types listed | Scanner identified sensitive data |
+| **DLP Mode** | "Test" or "Enforce" | DLP policies applied correctly |
 
-| Column | What to Look For | Meaning |
-|--------|------------------|---------|
-| **Information Type Name** | Sensitive info type names | **PRIMARY VALIDATION** - DLP detection working |
-| **DLP Mode** | "Test" | Scanner detects but doesn't block (expected for on-premises) |
-| **DLP Rule Name** | Usually **empty/blank** | **EXPECTED** - Not populated in Test mode for on-premises |
-| **DLP Status** | Usually **empty/blank** or "Skipped" | **EXPECTED** - Not populated in Test mode for on-premises |
+✅ **Success**: If you see "Files with DLP matches" > 0 and sensitive information types listed, DLP detection is working correctly.
 
-✅ **If you see DLP Mode = "Test" and Information Type Name populated**: DLP detection successfully working! (Empty DLP Rule Name and DLP Status are expected)
+❌ **If "Files with DLP matches: 0"**:
 
-❌ **If Information Type Name column is completely empty**:
-
-- Verify `EnableDLP = On` in Step 2.
+- Verify **Enable DLP policy rules** is **On** in portal Content Scan Job settings.
 - Re-run `Update-AIPScanner` and `Start-Scan -Reset`.
 - Wait 1-2 hours and check again (policy sync can be delayed).
 
@@ -967,7 +670,7 @@ Repository                 File                                           Info T
 
 The scanner has already downloaded basic DLP detection capability (visible in your scan report), but full policy synchronization to Activity Explorer happens asynchronously:
 
-- Scanner downloads basic DLP detection capability immediately (visible as DLP Mode = "Test" and populated Information Type Name).
+- Scanner downloads basic DLP detection capability immediately (visible as DLP Mode = "Test" or "Enforce" and populated Information Type Name).
 - **Full policy sync to Activity Explorer** happens asynchronously and takes 1-2 hours.
 - Activity Explorer updates require processing time for DLP events to appear.
 - Complete policy distribution ensures DLP events are logged and reportable.
@@ -1023,7 +726,7 @@ After 1-2 hours, check Activity Explorer for DLP events:
 
 ### Expected Timeline
 
-- **DLP scan completed**: Immediate (Step 5)
+- **DLP scan completed**: Immediate (Step 3)
 - **DLP detection visible in CSV**: Immediate (Information Type Name populated)
 - **Activity Explorer sync starts**: Automatic after scan
 - **Typical Activity Explorer sync completion**: 1-2 hours after scan
@@ -1072,20 +775,22 @@ Before proceeding to OnPrem-04, verify:
   - [ ] Credit Card Number SIT in Block rule
   - [ ] U.S. Social Security Number SIT in Audit rule
 - [ ] Enforcement actions configured appropriately
-- [ ] User notifications enabled for both rules
-- [ ] Admin notifications configured
+- [ ] Incident reports configured with appropriate severity levels
+- [ ] Email notifications configured for admin alerts
 
 ### Scanner DLP Configuration
 
-- [ ] **DLP enabled in content scan job** (`EnableDLP = On`)
-- [ ] **Repository owner configured** (domain\scanner-svc)
-- [ ] Verified configuration with `Get-ScannerContentScan`
-- [ ] **Scanner service restarted** after enabling DLP (`Restart-Service MIPScanner`)
+- [ ] **DLP enabled in content scan job** via Purview portal (**Enable DLP policy rules** = On)
+- [ ] Verified setting in portal under **Content scan jobs** > **Lab-OnPrem-Scan**
+- [ ] **Scanner synced** using `Update-AIPScanner` after any portal changes
+- [ ] **Scanner service restarted** after configuration changes (`Restart-Service MIPScanner`)
+
+> **💡 Note**: PowerShell cmdlets like `Get-ScannerContentScan` return empty values for portal-configured scanners. This is normal - verify DLP settings directly in the Purview portal.
 
 ### DLP Detection Validation
 
 - [ ] **DLP scan completed** using `Start-Scan -Reset`
-- [ ] **DetailedReport CSV** shows DLP Mode = "Test"
+- [ ] **DetailedReport CSV** shows DLP Mode populated ("Test" or "Enforce")
 - [ ] **Information Type Name populated** with "Credit Card Number" or "U.S. Social Security Number (SSN)"
 - [ ] **Empty columns expected**: DLP Rule Name and DLP Status empty/blank (expected for on-premises scanners)
 
@@ -1113,7 +818,7 @@ Congratulations! You've successfully configured DLP policy detection for on-prem
 - Configured DLP policy to protect on-premises repositories (Finance, HR, Projects).
 - Enabled DLP in scanner content scan job configuration.
 - Ran DLP-enabled scan and validated detection in reports.
-- Confirmed DLP Mode = "Test" and Information Type Name populated (Credit Card Number, SSN).
+- Confirmed DLP Mode populated ("Test" or "Enforce") and Information Type Name populated (Credit Card Number, SSN).
 - Understood empty DLP Rule Name/Status columns are expected for on-premises scanners.
 - Waited for Activity Explorer sync to complete (DLP events now visible).
 
@@ -1125,19 +830,19 @@ Verify Activity Explorer shows DLP events with matched sensitive information typ
 
 ### After Sync Completes
 
-**Proceed to OnPrem-04: DLP Enforcement & Monitoring**:
+**Proceed to OnPrem-04: DLP Activity Monitoring & Reporting**:
 
 In OnPrem-04, you will:
 
-- **Understand DLP Test vs Enforce modes** and on-premises limitations
-- **Monitor DLP activity** in Activity Explorer with realistic expectations
-- **Validate DLP detection** against your test sensitive data files
-- **Troubleshoot common DLP scenarios** like missing columns or empty rule names
-- **Review compliance reporting** and understand what's available for on-premises
+- **Navigate Activity Explorer** and filter for on-premises DLP activity
+- **Interpret DLP activity data** including file counts, sensitive info types, and timestamps
+- **Export Activity Explorer data** to CSV for stakeholder reporting
+- **Generate compliance audit trails** combining Activity Explorer and DetailedReport CSV sources
+- **Establish monitoring cadence** for ongoing DLP compliance
 
-**Location**: `OnPrem-04-DLP-Enforcement/README.md`
+**Location**: `OnPrem-04-DLP-Activity-Monitoring/README.md`
 
-**Duration**: 1 hour (validation and monitoring focus)
+**Duration**: 15-20 minutes (monitoring and reporting focus)
 
 ---
 

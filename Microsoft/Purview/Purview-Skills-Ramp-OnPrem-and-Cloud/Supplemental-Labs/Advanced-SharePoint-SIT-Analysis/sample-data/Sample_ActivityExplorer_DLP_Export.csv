@@ -1,0 +1,26 @@
+File,Rule,Happened,User,Activity,Workload
+TestDoc_1.docx,SharePoint Sensitive Data - High Severity - Credit Card,2025-12-26T10:15:23Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_5.docx,SharePoint Sensitive Data - Low Severity - SSN,2025-12-26T10:16:45Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_12.docx,SharePoint Sensitive Data - High Severity - Credit Card,2025-12-26T10:18:12Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_23.docx,SharePoint Sensitive Data - High Severity - Credit Card,2025-12-26T10:20:33Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_23.docx,SharePoint Sensitive Data - Low Severity - SSN,2025-12-26T10:20:34Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_34.docx,SharePoint Sensitive Data - Low Severity - SSN,2025-12-26T10:22:55Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_45.docx,SharePoint Sensitive Data - High Severity - Credit Card,2025-12-26T10:25:17Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_56.docx,SharePoint Sensitive Data - High Severity - Credit Card,2025-12-26T10:27:38Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_56.docx,SharePoint Sensitive Data - Low Severity - SSN,2025-12-26T10:27:39Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_67.docx,SharePoint Sensitive Data - Low Severity - SSN,2025-12-26T10:30:00Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_78.docx,SharePoint Sensitive Data - High Severity - Credit Card,2025-12-26T10:32:21Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_89.docx,SharePoint Sensitive Data - Low Severity - SSN,2025-12-26T10:34:43Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_101.docx,SharePoint Sensitive Data - High Severity - Credit Card,2025-12-26T10:37:04Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_112.docx,SharePoint Sensitive Data - Low Severity - SSN,2025-12-26T10:39:26Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_123.docx,SharePoint Sensitive Data - High Severity - Credit Card,2025-12-26T10:41:47Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_123.docx,SharePoint Sensitive Data - Low Severity - SSN,2025-12-26T10:41:48Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_134.docx,SharePoint Sensitive Data - High Severity - Credit Card,2025-12-26T10:44:09Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_145.docx,SharePoint Sensitive Data - Low Severity - SSN,2025-12-26T10:46:30Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_156.docx,SharePoint Sensitive Data - High Severity - Credit Card,2025-12-26T10:48:52Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_156.docx,SharePoint Sensitive Data - Low Severity - SSN,2025-12-26T10:48:53Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_167.docx,SharePoint Sensitive Data - Low Severity - SSN,2025-12-26T10:51:14Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_178.docx,SharePoint Sensitive Data - High Severity - Credit Card,2025-12-26T10:53:35Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_189.docx,SharePoint Sensitive Data - Low Severity - SSN,2025-12-26T10:55:57Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_200.docx,SharePoint Sensitive Data - High Severity - Credit Card,2025-12-26T10:58:18Z,user@contoso.com,FileUploaded,SharePoint
+TestDoc_200.docx,SharePoint Sensitive Data - Low Severity - SSN,2025-12-26T10:58:19Z,user@contoso.com,FileUploaded,SharePoint

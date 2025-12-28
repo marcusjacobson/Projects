@@ -53,7 +53,7 @@ This guide provides **two cleanup strategies** based on your learning objectives
 
 1. Go to [portal.azure.com](https://portal.azure.com) and sign in.
 2. Navigate to **Resource Groups** in the left menu.
-3. Locate and click your lab resource group (e.g., `rg-purview-weekend-lab`).
+3. Locate and click your lab resource group (e.g., `rg-purview-lab`).
 
 4. Click **Delete resource group** at the top of the page.
 
@@ -75,10 +75,10 @@ This guide provides **two cleanup strategies** based on your learning objectives
 az account set --subscription "YOUR-SUBSCRIPTION-ID"
 
 # Delete the resource group (async process)
-az group delete --name "rg-purview-weekend-lab" --yes --no-wait
+az group delete --name "rg-purview-lab" --yes --no-wait
 
 # Verify deletion status (optional, check after 5-10 minutes)
-az group show --name "rg-purview-weekend-lab"
+az group show --name "rg-purview-lab"
 # Expected result: ResourceNotFound error after deletion completes
 ```
 
@@ -101,9 +101,9 @@ az group show --name "rg-purview-weekend-lab"
 1. **New VM deployment**: 30-45 minutes (Azure deployment time).
 2. **Scanner installation**: 1-2 hours (Install-Scanner.ps1 + prerequisites).
 3. **Initial content scan**: 2-3 hours (first scan discovery of repositories).
-4. **Total**: 4-6 hours (with automation scripts from Labs 01-02).
+4. **Total**: 4-6 hours (with automation scripts from Section 2 labs).
 
-> **💡 Automation Benefit**: The scripts created during Labs 01-04 reduce manual recreation by ~1-2 hours compared to portal-only configuration.
+> **💡 Automation Benefit**: The scripts created during Section 2 (OnPrem-Scanning) reduce manual recreation by ~1-2 hours compared to portal-only configuration.
 
 ---
 
@@ -121,7 +121,7 @@ az group show --name "rg-purview-weekend-lab"
 
 1. Go to [SharePoint Admin Center](https://admin.microsoft.com/sharepoint).
 2. Navigate to **Sites → Active sites**.
-3. Find your test site (e.g., `Purview Test Site` or similar).
+3. Find your test site (e.g., `Retention Testing`).
 
 4. Select the site and click **Delete** from the toolbar.
 
@@ -181,8 +181,8 @@ az group list --output table --query "[].{Name:name, Location:location, Status:p
 # Expected: Your lab resource group should NOT appear in the list
 
 # 2. Check for orphaned resources (should return empty)
-az resource list --output table --query "[?resourceGroup=='rg-purview-weekend-lab']"
-# Expected: Empty result or "Resource group 'rg-purview-weekend-lab' could not be found"
+az resource list --output table --query "[?resourceGroup=='rg-purview-lab']"
+# Expected: Empty result or "Resource group 'rg-purview-lab' could not be found"
 
 # 3. Check Azure Cost Management (wait 24-48 hours for final charges)
 # Go to: https://portal.azure.com → Cost Management + Billing → Cost Analysis
@@ -269,9 +269,9 @@ Track 2 builds on Track 1 by removing lower-cost but time-intensive configuratio
 
 ---
 
-### 📦 Step 2.3: Delete Scanner Cluster & Scan Job Metadata
+### 📦 Step 2.3: Delete Scanner Cluster & Content Scan Job
 
-**Component**: Purview scanner cluster and scan job configurations  
+**Component**: Information Protection scanner cluster and content scan job configurations  
 **Current Cost**: $0.00 (no cost, metadata only)  
 **Deletion Time**: 5 minutes  
 **Re-Creation Time**: 1-2 hours (cluster + scan job + first scan)
@@ -281,32 +281,32 @@ Track 2 builds on Track 1 by removing lower-cost but time-intensive configuratio
 **Portal Deletion Steps**:
 
 1. Go to [Microsoft Purview Portal](https://purview.microsoft.com).
-2. Navigate to **Data Map → Scanning → Scanner Clusters**.
-3. Locate your scanner cluster (e.g., `scanner-cluster-purview`).
-
-4. Click **Delete** (trash icon) → Confirm deletion.
-
-5. Navigate to **Data Map → Scanning → Scan Jobs**.
-6. Delete all scan jobs associated with your cluster.
+2. Navigate to **Settings → Information protection → Information protection scanner**.
+3. Select the **Content scan jobs** tab.
+4. Find your content scan job (e.g., `Lab-OnPrem-Scan`).
+5. Click **Delete** (trash icon) → Confirm deletion.
+6. Select the **Clusters** tab.
+7. Find your scanner cluster (e.g., `Lab-Scanner-Cluster`).
+8. Click **Delete** (trash icon) → Confirm deletion.
 
 **Expected Deletion Timeline**:
 
+- Content scan job removed: Instant.
 - Cluster metadata removed: Instant.
-- Scan job history cleared: Automatic.
+- Scan history cleared: Automatic.
 - Repository references orphaned: Immediate.
 
 **What Gets Removed**:
 
 - ✅ Scanner cluster registration.
-- ✅ Scanner SQL database connection.
-- ✅ All scan jobs and schedules.
-- ✅ Scan history and logs (portal view).
+- ✅ Content scan job and schedule.
 - ✅ Repository path configurations.
+- ✅ Scan history and logs (portal view).
 
 **Re-Creation Requirements** (if needed):
 
 1. **Recreate cluster**: 15-20 minutes (requires VM from Track 1).
-2. **Create new scan job**: 20-30 minutes (repository paths + schedule).
+2. **Create new content scan job**: 20-30 minutes (repository paths + schedule).
 3. **First content scan**: 2-3 hours (discovery of file shares).
 4. **Total**: 3-4 hours (requires VM infrastructure).
 
@@ -331,7 +331,7 @@ Track 2 builds on Track 1 by removing lower-cost but time-intensive configuratio
 
 1. Go to [Microsoft Purview Portal](https://purview.microsoft.com).
 2. Navigate to **Solutions → Data Loss Prevention → Policies**.
-3. Find your DLP policy (e.g., `Weekend Lab DLP - File Shares`).
+3. Find your DLP policy (e.g., `Lab-OnPrem-Sensitive-Data-Protection`).
 
 4. Click the policy name → Click **Edit policy**.
 5. In the **Policy settings** page:
@@ -416,7 +416,7 @@ Track 2 builds on Track 1 by removing lower-cost but time-intensive configuratio
 
 1. Go to [Microsoft Purview Portal](https://purview.microsoft.com).
 2. Navigate to **Solutions → Records Management → Label policies**.
-3. Find your auto-apply policy (e.g., `Auto-Apply Retention Labels - SharePoint`).
+3. Find your auto-apply policy (e.g., `Auto-Delete-Old-Sensitive-Files`).
 
 4. Click the policy name → Click **Edit policy**.
 5. Set **Status** to **Off** → Click **Save**.
@@ -487,7 +487,7 @@ foreach ($site in $sites) {
 
 1. Go to [Microsoft Purview Portal](https://purview.microsoft.com).
 2. Navigate to **Solutions → Records Management → File plan**.
-3. Find your retention labels (e.g., `Financial Records 7yr`, `Healthcare Records 10yr`).
+3. Find your retention label (e.g., `Delete-After-3-Years`).
 
 4. Select each label → Click **Delete** → Confirm deletion.
 
@@ -553,8 +553,8 @@ az ad app list --display-name "Purview-Scanner-App" --output table
 **Manual Portal Verification**:
 
 1. **Microsoft Purview Portal** ([purview.microsoft.com](https://purview.microsoft.com)):
-   - Navigate to **Data Map → Scanning → Scanner Clusters**
-   - Expected: No lab scanner clusters
+   - Navigate to **Settings → Information protection → Information protection scanner**
+   - Expected: No lab scanner clusters or content scan jobs
    - Navigate to **Solutions → Data Loss Prevention → Policies**
    - Expected: No lab DLP policies (or policies set to "Off" if using disable option)
    - Navigate to **Solutions → Records Management → File plan**
@@ -584,7 +584,7 @@ az ad app list --display-name "Purview-Scanner-App" --output table
 
 **Track 1: Quick Cleanup** (if completed):
 
-- [ ] Azure Resource Group deleted (`rg-purview-weekend-lab`).
+- [ ] Azure Resource Group deleted (`rg-purview-lab`).
 - [ ] SharePoint test site deleted or moved to recycle bin.
 - [ ] Cost termination verified: $0.10-0.50/day remaining.
 - [ ] Purview configurations preserved (DLP policies, retention labels).
@@ -638,21 +638,21 @@ az ad app list --display-name "Purview-Scanner-App" --output table
 
 ## 💡 Automation Benefit - Script Impact on Re-Creation Time
 
-> **🚀 Lab Scripts Reduce Re-Creation Time**: The 22 PowerShell scripts created during Labs 01-04 significantly reduce environment re-creation time compared to manual portal configuration.
+> **🚀 Lab Scripts Reduce Re-Creation Time**: The 22 PowerShell scripts created during Section 2 (OnPrem-Scanning) significantly reduce environment re-creation time compared to manual portal configuration.
 
 **Scripts Created During This Lab**:
 
-**Lab 01 - OnPrem-02 Discovery Scans** (12 scripts):
+**OnPrem-02: Discovery Scans** (12 scripts):
 
 - Scanner VM: Update-ScannerConfiguration, Create-ScannerSMBShares, Test-RepositoryAccess, Enable-FileSharingFirewall, Grant-ScannerNTFSPermissions, Start-InitialScan, Monitor-ScanProgress, Get-DetailedScanReport.
 - Admin Machine: Verify-OnPrem01Completion, Test-RepositoryPathDiagnostics, Update-RepositoryPathsPostFix, Invoke-ScanAfterFix.
 
-**Lab 02 - OnPrem-03 DLP Policy Configuration** (8 scripts):
+**OnPrem-03: DLP Policy Configuration** (8 scripts):
 
 - Scanner VM: Enable-ScannerDLP, Sync-DLPPolicies, Start-DLPScanWithReset, Monitor-DLPScan, Get-DLPScanReport.
 - Admin Machine: Verify-OnPrem02Completion, Test-DLPPolicySync, Verify-ActivityExplorerSync.
 
-**Lab 04 - OnPrem-04 DLP Enforcement Validation** (2 scripts):
+**OnPrem-04: DLP Activity Monitoring** (2 scripts):
 
 - Admin Machine: Generate-DLPExecutiveSummary, Invoke-WeeklyDLPMonitoring.
 
@@ -685,7 +685,7 @@ az ad app list --display-name "Purview-Scanner-App" --output table
 **Cost Impact**: No additional cost reduction (supplemental labs use existing infrastructure)  
 **Re-Creation Impact**: Low (1-2 hours to regenerate test data and re-run scripts)
 
-> **📋 Scope Note**: This section only applies if you completed any of the 4 Supplemental Labs. If you only completed Sections 1-3 (Core Labs), skip this section entirely.
+> **📋 Scope Note**: This section only applies if you completed any of the 3 Supplemental Labs. If you only completed Sections 1-3 (Core Labs), skip this section entirely.
 
 ---
 
@@ -698,11 +698,10 @@ az ad app list --display-name "Purview-Scanner-App" --output table
 **Test Data Locations**:
 
 | Supplemental Lab | Test Data Location | Files Generated |
-|-----------------|-------------------|-----------------|
+|-----------------|-------------------|------------------|
 | **Advanced-Cross-Platform-SIT-Analysis** | `C:\PurviewLab\ActivityExplorer_Export.csv` | Activity Explorer CSV exports |
 | **Advanced-Remediation** | `C:\RemediationLab\` | Test sensitive files (Finance, HR, Legal) |
 | **Advanced-SharePoint-SIT-Analysis** | SharePoint test site document library | DLP test documents |
-| **Custom-Classification** | `C:\TrainableClassifier\` | 300+ training samples (financial, business docs) |
 
 **Cleanup Commands** (PowerShell):
 
@@ -711,7 +710,6 @@ az ad app list --display-name "Purview-Scanner-App" --output table
 $testDataPaths = @(
     "C:\PurviewLab",
     "C:\RemediationLab",
-    "C:\TrainableClassifier",
     "C:\Reports"  # From OnPrem-04 DLP reporting
 )
 
@@ -732,7 +730,6 @@ Write-Host "`n✅ Test data cleanup complete" -ForegroundColor Green
 
 - ✅ Activity Explorer CSV exports.
 - ✅ Remediation test files (duplicates, severity-based samples).
-- ✅ Trainable classifier training samples (positive/negative).
 - ✅ Generated reports and analysis outputs.
 - ✅ PowerShell script test outputs.
 
@@ -740,18 +737,17 @@ Write-Host "`n✅ Test data cleanup complete" -ForegroundColor Green
 
 1. **Test document generation**: 15-30 minutes (automated scripts).
 2. **Activity Explorer re-export**: 5-10 minutes (manual portal export).
-3. **Training samples**: 30-45 minutes (Generate-PositiveTrainingSamples.ps1, Generate-NegativeTrainingSamples.ps1).
-4. **Total**: 50-85 minutes.
+3. **Total**: 20-40 minutes.
 
 ---
 
-### 📦 Step 3.2: Remove SharePoint Test Documents (Optional)
+### 📦 Step 3.2: Remove SharePoint Test Documents (If Applicable)
 
 **Component**: Test documents uploaded to SharePoint during Advanced-SharePoint-SIT-Analysis  
 **Deletion Time**: 5-10 minutes  
 **Re-Creation Time**: 15-20 minutes (automated script + portal)
 
-> **🌐 SharePoint Cleanup**: This is separate from the main SharePoint test site deletion in Track 1. This removes additional test documents created specifically for advanced SIT analysis.
+> **🌐 SharePoint Cleanup**: This removes test documents created by `Generate-TestDocuments.ps1` script during the Advanced-SharePoint-SIT-Analysis lab.
 
 **Portal Deletion Steps**:
 
@@ -786,63 +782,16 @@ Write-Host "`n✅ SharePoint test documents cleanup complete" -ForegroundColor G
 
 - ✅ SIT test documents (credit cards, SSNs, healthcare data).
 - ✅ DLP policy test files.
-- ✅ Custom SIT validation documents.
 
 ---
 
-### 📦 Step 3.3: Delete Trainable Classifier (If Created)
-
-**Component**: Custom trainable classifier from Custom-Classification lab  
-**Deletion Time**: 5 minutes  
-**Re-Creation Time**: **24-28 hours** (3-4 hours data prep + 24-hour ML training)
-
-> ⚠️ **CRITICAL RE-COMMISSION WARNING**: Trainable classifiers require **24-hour ML training** after creation. Only delete if you are completely finished with custom classification learning.
-
-**Portal Deletion Steps**:
-
-1. Go to [Microsoft Purview Portal](https://purview.microsoft.com).
-2. Navigate to **Data Classification → Trainable classifiers**.
-3. Select **Custom classifiers** tab.
-4. Find your custom classifier (e.g., `Financial Reports Classifier`).
-
-5. Click **Delete** (trash icon) → Confirm deletion.
-
-**Expected Deletion Timeline**:
-
-- Classifier metadata removed: Instant.
-- Training data released: Automatic.
-- Model deprovisioned: Immediate.
-
-**What Gets Removed**:
-
-- ✅ Custom trainable classifier definition.
-- ✅ ML model and training data references.
-- ✅ Classification rules and confidence thresholds.
-- ✅ Classifier accuracy metrics and validation results.
-
-**Re-Creation Requirements** (if needed):
-
-1. **Generate training samples**: 1-2 hours (300+ documents).
-2. **Upload and curate samples**: 1-2 hours (organize positive/negative).
-3. **Submit for training**: 10 minutes.
-4. **ML training wait**: **24 hours** (Microsoft backend processing).
-5. **Accuracy validation**: 30-60 minutes (test and refine).
-6. **Total**: **26-28 hours** (with 24-hour ML training wait).
-
-**Recommendation**:
-
-- **Keep classifier** if you might need custom classification again (no cost to maintain).
-- **Delete only** if completely finished with Purview custom classification learning.
-
----
-
-### 📦 Step 3.4: Supplemental Labs Cleanup Verification
+### 📦 Step 3.3: Supplemental Labs Cleanup Verification
 
 **Verification Commands** (PowerShell):
 
 ```powershell
 # 1. Verify test data directories removed
-$expectedPaths = @("C:\PurviewLab", "C:\RemediationLab", "C:\TrainableClassifier", "C:\Reports")
+$expectedPaths = @("C:\PurviewLab", "C:\RemediationLab", "C:\Reports")
 $remainingPaths = $expectedPaths | Where-Object { Test-Path $_ }
 
 if ($remainingPaths.Count -eq 0) {
@@ -857,24 +806,21 @@ if ($remainingPaths.Count -eq 0) {
 #     Where-Object {$_["FileLeafRef"] -like "SIT-Test-*"}
 # Write-Host "SharePoint test documents remaining: $($remainingTestDocs.Count)" -ForegroundColor Cyan
 
-# 3. Verify trainable classifier deleted (manual portal check required)
-Write-Host "`n📋 Manual Verification Required:" -ForegroundColor Yellow
-Write-Host "  • Check Purview portal for trainable classifier deletion" -ForegroundColor Gray
+Write-Host "`n📋 Manual Verification (Optional):" -ForegroundColor Yellow
 Write-Host "  • Verify SharePoint test site for remaining test documents" -ForegroundColor Gray
 ```
 
 **Expected State After Supplemental Cleanup**:
 
-- **Local Test Data**: All C:\ test directories removed
-- **SharePoint Documents**: Test documents deleted from document libraries
-- **Trainable Classifiers**: Custom classifiers removed from Purview portal
-- **Scripts**: Scripts remain in repository for future use (recommended to keep)
+- **Local Test Data**: All C:\ test directories removed.
+- **SharePoint Documents**: Test documents deleted from document libraries.
+- **Scripts**: Scripts remain in repository for future use (recommended to keep).
 
 **Cost Impact**:
 
-- **Before supplemental cleanup**: $0.00/day (supplemental labs don't add infrastructure cost)
-- **After supplemental cleanup**: $0.00/day (no change)
-- **Purpose**: Removes test data clutter, frees up local storage
+- **Before supplemental cleanup**: $0.00/day (supplemental labs don't add infrastructure cost).
+- **After supplemental cleanup**: $0.00/day (no change).
+- **Purpose**: Removes test data clutter, frees up local storage.
 
 ---
 

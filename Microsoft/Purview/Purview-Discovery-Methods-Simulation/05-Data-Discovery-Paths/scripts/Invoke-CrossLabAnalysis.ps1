@@ -260,7 +260,7 @@ if ($lab05aEnabled) {
         $searchPath = if ($config -and $config.reportPaths.lab05a.defaultPath) {
             $config.reportPaths.lab05a.defaultPath
         } else {
-            "..\05a-PnP-Direct-File-Access\reports\"
+            Join-Path $PSScriptRoot "..\05a-PnP-Direct-File-Access\reports"
         }
         $searchPattern = if ($config -and $config.reportPaths.lab05a.searchPattern) {
             $config.reportPaths.lab05a.searchPattern
@@ -291,11 +291,12 @@ if ($lab05bEnabled) {
         Write-Host "   ✅ Lab 05b results found: $Lab05bPath" -ForegroundColor Green
     } else {
         # Try to find the detailed analysis CSV first (preferred), then fall back to Items_0 CSV
-        $lab05bSearch = Get-ChildItem -Path "..\05b-eDiscovery-Compliance-Search\reports\" -Filter "eDiscovery-Detailed-Analysis-*.csv" -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+        $lab05bReportsPath = Join-Path $PSScriptRoot "..\05b-eDiscovery-Compliance-Search\reports"
+        $lab05bSearch = Get-ChildItem -Path $lab05bReportsPath -Filter "eDiscovery-Detailed-Analysis-*.csv" -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
         
         if (-not $lab05bSearch) {
             # Fall back to Items_0 CSV if detailed analysis not found
-            $lab05bSearch = Get-ChildItem -Path "..\05b-eDiscovery-Compliance-Search\reports\" -Filter "Items_0*.csv" -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+            $lab05bSearch = Get-ChildItem -Path $lab05bReportsPath -Filter "Items_0*.csv" -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
         }
         
         if ($lab05bSearch) {
@@ -320,7 +321,8 @@ if ($lab05cEnabled) {
         Write-Host "   ✅ Lab 05c results found: $Lab05cPath" -ForegroundColor Green
     } else {
         # Lab 05c uses eDiscovery-Detailed-Analysis-*.csv format (from Graph API export)
-        $lab05cSearch = Get-ChildItem -Path "..\05c-Graph-API-Discovery\reports\" -Filter "eDiscovery-Detailed-Analysis-*.csv" -ErrorAction SilentlyContinue | 
+        $lab05cReportsPath = Join-Path $PSScriptRoot "..\05c-Graph-API-Discovery\reports"
+        $lab05cSearch = Get-ChildItem -Path $lab05cReportsPath -Filter "eDiscovery-Detailed-Analysis-*.csv" -ErrorAction SilentlyContinue | 
             Where-Object { $_.Length -gt 1000 } | 
             Sort-Object LastWriteTime -Descending | 
             Select-Object -First 1

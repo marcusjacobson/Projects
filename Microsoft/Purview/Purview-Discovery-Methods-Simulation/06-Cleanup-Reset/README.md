@@ -10,7 +10,7 @@ This lab provides comprehensive procedures for safely decommissioning the Micros
 
 **Prerequisites**:
 
-- Completed Labs 00-06 (or desire to remove partial implementation)
+- Completed Labs 00-05 (or desire to remove partial implementation)
 - Global Administrator or appropriate deletion permissions
 - Backup of important reports and documentation
 - Understanding of resources to be removed

@@ -115,7 +115,7 @@ By completing this lab, you will:
                  ▼
 ┌─────────────────────────────────────────────────────────────┐
 │ eDiscovery Compliance Search (Lab 05b)                      │
-│ 1. Create search with 8 targeted SIT types                  │
+│ 1. Create search with 7 targeted SIT types                  │
 │ 2. Select all 5 simulation sites                            │
 │ 3. Execute search (10-15 min)                               │
 │ 4. Review results with Purview SIT detection               │
@@ -234,7 +234,7 @@ This script automatically:
    1. Navigate to purview.microsoft.com
    2. eDiscovery > Cases (preview)
    3. Create search in Content Search case
-   4. Configure 8 targeted SIT types with Condition builder
+   4. Configure 7 targeted SIT types with Condition builder
    5. Include all 5 simulation SharePoint sites
    6. Run query and review Statistics
 
@@ -353,7 +353,7 @@ Use the modern eDiscovery experience to create a search for sensitive informatio
 >
 > **⚠️ Important**: Ensure you have **Sites only** selected in the **Locations to include** filter. This prevents mailboxes from being added and focuses the search on SharePoint content only.
 
-<!-- SCREENSHOT: Add Data Sources flyout showing "Sites only" filter selected and simulation site being added -->
+![data-sources](.images/data-sources.png)
 
 **Step 3d: Configure Search Query with Condition Builder**:
 
@@ -393,7 +393,7 @@ Configure the 7 specific SITs for detection with instance count and confidence l
 4. After adding all 7 SITs, your condition will show: **Sensitive information type (SIT) Equal any of** with all 7 SIT types listed
 5. This creates the correct OR logic: documents containing **any one or more** of these 7 SITs will match
 
-<!-- SCREENSHOT: Condition Builder showing "Equal any of" operator with 7 SIT types configured -->
+![condition-builder](.images/condition-builder.png)
 
 > **💡 Configuration Recommendations**:
 >
@@ -434,7 +434,7 @@ Execute the search to detect sensitive information across your SharePoint sites.
 4. For Statistics view, check **Include categories** to see SIT type breakdown
 5. Click **Run query** to start execution
 
-<!-- SCREENSHOT: Run Query flyout showing Statistics vs Sample selection options -->
+![run-query](.images/run-query.png)
 
 > **⚠️ Expected Warning**: You may see this warning message when running the search (this is normal and can be ignored for discovery purposes):
 >
@@ -459,11 +459,13 @@ The search executes and processes content from all 5 SharePoint sites:
    
 🔍 Search status: Completed
    ✅ Data sources processed: 5
-   ✅ Items analyzed: 5000+
-   ✅ Items matching conditions: 4000-5000 (typical for Medium scale)
+   ✅ Items analyzed: varies by Lab 02 scale
+   ✅ Items matching conditions: Small ~500 | Medium ~2,700 | Large ~11,000
 ```
 
-> **💡 Performance Note**: Search execution time varies based on the number of files indexed since Lab 03. The eDiscovery search engine analyzes content against all 8 specified SIT patterns in a single pass.
+> **💡 Performance Note**: Search execution time varies based on the number of files indexed since Lab 03. The eDiscovery search engine analyzes content against all 7 specified SIT patterns in a single pass.
+>
+> **📊 Results Vary by Scale**: Your item counts depend on Lab 02 scale selection (Small/Medium/Large) and Lab 03 upload choices. The 3 primary sites (HR, Finance, Legal) are always populated; optional uploads to Marketing or IT increase counts.
 >
 > **⚠️ Troubleshooting**: If the search remains in "Running" status for more than 30 minutes, check the **Errors** category in Statistics view for indexing issues or permission problems with specific sites.
 
@@ -494,9 +496,11 @@ Analyze the search findings using the modern eDiscovery statistics and sample vi
 After search completion, the **Statistics** tab displays comprehensive results:
 
 1. **Summary section** shows overall statistics:
-   - **Total matches**: Total items matching the search query (e.g., 4423 items, 2.9 MB)
-   - **Locations**: Number of locations searched that had hits (e.g., 4/5)
-   - **Data sources**: Number of people, groups and tenant locations that had hits (e.g., 4/5)
+   - **Total matches**: Total items matching the search query (varies by Lab 02 scale: Small ~500, Medium ~2,700, Large ~11,000)
+   - **Locations**: Number of locations searched that had hits (e.g., 3/5 for primary sites, or more if optional sites received data)
+   - **Data sources**: Number of people, groups and tenant locations that had hits (e.g., 3/5)
+
+> **💡 Results May Vary**: Your counts depend on Lab 02 scale selection and Lab 03 upload choices. Lab 03 uploads data to 3 primary sites (HR, Finance, Legal). If you uploaded optional Mixed documents to Marketing or IT sites, your results will show additional locations with hits.
 
 2. **Search hit trends** section provides detailed breakdowns:
    - **Top data sources**: Data sources that make up the most search hits
@@ -505,7 +509,7 @@ After search completion, the **Statistics** tab displays comprehensive results:
    - **Top communication participants**: Senders or recipients for emails, Teams chats, and calendar invites (not applicable for SharePoint-only searches)
    - **Top location type**: Hit count by location type (mailbox vs site)
 
-<!-- SCREENSHOT: Statistics Summary showing Total matches, Locations, and Data sources counts -->
+![query-stats](.images/query-stats.png)
 
 **Step 4b: Review Top Data Sources**:
 
@@ -515,12 +519,20 @@ In the **Search hit trends** section, view the **Top data sources** chart:
 2. For each data source, you'll see:
    - **Site name**: e.g., "[Your-Tenant] - HR", "[Your-Tenant] - Finance"
    - **Item count**: Number of items with SIT detections
-3. Expected distribution (Medium scale from Lab 02):
-   - **HR-Simulation**: 1500-1600 items (highest - employee records, benefits)
-   - **Finance-Simulation**: 1100-1200 items (financial documents, invoices)
-   - **Marketing-Simulation**: 800-900 items (customer data)
-   - **Legal-Simulation**: 800-900 items (contracts, agreements)
-   - **IT-Simulation**: 0 items (technical documentation, no sensitive data)
+3. Expected distribution varies based on Lab 02 scale selection:
+
+   | Scale (Lab 02) | HR-Simulation | Finance-Simulation | Legal-Simulation | Total (3 sites) |
+   |----------------|---------------|--------------------|-----------------|-----------------|
+   | **Small** | ~200-300 items | ~150-250 items | ~100-150 items | ~450-700 items |
+   | **Medium** | ~1,100-1,200 items | ~900-1,000 items | ~600-700 items | ~2,600-2,900 items |
+   | **Large** | ~4,500-5,000 items | ~3,500-4,000 items | ~2,500-3,000 items | ~10,500-12,000 items |
+
+   **Optional Sites** (Only if Mixed documents were uploaded in Lab 03):
+   - **Marketing-Simulation**: 0 items (unless optional upload completed)
+   - **IT-Simulation**: 0 items (technical documentation site - no sensitive data expected)
+
+> **📊 Your Results**: Results depend on your Lab 02 scale selection and Lab 03 upload choices. If you only ran the Lab 03 orchestrator (`Upload-AllDocuments.ps1`), you'll see 3/5 locations with hits. If you also ran optional `Upload-ToSingleSite.ps1` commands for Marketing or IT sites, your results may show additional locations.
+
 4. Click **View top 100** to see the complete list of data sources
 
 **Step 4c: Review Top Sensitive Information Types (SITs)**:
@@ -531,26 +543,32 @@ In the **Search hit trends** section, view the **Top sensitive information types
 2. For each SIT type, you'll see:
    - **SIT name**: e.g., "U.S. Social Security Number (SSN)"
    - **Item count**: Number of items containing this SIT
-3. Expected top SITs (based on Lab 02 data generation):
-   - **Custom**: 2700-2800 items (custom SITs from your tenant)
-   - **U.S. Social Security Number (SSN)**: 2200-2300 items (highest volume from targeted list)
-   - **All Full Names**: 1500-1600 items (built-in entity detection)
-   - **EU Tax Identification Number (TIN)**: 1300-1400 items
-   - **EU Passport Number**: 1000-1100 items
+3. Expected top SITs vary based on Lab 02 scale selection:
+
+   | SIT Type | Small Scale | Medium Scale | Large Scale |
+   |----------|-------------|--------------|-------------|
+   | **U.S. Social Security Number (SSN)** | ~250-350 | ~1,400-1,600 | ~5,500-6,500 |
+   | **All Full Names** | ~150-250 | ~900-1,100 | ~3,500-4,500 |
+   | **Credit Card Number** | ~130-200 | ~800-1,000 | ~3,000-4,000 |
+   | **U.S. Bank Account Number** | ~100-150 | ~600-800 | ~2,500-3,000 |
+   | **ABA Routing Number** | ~80-120 | ~500-700 | ~2,000-2,500 |
+
+> **💡 Note**: Your exact counts will vary based on Lab 02 scale selection, random document generation patterns, and which optional sites received data in Lab 03. The SIT distribution reflects the sensitive data patterns in HR, Finance, and Legal documents.
+
 4. Click **View top 100** to see the complete list of detected SIT types
 
-<!-- SCREENSHOT: Top Sensitive Information Types chart showing SIT detection breakdown -->
+![top-100-sit](.images/top-100-sit.png)
 
-> **💡 Note**: The results may include SITs beyond your 8 targeted types. Microsoft Purview's search engine detects all sensitive information types present in the content, not just those specified in your query conditions. The query filters which **documents** to return (those containing your 8 targeted SITs), but the statistics show **all SITs detected** within those documents.
+> **💡 Note**: The results may include SITs beyond your 7 targeted types. Microsoft Purview's search engine detects all sensitive information types present in the content, not just those specified in your query conditions. The query filters which **documents** to return (those containing your 7 targeted SITs), but the statistics show **all SITs detected** within those documents.
 
 **Step 4d: Review Additional Statistics**:
 
 1. **Top Item Classes**: Shows the item types (e.g., "IPM.File" for all file types)
-   - Expected: All 4423 items will show as "IPM.File" for SharePoint documents
+   - Expected: All items will show as "IPM.File" for SharePoint documents
 2. **Top communication participants**: Shows email/Teams participants
    - Expected: "No data" (not applicable for SharePoint-only searches)
 3. **Top location type**: Shows mailbox vs site distribution
-   - Expected: All items show as "Site" (4423 items)
+   - Expected: All items show as "Site" (your total item count)
 
 **Step 4e: View Sample Results (Optional)**:
 
@@ -606,9 +624,16 @@ After sample generation completes, the Sample tab shows:
 - **Export name**: `Lab05b-SIT-Discovery-Export` (or accept default name based on search)
 - **Export description**: "Lab 05b eDiscovery search results for SIT analysis and cross-method comparison" (optional)
 
+**Export Type** (Critical Selection):
+
+- **Export items report only** ✅ (Recommended) - Exports only the CSV report with file metadata, locations, and SIT detection information. This is sufficient for analysis and cross-method comparison without downloading actual file content.
+- **Export items with items report** - Exports both the CSV report AND all matching document files. Use this only if you need to review actual file content. This significantly increases export size and download time.
+
+> **💡 Recommendation**: For Lab 05b's discovery validation objectives, **Export items report only** provides all necessary data (file paths, SIT types, locations) without the overhead of downloading thousands of documents. The report contains everything needed for cross-method comparison with Lab 05a results.
+
 **Select items to include in your export**:
 
-- Select **Indexed items that match your search query** (recommended - exports only items matching your 8 targeted SITs)
+- Select **Indexed items that match your search query** (recommended - exports only items matching your 7 targeted SITs)
 - Alternative: **Indexed items that match your search query and partially indexed items that might not match query** (includes potential partially-indexed items)
 
 **Additional export options**:
@@ -618,7 +643,10 @@ After sample generation completes, the Sample tab shows:
 
 4. Click **Export** to start preparing the export package
 
-> **💡 Export Process**: The export process copies search results from SharePoint to a Microsoft-provided Azure Storage location. This preparation typically takes 20-35 minutes depending on the number of items (4000-5000 items for Medium scale).
+> **💡 Export Process**: The export process prepares search results for download. Timing depends on your export type selection:
+>
+> - **Export items report only**: Typically completes in 2-5 minutes (generates CSV metadata only)
+> - **Export items with items report**: Typically takes 20-35 minutes depending on the number of items and total data size (copies actual files to Azure Storage)
 
 **Step 5b: Monitor Export Status**:
 
@@ -645,41 +673,37 @@ After sample generation completes, the Sample tab shows:
 
 4. Monitor the status until it shows **Complete** (typically 20-35 minutes for 4000-5000 items)
 
-> **⏱️ Timing Note**: Export preparation time varies based on:
->
-> - Number of items (4423 items = ~10 minutes)
-> - Total data size (2.9 MB = faster, larger datasets = longer)
-> - Current Microsoft 365 service load
->
-> **💡 Process Manager Benefits**: Unlike the legacy Exports tab, Process manager provides real-time progress tracking with percentage complete, estimated time remaining, and detailed status information for active exports.
-
 **Step 5c: Download Export Packages**:
 
-> **💡 Portal Note**: As of November 2025, Microsoft Purview uses a modernized export download process that does NOT require an export key or the legacy eDiscovery Export Tool. Export packages download directly from the browser using pre-authorized links.
-
 1. On the **Exports** tab, click on your completed export name to open the export details flyout
-2. Review the **Export packages** section, which shows the packages available for download:
+2. Review the **Export packages** section. The packages available depend on your export type selection in Step 5a:
+
+   **If you selected "Export items report only" (Recommended)**:
+   - **Reports-Content_Search-Lab05b_SIT_Discove...** (Reports package with Results.csv) - ~741 KB
+   - This is the only package available and contains all metadata needed for analysis
+
+   **If you selected "Export items with items report"**:
    - **Reports-Content_Search-Lab05b_SIT_Discove...** (Reports package with Results.csv) - ~741 KB
    - **Items.1.001.Lab05b_SIT_Discovery_Export** (Content package with actual files) - ~4.05 MB
-   - Each package shows its size to help you plan download time
+   - Both packages are available; the Items package contains the actual document files
 
-<!-- SCREENSHOT: Export packages flyout showing Reports and Items packages available for download -->
+![export-download](.images/export-download.png)
 
 3. Enable browser pop-ups by clicking **Allow browser pop-ups to download files** at the top of the page if prompted
 4. **Download packages one at a time** to avoid browser download issues:
    
-   **First: Download Reports Package**
+   **Download Reports Package** (Required)
    - Check the box next to the **Reports-Content_Search-Lab05b_SIT_Discove...** package (~741 KB)
    - Click **Download** at the top of the flyout page
-   - Wait for the download to complete before proceeding to Items package
+   - Wait for the download to complete
    
-   **Second: Download Items Package (Optional)**
+   **Download Items Package** (Only if you exported with items)
    - Uncheck the Reports package box
    - Check the box next to the **Items.1.001.Lab05b_SIT_Discovery_Export** package (~4.05 MB)
    - Click **Download** again
    - Monitor the download progress in your browser
 
-> **📦 Multiple Export Packages**: Large exports are split into multiple packages (typically a Reports package with CSV files and one or more Items packages with actual file content). **Download packages one at a time** - selecting multiple packages simultaneously may result in only one package downloading, causing confusion.
+> **📦 Export Package Summary**: If you followed the recommended "Export items report only" option, you'll have a single Reports package containing all the CSV metadata files needed for Lab 05b analysis. The Items package (containing actual files) only appears if you selected "Export items with items report" in Step 5a.
 
 > **⚠️ Download Requirements**:
 >
@@ -695,7 +719,7 @@ After sample generation completes, the Sample tab shows:
    - **Reports package** (741 KB): Typically completes in 30 seconds - 2 minutes
    - **Items package** (4.05 MB): Typically completes in 2-5 minutes
 3. By default, packages download to your browser's default download folder (e.g., `C:\Users\YourName\Downloads\`)
-4. **Recommended**: Move the downloaded .zip files to the project reports folder for organization:
+4. **Recommended**: Move the downloaded .zip files to the Lab 05b reports folder for cross-lab analysis:
    - Destination: `C:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Discovery-Methods-Simulation\05-Data-Discovery-Paths\05b-eDiscovery-Compliance-Search\reports\`
 
 #### Step 5e: Extract Reports Package
@@ -705,8 +729,8 @@ Extract the Reports package to access Results.csv for analysis:
 **Use extraction script (Recommended - bypasses Windows Defender block)**:
 
 ```powershell
-# Navigate to Lab 05 shared scripts folder
-cd "C:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Discovery-Methods-Simulation\05-Data-Discovery-Paths\scripts"
+# Navigate to Lab 05b scripts folder
+cd "C:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Discovery-Methods-Simulation\05-Data-Discovery-Paths\05b-eDiscovery-Compliance-Search\scripts"
 
 # Extract Reports package only
 .\Expand-eDiscoveryExportPackages.ps1 -ExtractReports
@@ -761,7 +785,7 @@ After extraction, verify the Items package contents:
 - Useful for reviewing actual file content and validating SIT detections, but not required for Lab 05b analysis which uses Items_0 CSV file
 
 > **📂 Package Structure**: Items package mirrors the SharePoint site structure: `SharePoint/[Site-Name]/Shared Documents/[Files]`. This allows you to review the actual documents that triggered SIT detections, but the metadata analysis uses the Items_0 CSV from the Reports package.
-
+>
 > **💡 Performance Tips**:
 >
 > - Use a local drive for downloads (not network/UNC path or external USB drive)

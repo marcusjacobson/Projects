@@ -1,0 +1,30 @@
+{
+  "Timestamp": "2025-12-27 17:27:52",
+  "AnalysisMethod": "eDiscovery Compliance Search",
+  "InputFile": "Items_0_2025-12-28_01-12-04.csv",
+  "TotalFilesScanned": 701,
+  "FilesWithDetections": 701,
+  "TotalSITInstances": 5201,
+  "TotalDetectionRows": 1015,
+  "SitesWithDetections": 1,
+  "UniqueSITTypes": 7,
+  "AvgSITsPerFile": 1.45,
+  "TopSITTypes": [
+    {
+      "SIT_Type": "U.S. Social Security Number (SSN)",
+      "Files": 310,
+      "Total_Instances": 310.0
+    },
+    {
+      "SIT_Type": "U.S. Bank Account Number",
+      "Files": 227,
+      "Total_Instances": 227.0
+    },
+    {
+      "SIT_Type": "ABA Routing Number",
+      "Files": 190,
+      "Total_Instances": 190.0
+    }
+  ],
+  "DetailedCSVPath": "C:\\REPO\\GitHub\\Projects\\Microsoft\\Purview\\Purview-Discovery-Methods-Simulation\\05-Data-Discovery-Paths\\05b-eDiscovery-Compliance-Search\\scripts\\..\\reports\\eDiscovery-Detailed-Analysis-2025-12-27-172751.csv"
+}

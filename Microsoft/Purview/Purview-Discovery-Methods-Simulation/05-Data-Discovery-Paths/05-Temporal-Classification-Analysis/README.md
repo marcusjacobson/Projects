@@ -56,6 +56,7 @@ Track Microsoft Purview Sensitive Information Type (SIT) classification evolutio
 ### Two Ways to Run This Lab
 
 #### Option A: Simulation Mode (Recommended for Learning)
+
 Use synthetic data generation to simulate the 21-day index maturation process immediately. This allows you to learn the analysis concepts without waiting weeks.
 
 - **How it works**: The script generates CSV files that mathematically model the expected "drift" (classification increase) over time based on real-world Microsoft 365 indexing patterns.

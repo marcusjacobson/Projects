@@ -139,21 +139,28 @@ Open PowerShell 7 as Administrator and run:
 
 ```powershell
 # Remove any existing Microsoft.Graph modules to avoid version conflicts
-Get-Module Microsoft.Graph* -ListAvailable | Uninstall-Module -Force
+# Note: This can take 5-15 minutes as Microsoft.Graph includes 40+ sub-modules
+Get-Module Microsoft.Graph* -ListAvailable | ForEach-Object { 
+    Write-Host "Removing $($_.Name) v$($_.Version)..." -ForegroundColor Yellow
+    Uninstall-Module $_.Name -AllVersions -Force -ErrorAction SilentlyContinue 
+}
+
+# Clear PowerShell module cache to prevent stale assembly loading
+Remove-Item -Path "$env:LOCALAPPDATA\Microsoft\Windows\PowerShell\ModuleAnalysisCache" -Force -ErrorAction SilentlyContinue
 
 # Install Microsoft Graph SDK to system-wide location (avoids OneDrive sync conflicts)
 Install-Module Microsoft.Graph -Scope AllUsers -Force -AllowClobber
 
 # Verify installation
-Get-Module Microsoft.Graph -ListAvailable
+Get-Module Microsoft.Graph -ListAvailable | Select-Object Name, Version
 ```
 
 **Expected Output**:
 
 ```text
-ModuleType Version    PreRelease Name
----------- -------    ---------- ----
-Script     2.x.x                 Microsoft.Graph
+Name            Version
+----            -------
+Microsoft.Graph 2.x.x
 ```
 
 > **💡 Note**: The Microsoft Graph SDK is a collection of modules. The installation may take 3-5 minutes depending on your connection speed. If you encounter version conflicts, the uninstall step above ensures a clean installation.
@@ -478,22 +485,36 @@ Navigate to the Compliance Portal to monitor export completion:
 Once the export shows "Completed":
 
 1. On the **Exports** tab, click on your completed export name to open the export details flyout
-2. Review the **Export packages** section, which shows the packages available for download:
+2. Review the **Export packages** section. The Lab 05c `Export-SearchResults.ps1` script automatically creates an export with items included, so both packages are available:
    - **Reports-Content_Search-Lab05c...** (Reports package with Results.csv) - ~741 KB
    - **Items.1.001.Lab05c_Export** (Content package with actual files) - ~4.05 MB
    - Each package shows its size to help you plan download time
+
+> **💡 Which Package to Download?** For Lab 05c's discovery validation objectives, you only need the **Reports package**. This contains all metadata (file paths, SIT types, locations) required for analysis and cross-method comparison. The Items package contains actual document files and is optional unless you need to review file content.
+
 3. Enable browser pop-ups by clicking **Allow browser pop-ups to download files** at the top of the page if prompted
 
 > **📸 Visual Reference**: This download workflow is identical to Lab 05b Step 5c. See [Lab 05b README - Step 5c: Download Export Packages](../05b-eDiscovery-Compliance-Search/README.md#step-5c-download-export-packages) for screenshot examples of the Export packages flyout showing Reports and Items packages.
+
 4. **Download Reports package** (required for analysis):
    - Check the box next to the **Reports-Content_Search-Lab05c...** package
    - Click **Download** at the top of the flyout page
    - Wait for the download to complete
    - By default, the package downloads to your browser's default download folder (e.g., `C:\Users\YourName\Downloads\`)
-5. **Move the downloaded .zip file** to the Lab 05c reports folder:
-   - Destination: `C:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Discovery-Methods-Simulation\05-Data-Discovery-Paths\05c-Graph-API-Discovery\reports\`
 
-> **💡 Items Package (Optional)**: The Items package contains actual SharePoint files and is optional for Lab 05c analysis. If you want to review actual file content, download it using the same process and move it to the reports folder.
+5. **Download Items package** (optional - only if you need to review actual file content):
+   - Uncheck the Reports package box
+   - Check the box next to the **Items.1.001.Lab05c_Export** package (~4.05 MB)
+   - Click **Download** again
+   - Monitor the download progress in your browser
+
+> **📦 Export Package Summary**: Unlike Lab 05b where you choose between "Export items report only" and "Export items with items report", Lab 05c's Graph API export automatically includes both packages. You can choose which packages to download based on your analysis needs:
+>
+> - **Reports package only** (Recommended): Download the Reports package (~741 KB) for all metadata needed for SIT analysis and cross-method comparison.
+> - **Both packages**: Download both packages if you also want to review actual document content (~4.8 MB total).
+
+6. **Move the downloaded .zip file(s)** to the Lab 05c reports folder:
+   - Destination: `C:\REPO\GitHub\Projects\Microsoft\Purview\Purview-Discovery-Methods-Simulation\05-Data-Discovery-Paths\05c-Graph-API-Discovery\reports\`
 
 **Step 3: Extract the Downloaded Export**:
 

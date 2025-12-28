@@ -1,0 +1,89 @@
+{
+  "eDiscoveryCaseName": "Lab05c-Discovery-2025-12-27_175618",
+  "DiscoveryDate": "2025-12-27T17:56:18Z",
+  "TotalSizeBytes": 0,
+  "EnabledSITTypes": [
+    "U.S. Social Security Number (SSN)",
+    "Credit Card Number",
+    "U.S. / U.K. Passport Number",
+    "U.S. Driver's License Number",
+    "U.S. Individual Taxpayer Identification Number (ITIN)",
+    "ABA Routing Number",
+    "U.S. Bank Account Number"
+  ],
+  "TotalSizeMB": 0.0,
+  "eDiscoveryCaseId": "6e2d6f96-4f74-4ad3-afe5-95302ed6e9ce",
+  "SITTypeDistribution": [
+    {
+      "EstimatedItems": "See aggregate results - 0 total items",
+      "SITPriority": "High",
+      "SITName": "U.S. Social Security Number (SSN)"
+    },
+    {
+      "EstimatedItems": "See aggregate results - 0 total items",
+      "SITPriority": "High",
+      "SITName": "Credit Card Number"
+    },
+    {
+      "EstimatedItems": "See aggregate results - 0 total items",
+      "SITPriority": "Medium",
+      "SITName": "U.S. / U.K. Passport Number"
+    },
+    {
+      "EstimatedItems": "See aggregate results - 0 total items",
+      "SITPriority": "Medium",
+      "SITName": "U.S. Driver's License Number"
+    },
+    {
+      "EstimatedItems": "See aggregate results - 0 total items",
+      "SITPriority": "Medium",
+      "SITName": "U.S. Individual Taxpayer Identification Number (ITIN)"
+    },
+    {
+      "EstimatedItems": "See aggregate results - 0 total items",
+      "SITPriority": "Low",
+      "SITName": "ABA Routing Number"
+    },
+    {
+      "EstimatedItems": "See aggregate results - 0 total items",
+      "SITPriority": "Low",
+      "SITName": "U.S. Bank Account Number"
+    }
+  ],
+  "DataSourceSites": [
+    {
+      "Url": "https://marcusjcloud.sharepoint.com/sites/HR-Simulation",
+      "Name": "HR-Simulation"
+    },
+    {
+      "Url": "https://marcusjcloud.sharepoint.com/sites/Finance-Simulation",
+      "Name": "Finance-Simulation"
+    },
+    {
+      "Url": "https://marcusjcloud.sharepoint.com/sites/Legal-Simulation",
+      "Name": "Legal-Simulation"
+    },
+    {
+      "Url": "https://marcusjcloud.sharepoint.com/sites/Marketing-Simulation",
+      "Name": "Marketing-Simulation"
+    },
+    {
+      "Url": "https://marcusjcloud.sharepoint.com/sites/IT-Simulation",
+      "Name": "IT-Simulation"
+    }
+  ],
+  "ContentQuery": "((SensitiveType=\"a44669fe-0d48-453d-a9b1-2cc83f2cba77|1..500|1..100\")) OR ((SensitiveType=\"50842eb7-edc8-4019-85dd-5a5c1f2bb085|1..500|1..100\")) OR ((SensitiveType=\"178ec42a-18b4-47cc-85c7-d62c92fd67f8|1..500|1..100\")) OR ((SensitiveType=\"dfeb356f-61cd-459e-bf0f-7c6d28b458c6|1..500|1..100\")) OR ((SensitiveType=\"e55e2a32-f92d-4985-a35d-a0b269eb687b|1..500|1..100\")) OR ((SensitiveType=\"cb353f78-2b72-4c3c-8827-92ebe4f69fdf|1..500|1..100\")) OR ((SensitiveType=\"1771481d-a337-4dbf-8e64-af8da0cc3ee9|1..500|1..100\")) OR ((SensitiveType=\"065bdd91-ef07-40d3-b8a4-0aea722eaa49|1..500|1..100\")) OR ((SensitiveType=\"17066377-466d-43ff-997f-c9240414021c|1..500|1..100\")) OR ((SensitiveType=\"20f3c48d-4ac1-4cd2-86bd-34ecc1826e9d|1..500|1..100\")) OR ((SensitiveType=\"fc87b421-f437-4f8b-b739-29a735ead0d9|1..500|1..100\"))",
+  "eDiscoverySearchName": "Lab05c-SIT-Search-2025-12-27_175618",
+  "TotalItemsFound": 0,
+  "DiscoveryDuration": 178.96,
+  "eDiscoverySearchId": "ad64c010-fa7e-4480-8226-8d685f1a7264",
+  "EnabledSITCount": 7,
+  "DataSourceScopes": [
+    "HR-Simulation",
+    "Finance-Simulation",
+    "Legal-Simulation",
+    "Marketing-Simulation",
+    "IT-Simulation"
+  ],
+  "DiscoveryMethod": "Microsoft Graph eDiscovery API"
+}

@@ -4,14 +4,14 @@ This section contains scenarios to test the effectiveness of your Data Loss Prev
 
 ## 🧪 Scenarios
 
-### Scenario 1: The "USB" Drop
-- **Goal**: Copy a file containing Credit Card numbers to a USB drive.
-- **Expected Result**: Endpoint DLP should block the copy action and display a toast notification.
-- **Prerequisite**: Endpoint DLP enabled and policy applied to your device.
+### Scenario 1: The "Personal Cloud" Upload
+- **Goal**: Upload a file containing Credit Card numbers to a personal Google Drive or Dropbox account.
+- **Expected Result**: Microsoft Edge should detect the sensitive content and block the upload (if browser-based DLP extensions are configured), or the activity should be logged in Activity Explorer for audit purposes.
+- **Prerequisite**: DLP policies applied to M365 workloads.
 
-### Scenario 2: The "Personal Cloud" Upload
-- **Goal**: Upload a "Highly Confidential" file to a personal Google Drive or Dropbox.
-- **Expected Result**: Edge/Chrome (with extension) should block the upload.
+### Scenario 2: The "External Email" Leak
+- **Goal**: Attach a file containing PII data to an email sent to an external recipient.
+- **Expected Result**: Exchange DLP should block the email and display a policy tip to the user.
 
 ### Scenario 3: The "Teams" Leak
 - **Goal**: Paste a list of Credit Card numbers into a Teams chat with an external user.
@@ -29,14 +29,20 @@ This script runs the `Test-DlpPolicies` cmdlet (if available) to validate rule l
 
 1.  **Generate Honey File**:
     ```powershell
-    .\scripts\Simulate-Exfiltration.ps1 -Action Generate
+    # Navigate to scripts directory
+    cd scripts
+
+    # Generate Honey File
+    .\Simulate-Exfiltration.ps1 -Action Generate
     ```
-2.  **Attempt Exfiltration**:
-    - Try to copy `HoneyFile_CC.docx` to a USB drive.
-    - Try to attach `HoneyFile_CC.docx` to a personal email.
+2.  **Attempt M365 Exfiltration Scenarios**:
+    - Try to attach `HoneyFile_CC.docx` to an email sent to an external recipient.
+    - Try to share `HoneyFile_CC.docx` externally via OneDrive or SharePoint.
+    - Try to paste sensitive content into a Teams chat with an external user.
+    - Try to upload `HoneyFile_CC.docx` to a personal cloud storage account via browser.
 3.  **Review Audits**:
     - Go to **Purview Portal** > **Data Loss Prevention** > **Activity Explorer**.
-    - Verify the events are logged.
+    - Verify the M365 exfiltration attempts are logged and policy actions are recorded.
 
 ---
 

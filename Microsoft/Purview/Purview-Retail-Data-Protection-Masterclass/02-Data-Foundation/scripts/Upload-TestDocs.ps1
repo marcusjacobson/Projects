@@ -1,134 +1,178 @@
 <#
 .SYNOPSIS
-    Uploads generated test data to SharePoint Online or OneDrive.
+    Uploads all test data files to Retail Operations SharePoint site.
 
 .DESCRIPTION
-    This script takes the output from Generate-RetailData.ps1 and uploads it to a specified
-    SharePoint Site or the current user's OneDrive. This populates the tenant with
-    sensitive data to test DLP scanning.
-
-.PARAMETER SourcePath
-    Path to the local file(s) to upload.
-
-.PARAMETER SiteUrl
-    The URL of the SharePoint site (e.g., https://contoso.sharepoint.com/sites/RetailOps).
-    If omitted, attempts to upload to the user's OneDrive root.
-
-.PARAMETER TenantId
-    The Directory (Tenant) ID.
-
-.PARAMETER AppId
-    The Application (Client) ID.
-
-.PARAMETER CertificateThumbprint
-    The thumbprint of the client certificate.
+    This script uploads all generated test files from data-templates directory
+    to the SharePoint site for DLP testing and classification. Includes files
+    with single SITs, multiple SITs, and clean control files for comprehensive
+    testing scenarios.
+    
+    Uses PnP.PowerShell with service principal authentication (certificate-based)
+    for automated, non-interactive deployment.
 
 .EXAMPLE
-    .\Upload-TestDocs.ps1 -SourcePath ".\Output\CustomerDB.csv" -SiteUrl "https://contoso.sharepoint.com/sites/RetailOps" ...
+    .\Upload-TestDocs.ps1
 
 .NOTES
     Author: Marcus Jacobson
-    Version: 1.0.0
-    Created: 2024-05-22
+    Version: 4.0.0
+    Created: 2025-12-29
+    Last Modified: 2025-12-30
     
     Requirements:
-    - Microsoft.Graph module
-    - Service Principal with Files.ReadWrite.All and Sites.ReadWrite.All
-
+    - Run Generate-TestData.ps1 first to create test files
+    - Service principal with SharePoint permissions configured
+    
     Script development orchestrated using GitHub Copilot.
 #>
 
 [CmdletBinding()]
-param (
-    [Parameter(Mandatory = $true)]
-    [string]$SourcePath,
+param()
 
-    [Parameter(Mandatory = $false)]
-    [string]$SiteUrl,
+# =============================================================================
+# Step 1: Load Configuration
+# =============================================================================
 
-    [Parameter(Mandatory = $true)]
-    [string]$TenantId,
+Write-Host "`n🔍 Step 1: Load Configuration" -ForegroundColor Green
+Write-Host "============================" -ForegroundColor Green
 
-    [Parameter(Mandatory = $true)]
-    [string]$AppId,
+$scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
+$projectRoot = Split-Path -Parent (Split-Path -Parent $scriptPath)
+$configPath = Join-Path $projectRoot "templates\global-config.json"
 
-    [Parameter(Mandatory = $true)]
-    [string]$CertificateThumbprint
-)
+if (-not (Test-Path $configPath)) {
+    Write-Host "❌ Configuration file not found: $configPath" -ForegroundColor Red
+    exit 1
+}
 
-# Import Connection Helper
-$connectScript = Join-Path $PSScriptRoot "..\00-Prerequisites\Connect-PurviewGraph.ps1"
-if (Test-Path $connectScript) {
-    . $connectScript -TenantId $TenantId -AppId $AppId -CertificateThumbprint $CertificateThumbprint
-} else {
-    Throw "Connection script not found at $connectScript"
+$config = Get-Content $configPath | ConvertFrom-Json
+Write-Host "✅ Configuration loaded" -ForegroundColor Green
+
+# =============================================================================
+# Step 2: Validate Source Files
+# =============================================================================
+
+Write-Host "`n🔍 Step 2: Validate Source Files" -ForegroundColor Green
+Write-Host "=================================" -ForegroundColor Green
+
+$dataTemplatesDir = Join-Path (Split-Path -Parent $scriptPath) "data-templates"
+
+if (-not (Test-Path $dataTemplatesDir)) {
+    Write-Host "❌ data-templates directory not found: $dataTemplatesDir" -ForegroundColor Red
+    Write-Host "   Run Generate-TestData.ps1 first to create test files" -ForegroundColor Yellow
+    exit 1
+}
+
+$sourceFiles = Get-ChildItem -Path $dataTemplatesDir -File
+if ($sourceFiles.Count -eq 0) {
+    Write-Host "❌ No test files found in data-templates directory" -ForegroundColor Red
+    Write-Host "   Run Generate-TestData.ps1 first to create test files" -ForegroundColor Yellow
+    exit 1
+}
+
+Write-Host "✅ Found $($sourceFiles.Count) test files to upload" -ForegroundColor Green
+foreach ($file in $sourceFiles) {
+    $fileSizeMB = [math]::Round($file.Length / 1MB, 2)
+    if ($fileSizeMB -eq 0) { $fileSizeMB = [math]::Round($file.Length / 1KB, 2); $unit = "KB" } else { $unit = "MB" }
+    Write-Host "   📄 $($file.Name) ($fileSizeMB $unit)" -ForegroundColor Cyan
 }
 
 # =============================================================================
-# Step 1: Resolve Target
+# Step 3: Connect to SharePoint
 # =============================================================================
 
-Write-Host "🎯 Step 1: Resolving Target Location" -ForegroundColor Green
-Write-Host "====================================" -ForegroundColor Green
+Write-Host "`n🔍 Step 3: Connect to SharePoint" -ForegroundColor Green
+Write-Host "=================================" -ForegroundColor Green
 
-$driveId = $null
+$tenantUrl = $config.sharePointRootUrl.TrimEnd('/')
+$siteUrl = "$tenantUrl/sites/$($config.sharePointSite.name)"
+$tenantId = $config.tenantId
 
-if ([string]::IsNullOrWhiteSpace($SiteUrl)) {
-    Write-Host "   ℹ️ No SiteUrl provided. Targeting User's OneDrive (via App-only is complex, defaulting to root site drive for demo)..." -ForegroundColor Yellow
-    # App-only auth accessing a specific user's OneDrive requires User ID. 
-    # For simplicity in this lab, we'll target the Root SharePoint Site's default drive.
+# Get app registration details from service principal config
+$appId = "497be3e7-9fe4-444c-beaa-3d486889d1c3"  # From global-config servicePrincipal
+
+# Get certificate thumbprint from local certificate store
+Write-Host "   🔍 Looking for certificate in local store..." -ForegroundColor Cyan
+$cert = Get-ChildItem -Path Cert:\CurrentUser\My | Where-Object { $_.Subject -eq "CN=PurviewAutomationCert" } | Sort-Object NotAfter -Descending | Select-Object -First 1
+
+if (-not $cert) {
+    Write-Host "❌ Certificate not found in certificate store" -ForegroundColor Red
+    Write-Host "   Expected: CN=PurviewAutomationCert" -ForegroundColor Yellow
+    exit 1
+}
+
+Write-Host "   ✅ Found certificate (expires: $($cert.NotAfter))" -ForegroundColor Green
+Write-Host "   🔐 Connecting with service principal..." -ForegroundColor Cyan
+
+try {
+    try { Disconnect-PnPOnline } catch { }
+    Connect-PnPOnline -Url $siteUrl -ClientId $appId -Thumbprint $cert.Thumbprint -Tenant $tenantId -ErrorAction Stop
+    Write-Host "   ✅ Connected to SharePoint with service principal" -ForegroundColor Green
     
-    Write-Host "   🔍 Finding Root Site Default Drive..." -ForegroundColor Cyan
-    $site = Get-MgSite -SiteId "root"
-    $drives = Get-MgSiteDrive -SiteId $site.Id
-    $driveId = $drives[0].Id
-    Write-Host "   ✅ Target: Root Site Drive ($($drives[0].Name))" -ForegroundColor Green
-} else {
-    Write-Host "   🔍 Finding Site: $SiteUrl" -ForegroundColor Cyan
-    # Extract hostname and relative path
-    # Graph API requires site ID lookup. 
-    # Pattern: hostname:/sites/sitename
-    
+    $web = Get-PnPWeb
+    Write-Host "   ✅ Site validated: $($web.Title)" -ForegroundColor Green
+} catch {
+    Write-Host "❌ Connection failed: $($_.Exception.Message)" -ForegroundColor Red
+    exit 1
+}
+
+# =============================================================================
+# Step 4: Upload Files to SharePoint
+# =============================================================================
+
+$libraryName = "Shared Documents"
+$uploadedCount = 0
+$skippedCount = 0
+$failedCount = 0
+
+foreach ($file in $sourceFiles) {
     try {
-        # Simple regex to extract hostname and path
-        if ($SiteUrl -match "https://([^/]+)(/.*)?") {
-            $hostname = $matches[1]
-            $sitePath = $matches[2]
-            if (-not $sitePath) { $sitePath = "/" }
+        # Check if file already exists
+        $existingFile = Get-PnPFile -Url "$libraryName/$($file.Name)" -AsListItem -ErrorAction SilentlyContinue
+        
+        if ($existingFile) {
+            Write-Host "⚠️  $($file.Name) - Already exists, skipping" -ForegroundColor Yellow
+            $skippedCount++
+        } else {
+            Write-Host "📤 Uploading $($file.Name)..." -ForegroundColor Cyan
             
-            # Construct Graph Site ID lookup string
-            # Note: This is a simplified lookup.
-            $siteIdStr = "$hostname`:$sitePath"
-            $site = Get-MgSite -SiteId $siteIdStr
+            Add-PnPFile `
+                -Path $file.FullName `
+                -Folder $libraryName `
+                -ErrorAction Stop | Out-Null
             
-            $drives = Get-MgSiteDrive -SiteId $site.Id
-            $driveId = $drives[0].Id # Default Document Library
-            Write-Host "   ✅ Target: Site '$($site.DisplayName)' - Drive '$($drives[0].Name)'" -ForegroundColor Green
+            Write-Host "   ✅ Uploaded successfully" -ForegroundColor Green
+            $uploadedCount++
         }
     } catch {
-        Write-Host "   ❌ Failed to resolve site. Ensure URL is correct and App has permissions." -ForegroundColor Red
-        throw
+        Write-Host "   ❌ Upload failed: $($_.Exception.Message)" -ForegroundColor Red
+        $failedCount++
     }
 }
 
 # =============================================================================
-# Step 2: Upload File
+# Step 5: Summary
 # =============================================================================
 
-Write-Host "🚀 Step 2: Uploading File" -ForegroundColor Green
-Write-Host "=========================" -ForegroundColor Green
-
-if (Test-Path $SourcePath) {
-    $fileName = Split-Path $SourcePath -Leaf
-    Write-Host "   ⏳ Uploading '$fileName'..." -ForegroundColor Cyan
-    
-    try {
-        # Upload to root of the drive
-        New-MgDriveItem -DriveId $driveId -Name $fileName -Content (Get-Content $SourcePath -Raw) -Path "/" -Force
-        Write-Host "   ✅ File uploaded successfully." -ForegroundColor Green
-    } catch {
-        Write-Host "   ❌ Upload failed: $_" -ForegroundColor Red
-    }
-} else {
-    Write-Host "   ❌ Source file not found: $SourcePath" -ForegroundColor Red
+Write-Host "`n📊 Upload Summary" -ForegroundColor Green
+Write-Host "=================" -ForegroundColor Green
+Write-Host "   Total Files:    $($sourceFiles.Count)" -ForegroundColor White
+Write-Host "   ✅ Uploaded:    $uploadedCount" -ForegroundColor Green
+Write-Host "   ⚠️  Skipped:    $skippedCount" -ForegroundColor Yellow
+if ($failedCount -gt 0) {
+    Write-Host "   ❌ Failed:      $failedCount" -ForegroundColor Red
 }
+
+Write-Host "`n📂 SharePoint Location:" -ForegroundColor Cyan
+Write-Host "   Site: $siteUrl" -ForegroundColor White
+Write-Host "   Library: $libraryName" -ForegroundColor White
+
+Write-Host "`n💡 Next Steps:" -ForegroundColor Cyan
+Write-Host "   1. Navigate to SharePoint site to view uploaded files" -ForegroundColor White
+Write-Host "   2. Configure DLP policies to detect sensitive information" -ForegroundColor White
+Write-Host "   3. Test auto-labeling on files with different SIT combinations" -ForegroundColor White
+Write-Host "   4. Verify classification in Content Explorer" -ForegroundColor White
+
+Write-Host "`n✅ Script complete" -ForegroundColor Green
+Disconnect-PnPOnline

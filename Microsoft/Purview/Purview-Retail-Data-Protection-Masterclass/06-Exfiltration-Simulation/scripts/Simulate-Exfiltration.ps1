@@ -1,20 +1,19 @@
 <#
 .SYNOPSIS
-    Generates a "Honey File" and attempts exfiltration actions to trigger DLP.
+    Generates a "Honey File" containing sensitive data to test DLP policies.
 
 .DESCRIPTION
     This script creates a file containing fake credit card numbers ("Honey File").
-    It then provides instructions (or attempts automation where possible) to:
-    1. Copy to USB (Simulated by copying to a specific drive letter if provided).
-    2. Open in Browser (Simulated by launching Edge).
+    You can then test M365 DLP policies by attempting to:
+    1. Email the file to external recipients (Exchange DLP).
+    2. Share the file externally via OneDrive or SharePoint.
+    3. Paste content into Teams chats with external users.
+    4. Upload the file to personal cloud storage via browser.
     
-    Note: True exfiltration (USB/Cloud) often requires manual user interaction to bypass OS protections or physical media.
+    All exfiltration attempts should be blocked or logged by DLP policies.
 
 .PARAMETER Action
     "Generate" or "Clean".
-
-.PARAMETER UsbDriveLetter
-    Optional drive letter (e.g., "E:") to attempt a copy to.
 
 .EXAMPLE
     .\Simulate-Exfiltration.ps1 -Action Generate
@@ -31,9 +30,7 @@
 param (
     [Parameter(Mandatory = $true)]
     [ValidateSet("Generate", "Clean")]
-    [string]$Action,
-
-    [string]$UsbDriveLetter
+    [string]$Action
 )
 
 $fileName = "HoneyFile_CC.docx"
@@ -60,20 +57,13 @@ DO NOT SHARE EXTERNALLY.
     $ccData | Out-File -FilePath "$PSScriptRoot\HoneyFile_CC.txt" -Encoding UTF8
     Write-Host "   ✅ Created '$PSScriptRoot\HoneyFile_CC.txt'" -ForegroundColor Green
     
-    Write-Host "📋 Exfiltration Instructions:" -ForegroundColor Cyan
-    Write-Host "   1. Try to copy this file to a USB drive." -ForegroundColor White
-    Write-Host "   2. Try to attach this file to a personal email (Gmail/Outlook.com)." -ForegroundColor White
-    Write-Host "   3. Try to upload this file to Dropbox/Google Drive." -ForegroundColor White
-    
-    if ($UsbDriveLetter) {
-        if (Test-Path $UsbDriveLetter) {
-            Write-Host "   ⚡ Attempting copy to USB ($UsbDriveLetter)..." -ForegroundColor Yellow
-            Copy-Item "$PSScriptRoot\HoneyFile_CC.txt" -Destination $UsbDriveLetter -Force
-            Write-Host "   ℹ️ Check if the copy succeeded or was blocked." -ForegroundColor Cyan
-        } else {
-            Write-Host "   ⚠️ USB Drive $UsbDriveLetter not found." -ForegroundColor Yellow
-        }
-    }
+    Write-Host "📋 M365 DLP Testing Scenarios:" -ForegroundColor Cyan
+    Write-Host "   1. 📧 Email Test: Attach this file to an email sent to an external recipient." -ForegroundColor White
+    Write-Host "   2. ☁️ Sharing Test: Share this file externally via OneDrive or SharePoint." -ForegroundColor White
+    Write-Host "   3. 💬 Teams Test: Paste file content into a Teams chat with external user." -ForegroundColor White
+    Write-Host "   4. 🌐 Browser Test: Upload this file to Dropbox/Google Drive via browser." -ForegroundColor White
+    Write-Host "" -ForegroundColor White
+    Write-Host "   ✅ All scenarios should trigger DLP policies and be logged in Activity Explorer." -ForegroundColor Green
 
 } elseif ($Action -eq "Clean") {
     if (Test-Path "$PSScriptRoot\HoneyFile_CC.txt") {

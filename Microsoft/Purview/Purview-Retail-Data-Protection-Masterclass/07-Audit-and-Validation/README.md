@@ -20,7 +20,7 @@ After configuring policies and running simulations, you must validate that the s
 |-------|------|------------------|
 | **Data Discovery** | Content Explorer | Test files are discovered and classified as "Highly Confidential". |
 | **Label Application** | Activity Explorer | "Label applied" events appear for auto-labeling policies. |
-| **DLP Blocking** | Activity Explorer | "DLPRuleMatch" events appear for the USB copy attempt. |
+| **DLP Blocking** | Activity Explorer | "DLPRuleMatch" events appear for email, sharing, and browser exfiltration attempts. |
 | **False Positives** | Content Explorer | Ensure "General" files are NOT misclassified as "Confidential". |
 
 ## 🔍 Troubleshooting

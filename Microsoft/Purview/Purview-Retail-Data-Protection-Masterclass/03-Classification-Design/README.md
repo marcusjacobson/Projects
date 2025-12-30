@@ -48,7 +48,7 @@ To reduce false positives for customer PII, we use EDM.
 ## 🛡️ Data Loss Prevention (DLP) Strategy
 
 ### Policy 1: PCI-DSS Protection (Financial)
-- **Workloads**: Exchange, SharePoint, OneDrive, Teams, Endpoint.
+- **Workloads**: Exchange, SharePoint, OneDrive, Teams.
 - **Condition**: Contains `Credit Card Number` OR `Highly Confidential \ PCI Data` label.
 - **Action**:
     - **External**: Block with Override.

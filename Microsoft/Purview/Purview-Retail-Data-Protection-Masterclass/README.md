@@ -20,7 +20,7 @@ This project simulates a real-world governance environment for a large retail ch
 | `03-Classification-Design` | Documentation of the 4-Tier taxonomy, PCI-DSS mapping, and EDM schema definition. |
 | `04-UI-Configuration` | Step-by-step guides for manual policy creation in the Purview Portal (Labels, DLP, Fingerprinting). |
 | `05-Supplemental-IaC-Labs` | Automated deployment labs mirroring enterprise pipeline patterns for Custom SITs, Labels, and DLP. |
-| `06-Exfiltration-Simulation` | Labs to simulate data exfiltration scenarios (USB, Teams, Sharing) to test policy effectiveness. |
+| `06-Exfiltration-Simulation` | Labs to simulate data exfiltration scenarios (Email, Teams, Sharing, Browser Upload) to test policy effectiveness. |
 | `07-Audit-and-Validation` | Guides for using Content Explorer and Activity Explorer to validate compliance and tune policies. |
 
 ## 🧠 Skills Coverage Matrix
@@ -28,7 +28,7 @@ This project simulates a real-world governance environment for a large retail ch
 | Skill / Technology | Lab / Section | Depth |
 |-------------------|---------------|-------|
 | **Purview Information Protection** | 04-UI-Configuration / 05-Supplemental-IaC-Labs | Advanced (Auto-labeling, EDM, Fingerprinting) |
-| **Data Loss Prevention (DLP)** | 04-UI-Configuration / 05-Supplemental-IaC-Labs | Advanced (Endpoint, Teams, Custom SITs) |
+| **Data Loss Prevention (DLP)** | 04-UI-Configuration / 05-Supplemental-IaC-Labs | Advanced (Teams, Custom SITs, EDM) |
 | **PowerShell Automation** | 02-Data-Foundation / 05-Supplemental-IaC-Labs | Intermediate (Graph SDK, Data Generation) |
 | **Azure DevOps Pipelines** | 05-Supplemental-IaC-Labs | Intermediate (YAML Pipelines, Service Connections) |
 | **Microsoft Graph API** | 00-Prerequisites / 05-Supplemental-IaC-Labs | Intermediate (App-only Auth, Permissions) |
@@ -36,12 +36,12 @@ This project simulates a real-world governance environment for a large retail ch
 
 ## 🚀 Getting Started
 
-1.  **Review Prerequisites**: Start with the `00-Prerequisites` folder to set up your environment and authentication.
-2.  **Execute Day Zero Setup**: Immediately proceed to `01-Day-Zero-Setup` to initiate long-running backend processes.
-3.  **Generate Data**: Use `02-Data-Foundation` to populate your tenant with realistic test data.
-4.  **Configure Policies**: Follow the labs in `04-UI-Configuration` to build your governance framework.
-5.  **Automate**: Explore `05-Supplemental-IaC-Labs` to implement the same policies using code.
-6.  **Validate**: Run the simulations in `06-Exfiltration-Simulation` to test your defenses.
+1. **Review Prerequisites**: Start with the `00-Prerequisites` folder to set up your environment and authentication.
+2. **Execute Day Zero Setup**: Immediately proceed to `01-Day-Zero-Setup` to initiate long-running backend processes.
+3. **Generate Data**: Use `02-Data-Foundation` to populate your tenant with realistic test data.
+4. **Configure Policies**: Follow the labs in `04-UI-Configuration` to build your governance framework.
+5. **Automate**: Explore `05-Supplemental-IaC-Labs` to implement the same policies using code.
+6. **Validate**: Run the simulations in `06-Exfiltration-Simulation` to test your defenses.
 
 ## ⚠️ Important Notes
 

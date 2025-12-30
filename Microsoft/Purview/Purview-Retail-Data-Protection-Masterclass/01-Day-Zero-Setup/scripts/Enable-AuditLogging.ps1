@@ -36,18 +36,83 @@
 
 [CmdletBinding()]
 param (
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $false)]
     [string]$TenantId,
 
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $false)]
     [string]$AppId,
 
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $false)]
     [string]$CertificateThumbprint,
 
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $false)]
     [string]$Organization
 )
+
+# =============================================================================
+# Step 0: Configuration Loading
+# =============================================================================
+
+# Try to load from global-config.json if parameters are missing
+if (-not $TenantId -or -not $AppId -or -not $CertificateThumbprint) {
+    $configPath = Join-Path $PSScriptRoot "..\..\templates\global-config.json"
+    
+    if (Test-Path $configPath) {
+        Write-Host "   📂 Loading configuration from global-config.json..." -ForegroundColor Cyan
+        $config = Get-Content $configPath | ConvertFrom-Json
+        
+        # 1. Resolve Tenant ID
+        if (-not $TenantId -and $config.tenantId) {
+            $TenantId = $config.tenantId
+        }
+        
+        # 2. Resolve Certificate Thumbprint
+        if (-not $CertificateThumbprint -and $config.servicePrincipal.certificateName) {
+            $certName = $config.servicePrincipal.certificateName
+            $cert = Get-ChildItem "Cert:\CurrentUser\My" | Where-Object { $_.Subject -eq "CN=$certName" } | Sort-Object NotAfter -Descending | Select-Object -First 1
+            if ($cert) { $CertificateThumbprint = $cert.Thumbprint }
+        }
+        
+        # 3. Resolve App ID
+        if (-not $AppId -and $config.servicePrincipal.appId) {
+            $AppId = $config.servicePrincipal.appId
+        }
+        elseif (-not $AppId) {
+            $detailsPath = Join-Path $PSScriptRoot "..\..\scripts\ServicePrincipal-Details.txt"
+            if (Test-Path $detailsPath) {
+                $detailsContent = Get-Content $detailsPath
+                foreach ($line in $detailsContent) {
+                    if ($line -match "App ID:\s+([a-f0-9-]{36})") {
+                        $AppId = $matches[1]
+                        break
+                    }
+                }
+            }
+        }
+    }
+}
+
+# 4. Resolve Organization (Domain) via Graph if missing
+if (-not $Organization) {
+    Write-Host "   🔍 Resolving Organization domain via Microsoft Graph..." -ForegroundColor Cyan
+    $connectScript = Join-Path $PSScriptRoot "..\..\scripts\Connect-PurviewGraph.ps1"
+    if (Test-Path $connectScript) {
+        & $connectScript
+        try {
+            $domain = Get-MgDomain | Where-Object { $_.IsInitial } | Select-Object -ExpandProperty Id
+            $Organization = $domain
+            Write-Host "   ✅ Resolved Organization: $Organization" -ForegroundColor Cyan
+        } catch {
+            Write-Host "   ⚠️ Failed to resolve domain via Graph. Please provide -Organization parameter." -ForegroundColor Yellow
+        }
+    }
+}
+
+# Final Validation
+if (-not $TenantId -or -not $AppId -or -not $CertificateThumbprint -or -not $Organization) {
+    Write-Host "   ❌ Missing required connection details." -ForegroundColor Red
+    exit 1
+}
 
 # =============================================================================
 # Step 1: Connect to Exchange Online

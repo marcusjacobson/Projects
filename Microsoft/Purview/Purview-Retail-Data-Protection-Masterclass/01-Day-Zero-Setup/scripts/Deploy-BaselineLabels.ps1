@@ -35,22 +35,28 @@
 
 [CmdletBinding()]
 param (
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $false)]
     [string]$TenantId,
 
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $false)]
     [string]$AppId,
 
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $false)]
     [string]$CertificateThumbprint
 )
 
-# Import Connection Helper
-$connectScript = Join-Path $PSScriptRoot "..\00-Prerequisites\Connect-PurviewGraph.ps1"
+# =============================================================================
+# Step 0: Authentication
+# =============================================================================
+
+$connectScript = Join-Path $PSScriptRoot "..\..\scripts\Connect-PurviewGraph.ps1"
 if (Test-Path $connectScript) {
+    Write-Host "🔌 Connecting to Microsoft Graph..." -ForegroundColor Cyan
+    # Dot-source the script to ensure variables ($AppId, $CertificateThumbprint) are available in this scope
     . $connectScript -TenantId $TenantId -AppId $AppId -CertificateThumbprint $CertificateThumbprint
 } else {
-    Throw "Connection script not found at $connectScript"
+    Write-Host "❌ Connection script not found at $connectScript" -ForegroundColor Red
+    exit 1
 }
 
 # =============================================================================
@@ -62,53 +68,101 @@ Write-Host "==================================" -ForegroundColor Green
 
 $labels = @(
     @{
-        displayName = "General"
-        description = "Business data that is not intended for public consumption."
-        toolTip = "Use for internal business data."
-        rank = 10
-        isActive = $true
-        color = @{
-            color = "Blue"
-        }
-        sensitivity = 10
+        Name = "General"
+        DisplayName = "General"
+        ToolTip = "Use for internal business data."
+        Comment = "Business data that is not intended for public consumption."
+        Priority = 10
     },
     @{
-        displayName = "Confidential"
-        description = "Sensitive business data that could cause damage if leaked."
-        toolTip = "Use for sensitive internal data."
-        rank = 20
-        isActive = $true
-        color = @{
-            color = "Orange"
-        }
-        sensitivity = 20
+        Name = "Confidential"
+        DisplayName = "Confidential"
+        ToolTip = "Use for sensitive internal data."
+        Comment = "Sensitive business data that could cause damage if leaked."
+        Priority = 20
     }
 )
 
 # =============================================================================
-# Step 2: Deploy Labels via REST API
+# Step 2: Connect to Security & Compliance PowerShell
 # =============================================================================
 
-Write-Host "🚀 Step 2: Deploying Labels" -ForegroundColor Green
+Write-Host "🔐 Step 2: Connecting to Security & Compliance PowerShell" -ForegroundColor Green
+Write-Host "========================================================" -ForegroundColor Green
+
+# 1. Get Tenant Domain (Organization) from Graph
+try {
+    Write-Host "   🔍 Retrieving default domain from Microsoft Graph..." -ForegroundColor Cyan
+    # Filter is not supported on this endpoint, so we filter client-side
+    $allDomains = Get-MgDomain -All
+    $defaultDomain = $allDomains | Where-Object { $_.IsDefault } | Select-Object -First 1
+    
+    if (-not $defaultDomain) {
+        throw "Could not determine default domain from Microsoft Graph."
+    }
+    $Organization = $defaultDomain.Id
+    Write-Host "   ✅ Organization Domain: $Organization" -ForegroundColor Cyan
+} catch {
+    Write-Host "   ❌ Failed to retrieve domain: $_" -ForegroundColor Red
+    exit 1
+}
+
+# 2. Check for ExchangeOnlineManagement module
+if (-not (Get-Module -ListAvailable -Name ExchangeOnlineManagement)) {
+    Write-Host "   📦 Installing ExchangeOnlineManagement module..." -ForegroundColor Cyan
+    Install-Module -Name ExchangeOnlineManagement -Force -Scope CurrentUser -AllowClobber
+}
+
+# 3. Connect to IPPSSession
+try {
+    Write-Host "   🚀 Connecting to IPPSSession (App-Only)..." -ForegroundColor Cyan
+    Connect-IPPSSession -AppId $AppId -CertificateThumbprint $CertificateThumbprint -Organization $Organization -ShowBanner:$false
+    Write-Host "   ✅ Connected to Security & Compliance PowerShell" -ForegroundColor Green
+} catch {
+    Write-Host "   ❌ Failed to connect to IPPSSession: $_" -ForegroundColor Red
+    Write-Host "   ℹ️ Ensure the Service Principal has the 'Compliance Administrator' directory role." -ForegroundColor Yellow
+    exit 1
+}
+
+# =============================================================================
+# Step 3: Deploy Labels via PowerShell
+# =============================================================================
+
+Write-Host "🚀 Step 3: Deploying Labels" -ForegroundColor Green
 Write-Host "===========================" -ForegroundColor Green
 
+# Pre-fetch all labels to avoid repeated calls and handle DisplayName matching reliably
+try {
+    $allLabels = Get-Label -ErrorAction SilentlyContinue
+} catch {
+    $allLabels = @()
+}
+
 foreach ($label in $labels) {
-    $labelName = $label.displayName
-    Write-Host "   ⏳ Creating label: $labelName" -ForegroundColor Cyan
+    $labelName = $label.Name
+    $displayName = $label.DisplayName
+    Write-Host "   ⏳ Processing label: $displayName" -ForegroundColor Cyan
 
     try {
-        # Check if label exists (simplified check by name - in prod use ID)
-        # For Day Zero, we assume clean slate or just try/catch
-        
-        $uri = "https://graph.microsoft.com/beta/informationProtection/sensitivityLabels"
-        $jsonPayload = $label | ConvertTo-Json -Depth 5
+        # Check if label exists by Name OR DisplayName
+        $existingLabel = $allLabels | Where-Object { $_.Name -eq $labelName -or $_.DisplayName -eq $displayName }
 
-        $response = Invoke-MgGraphRequest -Method POST -Uri $uri -Body $jsonPayload -ContentType "application/json"
-        
-        Write-Host "   ✅ Label '$labelName' created successfully." -ForegroundColor Green
+        if ($existingLabel) {
+            Write-Host "   ✅ Label '$displayName' already exists (ID: $($existingLabel.Name)). Skipping creation." -ForegroundColor Green
+        } else {
+            # New-Label does not support -Rank or -Priority directly during creation. 
+            # Priority is assigned automatically (appended to end). We can set it later if needed.
+            New-Label -Name $label.Name -DisplayName $label.DisplayName -ToolTip $label.ToolTip -Comment $label.Comment -ErrorAction Stop
+            Write-Host "   ✅ Label '$displayName' created successfully." -ForegroundColor Green
+        }
     } catch {
-        Write-Host "   ⚠️ Failed to create label '$labelName'. It may already exist or API requires specific permissions." -ForegroundColor Yellow
-        Write-Host "   ❌ Error: $_" -ForegroundColor Red
+        # Check for duplicate/conflict errors
+        if ($_.Exception.Message -like "*Duplicate display name*" -or $_.Exception.Message -like "*already used by label*") {
+             Write-Host "   ✅ Label '$displayName' already exists (detected via conflict). Skipping creation." -ForegroundColor Green
+        } else {
+            Write-Host "   ❌ Failed to process label '$displayName'." -ForegroundColor Red
+            Write-Host "      Error: $_" -ForegroundColor Red
+        }
     }
 }
 

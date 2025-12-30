@@ -15,3 +15,16 @@ Microsoft/Purview/Purview-Data-Governance-Simulation/**/generated-documents/
 
 # Ignore PowerShell transcript logs
 *.log
+
+# Ignore authentication cache files
+**/MsalTokenCache.dat
+**/.msal_token_cache
+**/token_cache.bin
+**/ServicePrincipal-Details.txt
+
+# Ignore EDM Upload Agent diagnostic logs
+**/TraceLogs/
+
+# Ignore certificates in Purview Masterclass
+Microsoft/Purview/Purview-Retail-Data-Protection-Masterclass/Certificates/*
+!Microsoft/Purview/Purview-Retail-Data-Protection-Masterclass/Certificates/.gitkeep

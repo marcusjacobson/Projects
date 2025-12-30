@@ -37,17 +37,79 @@
 
 [CmdletBinding()]
 param (
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $false)]
     [string]$TenantId,
 
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $false)]
     [string]$AppId,
 
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $false)]
     [string]$CertificateThumbprint
 )
 
 # =============================================================================
+# Step 0: Configuration Loading
+# =============================================================================
+
+# Try to load from global-config.json if parameters are missing
+if (-not $TenantId -or -not $AppId -or -not $CertificateThumbprint) {
+    # Adjusted path for root/scripts location
+    $configPath = Join-Path $PSScriptRoot "..\templates\global-config.json"
+    
+    if (Test-Path $configPath) {
+        Write-Host "   📂 Loading configuration from global-config.json..." -ForegroundColor Cyan
+        $config = Get-Content $configPath | ConvertFrom-Json
+        
+        # 1. Resolve Tenant ID
+        if (-not $TenantId -and $config.tenantId) {
+            $TenantId = $config.tenantId
+        }
+        
+        # 2. Resolve Certificate Thumbprint
+        if (-not $CertificateThumbprint -and $config.servicePrincipal.certificateName) {
+            $certName = $config.servicePrincipal.certificateName
+            # Find the most recent valid certificate with this subject
+            $cert = Get-ChildItem "Cert:\CurrentUser\My" | Where-Object { $_.Subject -eq "CN=$certName" } | Sort-Object NotAfter -Descending | Select-Object -First 1
+            
+            if ($cert) {
+                $CertificateThumbprint = $cert.Thumbprint
+                Write-Host "   ✅ Found certificate '$certName' in user store." -ForegroundColor Cyan
+            } else {
+                Write-Host "   ⚠️ Certificate '$certName' not found in CurrentUser\My store." -ForegroundColor Yellow
+            }
+        }
+        
+        # 3. Resolve App ID
+        # First check if it was manually added to config
+        if (-not $AppId -and $config.servicePrincipal.appId) {
+            $AppId = $config.servicePrincipal.appId
+        }
+        # Fallback: Try to read from the generated details file
+        elseif (-not $AppId) {
+            $detailsPath = Join-Path $PSScriptRoot "ServicePrincipal-Details.txt"
+            if (Test-Path $detailsPath) {
+                $detailsContent = Get-Content $detailsPath
+                foreach ($line in $detailsContent) {
+                    if ($line -match "App ID:\s+([a-f0-9-]{36})") {
+                        $AppId = $matches[1]
+                        Write-Host "   ✅ Found App ID in ServicePrincipal-Details.txt" -ForegroundColor Cyan
+                        break
+                    }
+                }
+            }
+        }
+    }
+}
+
+# Final Validation
+if (-not $TenantId -or -not $AppId -or -not $CertificateThumbprint) {
+    Write-Host "   ❌ Missing required connection details." -ForegroundColor Red
+    Write-Host "   Please provide parameters manually or ensure Deploy-ServicePrincipal.ps1 has been run." -ForegroundColor Yellow
+    Write-Host "   TenantId: $TenantId"
+    Write-Host "   AppId: $AppId"
+    Write-Host "   Thumbprint: $CertificateThumbprint"
+    exit 1
+}
 # Step 1: Environment Validation
 # =============================================================================
 

@@ -39,27 +39,24 @@
 [CmdletBinding()]
 param (
     [Parameter(Mandatory = $true)]
-    [string]$TenantId,
-
-    [Parameter(Mandatory = $true)]
-    [string]$AppId,
-
-    [Parameter(Mandatory = $true)]
-    [string]$CertificateThumbprint,
-
-    [Parameter(Mandatory = $true)]
     [string]$SITName,
 
     [Parameter(Mandatory = $true)]
     [string]$RegexPattern
 )
 
-# Import Connection Helper (Adjust path for pipeline execution context)
-# In pipeline, we might need to handle connection differently if helper isn't available
-# For simplicity, we'll inline the connection logic or assume module is loaded.
+# =============================================================================
+# Step 0: Authentication
+# =============================================================================
 
-Write-Host "🚀 Connecting to Microsoft Graph..." -ForegroundColor Cyan
-Connect-MgGraph -ClientId $AppId -TenantId $TenantId -CertificateThumbprint $CertificateThumbprint -NoWelcome
+$connectScript = Join-Path $PSScriptRoot "..\..\..\..\..\scripts\Connect-PurviewGraph.ps1"
+if (Test-Path $connectScript) {
+    Write-Host "🔌 Connecting to Microsoft Graph..." -ForegroundColor Cyan
+    & $connectScript
+} else {
+    Write-Host "❌ Connection script not found at $connectScript" -ForegroundColor Red
+    exit 1
+}
 
 # =============================================================================
 # Step 1: Define Rule Package

@@ -1,0 +1,50 @@
+{
+  "environmentName": "PurviewMasterclass",
+  "location": "East US",
+  "tenantId": "a78dfd73-b644-4885-b9a0-6a04756b8eae",
+  "subscriptionId": "d7a6da45-0839-4879-aecd-d89fb8178472",
+  "sharePointRootUrl": "https://marcusjcloud.sharepoint.com",
+  "sharePointAdminUrl": "https://marcusjcloud-admin.sharepoint.com",
+  "adminEmail": "marcus@marcusj-dev.cloud",
+  "pnpClientId": "14c0019b-f7a4-412e-9adf-f5a2487f2a7e",
+  "_pnp_comment": "PnPClientId is the Azure AD App Registration Client ID for PnP.PowerShell authentication. This is your custom 'PnP PowerShell Interactive' app registration.",
+  "sharePointSite": {
+    "name": "Retail-Operations",
+    "template": "Team",
+    "title": "Retail Operations - DLP Testing",
+    "description": "SharePoint site for testing Purview DLP policies with retail customer data",
+    "owner": "marcus@marcusj-dev.cloud"
+  },
+  "servicePrincipal": {
+    "displayName": "Purview-Retail-Masterclass-Automation",
+    "certificateName": "PurviewAutomationCert",
+    "permissions": [
+      {
+        "resourceAppId": "00000003-0000-0000-c000-000000000000",
+        "resourceAppName": "Microsoft Graph",
+        "roles": [
+          "InformationProtectionPolicy.Read.All",
+          "InformationProtectionContent.Write.All",
+          "User.Read.All",
+          "Group.Read.All",
+          "Files.ReadWrite.All",
+          "Sites.ReadWrite.All"
+        ]
+      },
+      {
+        "resourceAppId": "00000002-0000-0ff1-ce00-000000000000",
+        "resourceAppName": "Office 365 Exchange Online",
+        "roles": [
+          "Exchange.ManageAsApp"
+        ]
+      },
+      {
+        "resourceAppId": "00000003-0000-0ff1-ce00-000000000000",
+        "resourceAppName": "SharePoint",
+        "roles": [
+          "Sites.FullControl.All"
+        ]
+      }
+    ]
+  }
+}

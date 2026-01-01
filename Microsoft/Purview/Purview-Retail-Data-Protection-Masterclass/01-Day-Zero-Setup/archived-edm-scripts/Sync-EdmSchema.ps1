@@ -39,16 +39,21 @@ Write-Host "================================" -ForegroundColor Cyan
 # 2. Connect to Security & Compliance PowerShell
 Write-Host "🔐 Connecting to Security & Compliance PowerShell..." -ForegroundColor Yellow
 
-# Check for ExchangeOnlineManagement module
-if (-not (Get-Module -ListAvailable -Name ExchangeOnlineManagement)) {
-    Write-Host "⚠️ ExchangeOnlineManagement module not found. Installing..." -ForegroundColor Yellow
-    Install-Module -Name ExchangeOnlineManagement -Force -Scope CurrentUser
-}
-
-# Connect if not already connected (Check for a known cmdlet)
-if (-not (Get-Command Get-DlpEdmSchema -ErrorAction SilentlyContinue)) {
-    Write-Host "   Please sign in to Purview..." -ForegroundColor Gray
-    Connect-IPPSSession
+# Check if already connected
+try {
+    Get-DlpEdmSchema -ErrorAction Stop | Out-Null
+    Write-Host "   ✅ Already connected to Security & Compliance PowerShell" -ForegroundColor Green
+} catch {
+    # Use helper script for connection - script is in project root scripts folder
+    $projectRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
+    $helperScriptPath = Join-Path $projectRoot "scripts\Connect-PurviewIPPS.ps1"
+    if (Test-Path $helperScriptPath) {
+        . $helperScriptPath
+        Write-Host "   ✅ Connected to Security & Compliance PowerShell" -ForegroundColor Green
+    } else {
+        Write-Host "   ❌ Helper script not found at: $helperScriptPath" -ForegroundColor Red
+        exit 1
+    }
 }
 
 # 3. Check if Schema Exists
@@ -76,10 +81,14 @@ else {
     Write-Host "⚠️  Schema '$dataStoreName' not found in cloud." -ForegroundColor Yellow
     Write-Host "⚙️  Generating new default schema locally..." -ForegroundColor Cyan
     
+    # EDM Schema: 7 fields (no MembershipType)
+    # MembershipType is only in Custom SIT test data (CustomerDB_TestData.csv for Lab 01)
+    # Note: maximumNumberOfTokens is required by Upload Agent but rejected by New-DlpEdmSchema
+    # We include it in the XML for Upload Agent, but remove it temporarily for PowerShell upload
     $xmlContent = @"
 <?xml version="1.0" encoding="utf-8"?>
 <EdmSchema xmlns="http://schemas.microsoft.com/office/2018/edm">
-  <DataStore name="RetailCustomerDB" description="Customer Database for Retail Operations" version="1">
+  <DataStore name="RetailCustomerDB" description="Customer Database for Retail Operations" version="1" maximumNumberOfTokens="5">
     <Field name="CustomerId" searchable="true" caseInsensitive="true" />
     <Field name="FirstName" searchable="false" caseInsensitive="true" />
     <Field name="LastName" searchable="false" caseInsensitive="true" />
@@ -90,34 +99,41 @@ else {
   </DataStore>
 </EdmSchema>
 "@
+    # Save the full XML (with maximumNumberOfTokens for Upload Agent)
     $xmlContent | Out-File -FilePath $xmlPath -Encoding UTF8
     $resolvedXmlPath = (Resolve-Path $xmlPath).Path
     Write-Host "✅ New schema generated at: $resolvedXmlPath" -ForegroundColor Green
+    Write-Host "   📋 7 fields (EDM format): CustomerId, FirstName, LastName, Email, PhoneNumber, CreditCardNumber, LoyaltyId" -ForegroundColor Cyan
     
-    # Automated Upload Logic
+    # Automated Upload Logic (as per original README)
+    # PowerShell cmdlet doesn't support maximumNumberOfTokens, so we remove it temporarily for upload
     Write-Host "🚀 Attempting automated schema upload to Purview..." -ForegroundColor Cyan
 
     try {
         Write-Host "📤 Uploading schema definition..." -ForegroundColor Cyan
-        $fileData = [System.IO.File]::ReadAllBytes($resolvedXmlPath)
+        
+        # Strip out maximumNumberOfTokens for PowerShell cmdlet upload
+        $xmlForUpload = $xmlContent -replace 'maximumNumberOfTokens="5"', ''
+        $tempXmlPath = Join-Path $outputDir "temp_schema.xml"
+        $xmlForUpload | Out-File -FilePath $tempXmlPath -Encoding UTF8
+        $fileData = [System.IO.File]::ReadAllBytes($tempXmlPath)
         
         # Create the schema
         New-DlpEdmSchema -FileData $fileData -ErrorAction Stop
         
-        Write-Host "✅ Schema '$dataStoreName' successfully created in Purview!" -ForegroundColor Green
+        # Clean up temp file
+        Remove-Item $tempXmlPath -Force
         
-        # Immediate Sync Back (Download authoritative version)
-        Write-Host "🔄 Syncing authoritative schema from cloud..." -ForegroundColor Cyan
-        Push-Location "C:\Program Files\Microsoft\EdmUploadAgent"
-        & .\EdmUploadAgent.exe /SaveSchema /DataStoreName $dataStoreName /OutputDir $outputDir
-        Pop-Location
-        Write-Host "✅ Local file updated with cloud definitions." -ForegroundColor Green
+        Write-Host "✅ Schema '$dataStoreName' successfully created in Purview!" -ForegroundColor Green
+        Write-Host "   💡 Local XML includes maximumNumberOfTokens for Upload Agent compatibility" -ForegroundColor Cyan
     }
     catch {
         Write-Host "❌ Automated upload failed: $($_.Exception.Message)" -ForegroundColor Red
-        Write-Host "👉 Fallback: Please upload the XML file manually to the Purview Portal." -ForegroundColor Magenta
-        Write-Host "   (Purview Portal > Information Protection > Classifiers > EDM classifiers)" -ForegroundColor Gray
+        Write-Host "👉 Fallback: Please upload the XML file manually to the Purview Portal." -ForegroundColor Yellow
+        Write-Host "   (Purview Portal > Information Protection > Classifiers > EDM classifiers)" -ForegroundColor Cyan
+        exit 1
     }
 }
 
 Write-Host "`n✅ Step 2 Complete." -ForegroundColor Green
+exit 0

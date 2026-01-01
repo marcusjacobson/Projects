@@ -94,20 +94,26 @@ try {
     exit 1
 }
 
-# Check for ExchangeOnlineManagement module
-if (-not (Get-Module -ListAvailable -Name ExchangeOnlineManagement)) {
-    Write-Host "   📦 Installing ExchangeOnlineManagement module..." -ForegroundColor Cyan
-    Install-Module -Name ExchangeOnlineManagement -Force -Scope CurrentUser -AllowClobber
-}
-
-# Connect to IPPSSession
+# Connect to Security & Compliance PowerShell using helper script
 try {
-    Write-Host "   🚀 Connecting to IPPSSession (App-Only)..." -ForegroundColor Cyan
-    Connect-IPPSSession -AppId $AppId -CertificateThumbprint $CertificateThumbprint -Organization $Organization -ShowBanner:$false
-    Write-Host "   ✅ Connected to Security & Compliance PowerShell" -ForegroundColor Green
+    Write-Host "   🚀 Connecting to Security & Compliance PowerShell..." -ForegroundColor Cyan
+    
+    # Check if already connected
+    try {
+        Get-DlpEdmSchema -ErrorAction Stop | Out-Null
+        Write-Host "   ✅ Already connected to Security & Compliance PowerShell" -ForegroundColor Green
+    } catch {
+        # Use helper script for connection
+        $helperScriptPath = Join-Path (Split-Path $PSScriptRoot -Parent) "scripts\Connect-PurviewIPPS.ps1"
+        if (Test-Path $helperScriptPath) {
+            . $helperScriptPath
+            Write-Host "   ✅ Connected to Security & Compliance PowerShell" -ForegroundColor Green
+        } else {
+            throw "Helper script not found at: $helperScriptPath"
+        }
+    }
 } catch {
-    Write-Host "   ❌ Failed to connect to IPPSSession: $_" -ForegroundColor Red
-    Write-Host "   ℹ️ Ensure the Service Principal has the 'Compliance Administrator' directory role." -ForegroundColor Yellow
+    Write-Host "   ❌ Failed to connect to Security & Compliance PowerShell: $_" -ForegroundColor Red
     exit 1
 }
 

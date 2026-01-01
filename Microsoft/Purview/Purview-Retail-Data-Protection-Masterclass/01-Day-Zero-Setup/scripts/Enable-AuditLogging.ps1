@@ -122,8 +122,8 @@ Write-Host "🔌 Step 1: Connecting to Exchange Online" -ForegroundColor Green
 Write-Host "=======================================" -ForegroundColor Green
 
 try {
-    Write-Host "   🚀 Connecting..." -ForegroundColor Cyan
-    Connect-ExchangeOnline -AppId $AppId -CertificateThumbprint $CertificateThumbprint -Organization $Organization -ShowBanner:$false
+    Write-Host "   🚀 Connecting (interactive authentication due to EXO 3.9.0 assembly bug)..." -ForegroundColor Cyan
+    Connect-ExchangeOnline -ShowBanner:$false
     Write-Host "   ✅ Connected to Exchange Online." -ForegroundColor Green
 } catch {
     Write-Host "   ❌ Failed to connect to Exchange Online: $_" -ForegroundColor Red
@@ -142,11 +142,66 @@ try {
     if ($config.UnifiedAuditLogIngestionEnabled) {
         Write-Host "   ✅ Unified Audit Log is ALREADY enabled." -ForegroundColor Green
     } else {
-        Write-Host "   ⏳ Enabling Unified Audit Log (this may take time)..." -ForegroundColor Cyan
-        Set-AdminAuditLogConfig -UnifiedAuditLogIngestionEnabled $true
-        Write-Host "   ✅ Unified Audit Log enabled successfully." -ForegroundColor Green
+        Write-Host "   ⏳ Enabling Unified Audit Log..." -ForegroundColor Cyan
+        Set-AdminAuditLogConfig -UnifiedAuditLogIngestionEnabled $true -ErrorAction Stop
+        Write-Host "   ✅ Unified Audit Log enable command completed." -ForegroundColor Green
         Write-Host "   ⚠️ Note: It may take up to 24 hours for events to appear." -ForegroundColor Yellow
     }
 } catch {
     Write-Host "   ❌ Failed to enable Audit Log: $_" -ForegroundColor Red
+    throw
+}
+
+# =============================================================================
+# Step 3: Verify Configuration
+# =============================================================================
+
+Write-Host "`n🔍 Step 3: Verifying Audit Log Configuration" -ForegroundColor Green
+Write-Host "===========================================" -ForegroundColor Green
+
+try {
+    # Wait a moment for the change to propagate
+    Start-Sleep -Seconds 5
+    
+    $auditConfig = Get-AdminAuditLogConfig
+    $auditStatus = $auditConfig.UnifiedAuditLogIngestionEnabled
+    
+    if ($auditStatus -eq $true) {
+        Write-Host "   ✅ Verification successful: Auditing is ENABLED" -ForegroundColor Green
+        Write-Host "   Status: UnifiedAuditLogIngestionEnabled = True" -ForegroundColor Cyan
+    } else {
+        Write-Host "   ⚠️  WARNING: Auditing still shows as disabled (value: $auditStatus)" -ForegroundColor Yellow
+        Write-Host "   Possible causes:" -ForegroundColor Yellow
+        Write-Host "      • Insufficient permissions (requires Global Administrator)" -ForegroundColor Yellow
+        Write-Host "      • Propagation delay between command execution and query (wait 5-10 minutes)" -ForegroundColor Yellow
+        Write-Host "      • Exchange Online configuration restriction in your tenant" -ForegroundColor Yellow
+        Write-Host "`n   💡 Next steps:" -ForegroundColor Cyan
+        Write-Host "      1. Wait 5-10 minutes and run this script again" -ForegroundColor White
+        Write-Host "      2. Verify with: Get-AdminAuditLogConfig | Format-List UnifiedAuditLogIngestionEnabled" -ForegroundColor White
+        Write-Host "      3. If still disabled, contact your tenant administrator" -ForegroundColor White
+    }
+    
+    # Display full configuration for diagnostic purposes
+    Write-Host "`n📊 Current Audit Configuration:" -ForegroundColor Cyan
+    $auditConfig | Format-List UnifiedAuditLogIngestionEnabled
+    
+} catch {
+    Write-Host "   ❌ Failed to verify configuration: $_" -ForegroundColor Red
+}
+
+Write-Host "`n✅ Auditing enablement process complete" -ForegroundColor Green
+Write-Host "⏳ Allow 2-24 hours for full audit data collection to activate" -ForegroundColor Yellow
+
+# =============================================================================
+# Step 4: Cleanup
+# =============================================================================
+
+Write-Host "`n🔌 Step 4: Disconnecting from Exchange Online" -ForegroundColor Green
+Write-Host "===========================================" -ForegroundColor Green
+
+try {
+    Disconnect-ExchangeOnline -Confirm:$false -ErrorAction SilentlyContinue
+    Write-Host "   ✅ Disconnected from Exchange Online." -ForegroundColor Green
+} catch {
+    Write-Host "   ⚠️  Disconnect completed with warnings (this is normal)" -ForegroundColor Yellow
 }

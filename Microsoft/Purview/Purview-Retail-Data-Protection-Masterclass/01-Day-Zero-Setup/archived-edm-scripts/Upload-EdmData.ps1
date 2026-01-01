@@ -44,12 +44,13 @@ Write-Host "==========================" -ForegroundColor Cyan
 Write-Host "📄 Generating dummy data..." -ForegroundColor Yellow
 $csvContent = @"
 CustomerId,FirstName,LastName,Email,PhoneNumber,CreditCardNumber,LoyaltyId
-C001,John,Doe,john.doe@contoso.com,555-0101,1234-5678-9012-3456,L1001
-C002,Jane,Smith,jane.smith@contoso.com,555-0102,2345-6789-0123-4567,L1002
-C003,Alice,Johnson,alice.j@contoso.com,555-0103,3456-7890-1234-5678,L1003
+C001,John,Doe,john.doe@contoso.com,555-123-4567,1234-5678-9012-3456,RET-123456-7
+C002,Jane,Smith,jane.smith@contoso.com,555-234-5678,2345-6789-0123-4567,RET-234567-8
+C003,Alice,Johnson,alice.j@contoso.com,555-345-6789,3456-7890-1234-5678,RET-345678-9
 "@
 $csvContent | Out-File -FilePath $csvPath -Encoding UTF8
 Write-Host "✅ Data file created: $csvPath" -ForegroundColor Green
+Write-Host "   (EDM schema format - 7 columns)" -ForegroundColor Cyan
 
 # 3. Validate Schema Existence
 if (-not (Test-Path $xmlPath)) {
@@ -71,8 +72,27 @@ if ($LASTEXITCODE -eq 0) {
 } else {
     Write-Host "`n❌ Upload Failed." -ForegroundColor Red
     Write-Host "   Check the error message above." -ForegroundColor Gray
-    Write-Host "   💡 TIP: If you see 'Schema provided is not a valid XML', run '.\Sync-EdmSchema.ps1' again to download the authoritative schema." -ForegroundColor Yellow
+    
+    # Check for specific error patterns
+    if ($Error[0].Exception.Message -like "*SchemaNotFound*") {
+        Write-Host ""
+        Write-Host "   ⚠️  PROPAGATION DELAY DETECTED" -ForegroundColor Yellow
+        Write-Host "   The schema exists in PowerShell but hasn't propagated to the Upload Agent endpoint yet." -ForegroundColor Cyan
+        Write-Host ""
+        Write-Host "   💡 Solution: Wait 10-15 minutes and run this script again:" -ForegroundColor Green
+        Write-Host "      .\Upload-EdmData.ps1" -ForegroundColor White
+        Write-Host ""
+        Write-Host "   🔍 Check propagation status:" -ForegroundColor Cyan
+        Write-Host "      cd 'C:\Program Files\Microsoft\EdmUploadAgent'" -ForegroundColor White
+        Write-Host "      .\EdmUploadAgent.exe /GetDataStore" -ForegroundColor White
+        Write-Host "      (If you see 'RetailCustomerDB' listed, the schema has propagated)" -ForegroundColor Gray
+    } elseif ($Error[0].Exception.Message -like "*Schema provided is not a valid XML*") {
+        Write-Host "   💡 TIP: Run '.\Sync-EdmSchema.ps1' again to refresh the schema file." -ForegroundColor Yellow
+    }
+    Pop-Location
+    exit 1
 }
 
 Pop-Location
 Write-Host "`n✅ Step 3 Complete." -ForegroundColor Green
+exit 0

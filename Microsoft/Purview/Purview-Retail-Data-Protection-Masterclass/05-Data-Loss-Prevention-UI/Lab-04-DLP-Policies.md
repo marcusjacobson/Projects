@@ -14,7 +14,32 @@ In this lab, you will enhance the baseline DLP policies created in **Day Zero Se
 - **Global Administrator** or **Compliance Administrator** role.
 - **Sensitivity Labels** created in Lab 02.
 - **Custom "Retail Loyalty ID" SIT** created in Lab 01.
+- **EDM Classifier** created in Lab 02 (for EDM-based policies).
 - **Baseline DLP Policies** deployed in Day Zero Setup (01-Day-Zero-Setup).
+
+### Optional: EDM Data Upload (For Testing EDM-Based Policies)
+
+If you want to **test** the "PII Protection (Customer Data)" policy that uses the EDM classifier:
+
+1. **Upload EDM Data** using the EDM Upload Agent:
+   - Install EDM Upload Agent on Windows machine
+   - Hash and upload `CustomerDB_EDM.csv` (from 02-Data-Foundation)
+   - Wait 12-24 hours for Purview to index the data
+
+2. **Verify EDM Readiness** (Security & Compliance PowerShell):
+   ```powershell
+   Connect-IPPSSession
+   Get-DlpEdmSchema -Identity "retailcustomerpiiedmschema" | Format-List
+   ```
+   
+   **Expected when ready**: `State: Completed`
+
+3. **If EDM is NOT Ready**:
+   - You can still create the EDM-based policy (it just won't detect anything yet)
+   - Skip EDM policy testing for now
+   - Return to test after upload/indexing completes
+
+> **💡 Note**: All other policies (PCI-DSS, Loyalty Card) work without EDM data. Only the "PII Protection" policy requires EDM upload for full functionality.
 
 ## 📝 Step-by-Step Instructions
 

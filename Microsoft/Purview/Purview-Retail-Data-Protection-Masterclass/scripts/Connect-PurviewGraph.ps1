@@ -116,14 +116,23 @@ if (-not $TenantId -or -not $AppId -or -not $CertificateThumbprint) {
 Write-Host "🔍 Step 1: Environment Validation" -ForegroundColor Green
 Write-Host "=================================" -ForegroundColor Green
 
-# Check for Microsoft.Graph module
-if (-not (Get-Module -ListAvailable -Name Microsoft.Graph)) {
-    Write-Host "   ❌ Microsoft.Graph module not found. Installing..." -ForegroundColor Yellow
-    Install-Module Microsoft.Graph -Scope CurrentUser -Force -AllowClobber
-    Write-Host "   ✅ Microsoft.Graph module installed." -ForegroundColor Green
-} else {
-    Write-Host "   ✅ Microsoft.Graph module is already installed." -ForegroundColor Green
+# Check for Microsoft.Graph module and ensure compatible versions
+$requiredModules = @('Microsoft.Graph.Authentication', 'Microsoft.Graph.Users', 'Microsoft.Graph.Identity.DirectoryManagement')
+
+foreach ($moduleName in $requiredModules) {
+    $module = Get-Module -ListAvailable -Name $moduleName | Sort-Object Version -Descending | Select-Object -First 1
+    
+    if (-not $module) {
+        Write-Host "   📦 Installing $moduleName..." -ForegroundColor Yellow
+        Install-Module $moduleName -Scope CurrentUser -Force -AllowClobber
+        Write-Host "   ✅ $moduleName installed." -ForegroundColor Green
+    } else {
+        Write-Host "   ✅ $moduleName is installed (v$($module.Version))" -ForegroundColor Green
+    }
 }
+
+# Import required modules explicitly to avoid version conflicts
+Import-Module Microsoft.Graph.Authentication -Force
 
 # =============================================================================
 # Step 2: Authentication
@@ -134,14 +143,38 @@ Write-Host "========================" -ForegroundColor Green
 
 try {
     Write-Host "   🚀 Connecting to Microsoft Graph..." -ForegroundColor Cyan
-    Connect-MgGraph -ClientId $AppId -TenantId $TenantId -CertificateThumbprint $CertificateThumbprint -NoWelcome
+    
+    # First, try to disconnect any existing session to avoid conflicts
+    $existingContext = Get-MgContext -ErrorAction SilentlyContinue
+    if ($existingContext) {
+        Write-Host "   🔄 Disconnecting existing session..." -ForegroundColor Yellow
+        Disconnect-MgGraph -ErrorAction SilentlyContinue
+    }
+    
+    # Connect using certificate thumbprint (most reliable method)
+    Connect-MgGraph -ClientId $AppId `
+                    -TenantId $TenantId `
+                    -CertificateThumbprint $CertificateThumbprint `
+                    -NoWelcome `
+                    -ErrorAction Stop
     
     $context = Get-MgContext
     if ($context) {
         Write-Host "   ✅ Successfully connected to tenant: $($context.TenantId)" -ForegroundColor Green
-        Write-Host "   ✅ Scopes: $($context.Scopes -join ', ')" -ForegroundColor Cyan
+        Write-Host "   ✅ App ID: $($context.ClientId)" -ForegroundColor Cyan
     }
 } catch {
-    Write-Host "   ❌ Failed to connect to Microsoft Graph: $_" -ForegroundColor Red
+    Write-Host "   ❌ Failed to connect to Microsoft Graph" -ForegroundColor Red
+    Write-Host "   Error: $($_.Exception.Message)" -ForegroundColor Yellow
+    
+    # Provide troubleshooting guidance
+    Write-Host "`n   Troubleshooting Steps:" -ForegroundColor Yellow
+    Write-Host "   1. Update Microsoft.Graph modules:" -ForegroundColor Cyan
+    Write-Host "      Update-Module Microsoft.Graph -Force" -ForegroundColor Gray
+    Write-Host "   2. Verify certificate is installed:" -ForegroundColor Cyan
+    Write-Host "      Get-ChildItem Cert:\CurrentUser\My | Where-Object {`$_.Thumbprint -eq '$CertificateThumbprint'}" -ForegroundColor Gray
+    Write-Host "   3. Check app registration in Azure AD has the certificate uploaded" -ForegroundColor Cyan
+    Write-Host "   4. Ensure API permissions are granted (User.Read.All, Sites.ReadWrite.All)" -ForegroundColor Cyan
+    
     throw
 }

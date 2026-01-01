@@ -846,10 +846,354 @@ if ($hasPowerPoint) {
 }
 
 # =============================================================================
-# Step 7: Cleanup
+# Step 7: Create Document Fingerprinting Templates
 # =============================================================================
 
-Write-Host "`n🔍 Step 7: Cleanup" -ForegroundColor Green
+Write-Host "`n🔍 Step 7: Create Document Fingerprinting Templates" -ForegroundColor Green
+Write-Host "====================================================" -ForegroundColor Green
+
+# 7.1 Credit Card Application Form (Word)
+if ($hasWord) {
+    try {
+        $ccAppFile = Join-Path $outputDir "Credit-Card-Application-Form.docx"
+        $doc = $wordApp.Documents.Add()
+        $selection = $wordApp.Selection
+        
+        # Title
+        $selection.Font.Size = 16
+        $selection.Font.Bold = $true
+        $selection.Font.Color = 0
+        $selection.TypeText("RETAIL CREDIT CARD APPLICATION")
+        $selection.TypeParagraph()
+        $selection.Font.Size = 10
+        $selection.Font.Bold = $false
+        $selection.Font.Italic = $true
+        $selection.TypeText("Please complete all sections. Incomplete applications will not be processed.")
+        $selection.Font.Italic = $false
+        $selection.TypeParagraph()
+        $selection.TypeParagraph()
+        
+        # Section 1: Personal Information
+        $selection.Font.Size = 12
+        $selection.Font.Bold = $true
+        $selection.TypeText("Section 1: Personal Information")
+        $selection.Font.Bold = $false
+        $selection.TypeParagraph()
+        
+        $table1 = $doc.Tables.Add($selection.Range, 8, 2)
+        $table1.Borders.Enable = $true
+        $table1.Cell(1, 1).Range.Text = "First Name:"
+        $table1.Cell(1, 2).Range.Text = ""
+        $table1.Cell(2, 1).Range.Text = "Last Name:"
+        $table1.Cell(2, 2).Range.Text = ""
+        $table1.Cell(3, 1).Range.Text = "Social Security Number:"
+        $table1.Cell(3, 2).Range.Text = ""
+        $table1.Cell(4, 1).Range.Text = "Date of Birth:"
+        $table1.Cell(4, 2).Range.Text = ""
+        $table1.Cell(5, 1).Range.Text = "Email Address:"
+        $table1.Cell(5, 2).Range.Text = ""
+        $table1.Cell(6, 1).Range.Text = "Phone Number:"
+        $table1.Cell(6, 2).Range.Text = ""
+        $table1.Cell(7, 1).Range.Text = "Street Address:"
+        $table1.Cell(7, 2).Range.Text = ""
+        $table1.Cell(8, 1).Range.Text = "City, State, Zip:"
+        $table1.Cell(8, 2).Range.Text = ""
+        $selection.EndKey(6) | Out-Null
+        $selection.TypeParagraph()
+        $selection.TypeParagraph()
+        
+        # Section 2: Employment Information
+        $selection.Font.Size = 12
+        $selection.Font.Bold = $true
+        $selection.TypeText("Section 2: Employment Information")
+        $selection.Font.Bold = $false
+        $selection.TypeParagraph()
+        
+        $table2 = $doc.Tables.Add($selection.Range, 4, 2)
+        $table2.Borders.Enable = $true
+        $table2.Cell(1, 1).Range.Text = "Employer Name:"
+        $table2.Cell(1, 2).Range.Text = ""
+        $table2.Cell(2, 1).Range.Text = "Job Title:"
+        $table2.Cell(2, 2).Range.Text = ""
+        $table2.Cell(3, 1).Range.Text = "Annual Income:"
+        $table2.Cell(3, 2).Range.Text = ""
+        $table2.Cell(4, 1).Range.Text = "Years Employed:"
+        $table2.Cell(4, 2).Range.Text = ""
+        $selection.EndKey(6) | Out-Null
+        $selection.TypeParagraph()
+        $selection.TypeParagraph()
+        
+        # Section 3: Financial Information
+        $selection.Font.Size = 12
+        $selection.Font.Bold = $true
+        $selection.TypeText("Section 3: Financial Information")
+        $selection.Font.Bold = $false
+        $selection.TypeParagraph()
+        
+        $table3 = $doc.Tables.Add($selection.Range, 3, 2)
+        $table3.Borders.Enable = $true
+        $table3.Cell(1, 1).Range.Text = "Bank Name:"
+        $table3.Cell(1, 2).Range.Text = ""
+        $table3.Cell(2, 1).Range.Text = "Account Number:"
+        $table3.Cell(2, 2).Range.Text = ""
+        $table3.Cell(3, 1).Range.Text = "Routing Number:"
+        $table3.Cell(3, 2).Range.Text = ""
+        $selection.EndKey(6) | Out-Null
+        $selection.TypeParagraph()
+        $selection.TypeParagraph()
+        
+        # Disclosure
+        $selection.Font.Size = 10
+        $selection.Font.Bold = $true
+        $selection.TypeText("Authorization and Consent")
+        $selection.Font.Bold = $false
+        $selection.TypeParagraph()
+        $selection.Font.Size = 9
+        $selection.Font.Italic = $true
+        $selection.TypeText("By submitting this application, I authorize Contoso Retail to verify the information provided and conduct a credit check. I understand that this inquiry may affect my credit score.")
+        $selection.Font.Italic = $false
+        $selection.TypeParagraph()
+        $selection.TypeParagraph()
+        
+        $selection.Font.Size = 10
+        $selection.TypeText("Applicant Signature: ________________________  Date: __________")
+        
+        $doc.SaveAs2($ccAppFile, 16)
+        $doc.Close()
+        Write-Host "✅ Created: Credit-Card-Application-Form.docx (Fingerprinting template)" -ForegroundColor Green
+    } catch {
+        Write-Host "⚠️  Failed to create Credit-Card-Application-Form.docx: $($_.Exception.Message)" -ForegroundColor Yellow
+    }
+}
+
+# 7.2 Employee Onboarding Form (Word)
+if ($hasWord) {
+    try {
+        $onboardingFile = Join-Path $outputDir "Employee-Onboarding-Form.docx"
+        $doc = $wordApp.Documents.Add()
+        $selection = $wordApp.Selection
+        
+        # Title
+        $selection.Font.Size = 16
+        $selection.Font.Bold = $true
+        $selection.TypeText("NEW EMPLOYEE ONBOARDING FORM")
+        $selection.TypeParagraph()
+        $selection.Font.Size = 10
+        $selection.Font.Bold = $false
+        $selection.Font.Italic = $true
+        $selection.TypeText("Human Resources Department - Confidential")
+        $selection.Font.Italic = $false
+        $selection.TypeParagraph()
+        $selection.TypeParagraph()
+        
+        # Employee Information
+        $selection.Font.Size = 12
+        $selection.Font.Bold = $true
+        $selection.TypeText("Employee Information")
+        $selection.Font.Bold = $false
+        $selection.TypeParagraph()
+        
+        $table1 = $doc.Tables.Add($selection.Range, 10, 2)
+        $table1.Borders.Enable = $true
+        $table1.Cell(1, 1).Range.Text = "Employee ID:"
+        $table1.Cell(1, 2).Range.Text = ""
+        $table1.Cell(2, 1).Range.Text = "First Name:"
+        $table1.Cell(2, 2).Range.Text = ""
+        $table1.Cell(3, 1).Range.Text = "Last Name:"
+        $table1.Cell(3, 2).Range.Text = ""
+        $table1.Cell(4, 1).Range.Text = "Social Security Number:"
+        $table1.Cell(4, 2).Range.Text = ""
+        $table1.Cell(5, 1).Range.Text = "Date of Birth:"
+        $table1.Cell(5, 2).Range.Text = ""
+        $table1.Cell(6, 1).Range.Text = "Personal Email:"
+        $table1.Cell(6, 2).Range.Text = ""
+        $table1.Cell(7, 1).Range.Text = "Phone Number:"
+        $table1.Cell(7, 2).Range.Text = ""
+        $table1.Cell(8, 1).Range.Text = "Home Address:"
+        $table1.Cell(8, 2).Range.Text = ""
+        $table1.Cell(9, 1).Range.Text = "Start Date:"
+        $table1.Cell(9, 2).Range.Text = ""
+        $table1.Cell(10, 1).Range.Text = "Department:"
+        $table1.Cell(10, 2).Range.Text = ""
+        $selection.EndKey(6) | Out-Null
+        $selection.TypeParagraph()
+        $selection.TypeParagraph()
+        
+        # Emergency Contact
+        $selection.Font.Size = 12
+        $selection.Font.Bold = $true
+        $selection.TypeText("Emergency Contact Information")
+        $selection.Font.Bold = $false
+        $selection.TypeParagraph()
+        
+        $table2 = $doc.Tables.Add($selection.Range, 3, 2)
+        $table2.Borders.Enable = $true
+        $table2.Cell(1, 1).Range.Text = "Contact Name:"
+        $table2.Cell(1, 2).Range.Text = ""
+        $table2.Cell(2, 1).Range.Text = "Relationship:"
+        $table2.Cell(2, 2).Range.Text = ""
+        $table2.Cell(3, 1).Range.Text = "Phone Number:"
+        $table2.Cell(3, 2).Range.Text = ""
+        $selection.EndKey(6) | Out-Null
+        $selection.TypeParagraph()
+        $selection.TypeParagraph()
+        
+        # Direct Deposit
+        $selection.Font.Size = 12
+        $selection.Font.Bold = $true
+        $selection.TypeText("Direct Deposit Information")
+        $selection.Font.Bold = $false
+        $selection.TypeParagraph()
+        
+        $table3 = $doc.Tables.Add($selection.Range, 3, 2)
+        $table3.Borders.Enable = $true
+        $table3.Cell(1, 1).Range.Text = "Bank Name:"
+        $table3.Cell(1, 2).Range.Text = ""
+        $table3.Cell(2, 1).Range.Text = "Account Number:"
+        $table3.Cell(2, 2).Range.Text = ""
+        $table3.Cell(3, 1).Range.Text = "Routing Number:"
+        $table3.Cell(3, 2).Range.Text = ""
+        $selection.EndKey(6) | Out-Null
+        $selection.TypeParagraph()
+        $selection.TypeParagraph()
+        
+        # Acknowledgment
+        $selection.Font.Size = 10
+        $selection.Font.Bold = $true
+        $selection.TypeText("Employee Acknowledgment")
+        $selection.Font.Bold = $false
+        $selection.TypeParagraph()
+        $selection.Font.Size = 9
+        $selection.Font.Italic = $true
+        $selection.TypeText("I certify that the information provided is accurate and complete. I understand that false information may result in termination of employment.")
+        $selection.Font.Italic = $false
+        $selection.TypeParagraph()
+        $selection.TypeParagraph()
+        
+        $selection.Font.Size = 10
+        $selection.TypeText("Employee Signature: ________________________  Date: __________")
+        $selection.TypeParagraph()
+        $selection.TypeText("HR Representative: ________________________  Date: __________")
+        
+        $doc.SaveAs2($onboardingFile, 16)
+        $doc.Close()
+        Write-Host "✅ Created: Employee-Onboarding-Form.docx (Fingerprinting template)" -ForegroundColor Green
+    } catch {
+        Write-Host "⚠️  Failed to create Employee-Onboarding-Form.docx: $($_.Exception.Message)" -ForegroundColor Yellow
+    }
+}
+
+# 7.3 Store Audit Report Template (Excel)
+if ($hasExcel) {
+    try {
+        $auditFile = Join-Path $outputDir "Store-Audit-Report-Template.xlsx"
+        $workbook = $excelApp.Workbooks.Add()
+        $worksheet = $workbook.Worksheets.Item(1)
+        $worksheet.Name = "Audit Report"
+        
+        # Header section
+        $worksheet.Cells.Item(1, 1).Value2 = "STORE AUDIT REPORT"
+        $worksheet.Cells.Item(1, 1).Font.Size = 16
+        $worksheet.Cells.Item(1, 1).Font.Bold = $true
+        $worksheet.Range("A1:F1").Merge() | Out-Null
+        
+        $worksheet.Cells.Item(2, 1).Value2 = "Contoso Retail Corporation - Internal Compliance"
+        $worksheet.Cells.Item(2, 1).Font.Italic = $true
+        $worksheet.Range("A2:F2").Merge() | Out-Null
+        
+        # Store Information
+        $worksheet.Cells.Item(4, 1).Value2 = "Store Number:"
+        $worksheet.Cells.Item(4, 1).Font.Bold = $true
+        $worksheet.Cells.Item(4, 2).Value2 = ""
+        
+        $worksheet.Cells.Item(5, 1).Value2 = "Store Location:"
+        $worksheet.Cells.Item(5, 1).Font.Bold = $true
+        $worksheet.Cells.Item(5, 2).Value2 = ""
+        
+        $worksheet.Cells.Item(6, 1).Value2 = "Audit Date:"
+        $worksheet.Cells.Item(6, 1).Font.Bold = $true
+        $worksheet.Cells.Item(6, 2).Value2 = ""
+        
+        $worksheet.Cells.Item(7, 1).Value2 = "Auditor Name:"
+        $worksheet.Cells.Item(7, 1).Font.Bold = $true
+        $worksheet.Cells.Item(7, 2).Value2 = ""
+        
+        # Audit Checklist Headers
+        $worksheet.Cells.Item(9, 1).Value2 = "Audit Category"
+        $worksheet.Cells.Item(9, 2).Value2 = "Item"
+        $worksheet.Cells.Item(9, 3).Value2 = "Compliant (Y/N)"
+        $worksheet.Cells.Item(9, 4).Value2 = "Score (1-5)"
+        $worksheet.Cells.Item(9, 5).Value2 = "Notes"
+        $worksheet.Cells.Item(9, 6).Value2 = "Corrective Action"
+        
+        $headerRange = $worksheet.Range("A9:F9")
+        $headerRange.Font.Bold = $true
+        $headerRange.Interior.ColorIndex = 15
+        $headerRange.Borders.LineStyle = 1
+        
+        # Sample audit items
+        $auditItems = @(
+            @("Cash Handling", "Daily deposit reconciliation", "", "", "", ""),
+            @("Cash Handling", "Cash drawer security", "", "", "", ""),
+            @("Cash Handling", "PCI-DSS compliance", "", "", "", ""),
+            @("Inventory", "Stock count accuracy", "", "", "", ""),
+            @("Inventory", "Shrinkage tracking", "", "", "", ""),
+            @("Inventory", "Receiving procedures", "", "", "", ""),
+            @("Customer Service", "Return policy compliance", "", "", "", ""),
+            @("Customer Service", "PII protection practices", "", "", "", ""),
+            @("Safety & Security", "Emergency exit access", "", "", "", ""),
+            @("Safety & Security", "Alarm system functional", "", "", "", ""),
+            @("Safety & Security", "CCTV operational", "", "", "", ""),
+            @("Employee Compliance", "Training records current", "", "", "", ""),
+            @("Employee Compliance", "Uniform policy adherence", "", "", "", "")
+        )
+        
+        $row = 10
+        foreach ($item in $auditItems) {
+            for ($col = 1; $col -le 6; $col++) {
+                $worksheet.Cells.Item($row, $col).Value2 = $item[$col - 1]
+            }
+            $row++
+        }
+        
+        # Summary section
+        $summaryRow = $row + 2
+        $worksheet.Cells.Item($summaryRow, 1).Value2 = "AUDIT SUMMARY"
+        $worksheet.Cells.Item($summaryRow, 1).Font.Bold = $true
+        $worksheet.Cells.Item($summaryRow, 1).Font.Size = 12
+        
+        $worksheet.Cells.Item($summaryRow + 1, 1).Value2 = "Overall Compliance Score:"
+        $worksheet.Cells.Item($summaryRow + 1, 1).Font.Bold = $true
+        
+        $worksheet.Cells.Item($summaryRow + 2, 1).Value2 = "Critical Issues Found:"
+        $worksheet.Cells.Item($summaryRow + 2, 1).Font.Bold = $true
+        
+        $worksheet.Cells.Item($summaryRow + 3, 1).Value2 = "Follow-up Required:"
+        $worksheet.Cells.Item($summaryRow + 3, 1).Font.Bold = $true
+        
+        $worksheet.Cells.Item($summaryRow + 5, 1).Value2 = "Auditor Signature:"
+        $worksheet.Cells.Item($summaryRow + 6, 1).Value2 = "Store Manager Signature:"
+        
+        # Apply borders to data table
+        $dataRange = $worksheet.Range("A9:F" + ($row - 1).ToString())
+        $dataRange.Borders.LineStyle = 1
+        
+        # Auto-fit columns
+        $worksheet.UsedRange.Columns.AutoFit() | Out-Null
+        
+        $workbook.SaveAs($auditFile)
+        $workbook.Close()
+        Write-Host "✅ Created: Store-Audit-Report-Template.xlsx (Fingerprinting template)" -ForegroundColor Green
+    } catch {
+        Write-Host "⚠️  Failed to create Store-Audit-Report-Template.xlsx: $($_.Exception.Message)" -ForegroundColor Yellow
+    }
+}
+
+# =============================================================================
+# Step 8: Cleanup
+# =============================================================================
+
+Write-Host "`n🔍 Step 8: Cleanup" -ForegroundColor Green
 Write-Host "==================" -ForegroundColor Green
 
 if ($hasExcel) {
@@ -886,7 +1230,7 @@ if ($hasPowerPoint) {
 [System.GC]::WaitForPendingFinalizers()
 
 # =============================================================================
-# Step 8: Summary
+# Step 9: Summary
 # =============================================================================
 
 Write-Host "`n📊 Test Data Generation Complete!" -ForegroundColor Green
@@ -898,26 +1242,50 @@ $wordFiles = $allFiles | Where-Object { $_.Extension -eq ".docx" }
 $pdfFiles = $allFiles | Where-Object { $_.Extension -eq ".pdf" }
 $pptFiles = $allFiles | Where-Object { $_.Extension -eq ".pptx" }
 
-Write-Host "`n📁 Files Created:" -ForegroundColor Cyan
+# Categorize files
+$singleSitFiles = $allFiles | Where-Object { $_.Name -match "CreditCards-Only|SSN-Records|Banking-DirectDeposit|Loyalty-Program" }
+$multiSitFiles = $allFiles | Where-Object { $_.Name -match "CustomerDatabase-FULL|Payment-Processing|Customer-Profile|Q4-Financial|Retail-Financial" }
+$cleanFiles = $allFiles | Where-Object { $_.Name -match "Product-Catalog|Team-Meeting|Q1-Sales" }
+$fingerprintTemplates = $allFiles | Where-Object { $_.Name -match "Credit-Card-Application|Employee-Onboarding|Store-Audit-Report" }
+
+Write-Host "`n📁 Files Created by Category:" -ForegroundColor Cyan
+
+if ($singleSitFiles.Count -gt 0) {
+    Write-Host "`n  🔍 Single-SIT Files ($($singleSitFiles.Count)) - Isolated Testing:" -ForegroundColor Yellow
+    $singleSitFiles | ForEach-Object { Write-Host "     - $($_.Name)" -ForegroundColor White }
+}
+
+if ($multiSitFiles.Count -gt 0) {
+    Write-Host "`n  🔐 Multi-SIT Files ($($multiSitFiles.Count)) - Complex Scenarios:" -ForegroundColor Yellow
+    $multiSitFiles | ForEach-Object { Write-Host "     - $($_.Name)" -ForegroundColor White }
+}
+
+if ($cleanFiles.Count -gt 0) {
+    Write-Host "`n  ✅ Clean Control Files ($($cleanFiles.Count)) - False Positive Testing:" -ForegroundColor Yellow
+    $cleanFiles | ForEach-Object { Write-Host "     - $($_.Name)" -ForegroundColor White }
+}
+
+if ($fingerprintTemplates.Count -gt 0) {
+    Write-Host "`n  📄 Document Fingerprinting Templates ($($fingerprintTemplates.Count)) - Structure-Based Detection:" -ForegroundColor Yellow
+    $fingerprintTemplates | ForEach-Object { Write-Host "     - $($_.Name)" -ForegroundColor White }
+}
+
+Write-Host "`n📊 Files by Format:" -ForegroundColor Cyan
 
 if ($excelFiles.Count -gt 0) {
-    Write-Host "`n  📊 Excel Files ($($excelFiles.Count)):" -ForegroundColor Yellow
-    $excelFiles | ForEach-Object { Write-Host "     - $($_.Name)" -ForegroundColor White }
+    Write-Host "  📊 Excel Files: $($excelFiles.Count)" -ForegroundColor White
 }
 
 if ($wordFiles.Count -gt 0) {
-    Write-Host "`n  📄 Word Documents ($($wordFiles.Count)):" -ForegroundColor Yellow
-    $wordFiles | ForEach-Object { Write-Host "     - $($_.Name)" -ForegroundColor White }
+    Write-Host "  📄 Word Documents: $($wordFiles.Count)" -ForegroundColor White
 }
 
 if ($pdfFiles.Count -gt 0) {
-    Write-Host "`n  📕 PDF Files ($($pdfFiles.Count)):" -ForegroundColor Yellow
-    $pdfFiles | ForEach-Object { Write-Host "     - $($_.Name)" -ForegroundColor White }
+    Write-Host "  📕 PDF Files: $($pdfFiles.Count)" -ForegroundColor White
 }
 
 if ($pptFiles.Count -gt 0) {
-    Write-Host "`n  📊 PowerPoint Files ($($pptFiles.Count)):" -ForegroundColor Yellow
-    $pptFiles | ForEach-Object { Write-Host "     - $($_.Name)" -ForegroundColor White }
+    Write-Host "  📊 PowerPoint Files: $($pptFiles.Count)" -ForegroundColor White
 }
 
 Write-Host "`n📈 Total Files Generated: $($allFiles.Count)" -ForegroundColor Green

@@ -106,13 +106,13 @@ try {
     Write-Host "   ✅ Already connected." -ForegroundColor Green
 } catch {
     try {
-        if ($AppId -and $CertificateThumbprint -and $Organization) {
-             Connect-IPPSSession -AppId $AppId -CertificateThumbprint $CertificateThumbprint -Organization $Organization -ShowBanner:$false
-             Write-Host "   ✅ Connected via Service Principal." -ForegroundColor Green
+        # Use helper script for connection
+        $helperScriptPath = Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) "scripts\Connect-PurviewIPPS.ps1"
+        if (Test-Path $helperScriptPath) {
+            . $helperScriptPath
+            Write-Host "   ✅ Connected to Security & Compliance PowerShell" -ForegroundColor Green
         } else {
-             Write-Host "   ⚠️ Missing SP details, attempting interactive login..." -ForegroundColor Yellow
-             Connect-IPPSSession -ShowBanner:$false
-             Write-Host "   ✅ Connected interactively." -ForegroundColor Green
+            throw "Helper script not found at: $helperScriptPath"
         }
     } catch {
         Write-Host "   ❌ Failed to connect: $_" -ForegroundColor Red
